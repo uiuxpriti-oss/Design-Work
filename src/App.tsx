@@ -154,7 +154,7 @@ function SideNav() {
                       : "text-muted-foreground/40 group-hover:text-foreground"
                   }`}
                 >
-                  /
+                  —
                 </span>
                 {p.title}
               </a>
