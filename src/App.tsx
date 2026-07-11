@@ -14,6 +14,7 @@ import {
   Info,
   Wand2,
   CornerDownRight,
+  Minus,
   type LucideIcon,
 } from "lucide-react";
 import {
@@ -51,8 +52,9 @@ const NAV: { id: string; label: string; icon: LucideIcon }[] = [
   { id: "skills-tools", label: "Skills & Tools", icon: Sparkles },
 ];
 
-const GLASS =
-  "border border-white/50 bg-white/40 shadow-sm backdrop-blur-md";
+// Solid pill for the scrolled nav — opaque so it stays readable over content
+// (glassmorphism washed out against the page cards).
+const NAV_SOLID = "border border-border bg-background shadow-sm";
 
 function useActiveSection(ids: string[]) {
   const [active, setActive] = useState(ids[0]);
@@ -116,7 +118,7 @@ function Header({ onOpenAsk }: { onOpenAsk: () => void }) {
           </button>
           <div
             className={`flex items-center gap-0.5 rounded-full p-1 transition-colors duration-300 sm:gap-1 ${
-              scrolled ? GLASS : "border border-transparent bg-foreground/[0.06]"
+              scrolled ? NAV_SOLID : "border border-transparent bg-foreground/[0.06]"
             }`}
           >
             {NAV.map(({ id, label, icon: Icon }) => {
@@ -145,7 +147,7 @@ function Header({ onOpenAsk }: { onOpenAsk: () => void }) {
           onClick={onOpenAsk}
           className={`inline-flex items-center gap-1.5 rounded-full px-3 py-2 text-sm text-foreground transition-colors duration-300 sm:px-3.5 ${
             scrolled
-              ? `${GLASS} hover:bg-white/60`
+              ? `${NAV_SOLID} hover:bg-foreground/[0.04]`
               : "border border-transparent hover:opacity-70"
           }`}
         >
@@ -743,9 +745,8 @@ function Creatives({ onViewAll }: { onViewAll: () => void }) {
         <p className="mt-3 max-w-md text-[15px] leading-relaxed text-muted-foreground">
           Logos, posters, and explorations — work that lives outside the sprint.
         </p>
-      </div>
-      <div className="marquee-track relative mt-10 overflow-hidden">
-        <div className="animate-marquee marquee-anim flex w-max gap-5 px-2">
+        <div className="marquee-track relative mt-10 overflow-hidden rounded-2xl">
+          <div className="animate-marquee marquee-anim flex w-max gap-5">
           {row.map((c, i) => (
             <a
               key={i}
@@ -770,6 +771,7 @@ function Creatives({ onViewAll }: { onViewAll: () => void }) {
               </div>
             </a>
           ))}
+          </div>
         </div>
       </div>
     </section>
@@ -890,10 +892,11 @@ function askReply(q: string): string {
   return "Thanks for asking! For anything specific, reach out via the Contact button — always happy to talk.";
 }
 
-function AskDrawer({ open, onClose }: { open: boolean; onClose: () => void }) {
+function AskPanel({ open, onClose }: { open: boolean; onClose: () => void }) {
   const [messages, setMessages] = useState<{ role: "user" | "bot"; text: string }[]>([]);
   const [input, setInput] = useState("");
   const [popover, setPopover] = useState<null | "ask" | "browse">(null);
+  const [minimized, setMinimized] = useState(false);
   const bodyRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -919,42 +922,60 @@ function AskDrawer({ open, onClose }: { open: boolean; onClose: () => void }) {
   };
 
   return (
-    <>
+    <div
+      role="dialog"
+      aria-label="Ask Priti"
+      className={`fixed bottom-4 right-4 z-50 flex w-[calc(100%-2rem)] flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-2xl transition-all duration-300 ease-out sm:bottom-6 sm:right-6 sm:w-[380px] ${
+        open
+          ? "pointer-events-auto translate-y-0 opacity-100"
+          : "pointer-events-none translate-y-4 opacity-0"
+      } ${minimized ? "h-[60px]" : "h-[68vh] max-h-[600px]"}`}
+    >
       <div
-        onClick={onClose}
-        className={`fixed inset-0 z-50 bg-black/25 backdrop-blur-[1px] transition-opacity duration-300 ${
-          open ? "opacity-100" : "pointer-events-none opacity-0"
-        }`}
-        aria-hidden="true"
-      />
-      <aside
-        role="dialog"
-        aria-label="Ask Priti"
-        aria-modal="true"
-        className={`fixed right-0 top-0 z-50 flex h-full w-full max-w-md flex-col bg-card shadow-2xl transition-transform duration-300 ease-out ${
-          open ? "translate-x-0" : "translate-x-full"
-        }`}
+        className="flex shrink-0 cursor-pointer items-center justify-between border-b border-border px-5 py-4"
+        onClick={() => minimized && setMinimized(false)}
       >
-        <div className="flex items-center justify-between border-b border-border px-5 py-4">
-          <div className="flex items-center gap-2">
-            <Sparkles className="h-4 w-4 text-foreground" aria-hidden="true" />
-            <span className="font-medium">Ask Priti</span>
-            <span
-              title="This is a demo assistant grounded in my case studies — check the project pages for the full story."
-              className="flex h-4 w-4 cursor-help items-center justify-center rounded-full bg-foreground/10 text-muted-foreground"
-            >
-              <Info className="h-3 w-3" aria-hidden="true" />
-            </span>
-          </div>
+        <div className="flex items-center gap-2">
+          <Sparkles className="h-4 w-4 text-foreground" aria-hidden="true" />
+          <span className="font-medium">Ask Priti</span>
+          <span
+            title="This is a demo assistant grounded in my case studies — check the project pages for the full story."
+            className="flex h-4 w-4 cursor-help items-center justify-center rounded-full bg-foreground/10 text-muted-foreground"
+          >
+            <Info className="h-3 w-3" aria-hidden="true" />
+          </span>
+        </div>
+        <div className="flex items-center gap-0.5">
           <button
             type="button"
-            onClick={onClose}
+            onClick={(e) => {
+              e.stopPropagation();
+              setMinimized((v) => !v);
+            }}
+            aria-label={minimized ? "Expand" : "Minimize"}
+            className="rounded-full p-1 text-muted-foreground transition-colors hover:bg-foreground/[0.06] hover:text-foreground"
+          >
+            {minimized ? (
+              <ChevronDown className="h-5 w-5 rotate-180" aria-hidden="true" />
+            ) : (
+              <Minus className="h-5 w-5" aria-hidden="true" />
+            )}
+          </button>
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              onClose();
+            }}
             aria-label="Close"
             className="rounded-full p-1 text-muted-foreground transition-colors hover:bg-foreground/[0.06] hover:text-foreground"
           >
             <X className="h-5 w-5" aria-hidden="true" />
           </button>
         </div>
+      </div>
+      {!minimized && (
+        <>
 
         <div ref={bodyRef} className="flex-1 overflow-y-auto px-5 py-6">
           {messages.length === 0 ? (
@@ -1082,8 +1103,9 @@ function AskDrawer({ open, onClose }: { open: boolean; onClose: () => void }) {
             </div>
           </form>
         </div>
-      </aside>
-    </>
+        </>
+      )}
+    </div>
   );
 }
 
@@ -1130,7 +1152,7 @@ export default function App() {
         <ProjectsPage onBack={() => setPage("home")} initialTab={projectsTab} />
       )}
       <Footer />
-      <AskDrawer open={askOpen} onClose={() => setAskOpen(false)} />
+      <AskPanel open={askOpen} onClose={() => setAskOpen(false)} />
     </div>
   );
 }
