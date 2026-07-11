@@ -117,23 +117,50 @@ function Header() {
 }
 
 function SideNav() {
+  const [active, selectActive] = useActiveSection(projects.map((p) => p.id));
+  const [show, setShow] = useState(false);
+  useEffect(() => {
+    const onScroll = () => setShow(window.scrollY > window.innerHeight * 0.5);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
   return (
-    <aside className="hidden xl:block fixed left-8 top-1/2 -translate-y-1/2 z-20">
-      <ul className="space-y-2.5 text-[13px]">
-        {projects.map((p, i) => (
-          <li key={p.id}>
-            <a
-              href={`#${p.id}`}
-              className={
-                i === projects.length - 1
-                  ? "block transition-colors text-foreground font-medium"
-                  : "block transition-colors text-muted-foreground/60 hover:text-muted-foreground"
-              }
-            >
-              {p.title}
-            </a>
-          </li>
-        ))}
+    <aside
+      className={`hidden xl:block fixed left-8 top-1/2 -translate-y-1/2 z-20 transition-all duration-300 ease-out ${
+        show ? "opacity-100 translate-x-0" : "pointer-events-none opacity-0 -translate-x-2"
+      }`}
+    >
+      <ul className="space-y-1 text-[13px]">
+        {projects.map((p) => {
+          const isActive = active === p.id;
+          return (
+            <li key={p.id}>
+              <a
+                href={`#${p.id}`}
+                onClick={() => selectActive(p.id)}
+                aria-current={isActive ? "true" : undefined}
+                className={`group flex items-center gap-2 rounded-md py-1 outline-none transition-all duration-200 ease-out hover:translate-x-0.5 focus-visible:ring-2 focus-visible:ring-foreground/20 ${
+                  isActive
+                    ? "text-foreground font-medium"
+                    : "text-muted-foreground/50 hover:text-foreground"
+                }`}
+              >
+                <span
+                  aria-hidden="true"
+                  className={`transition-colors duration-200 ${
+                    isActive
+                      ? "text-foreground"
+                      : "text-muted-foreground/40 group-hover:text-foreground"
+                  }`}
+                >
+                  /
+                </span>
+                {p.title}
+              </a>
+            </li>
+          );
+        })}
       </ul>
     </aside>
   );
