@@ -236,19 +236,20 @@ export const skillCategories: SkillCategory[] = [
 
 export interface Creative {
   name: string;
+  category: string;
   gradient: string;
 }
 
 // Drop-in gradient placeholders for the Behance creative work.
 export const creatives: Creative[] = [
-  { name: "Nidavellir", gradient: "from-teal-400/30 to-indigo-500/30" },
-  { name: "Commenda", gradient: "from-emerald-400/30 to-slate-500/30" },
-  { name: "Atz", gradient: "from-sky-400/30 to-violet-500/30" },
-  { name: "Mr. Kirana", gradient: "from-emerald-500/30 to-teal-700/30" },
-  { name: "Business Icon Pack", gradient: "from-indigo-400/30 to-purple-500/30" },
-  { name: "Neutron Star", gradient: "from-violet-500/30 to-indigo-700/30" },
-  { name: "Chat Bubble AI", gradient: "from-cyan-400/30 to-blue-500/30" },
-  { name: "Butterfly Mark", gradient: "from-fuchsia-400/30 to-rose-500/30" },
+  { name: "Nidavellir", category: "Brand Identity", gradient: "from-teal-400/30 to-indigo-500/30" },
+  { name: "Commenda", category: "Logo Design", gradient: "from-emerald-400/30 to-slate-500/30" },
+  { name: "Atz", category: "Logo Design", gradient: "from-sky-400/30 to-violet-500/30" },
+  { name: "Mr. Kirana", category: "Brand Identity", gradient: "from-emerald-500/30 to-teal-700/30" },
+  { name: "Business Icon Pack", category: "Icon Set", gradient: "from-indigo-400/30 to-purple-500/30" },
+  { name: "Neutron Star", category: "Concept", gradient: "from-violet-500/30 to-indigo-700/30" },
+  { name: "Chat Bubble AI", category: "Iconography", gradient: "from-cyan-400/30 to-blue-500/30" },
+  { name: "Butterfly Mark", category: "Logo Design", gradient: "from-fuchsia-400/30 to-rose-500/30" },
 ];
 
 // Looping footer marquee phrases.

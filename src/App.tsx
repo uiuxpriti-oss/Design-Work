@@ -366,12 +366,21 @@ function CreativeGridCard({
       href={links.behance}
       target="_blank"
       rel="noreferrer"
-      className={`group block overflow-hidden rounded-2xl bg-gradient-to-br ${creative.gradient} ring-1 ring-border transition-transform duration-300 hover:-translate-y-1`}
+      className={`group relative block aspect-[4/3] overflow-hidden rounded-2xl bg-gradient-to-br ${creative.gradient} ring-1 ring-border transition-transform duration-300 hover:-translate-y-1`}
     >
-      <div className="flex aspect-[4/3] items-center justify-center">
-        <span className="text-sm font-medium text-foreground/70">
-          {creative.name}
-        </span>
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute -right-4 -top-10 select-none text-[160px] font-bold leading-none text-foreground/[0.06]"
+      >
+        {creative.name[0]}
+      </span>
+      <ArrowUpRight
+        className="absolute right-5 top-5 h-4 w-4 text-foreground/40 opacity-0 transition-opacity duration-200 group-hover:opacity-100"
+        aria-hidden="true"
+      />
+      <div className="absolute inset-x-0 bottom-0 flex flex-col p-6">
+        <p className="font-medium text-foreground">{creative.name}</p>
+        <p className="text-[13px] text-muted-foreground">{creative.category}</p>
       </div>
     </a>
   );
@@ -464,48 +473,95 @@ function SectionHeading({
   );
 }
 
+const ABOUT_PARAGRAPHS = [
+  "I'm Priti, a 23-year-old UX-focused designer and developer. I've been designing in different forms since I was 11, driven by a curiosity for how digital products are built and experienced.",
+  "I enjoy working across the full process — from early ideas to finished products — with a focus on creating solutions that are clear, usable, and visually considered.",
+  "Outside of design, I enjoy gaming, building side projects, experiencing spirituality, and exploring new places through travel.",
+];
+
+function AboutReveal({ paragraphs }: { paragraphs: string[] }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [progress, setProgress] = useState(0);
+  useEffect(() => {
+    const onScroll = () => {
+      const el = ref.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      const vh = window.innerHeight;
+      const start = vh * 0.82; // start lighting up when top passes 82% of viewport
+      const end = vh * 0.34; // fully lit once it clears ~34%
+      const span = start - end + rect.height * 0.5;
+      const p = (start - rect.top) / span;
+      setProgress(Math.min(1, Math.max(0, p)));
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, []);
+
+  const total = paragraphs.reduce((n, p) => n + p.split(" ").length, 0);
+  const revealed = progress * total;
+  let idx = 0;
+  return (
+    <div
+      ref={ref}
+      className="mx-auto max-w-2xl space-y-6 text-center text-xl leading-relaxed text-foreground sm:text-[26px] sm:leading-[1.5]"
+    >
+      {paragraphs.map((para, pi) => (
+        <p key={pi}>
+          {para.split(" ").map((word, wi) => {
+            const op = Math.min(1, Math.max(0, revealed - idx++));
+            return (
+              <span key={wi} style={{ opacity: 0.16 + 0.84 * op }}>
+                {word}{" "}
+              </span>
+            );
+          })}
+        </p>
+      ))}
+    </div>
+  );
+}
+
+function ContactBadge() {
+  return (
+    <div className="mt-10 flex justify-center">
+      <div className="inline-flex max-w-xl flex-wrap items-center justify-center gap-x-1.5 gap-y-1 rounded-full border border-border bg-card px-5 py-3 text-sm text-muted-foreground shadow-sm">
+        <span className="animate-wave mr-1 text-base" aria-hidden="true">
+          👋
+        </span>
+        <span>Always happy to talk — reach out on</span>
+        <a
+          href={links.linkedin}
+          target="_blank"
+          rel="noreferrer"
+          className="font-medium text-foreground underline decoration-foreground/30 underline-offset-2 transition-colors hover:decoration-foreground"
+        >
+          LinkedIn
+        </a>
+        <span>or at</span>
+        <a
+          href="mailto:uiuxpriti@gmail.com"
+          className="font-medium text-foreground underline decoration-foreground/30 underline-offset-2 transition-colors hover:decoration-foreground"
+        >
+          uiuxpriti@gmail.com
+        </a>
+      </div>
+    </div>
+  );
+}
+
 function About() {
   return (
     <section id="about" className="mt-24 scroll-mt-24">
-      <div>
-        <SectionHeading eyebrow="About" title="about me" />
-        <div className="mt-8 space-y-4 text-[15px] leading-relaxed text-foreground/85 max-w-lg">
-          <p>
-            I'm Priti, a UI/UX designer focused on crafting clear, intuitive, and
-            user-centric digital experiences — from SaaS dashboards to mobile-first apps
-            used by millions.
-          </p>
-          <p>
-            My approach is rooted in collaboration. I work closely with cross-functional
-            teams to align vision, validate ideas, and bring products to life. I care
-            deeply about accessibility, usability, and maintaining design integrity from
-            concept to handoff.
-          </p>
-          <p>
-            Outside of design, I enjoy exploring new cities, playing sports, and thinking
-            about new ideas — always curious, always learning.
-          </p>
-          <p>
-            Always happy to talk — reach out on{" "}
-            <a
-              className="underline underline-offset-2 hover:text-foreground"
-              href={links.cal}
-              target="_blank"
-              rel="noreferrer"
-            >
-              cal.com
-            </a>{" "}
-            or email{" "}
-            <a
-              className="underline underline-offset-2 hover:text-foreground"
-              href={links.email}
-            >
-              {links.emailAddress}
-            </a>
-            .
-          </p>
-          <p className="italic text-2xl pt-2">— Priti</p>
-        </div>
+      <SectionHeading eyebrow="About" title="about me" />
+      <div className="mt-12">
+        <AboutReveal paragraphs={ABOUT_PARAGRAPHS} />
+        <ContactBadge />
       </div>
     </section>
   );
@@ -693,10 +749,21 @@ function Creatives({ onViewAll }: { onViewAll: () => void }) {
               href={links.behance}
               target="_blank"
               rel="noreferrer"
-              className={`group h-56 w-80 shrink-0 overflow-hidden rounded-2xl bg-gradient-to-br ${c.gradient} ring-1 ring-border transition-transform duration-300 hover:-translate-y-1`}
+              className={`group relative h-56 w-80 shrink-0 overflow-hidden rounded-2xl bg-gradient-to-br ${c.gradient} ring-1 ring-border transition-transform duration-300 hover:-translate-y-1`}
             >
-              <div className="flex h-full items-center justify-center text-base font-medium text-foreground/70">
-                {c.name}
+              <span
+                aria-hidden="true"
+                className="pointer-events-none absolute -right-3 -top-8 select-none text-[120px] font-bold leading-none text-foreground/[0.06]"
+              >
+                {c.name[0]}
+              </span>
+              <ArrowUpRight
+                className="absolute right-4 top-4 h-4 w-4 text-foreground/40 opacity-0 transition-opacity duration-200 group-hover:opacity-100"
+                aria-hidden="true"
+              />
+              <div className="absolute inset-x-0 bottom-0 flex flex-col p-5">
+                <p className="text-base font-medium text-foreground">{c.name}</p>
+                <p className="text-[13px] text-muted-foreground">{c.category}</p>
               </div>
             </a>
           ))}
