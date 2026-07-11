@@ -153,9 +153,9 @@ function SideNav() {
                     : "text-muted-foreground/60 hover:text-foreground"
                 }`}
               >
-                {/* Fixed-width marker area; the line right-aligns so the active
-                    (longer) line extends leftward like the reference. */}
-                <span className="flex w-10 justify-end" aria-hidden="true">
+                {/* Fixed-width marker area; lines share a left edge and the
+                    active (longer) line extends to the right, per the reference. */}
+                <span className="flex w-10 justify-start" aria-hidden="true">
                   <span
                     className={`rounded-full transition-all duration-300 ease-out ${
                       isActive
