@@ -69,10 +69,10 @@ function Header() {
                   key={id}
                   href={`#${id}`}
                   aria-current={isActive ? "page" : undefined}
-                  className={`inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-[15px] font-medium leading-none transition-colors ${
+                  className={`inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-[15px] font-medium leading-none outline-none transition duration-200 ease-out active:scale-[0.96] focus-visible:ring-2 focus-visible:ring-foreground/20 focus-visible:ring-offset-2 focus-visible:ring-offset-background ${
                     isActive
-                      ? "bg-background text-foreground shadow-sm"
-                      : "text-foreground/80 hover:text-foreground"
+                      ? "bg-background text-foreground shadow-sm active:bg-background"
+                      : "text-foreground/70 hover:bg-foreground/[0.05] hover:text-foreground active:bg-foreground/[0.09]"
                   }`}
                 >
                   {isActive && <Icon className="h-4 w-4" aria-hidden="true" />}
