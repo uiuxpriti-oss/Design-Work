@@ -172,12 +172,12 @@ function SideNav() {
               >
                 {/* Fixed-width marker area; lines share a left edge and the
                     active (longer) line extends to the right, per the reference. */}
-                <span className="flex w-10 justify-start" aria-hidden="true">
+                <span className="flex w-8 justify-start" aria-hidden="true">
                   <span
                     className={`rounded-full transition-all duration-300 ease-out ${
                       isActive
-                        ? "w-10 h-0.5 bg-foreground"
-                        : "w-5 h-px bg-muted-foreground/50 group-hover:w-7 group-hover:bg-foreground/70"
+                        ? "w-8 h-0.5 bg-foreground"
+                        : "w-4 h-px bg-muted-foreground/50 group-hover:w-6 group-hover:bg-foreground/70"
                     }`}
                   />
                 </span>
@@ -193,7 +193,7 @@ function SideNav() {
 
 function Hero() {
   return (
-    <section id="home" className="scroll-mt-24 py-[38px]">
+    <section id="home" className="scroll-mt-24 py-[40px]">
       <p className="text-sm font-medium text-foreground mb-4">Priti Jani</p>
       <p className="text-[17px] leading-relaxed text-foreground/90 max-w-xl">
         I'm a{" "}
