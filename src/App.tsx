@@ -15,6 +15,10 @@ import {
   Wand2,
   CornerDownRight,
   RotateCcw,
+  Play,
+  Pause,
+  CornerDownLeft,
+  Send,
   type LucideIcon,
 } from "lucide-react";
 import {
@@ -62,25 +66,35 @@ const NAV_SOLID = "border border-border bg-background shadow-sm";
 
 function useActiveSection(ids: string[]) {
   const [active, setActive] = useState(ids[0]);
-  // While a click-driven scroll is in flight, ignore observer updates so the
-  // clicked tab stays active instead of flickering through intervening sections.
+  // While a click-driven scroll is in flight, ignore updates so the clicked
+  // tab stays active instead of flickering through intervening sections.
   const lockUntil = useRef(0);
   useEffect(() => {
-    const sections = ids
-      .map((id) => document.getElementById(id))
-      .filter((el): el is HTMLElement => el !== null);
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (Date.now() < lockUntil.current) return;
-        const visible = entries
-          .filter((e) => e.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
-        if (visible[0]) setActive(visible[0].target.id);
-      },
-      { rootMargin: "-45% 0px -50% 0px", threshold: [0, 0.25, 0.5, 1] },
-    );
-    sections.forEach((s) => observer.observe(s));
-    return () => observer.disconnect();
+    const onScroll = () => {
+      if (Date.now() < lockUntil.current) return;
+      const line = window.innerHeight * 0.35;
+      let current = ids[0];
+      for (const id of ids) {
+        const el = document.getElementById(id);
+        if (el && el.getBoundingClientRect().top <= line) current = id;
+      }
+      // At the very bottom, the last section is always the active one — even
+      // if it's too short to reach the line (e.g. Skills & Tools).
+      if (
+        window.innerHeight + window.scrollY >=
+        document.documentElement.scrollHeight - 4
+      ) {
+        current = ids[ids.length - 1];
+      }
+      setActive(current);
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
   }, [ids]);
   const selectActive = (id: string) => {
     lockUntil.current = Date.now() + 800;
@@ -96,8 +110,9 @@ function Header({
   onOpenAsk: () => void;
   onOpenAbout: () => void;
 }) {
-  // Drop a photo at /public/avatar.jpg (or set a URL) to replace the placeholder dot.
-  const avatar = "";
+  // Drop a photo at /public/avatar.jpg to show it here; falls back to the dot.
+  const avatar = "/avatar.jpg";
+  const [avatarOk, setAvatarOk] = useState(true);
   const [active, setActive] = useActiveSection(NAV.map((n) => n.id));
   const [scrolled, setScrolled] = useState(false);
   useEffect(() => {
@@ -116,10 +131,11 @@ function Header({
             className="shrink-0"
             aria-label="Back to top"
           >
-            {avatar ? (
+            {avatar && avatarOk ? (
               <img
                 src={avatar}
                 alt="Priti Jani"
+                onError={() => setAvatarOk(false)}
                 className="h-8 w-8 rounded-full object-cover align-middle"
               />
             ) : (
@@ -706,12 +722,48 @@ function Creatives({ onViewAll }: { onViewAll: () => void }) {
   );
 }
 
+const SONG_TITLE = "Nothing's Gonna Change My Love for You";
+const SONG_ARTIST = "George Benson";
+const SONG_URL =
+  "https://open.spotify.com/search/Nothing's%20Gonna%20Change%20My%20Love%20for%20You%20George%20Benson";
+
 function OnRepeatCard() {
+  const [playing, setPlaying] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  const toggle = () => {
+    if (!audioRef.current) {
+      // Drop the track at /public/on-repeat.mp3 to play it inline.
+      const a = new Audio("/on-repeat.mp3");
+      a.loop = true;
+      a.addEventListener("ended", () => setPlaying(false));
+      audioRef.current = a;
+    }
+    const a = audioRef.current;
+    if (playing) {
+      a.pause();
+      setPlaying(false);
+      return;
+    }
+    a.play()
+      .then(() => setPlaying(true))
+      .catch(() => {
+        // No local audio file — open the track on Spotify instead.
+        window.open(SONG_URL, "_blank", "noopener,noreferrer");
+      });
+  };
+
   return (
-    <div className="rounded-3xl border border-border bg-card p-8 text-center sm:text-left">
+    <button
+      type="button"
+      onClick={toggle}
+      aria-pressed={playing}
+      aria-label={`${playing ? "Pause" : "Play"} ${SONG_TITLE} by ${SONG_ARTIST}`}
+      className="group w-full rounded-3xl border border-border bg-card p-8 text-center outline-none transition-colors hover:bg-card/70 focus-visible:ring-2 focus-visible:ring-foreground/20 sm:text-left"
+    >
       <div className="relative mx-auto h-28 w-28 sm:mx-0">
         <div
-          className="animate-record h-full w-full rounded-full"
+          className={`h-full w-full rounded-full ${playing ? "animate-record" : ""}`}
           style={{
             background:
               "radial-gradient(circle at center, #e11d48 0 9%, #0a0a0a 9% 13%, #1c1c1c 13% 100%)",
@@ -727,13 +779,28 @@ function OnRepeatCard() {
           }}
         />
         <span className="absolute left-1/2 top-1/2 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-red-600 ring-2 ring-black/50" />
-        <span className="absolute -right-2 -top-3 h-20 w-1.5 origin-top rotate-[26deg] rounded-full bg-neutral-300" />
+        <span
+          className={`absolute -right-2 h-20 w-1.5 origin-top rounded-full bg-neutral-300 transition-transform duration-300 ${
+            playing ? "-top-3 rotate-[26deg]" : "-top-4 rotate-[10deg]"
+          }`}
+        />
+        <span className="absolute -bottom-1 -right-1 flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-md transition-transform group-hover:scale-105">
+          {playing ? (
+            <Pause className="h-4 w-4" aria-hidden="true" />
+          ) : (
+            <Play className="h-4 w-4 translate-x-[1px]" aria-hidden="true" />
+          )}
+        </span>
       </div>
       <h3 className="mt-6 text-xl font-semibold">On repeat</h3>
       <p className="mt-2 text-[15px] leading-relaxed text-muted-foreground">
         {onRepeat}
       </p>
-    </div>
+      <p className="mt-3 text-[13px] font-medium text-foreground/80">
+        {playing ? "♫ Now playing" : "▶ Tap to play"} — {SONG_TITLE}
+        <span className="text-muted-foreground"> · {SONG_ARTIST}</span>
+      </p>
+    </button>
   );
 }
 
@@ -831,21 +898,25 @@ function IfNotDesign() {
 function AboutPage({ onBack }: { onBack: () => void }) {
   return (
     <>
-      <header className="sticky top-0 z-30 border-b border-border bg-background">
-        <nav className="mx-auto flex max-w-4xl items-center px-4 py-4 sm:px-6 sm:py-5">
-          <button
-            type="button"
-            onClick={onBack}
-            className="group inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
-          >
-            <ArrowLeft
-              className="h-4 w-4 transition-transform group-hover:-translate-x-0.5"
-              aria-hidden="true"
-            />
-            Back to home
-          </button>
-        </nav>
-      </header>
+      <div className="mx-auto flex max-w-4xl items-center justify-between px-6 pt-6 sm:pt-8">
+        <button
+          type="button"
+          onClick={onBack}
+          className="inline-flex items-center gap-2 rounded-full bg-foreground/[0.06] px-4 py-2 text-sm font-medium text-foreground outline-none transition-all duration-200 ease-out hover:bg-foreground/[0.1] active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-foreground/20"
+        >
+          <CornerDownLeft className="h-4 w-4" aria-hidden="true" />
+          Return
+        </button>
+        <a
+          href={links.cal}
+          target="_blank"
+          rel="noreferrer"
+          className="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-sm font-medium text-primary-foreground outline-none transition-all duration-200 ease-out hover:opacity-90 active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-foreground/25"
+        >
+          <Send className="h-4 w-4" aria-hidden="true" />
+          Contact
+        </a>
+      </div>
       <main className="mx-auto max-w-4xl px-6 pb-32">
         <AboutMeSection />
         <Experience />
@@ -1239,6 +1310,11 @@ export default function App() {
   }, [page]);
   return (
     <div className="min-h-screen bg-background text-foreground antialiased">
+      <div
+        className={`transition-[padding] duration-300 ease-out ${
+          askOpen ? "lg:pr-[28rem]" : ""
+        }`}
+      >
       {page === "home" ? (
         <>
           <Header
@@ -1260,6 +1336,7 @@ export default function App() {
         <AboutPage onBack={() => setPage("home")} />
       )}
       <Footer />
+      </div>
       <AskPanel open={askOpen} onClose={() => setAskOpen(false)} />
     </div>
   );
