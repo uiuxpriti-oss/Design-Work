@@ -221,16 +221,7 @@ export const skillCategories: SkillCategory[] = [
   },
   {
     label: "Engineering & Development",
-    items: [
-      "React",
-      "TypeScript",
-      "Tailwind CSS",
-      "SCSS",
-      "Drupal 11",
-      "Bootstrap 5",
-      "Git",
-      "Pantheon",
-    ],
+    items: ["React", "TypeScript", "Tailwind CSS", "SCSS", "Git", "Pantheon"],
   },
 ];
 
@@ -250,6 +241,53 @@ export const creatives: Creative[] = [
   { name: "Neutron Star", category: "Concept", gradient: "from-violet-500/30 to-indigo-700/30" },
   { name: "Chat Bubble AI", category: "Iconography", gradient: "from-cyan-400/30 to-blue-500/30" },
   { name: "Butterfly Mark", category: "Logo Design", gradient: "from-fuchsia-400/30 to-rose-500/30" },
+];
+
+export const aboutIntro =
+  "Hi, I'm Priti — a Senior Product Designer at Tata 1mg, recovering chemical engineer, and lifelong tinkerer.";
+
+export const learning: string[] = [
+  "Shipping AI products at Tata 1mg.",
+  "Prototyping with AI more than I expected.",
+  "Training for the Kang Yatse II peak expedition.",
+  "Trying to keep the promises I make to myself.",
+];
+
+export const onRepeat = "Played enough times that Spotify is judging me.";
+
+export interface Principle {
+  tag: string;
+  tagClass: string;
+  text: string;
+}
+
+export const principles: Principle[] = [
+  {
+    tag: "Taste meets craft",
+    tagClass: "border-sky-200 bg-sky-100 text-sky-900",
+    text: "I obsess over what good looks like, then sweat the pixels, motion, and copy until it actually feels that way. One without the other doesn't ship.",
+  },
+  {
+    tag: "I don't design in a cave",
+    tagClass: "border-violet-200 bg-violet-100 text-violet-900",
+    text: "The best work happens shoulder-to-shoulder with PMs, engineers, and research — early and often. Handoff is not a relay race.",
+  },
+  {
+    tag: "I speak human, not just designer",
+    tagClass: "border-emerald-200 bg-emerald-100 text-emerald-900",
+    text: "Stakeholders have feelings, opinions, and deadlines. I navigate the messy middle so the work makes it through alive.",
+  },
+  {
+    tag: "I work with AI, not around it",
+    tagClass: "border-amber-200 bg-amber-100 text-amber-900",
+    text: "I use AI to prototype faster, explore wider, and skip the busywork — but the judgment, taste, and craft stay human. That's where the bar gets raised.",
+  },
+];
+
+export const ifNotDesign: string[] = [
+  "My answer hasn't changed in years.",
+  "I'd travel the world, meet new people, and learn their kitchens. And one day, settle in a quiet mountain town and open a small cafe — a cozy spot for travellers and locals, with a menu stitched together from everywhere I've been. Somewhere people gather, share stories, and stay a while.",
+  "The dream is the same as the work, really: connect with people, explore new ground, and build places where everyone feels at home.",
 ];
 
 // Looping footer marquee phrases.

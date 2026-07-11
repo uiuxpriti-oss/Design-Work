@@ -14,7 +14,7 @@ import {
   Info,
   Wand2,
   CornerDownRight,
-  Minus,
+  RotateCcw,
   type LucideIcon,
 } from "lucide-react";
 import {
@@ -24,6 +24,10 @@ import {
   experience,
   quotes,
   links,
+  learning,
+  onRepeat,
+  principles,
+  ifNotDesign,
 } from "./data/content";
 
 // Number of case studies shown on the home page; the rest live on /all-projects.
@@ -85,7 +89,13 @@ function useActiveSection(ids: string[]) {
   return [active, selectActive] as const;
 }
 
-function Header({ onOpenAsk }: { onOpenAsk: () => void }) {
+function Header({
+  onOpenAsk,
+  onOpenAbout,
+}: {
+  onOpenAsk: () => void;
+  onOpenAbout: () => void;
+}) {
   // Drop a photo at /public/avatar.jpg (or set a URL) to replace the placeholder dot.
   const avatar = "";
   const [active, setActive] = useActiveSection(NAV.map((n) => n.id));
@@ -126,8 +136,15 @@ function Header({ onOpenAsk }: { onOpenAsk: () => void }) {
               return (
                 <a
                   key={id}
-                  href={`#${id}`}
-                  onClick={() => setActive(id)}
+                  href={id === "about" ? "#" : `#${id}`}
+                  onClick={(e) => {
+                    if (id === "about") {
+                      e.preventDefault();
+                      onOpenAbout();
+                    } else {
+                      setActive(id);
+                    }
+                  }}
                   aria-current={isActive ? "page" : undefined}
                   className={`inline-flex items-center gap-1 whitespace-nowrap rounded-full px-3 py-1.5 text-[13px] font-medium leading-none outline-none transition duration-200 ease-out active:scale-[0.96] focus-visible:ring-2 focus-visible:ring-foreground/20 focus-visible:ring-offset-2 focus-visible:ring-offset-background sm:gap-1.5 sm:px-4 sm:py-2 sm:text-[15px] ${
                     isActive
@@ -162,7 +179,14 @@ function SideNav() {
   const [active, selectActive] = useActiveSection(HOME_PROJECTS.map((p) => p.id));
   const [show, setShow] = useState(false);
   useEffect(() => {
-    const onScroll = () => setShow(window.scrollY > window.innerHeight * 0.5);
+    const onScroll = () => {
+      const work = document.getElementById("work");
+      if (!work) return setShow(false);
+      const r = work.getBoundingClientRect();
+      const vh = window.innerHeight;
+      // Only while the Work (case studies) section spans the viewport.
+      setShow(r.top < vh * 0.4 && r.bottom > vh * 0.5);
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -484,54 +508,6 @@ const ABOUT_PARAGRAPHS = [
   "Outside of design, I enjoy gaming, building side projects, experiencing spirituality, and exploring new places through travel.",
 ];
 
-function AboutReveal({ paragraphs }: { paragraphs: string[] }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [progress, setProgress] = useState(0);
-  useEffect(() => {
-    const onScroll = () => {
-      const el = ref.current;
-      if (!el) return;
-      const rect = el.getBoundingClientRect();
-      const vh = window.innerHeight;
-      const start = vh * 0.82; // start lighting up when top passes 82% of viewport
-      const end = vh * 0.34; // fully lit once it clears ~34%
-      const span = start - end + rect.height * 0.5;
-      const p = (start - rect.top) / span;
-      setProgress(Math.min(1, Math.max(0, p)));
-    };
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-    };
-  }, []);
-
-  const total = paragraphs.reduce((n, p) => n + p.split(" ").length, 0);
-  const revealed = progress * total;
-  let idx = 0;
-  return (
-    <div
-      ref={ref}
-      className="mx-auto max-w-2xl space-y-6 text-center text-xl leading-relaxed text-foreground sm:text-[26px] sm:leading-[1.5]"
-    >
-      {paragraphs.map((para, pi) => (
-        <p key={pi}>
-          {para.split(" ").map((word, wi) => {
-            const op = Math.min(1, Math.max(0, revealed - idx++));
-            return (
-              <span key={wi} style={{ opacity: 0.16 + 0.84 * op }}>
-                {word}{" "}
-              </span>
-            );
-          })}
-        </p>
-      ))}
-    </div>
-  );
-}
-
 function ContactBadge() {
   return (
     <div className="mt-10 flex justify-center">
@@ -557,18 +533,6 @@ function ContactBadge() {
         </a>
       </div>
     </div>
-  );
-}
-
-function About() {
-  return (
-    <section id="about" className="mt-24 scroll-mt-24">
-      <SectionHeading eyebrow="About" title="about me" />
-      <div className="mt-12">
-        <AboutReveal paragraphs={ABOUT_PARAGRAPHS} />
-        <ContactBadge />
-      </div>
-    </section>
   );
 }
 
@@ -639,50 +603,12 @@ function ExperienceList() {
   );
 }
 
-function ExperienceTimeline() {
-  return (
-    <ol className="relative ml-1 border-l border-border pl-6">
-      {experience.map((job, i) => (
-        <li key={i} className="relative pb-8 last:pb-0">
-          <span className="absolute -left-[29px] top-1.5 h-2.5 w-2.5 rounded-full bg-foreground ring-4 ring-background" />
-          <div className="flex flex-wrap items-baseline justify-between gap-x-4">
-            <p className="font-medium text-foreground">
-              {job.company}
-              <span className="font-normal text-muted-foreground"> · {job.role}</span>
-            </p>
-            <p className="font-mono text-[13px] text-muted-foreground">{job.period}</p>
-          </div>
-        </li>
-      ))}
-    </ol>
-  );
-}
-
 function Experience() {
-  const [view, setView] = useState<"list" | "timeline">("list");
   return (
     <section id="experience" className="mt-24 scroll-mt-24">
-      <div className="flex items-start justify-between gap-4">
-        <SectionHeading eyebrow="Experience" title="where I have worked" />
-        <div className="flex shrink-0 items-center gap-1 rounded-full bg-foreground/[0.06] p-1 text-sm">
-          {(["list", "timeline"] as const).map((v) => (
-            <button
-              key={v}
-              type="button"
-              onClick={() => setView(v)}
-              className={`rounded-full px-3.5 py-1.5 transition-colors ${
-                view === v
-                  ? "bg-primary text-primary-foreground"
-                  : "text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              {v}
-            </button>
-          ))}
-        </div>
-      </div>
+      <SectionHeading eyebrow="Experience" title="where I have worked" />
       <div className="mt-10">
-        {view === "list" ? <ExperienceList /> : <ExperienceTimeline />}
+        <ExperienceList />
       </div>
     </section>
   );
@@ -701,11 +627,13 @@ function SkillsAndTools() {
             <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
               {cat.label}
             </p>
-            <p className="text-[15px] leading-relaxed text-foreground/85">
+            <p className="flex flex-wrap items-center gap-x-1 gap-y-1.5 text-[15px] leading-relaxed text-foreground/85">
               {cat.items.map((item, i) => (
-                <span key={item}>
-                  {i > 0 && <span className="mx-2 text-foreground/25">/</span>}
-                  {item}
+                <span key={item} className="inline-flex items-center">
+                  {i > 0 && <span className="mr-1 text-foreground/25">/</span>}
+                  <span className="cursor-default rounded-md px-1.5 py-0.5 transition-colors duration-200 hover:bg-foreground/[0.07] hover:text-foreground">
+                    {item}
+                  </span>
                 </span>
               ))}
             </p>
@@ -778,6 +706,159 @@ function Creatives({ onViewAll }: { onViewAll: () => void }) {
   );
 }
 
+function OnRepeatCard() {
+  return (
+    <div className="rounded-3xl border border-border bg-card p-8 text-center sm:text-left">
+      <div className="relative mx-auto h-28 w-28 sm:mx-0">
+        <div
+          className="animate-record h-full w-full rounded-full"
+          style={{
+            background:
+              "radial-gradient(circle at center, #e11d48 0 9%, #0a0a0a 9% 13%, #1c1c1c 13% 100%)",
+          }}
+        >
+          <span className="absolute left-1/2 top-[16%] h-1.5 w-1.5 -translate-x-1/2 rounded-full bg-white/25" />
+        </div>
+        <span
+          className="pointer-events-none absolute inset-2 rounded-full"
+          style={{
+            background:
+              "repeating-radial-gradient(circle at center, rgba(255,255,255,0.05) 0 1px, transparent 1px 4px)",
+          }}
+        />
+        <span className="absolute left-1/2 top-1/2 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-red-600 ring-2 ring-black/50" />
+        <span className="absolute -right-2 -top-3 h-20 w-1.5 origin-top rotate-[26deg] rounded-full bg-neutral-300" />
+      </div>
+      <h3 className="mt-6 text-xl font-semibold">On repeat</h3>
+      <p className="mt-2 text-[15px] leading-relaxed text-muted-foreground">
+        {onRepeat}
+      </p>
+    </div>
+  );
+}
+
+function AboutMeSection() {
+  return (
+    <section className="grid items-start gap-10 pt-16 md:grid-cols-[1fr_300px]">
+      <div>
+        <SectionHeading eyebrow="About" title="about me" />
+        <p className="mt-8 text-[17px] leading-relaxed text-foreground/85">
+          Hi, I'm Priti — a Senior Product Designer at Tata 1mg, recovering
+          chemical engineer, and lifelong tinkerer.
+        </p>
+        <div className="mt-8">
+          <p className="text-[15px] font-semibold text-foreground">
+            these days I'm learning:
+          </p>
+          <ul className="mt-3 space-y-2 text-[15px] text-foreground/85">
+            {learning.map((l) => (
+              <li key={l} className="flex gap-2">
+                <span className="text-foreground/40">•</span>
+                {l}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+      <OnRepeatCard />
+    </section>
+  );
+}
+
+function WorkingWithMe() {
+  return (
+    <section className="mt-24">
+      <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">
+        How it is to be working with me?
+      </h2>
+      <div className="mt-10 grid items-start gap-10 md:grid-cols-[1fr_300px]">
+        <div className="space-y-7">
+          {principles.map((p) => (
+            <p key={p.tag} className="text-[16px] leading-relaxed text-foreground/85">
+              <span
+                className={`mr-2 inline-block rounded-md border px-2 py-0.5 text-[15px] font-medium ${p.tagClass}`}
+              >
+                {p.tag}
+              </span>
+              {p.text}
+            </p>
+          ))}
+        </div>
+        <div className="aspect-[3/4] overflow-hidden rounded-2xl bg-gradient-to-br from-slate-200 to-slate-300 ring-1 ring-border" />
+      </div>
+    </section>
+  );
+}
+
+function IfNotDesign() {
+  const stack = [
+    "from-slate-300 to-slate-500",
+    "from-emerald-200 to-emerald-400",
+    "from-amber-200 to-orange-300",
+    "from-sky-200 to-indigo-300",
+    "from-rose-200 to-pink-300",
+  ];
+  return (
+    <section className="mt-24">
+      <div className="grid items-center gap-8 rounded-3xl border border-border bg-card p-8 sm:p-10 md:grid-cols-2">
+        <div>
+          <h2 className="text-2xl font-semibold italic">If not design, then what?</h2>
+          <div className="mt-6 space-y-4 text-[15px] leading-relaxed text-foreground/85">
+            {ifNotDesign.map((p, i) => (
+              <p key={i}>{p}</p>
+            ))}
+          </div>
+        </div>
+        <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-gradient-to-b from-sky-200 via-sky-100 to-slate-100 ring-1 ring-border">
+          <span className="absolute left-4 top-4 text-sm text-slate-500">
+            Somewhere in the mountains ⛰️
+          </span>
+          <div className="absolute bottom-3 right-3 flex">
+            {stack.map((g, i) => (
+              <div
+                key={i}
+                className={`h-12 w-12 rounded-lg bg-gradient-to-br ${g} ring-2 ring-background`}
+                style={{ transform: `rotate(${(i - 2) * 6}deg)`, marginLeft: i ? "-10px" : 0 }}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function AboutPage({ onBack }: { onBack: () => void }) {
+  return (
+    <>
+      <header className="sticky top-0 z-30 border-b border-border bg-background">
+        <nav className="mx-auto flex max-w-4xl items-center px-4 py-4 sm:px-6 sm:py-5">
+          <button
+            type="button"
+            onClick={onBack}
+            className="group inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
+          >
+            <ArrowLeft
+              className="h-4 w-4 transition-transform group-hover:-translate-x-0.5"
+              aria-hidden="true"
+            />
+            Back to home
+          </button>
+        </nav>
+      </header>
+      <main className="mx-auto max-w-4xl px-6 pb-32">
+        <AboutMeSection />
+        <Experience />
+        <WorkingWithMe />
+        <IfNotDesign />
+        <div className="mt-16">
+          <ContactBadge />
+        </div>
+      </main>
+    </>
+  );
+}
+
 function FloatingContact() {
   const [show, setShow] = useState(false);
   useEffect(() => {
@@ -821,12 +902,12 @@ function Footer() {
   const line = [...quotes, ...quotes];
   return (
     <footer className="mt-24">
-      <div className="marquee-track overflow-hidden border-y border-border py-6">
-        <div className="animate-marquee marquee-anim flex w-max items-center gap-8">
+      <div className="marquee-track overflow-hidden border-y border-border py-4">
+        <div className="animate-marquee marquee-anim flex w-max items-center gap-6">
           {line.map((quote, i) => (
             <span
               key={i}
-              className="flex items-center gap-8 whitespace-nowrap text-2xl italic text-foreground/60 sm:text-[28px]"
+              className="flex items-center gap-6 whitespace-nowrap text-[15px] italic text-foreground/55"
             >
               {quote}
               <span className="not-italic text-foreground/25">✳</span>
@@ -834,9 +915,11 @@ function Footer() {
           ))}
         </div>
       </div>
-      <div className="mx-auto flex max-w-3xl flex-col items-center gap-4 px-6 pt-10 pb-28 text-center text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between sm:pb-10 sm:text-left">
-        <p className="text-xs uppercase tracking-wider">© 2026 Priti Jani.</p>
-        <p className="italic">Designed with conviction, built with care.</p>
+      <div className="mx-auto flex max-w-3xl flex-col items-center gap-4 px-6 pt-10 pb-28 text-center text-sm text-muted-foreground sm:flex-row sm:items-start sm:justify-between sm:pb-10 sm:text-left">
+        <div className="space-y-1">
+          <p className="whitespace-nowrap text-xs uppercase tracking-wider">© 2026 Priti Jani.</p>
+          <p className="text-[13px]">Created with lots of Procrastination 🥲 &amp; Inspiration ☕️</p>
+        </div>
         <div className="flex items-center gap-4 text-xs font-medium uppercase tracking-wider sm:gap-5">
           <a
             href={links.linkedin}
@@ -876,6 +959,19 @@ const ASK_SUGGESTIONS = [
   "What's your design + code background?",
 ];
 
+const ASK_FOLLOWUPS = [
+  "What got you into product design?",
+  "Which project are you proudest of?",
+  "What's it like working with you?",
+  "How do you use AI in your work?",
+  "What are you learning these days?",
+];
+
+function pickFollowups(asked: string): string[] {
+  const a = asked.toLowerCase();
+  return ASK_FOLLOWUPS.filter((f) => f.toLowerCase() !== a).slice(0, 3);
+}
+
 // Grounded in the site's own content — no external AI backend.
 function askReply(q: string): string {
   const t = q.toLowerCase();
@@ -896,7 +992,7 @@ function AskPanel({ open, onClose }: { open: boolean; onClose: () => void }) {
   const [messages, setMessages] = useState<{ role: "user" | "bot"; text: string }[]>([]);
   const [input, setInput] = useState("");
   const [popover, setPopover] = useState<null | "ask" | "browse">(null);
-  const [minimized, setMinimized] = useState(false);
+  const [followups, setFollowups] = useState<string[]>([]);
   const bodyRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -907,66 +1003,60 @@ function AskPanel({ open, onClose }: { open: boolean; onClose: () => void }) {
 
   useEffect(() => {
     bodyRef.current?.scrollTo({ top: bodyRef.current.scrollHeight, behavior: "smooth" });
-  }, [messages]);
+  }, [messages, followups]);
 
   const submit = (text: string) => {
     const q = text.trim();
     if (!q) return;
     setInput("");
     setPopover(null);
+    setFollowups([]);
     setMessages((m) => [...m, { role: "user", text: q }]);
-    window.setTimeout(
-      () => setMessages((m) => [...m, { role: "bot", text: askReply(q) }]),
-      450,
-    );
+    window.setTimeout(() => {
+      setMessages((m) => [...m, { role: "bot", text: askReply(q) }]);
+      setFollowups(pickFollowups(q));
+    }, 450);
+  };
+
+  const reset = () => {
+    setMessages([]);
+    setFollowups([]);
+    setInput("");
+    setPopover(null);
   };
 
   return (
-    <div
+    <aside
       role="dialog"
       aria-label="Ask Priti"
-      className={`fixed bottom-4 right-4 z-50 flex w-[calc(100%-2rem)] flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-2xl transition-all duration-300 ease-out sm:bottom-6 sm:right-6 sm:w-[380px] ${
-        open
-          ? "pointer-events-auto translate-y-0 opacity-100"
-          : "pointer-events-none translate-y-4 opacity-0"
-      } ${minimized ? "h-[60px]" : "h-[68vh] max-h-[600px]"}`}
+      className={`fixed right-0 top-0 z-50 flex h-full w-full max-w-md flex-col border-l border-border bg-card shadow-2xl transition-transform duration-300 ease-out ${
+        open ? "translate-x-0" : "translate-x-full"
+      }`}
     >
-      <div
-        className="flex shrink-0 cursor-pointer items-center justify-between border-b border-border px-5 py-4"
-        onClick={() => minimized && setMinimized(false)}
-      >
+      <div className="flex shrink-0 items-center justify-between border-b border-border px-5 py-4">
         <div className="flex items-center gap-2">
           <Sparkles className="h-4 w-4 text-foreground" aria-hidden="true" />
-          <span className="font-medium">Ask Priti</span>
-          <span
-            title="This is a demo assistant grounded in my case studies — check the project pages for the full story."
-            className="flex h-4 w-4 cursor-help items-center justify-center rounded-full bg-foreground/10 text-muted-foreground"
-          >
+          <span className="text-[15px] font-medium">Ask Priti</span>
+          <span className="group relative flex h-4 w-4 cursor-help items-center justify-center rounded-full bg-foreground/10 text-muted-foreground">
             <Info className="h-3 w-3" aria-hidden="true" />
+            <span className="pointer-events-none absolute left-0 top-full z-10 mt-2 w-64 -translate-x-1/4 rounded-xl bg-foreground px-3.5 py-2.5 text-[13px] leading-relaxed text-background opacity-0 shadow-lg transition-opacity duration-150 group-hover:opacity-100">
+              This is an AI trained on my real case studies. It can occasionally
+              get things wrong — check the project pages for the full story.
+            </span>
           </span>
         </div>
         <div className="flex items-center gap-0.5">
           <button
             type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              setMinimized((v) => !v);
-            }}
-            aria-label={minimized ? "Expand" : "Minimize"}
-            className="rounded-full p-1 text-muted-foreground transition-colors hover:bg-foreground/[0.06] hover:text-foreground"
+            onClick={reset}
+            aria-label="Reset conversation"
+            className="rounded-full p-1.5 text-muted-foreground transition-colors hover:bg-foreground/[0.06] hover:text-foreground"
           >
-            {minimized ? (
-              <ChevronDown className="h-5 w-5 rotate-180" aria-hidden="true" />
-            ) : (
-              <Minus className="h-5 w-5" aria-hidden="true" />
-            )}
+            <RotateCcw className="h-4 w-4" aria-hidden="true" />
           </button>
           <button
             type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              onClose();
-            }}
+            onClick={onClose}
             aria-label="Close"
             className="rounded-full p-1 text-muted-foreground transition-colors hover:bg-foreground/[0.06] hover:text-foreground"
           >
@@ -974,20 +1064,18 @@ function AskPanel({ open, onClose }: { open: boolean; onClose: () => void }) {
           </button>
         </div>
       </div>
-      {!minimized && (
-        <>
 
         <div ref={bodyRef} className="flex-1 overflow-y-auto px-5 py-6">
           {messages.length === 0 ? (
             <>
-              <h3 className="text-2xl font-semibold tracking-tight">Ask me anything.</h3>
+              <h3 className="text-xl font-semibold tracking-tight">Ask me anything.</h3>
               <ul className="mt-6 space-y-4">
                 {ASK_SUGGESTIONS.map((s) => (
                   <li key={s}>
                     <button
                       type="button"
                       onClick={() => submit(s)}
-                      className="group flex w-full items-start gap-3 text-left text-[15px] text-foreground/80 transition-colors hover:text-foreground"
+                      className="group flex w-full items-start gap-3 text-left text-[14px] text-foreground/80 transition-colors hover:text-foreground"
                     >
                       <CornerDownRight className="mt-0.5 h-4 w-4 shrink-0 text-foreground/40 group-hover:text-foreground" aria-hidden="true" />
                       {s}
@@ -1001,7 +1089,7 @@ function AskPanel({ open, onClose }: { open: boolean; onClose: () => void }) {
               {messages.map((m, i) => (
                 <div
                   key={i}
-                  className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-[15px] leading-relaxed ${
+                  className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-[14px] leading-relaxed ${
                     m.role === "user"
                       ? "ml-auto bg-primary text-primary-foreground"
                       : "bg-background text-foreground/90"
@@ -1010,6 +1098,25 @@ function AskPanel({ open, onClose }: { open: boolean; onClose: () => void }) {
                   {m.text}
                 </div>
               ))}
+              {followups.length > 0 && (
+                <div className="pt-2">
+                  <p className="text-[13px] text-muted-foreground">Keep exploring</p>
+                  <ul className="mt-3 space-y-3">
+                    {followups.map((f) => (
+                      <li key={f}>
+                        <button
+                          type="button"
+                          onClick={() => submit(f)}
+                          className="group flex w-full items-start gap-3 text-left text-[14px] text-foreground/80 transition-colors hover:text-foreground"
+                        >
+                          <CornerDownRight className="mt-0.5 h-4 w-4 shrink-0 text-foreground/40 group-hover:text-foreground" aria-hidden="true" />
+                          {f}
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </div>
           )}
         </div>
@@ -1103,16 +1210,14 @@ function AskPanel({ open, onClose }: { open: boolean; onClose: () => void }) {
             </div>
           </form>
         </div>
-        </>
-      )}
-    </div>
+    </aside>
   );
 }
 
 export default function App() {
   useTapSound();
   const [askOpen, setAskOpen] = useState(false);
-  const [page, setPage] = useState<"home" | "projects">("home");
+  const [page, setPage] = useState<"home" | "projects" | "about">("home");
   const [projectsTab, setProjectsTab] = useState<"case" | "creative">("case");
   const openProjects = (tab: "case" | "creative") => {
     setProjectsTab(tab);
@@ -1136,20 +1241,23 @@ export default function App() {
     <div className="min-h-screen bg-background text-foreground antialiased">
       {page === "home" ? (
         <>
-          <Header onOpenAsk={() => setAskOpen(true)} />
+          <Header
+            onOpenAsk={() => setAskOpen(true)}
+            onOpenAbout={() => setPage("about")}
+          />
           <SideNav />
           <main className="mx-auto max-w-3xl px-6">
             <Hero />
             <Work onViewAll={() => openProjects("case")} />
-            <About />
-            <Experience />
             <SkillsAndTools />
           </main>
           <Creatives onViewAll={() => openProjects("creative")} />
           <FloatingContact />
         </>
-      ) : (
+      ) : page === "projects" ? (
         <ProjectsPage onBack={() => setPage("home")} initialTab={projectsTab} />
+      ) : (
+        <AboutPage onBack={() => setPage("home")} />
       )}
       <Footer />
       <AskPanel open={askOpen} onClose={() => setAskOpen(false)} />

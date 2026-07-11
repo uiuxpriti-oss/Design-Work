@@ -82,6 +82,14 @@
     transform-origin: 70% 70%;
     animation: wave 2.6s ease-in-out infinite;
   }
+  @keyframes record-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  .animate-record {
+    animation: record-spin 4s linear infinite;
+  }
   @media (prefers-reduced-motion: reduce) {
     .animate-marquee,
     .animate-marquee-rev,
