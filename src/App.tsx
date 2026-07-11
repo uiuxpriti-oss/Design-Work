@@ -1,10 +1,11 @@
-import { Fragment, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Heart,
   ArrowUpRight,
   Home,
   CircleUserRound,
   Sparkles,
+  Mail,
   type LucideIcon,
 } from "lucide-react";
 import { projects, skills, tools, links } from "./data/content";
@@ -36,7 +37,6 @@ function useActiveSection(ids: string[]) {
   // While a click-driven scroll is in flight, ignore observer updates so the
   // clicked tab stays active instead of flickering through intervening sections.
   const lockUntil = useRef(0);
-  const firstRun = useRef(true);
   useEffect(() => {
     const sections = ids
       .map((id) => document.getElementById(id))
@@ -47,15 +47,7 @@ function useActiveSection(ids: string[]) {
         const visible = entries
           .filter((e) => e.isIntersecting)
           .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
-        if (!visible[0]) return;
-        const id = visible[0].target.id;
-        setActive((prev) => {
-          // Tap as the scroll-spy highlight moves to a new section (but not on
-          // first load, and not for click-driven changes which tap already).
-          if (prev !== id && !firstRun.current) playTap();
-          firstRun.current = false;
-          return id;
-        });
+        if (visible[0]) setActive(visible[0].target.id);
       },
       { rootMargin: "-45% 0px -50% 0px", threshold: [0, 0.25, 0.5, 1] },
     );
@@ -74,7 +66,7 @@ function Header() {
   const avatar = "";
   const [active, setActive] = useActiveSection(NAV.map((n) => n.id));
   return (
-    <header className="sticky top-0 z-30 backdrop-blur-md bg-background/70">
+    <header className="sticky top-0 z-30">
       <nav className="mx-auto flex max-w-3xl items-center justify-between px-6 py-5">
         <div className="flex items-center gap-4">
           <a href="/" className="shrink-0" aria-label="Home">
@@ -114,7 +106,7 @@ function Header() {
           href={links.cal}
           target="_blank"
           rel="noreferrer"
-          className="inline-flex items-center gap-1.5 text-sm text-foreground hover:opacity-70 transition-opacity"
+          className="inline-flex items-center gap-1.5 rounded-full border border-white/50 bg-white/40 px-3.5 py-2 text-sm text-foreground shadow-sm backdrop-blur-md transition-colors hover:bg-white/60"
         >
           <Sparkle /> Ask AI
         </a>
@@ -141,50 +133,39 @@ function SideNav() {
         show ? "" : "pointer-events-none"
       }`}
     >
-      <ul className="space-y-1.5 text-[14px]">
+      <ul className="space-y-3 text-[14px]">
         {projects.map((p, i) => {
           const isActive = active === p.id;
           return (
-            <Fragment key={p.id}>
-              <li
-                className={reveal}
-                style={{ transitionDelay: show ? `${i * 70}ms` : "0ms" }}
+            <li
+              key={p.id}
+              className={reveal}
+              style={{ transitionDelay: show ? `${i * 60}ms` : "0ms" }}
+            >
+              <a
+                href={`#${p.id}`}
+                onClick={() => selectActive(p.id)}
+                aria-current={isActive ? "true" : undefined}
+                className={`group flex items-center gap-3.5 rounded-md outline-none transition-colors duration-200 ease-out focus-visible:ring-2 focus-visible:ring-foreground/20 ${
+                  isActive
+                    ? "text-foreground font-medium"
+                    : "text-muted-foreground/60 hover:text-foreground"
+                }`}
               >
-                <a
-                  href={`#${p.id}`}
-                  onClick={() => selectActive(p.id)}
-                  aria-current={isActive ? "true" : undefined}
-                  className={`group flex items-center gap-3.5 rounded-md outline-none transition-colors duration-200 ease-out focus-visible:ring-2 focus-visible:ring-foreground/20 ${
-                    isActive
-                      ? "text-foreground font-medium"
-                      : "text-muted-foreground/60 hover:text-foreground"
-                  }`}
-                >
-                  {/* Fixed-width marker area; lines share a left edge and the
-                      active (longer) line extends to the right, per the reference. */}
-                  <span className="flex w-10 justify-start" aria-hidden="true">
-                    <span
-                      className={`rounded-full transition-all duration-300 ease-out ${
-                        isActive
-                          ? "w-10 h-0.5 bg-foreground"
-                          : "w-5 h-px bg-muted-foreground/50 group-hover:w-7 group-hover:bg-foreground/70"
-                      }`}
-                    />
-                  </span>
-                  {p.title}
-                </a>
-              </li>
-              {i < projects.length - 1 && (
-                <li
-                  aria-hidden="true"
-                  className={`flex flex-col gap-1 pl-0.5 ${reveal}`}
-                  style={{ transitionDelay: show ? `${i * 70 + 35}ms` : "0ms" }}
-                >
-                  <span className="h-px w-3 rounded-full bg-muted-foreground/25" />
-                  <span className="h-px w-3 rounded-full bg-muted-foreground/25" />
-                </li>
-              )}
-            </Fragment>
+                {/* Fixed-width marker area; lines share a left edge and the
+                    active (longer) line extends to the right, per the reference. */}
+                <span className="flex w-10 justify-start" aria-hidden="true">
+                  <span
+                    className={`rounded-full transition-all duration-300 ease-out ${
+                      isActive
+                        ? "w-10 h-0.5 bg-foreground"
+                        : "w-5 h-px bg-muted-foreground/50 group-hover:w-7 group-hover:bg-foreground/70"
+                    }`}
+                  />
+                </span>
+                {p.title}
+              </a>
+            </li>
           );
         })}
       </ul>
@@ -194,7 +175,7 @@ function SideNav() {
 
 function Hero() {
   return (
-    <section id="home" className="scroll-mt-24 pt-16 pb-10">
+    <section id="home" className="scroll-mt-24 py-[38px]">
       <p className="text-sm font-medium text-foreground mb-4">Priti Jani</p>
       <p className="text-[17px] leading-relaxed text-foreground/90 max-w-xl">
         I'm a{" "}
@@ -213,7 +194,7 @@ function Hero() {
           rel="noreferrer"
           className="inline-flex items-center gap-2 rounded-full bg-primary text-primary-foreground px-4 py-2 text-sm font-medium hover:opacity-90 transition-opacity"
         >
-          <Sparkle /> Contact
+          <Mail className="h-4 w-4" aria-hidden="true" /> Contact
         </a>
         <a
           href="#work"
@@ -383,7 +364,7 @@ function FloatingContact() {
         rel="noreferrer"
         className="inline-flex items-center gap-2 rounded-full bg-primary text-primary-foreground px-5 py-2.5 text-sm font-medium shadow-lg shadow-black/15 outline-none transition duration-200 ease-out hover:opacity-90 active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-foreground/25 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
       >
-        <Sparkle /> Contact
+        <Mail className="h-4 w-4" aria-hidden="true" /> Contact
       </a>
     </div>
   );
