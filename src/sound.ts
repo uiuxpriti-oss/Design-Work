@@ -1,7 +1,12 @@
-// Tiny synthesized "tap" click sound via the Web Audio API — no asset files,
-// so it stays self-contained. Created lazily on the first user gesture.
+// Tap click sound. Two modes:
+//   1. If you drop the real sound file at /public/tap.mp3 (or .wav), it is
+//      loaded once and played — use this to match ktz.dk exactly.
+//   2. Otherwise a soft synthesized "pop" is generated via the Web Audio API,
+//      so the app stays self-contained with no asset files required.
 
 let ctx: AudioContext | null = null;
+let sample: AudioBuffer | null = null;
+let sampleTried = false;
 
 function getCtx(): AudioContext | null {
   if (typeof window === "undefined") return null;
@@ -17,32 +22,60 @@ function getCtx(): AudioContext | null {
   return ctx;
 }
 
+// Attempt to load an optional real sound file, once.
+function loadSample(ac: AudioContext) {
+  if (sampleTried) return;
+  sampleTried = true;
+  fetch("/tap.mp3")
+    .then((res) => (res.ok ? res.arrayBuffer() : Promise.reject()))
+    .then((buf) => ac.decodeAudioData(buf))
+    .then((decoded) => {
+      sample = decoded;
+    })
+    .catch(() => {
+      /* no sample file — synthesized fallback is used instead */
+    });
+}
+
+function playSample(ac: AudioContext) {
+  if (!sample) return false;
+  const src = ac.createBufferSource();
+  const gain = ac.createGain();
+  gain.gain.value = 0.9;
+  src.buffer = sample;
+  src.connect(gain).connect(ac.destination);
+  src.start();
+  return true;
+}
+
+// Soft synthesized "pop" — a short sine that drops in pitch, low-pass filtered
+// for a rounded, pleasant click.
+function playSynth(ac: AudioContext) {
+  const now = ac.currentTime;
+  const osc = ac.createOscillator();
+  const gain = ac.createGain();
+  const filter = ac.createBiquadFilter();
+
+  osc.type = "sine";
+  osc.frequency.setValueAtTime(520, now);
+  osc.frequency.exponentialRampToValueAtTime(230, now + 0.055);
+
+  filter.type = "lowpass";
+  filter.frequency.setValueAtTime(1500, now);
+  filter.Q.value = 0.7;
+
+  gain.gain.setValueAtTime(0.0001, now);
+  gain.gain.exponentialRampToValueAtTime(0.09, now + 0.005);
+  gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.11);
+
+  osc.connect(filter).connect(gain).connect(ac.destination);
+  osc.start(now);
+  osc.stop(now + 0.12);
+}
+
 export function playTap(): void {
   const ac = getCtx();
   if (!ac) return;
-  const now = ac.currentTime;
-
-  // Low "body" of the tap — a short sine that drops in pitch and fades fast.
-  const body = ac.createOscillator();
-  const bodyGain = ac.createGain();
-  body.type = "sine";
-  body.frequency.setValueAtTime(180, now);
-  body.frequency.exponentialRampToValueAtTime(110, now + 0.05);
-  bodyGain.gain.setValueAtTime(0.0001, now);
-  bodyGain.gain.exponentialRampToValueAtTime(0.1, now + 0.004);
-  bodyGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.06);
-  body.connect(bodyGain).connect(ac.destination);
-  body.start(now);
-  body.stop(now + 0.07);
-
-  // Bright attack transient — gives it the crisp "tick".
-  const tick = ac.createOscillator();
-  const tickGain = ac.createGain();
-  tick.type = "triangle";
-  tick.frequency.setValueAtTime(1100, now);
-  tickGain.gain.setValueAtTime(0.045, now);
-  tickGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.02);
-  tick.connect(tickGain).connect(ac.destination);
-  tick.start(now);
-  tick.stop(now + 0.025);
+  loadSample(ac);
+  if (!playSample(ac)) playSynth(ac);
 }

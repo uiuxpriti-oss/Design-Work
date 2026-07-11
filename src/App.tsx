@@ -2,13 +2,12 @@ import { useEffect, useRef, useState } from "react";
 import {
   Heart,
   ArrowUpRight,
-  Inbox,
+  Home,
   CircleUserRound,
   Sparkles,
-  Wrench,
   type LucideIcon,
 } from "lucide-react";
-import { projects, skills, tools, writing, links } from "./data/content";
+import { projects, skills, tools, links } from "./data/content";
 import { playTap } from "./sound";
 
 function useTapSound() {
@@ -27,10 +26,9 @@ function Sparkle() {
 }
 
 const NAV: { id: string; label: string; icon: LucideIcon }[] = [
-  { id: "work", label: "Work", icon: Inbox },
+  { id: "home", label: "Home", icon: Home },
   { id: "about", label: "About", icon: CircleUserRound },
-  { id: "skills", label: "Skills", icon: Sparkles },
-  { id: "tools", label: "Tools", icon: Wrench },
+  { id: "skills-tools", label: "Skills & Tools", icon: Sparkles },
 ];
 
 function useActiveSection(ids: string[]) {
@@ -140,7 +138,7 @@ function SideNav() {
         show ? "opacity-100 translate-x-0" : "pointer-events-none opacity-0 -translate-x-2"
       }`}
     >
-      <ul className="space-y-1 text-[13px]">
+      <ul className="space-y-3 text-[14px]">
         {projects.map((p) => {
           const isActive = active === p.id;
           return (
@@ -149,21 +147,22 @@ function SideNav() {
                 href={`#${p.id}`}
                 onClick={() => selectActive(p.id)}
                 aria-current={isActive ? "true" : undefined}
-                className={`group flex items-center gap-2 rounded-md py-1 outline-none transition-all duration-200 ease-out hover:translate-x-0.5 focus-visible:ring-2 focus-visible:ring-foreground/20 ${
+                className={`group flex items-center gap-3.5 rounded-md outline-none transition-colors duration-200 ease-out focus-visible:ring-2 focus-visible:ring-foreground/20 ${
                   isActive
                     ? "text-foreground font-medium"
-                    : "text-muted-foreground/50 hover:text-foreground"
+                    : "text-muted-foreground/60 hover:text-foreground"
                 }`}
               >
-                <span
-                  aria-hidden="true"
-                  className={`transition-colors duration-200 ${
-                    isActive
-                      ? "text-foreground"
-                      : "text-muted-foreground/40 group-hover:text-foreground"
-                  }`}
-                >
-                  —
+                {/* Fixed-width marker area; the line right-aligns so the active
+                    (longer) line extends leftward like the reference. */}
+                <span className="flex w-10 justify-end" aria-hidden="true">
+                  <span
+                    className={`rounded-full transition-all duration-300 ease-out ${
+                      isActive
+                        ? "w-10 h-0.5 bg-foreground"
+                        : "w-5 h-px bg-muted-foreground/50 group-hover:w-7 group-hover:bg-foreground/70"
+                    }`}
+                  />
                 </span>
                 {p.title}
               </a>
@@ -177,7 +176,7 @@ function SideNav() {
 
 function Hero() {
   return (
-    <section className="pt-16 pb-10">
+    <section id="home" className="scroll-mt-24 pt-16 pb-10">
       <p className="text-sm font-medium text-foreground mb-4">Priti Jani</p>
       <p className="text-[17px] leading-relaxed text-foreground/90 max-w-xl">
         I'm a{" "}
@@ -317,10 +316,10 @@ function About() {
   );
 }
 
-function Skills() {
+function SkillsAndTools() {
   return (
-    <section id="skills" className="mt-24">
-      <p className="text-sm font-medium mb-4">Skills</p>
+    <section id="skills-tools" className="mt-24 scroll-mt-24">
+      <p className="text-sm font-medium mb-4">Skills &amp; Tools</p>
       <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-3 text-[15px] text-foreground/85 max-w-lg">
         {skills.map(({ label, icon: Icon }) => (
           <li key={label} className="flex items-center gap-2">
@@ -329,15 +328,7 @@ function Skills() {
           </li>
         ))}
       </ul>
-    </section>
-  );
-}
-
-function Tools() {
-  return (
-    <section id="tools" className="mt-24">
-      <p className="text-sm font-medium mb-4">Tools</p>
-      <div className="flex flex-wrap gap-2">
+      <div className="mt-8 flex flex-wrap gap-2">
         {tools.map((tool) => (
           <span
             key={tool}
@@ -347,25 +338,6 @@ function Tools() {
           </span>
         ))}
       </div>
-    </section>
-  );
-}
-
-function Writing() {
-  return (
-    <section id="writing" className="mt-24">
-      <p className="text-sm font-medium mb-4">Writing</p>
-      <ul className="divide-y divide-border border-t border-b border-border">
-        {writing.map((entry) => (
-          <li
-            key={entry.title}
-            className="flex items-center justify-between py-4 text-[15px]"
-          >
-            <span className="text-foreground/90">{entry.title}</span>
-            <span className="text-muted-foreground text-sm">{entry.date}</span>
-          </li>
-        ))}
-      </ul>
     </section>
   );
 }
@@ -430,9 +402,7 @@ export default function App() {
         <Hero />
         <Work />
         <About />
-        <Skills />
-        <Tools />
-        <Writing />
+        <SkillsAndTools />
       </main>
       <FloatingContact />
       <Footer />
