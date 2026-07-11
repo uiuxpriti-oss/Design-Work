@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import {
   Heart,
   ArrowUpRight,
@@ -132,41 +132,59 @@ function SideNav() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+  const reveal = `transition-all duration-300 ease-out ${
+    show ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-2"
+  }`;
   return (
     <aside
-      className={`hidden xl:block fixed left-8 top-1/2 -translate-y-1/2 z-20 transition-all duration-300 ease-out ${
-        show ? "opacity-100 translate-x-0" : "pointer-events-none opacity-0 -translate-x-2"
+      className={`hidden xl:block fixed left-8 top-1/2 -translate-y-1/2 z-20 ${
+        show ? "" : "pointer-events-none"
       }`}
     >
-      <ul className="space-y-3 text-[14px]">
-        {projects.map((p) => {
+      <ul className="space-y-1.5 text-[14px]">
+        {projects.map((p, i) => {
           const isActive = active === p.id;
           return (
-            <li key={p.id}>
-              <a
-                href={`#${p.id}`}
-                onClick={() => selectActive(p.id)}
-                aria-current={isActive ? "true" : undefined}
-                className={`group flex items-center gap-3.5 rounded-md outline-none transition-colors duration-200 ease-out focus-visible:ring-2 focus-visible:ring-foreground/20 ${
-                  isActive
-                    ? "text-foreground font-medium"
-                    : "text-muted-foreground/60 hover:text-foreground"
-                }`}
+            <Fragment key={p.id}>
+              <li
+                className={reveal}
+                style={{ transitionDelay: show ? `${i * 70}ms` : "0ms" }}
               >
-                {/* Fixed-width marker area; lines share a left edge and the
-                    active (longer) line extends to the right, per the reference. */}
-                <span className="flex w-10 justify-start" aria-hidden="true">
-                  <span
-                    className={`rounded-full transition-all duration-300 ease-out ${
-                      isActive
-                        ? "w-10 h-0.5 bg-foreground"
-                        : "w-5 h-px bg-muted-foreground/50 group-hover:w-7 group-hover:bg-foreground/70"
-                    }`}
-                  />
-                </span>
-                {p.title}
-              </a>
-            </li>
+                <a
+                  href={`#${p.id}`}
+                  onClick={() => selectActive(p.id)}
+                  aria-current={isActive ? "true" : undefined}
+                  className={`group flex items-center gap-3.5 rounded-md outline-none transition-colors duration-200 ease-out focus-visible:ring-2 focus-visible:ring-foreground/20 ${
+                    isActive
+                      ? "text-foreground font-medium"
+                      : "text-muted-foreground/60 hover:text-foreground"
+                  }`}
+                >
+                  {/* Fixed-width marker area; lines share a left edge and the
+                      active (longer) line extends to the right, per the reference. */}
+                  <span className="flex w-10 justify-start" aria-hidden="true">
+                    <span
+                      className={`rounded-full transition-all duration-300 ease-out ${
+                        isActive
+                          ? "w-10 h-0.5 bg-foreground"
+                          : "w-5 h-px bg-muted-foreground/50 group-hover:w-7 group-hover:bg-foreground/70"
+                      }`}
+                    />
+                  </span>
+                  {p.title}
+                </a>
+              </li>
+              {i < projects.length - 1 && (
+                <li
+                  aria-hidden="true"
+                  className={`flex flex-col gap-1 pl-0.5 ${reveal}`}
+                  style={{ transitionDelay: show ? `${i * 70 + 35}ms` : "0ms" }}
+                >
+                  <span className="h-px w-3 rounded-full bg-muted-foreground/25" />
+                  <span className="h-px w-3 rounded-full bg-muted-foreground/25" />
+                </li>
+              )}
+            </Fragment>
           );
         })}
       </ul>
