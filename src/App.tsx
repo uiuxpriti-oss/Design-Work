@@ -193,7 +193,7 @@ function SideNav() {
 
 function Hero() {
   return (
-    <section id="home" className="scroll-mt-24 pt-36 pb-[40px]">
+    <section id="home" className="scroll-mt-24 pt-36 pb-20">
       <p className="text-sm font-medium text-foreground mb-4">Priti Jani</p>
       <p className="text-[17px] leading-relaxed text-foreground/90 max-w-xl">
         I'm a{" "}
@@ -225,7 +225,31 @@ function Hero() {
   );
 }
 
+function useLike(id: string, base: number) {
+  const key = `like:${id}`;
+  const [liked, setLiked] = useState(false);
+  useEffect(() => {
+    try {
+      setLiked(localStorage.getItem(key) === "1");
+    } catch {
+      /* localStorage unavailable */
+    }
+  }, [key]);
+  const toggle = () =>
+    setLiked((prev) => {
+      const next = !prev;
+      try {
+        localStorage.setItem(key, next ? "1" : "0");
+      } catch {
+        /* ignore */
+      }
+      return next;
+    });
+  return { liked, count: base + (liked ? 1 : 0), toggle };
+}
+
 function ProjectCard({ project }: { project: (typeof projects)[number] }) {
+  const { liked, count, toggle } = useLike(project.id, project.likes);
   return (
     <article
       id={project.id}
@@ -249,10 +273,23 @@ function ProjectCard({ project }: { project: (typeof projects)[number] }) {
         </div>
       </a>
       <div className="mt-4 flex items-start justify-between gap-6 px-1">
-        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-          <Heart className="h-4 w-4" aria-hidden="true" />
-          <span>{project.likes}</span>
-        </div>
+        <button
+          type="button"
+          onClick={toggle}
+          aria-pressed={liked}
+          aria-label={liked ? `Unlike ${project.title}` : `Like ${project.title}`}
+          className="group/like flex items-center gap-2 rounded-full text-sm text-muted-foreground outline-none transition-colors hover:text-foreground active:scale-95 focus-visible:ring-2 focus-visible:ring-foreground/20"
+        >
+          <Heart
+            className={`h-4 w-4 transition-all duration-200 ease-out ${
+              liked
+                ? "scale-110 fill-red-500 text-red-500"
+                : "group-hover/like:text-foreground"
+            }`}
+            aria-hidden="true"
+          />
+          <span className={liked ? "text-foreground" : undefined}>{count}</span>
+        </button>
         <a
           href={project.href}
           target="_blank"
