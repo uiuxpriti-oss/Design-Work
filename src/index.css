@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Warm, minimal light theme (matches the original Lovable design tokens) */
+    --background: 45 20% 97%;
+    --foreground: 24 10% 10%;
+    --card: 42 14% 93%;
+    --primary: 24 10% 10%;
+    --primary-foreground: 45 20% 97%;
+    --muted-foreground: 30 6% 44%;
+    --border: 40 12% 87%;
+  }
+
+  * {
+    border-color: hsl(var(--border));
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    margin: 0;
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+}
