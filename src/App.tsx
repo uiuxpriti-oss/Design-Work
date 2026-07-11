@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Heart,
   ArrowUpRight,
@@ -23,12 +23,16 @@ const NAV: { id: string; label: string; icon: LucideIcon }[] = [
 
 function useActiveSection(ids: string[]) {
   const [active, setActive] = useState(ids[0]);
+  // While a click-driven scroll is in flight, ignore observer updates so the
+  // clicked tab stays active instead of flickering through intervening sections.
+  const lockUntil = useRef(0);
   useEffect(() => {
     const sections = ids
       .map((id) => document.getElementById(id))
       .filter((el): el is HTMLElement => el !== null);
     const observer = new IntersectionObserver(
       (entries) => {
+        if (Date.now() < lockUntil.current) return;
         const visible = entries
           .filter((e) => e.isIntersecting)
           .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
@@ -39,13 +43,17 @@ function useActiveSection(ids: string[]) {
     sections.forEach((s) => observer.observe(s));
     return () => observer.disconnect();
   }, [ids]);
-  return active;
+  const selectActive = (id: string) => {
+    lockUntil.current = Date.now() + 800;
+    setActive(id);
+  };
+  return [active, selectActive] as const;
 }
 
 function Header() {
   // Drop a photo at /public/avatar.jpg (or set a URL) to replace the placeholder dot.
   const avatar = "";
-  const active = useActiveSection(NAV.map((n) => n.id));
+  const [active, setActive] = useActiveSection(NAV.map((n) => n.id));
   return (
     <header className="sticky top-0 z-30 backdrop-blur-md bg-background/70">
       <nav className="mx-auto flex max-w-3xl items-center justify-between px-6 py-5">
@@ -68,6 +76,7 @@ function Header() {
                 <a
                   key={id}
                   href={`#${id}`}
+                  onClick={() => setActive(id)}
                   aria-current={isActive ? "page" : undefined}
                   className={`inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-[15px] font-medium leading-none outline-none transition duration-200 ease-out active:scale-[0.96] focus-visible:ring-2 focus-visible:ring-foreground/20 focus-visible:ring-offset-2 focus-visible:ring-offset-background ${
                     isActive
@@ -313,6 +322,35 @@ function Writing() {
   );
 }
 
+function FloatingContact() {
+  const [show, setShow] = useState(false);
+  useEffect(() => {
+    const onScroll = () =>
+      setShow(window.scrollY > window.innerHeight * 0.6);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+  return (
+    <div
+      className={`fixed inset-x-0 bottom-6 z-40 flex justify-center px-6 transition-all duration-300 ease-out ${
+        show
+          ? "opacity-100 translate-y-0"
+          : "pointer-events-none opacity-0 translate-y-4"
+      }`}
+    >
+      <a
+        href={links.cal}
+        target="_blank"
+        rel="noreferrer"
+        className="inline-flex items-center gap-2 rounded-full bg-primary text-primary-foreground px-5 py-2.5 text-sm font-medium shadow-lg shadow-black/15 outline-none transition duration-200 ease-out hover:opacity-90 active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-foreground/25 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+      >
+        <Sparkle /> Contact
+      </a>
+    </div>
+  );
+}
+
 function Footer() {
   return (
     <footer className="border-t border-border">
@@ -347,6 +385,7 @@ export default function App() {
         <Tools />
         <Writing />
       </main>
+      <FloatingContact />
       <Footer />
     </div>
   );
