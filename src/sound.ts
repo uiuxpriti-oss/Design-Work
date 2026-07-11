@@ -22,27 +22,27 @@ export function playTap(): void {
   if (!ac) return;
   const now = ac.currentTime;
 
-  // Soft, rounded tap: a mellow low sine through a low-pass filter, with a
-  // gentle attack and a smooth release — no bright/harsh transient.
-  const osc = ac.createOscillator();
-  const gain = ac.createGain();
-  const filter = ac.createBiquadFilter();
+  // Low "body" of the tap — a short sine that drops in pitch and fades fast.
+  const body = ac.createOscillator();
+  const bodyGain = ac.createGain();
+  body.type = "sine";
+  body.frequency.setValueAtTime(180, now);
+  body.frequency.exponentialRampToValueAtTime(110, now + 0.05);
+  bodyGain.gain.setValueAtTime(0.0001, now);
+  bodyGain.gain.exponentialRampToValueAtTime(0.07, now + 0.004);
+  bodyGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.06);
+  body.connect(bodyGain).connect(ac.destination);
+  body.start(now);
+  body.stop(now + 0.07);
 
-  osc.type = "sine";
-  osc.frequency.setValueAtTime(150, now);
-  osc.frequency.exponentialRampToValueAtTime(95, now + 0.09);
-
-  // Tame any edge so it reads as a soft "thup" rather than a click.
-  filter.type = "lowpass";
-  filter.frequency.setValueAtTime(700, now);
-  filter.Q.value = 0.5;
-
-  // Eased attack (~12ms) and a longer, smooth decay.
-  gain.gain.setValueAtTime(0.0001, now);
-  gain.gain.linearRampToValueAtTime(0.04, now + 0.012);
-  gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.16);
-
-  osc.connect(filter).connect(gain).connect(ac.destination);
-  osc.start(now);
-  osc.stop(now + 0.18);
+  // Bright attack transient — gives it the crisp "tick".
+  const tick = ac.createOscillator();
+  const tickGain = ac.createGain();
+  tick.type = "triangle";
+  tick.frequency.setValueAtTime(1100, now);
+  tickGain.gain.setValueAtTime(0.03, now);
+  tickGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.02);
+  tick.connect(tickGain).connect(ac.destination);
+  tick.start(now);
+  tick.stop(now + 0.025);
 }
