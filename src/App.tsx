@@ -10,6 +10,10 @@ import {
   CircleUserRound,
   Sparkles,
   Mail,
+  X,
+  Info,
+  Wand2,
+  CornerDownRight,
   type LucideIcon,
 } from "lucide-react";
 import {
@@ -79,7 +83,7 @@ function useActiveSection(ids: string[]) {
   return [active, selectActive] as const;
 }
 
-function Header() {
+function Header({ onOpenAsk }: { onOpenAsk: () => void }) {
   // Drop a photo at /public/avatar.jpg (or set a URL) to replace the placeholder dot.
   const avatar = "";
   const [active, setActive] = useActiveSection(NAV.map((n) => n.id));
@@ -136,18 +140,17 @@ function Header() {
             })}
           </div>
         </div>
-        <a
-          href={links.cal}
-          target="_blank"
-          rel="noreferrer"
-          className={`hidden items-center gap-1.5 rounded-full px-3.5 py-2 text-sm text-foreground transition-colors duration-300 sm:inline-flex ${
+        <button
+          type="button"
+          onClick={onOpenAsk}
+          className={`inline-flex items-center gap-1.5 rounded-full px-3 py-2 text-sm text-foreground transition-colors duration-300 sm:px-3.5 ${
             scrolled
               ? `${GLASS} hover:bg-white/60`
               : "border border-transparent hover:opacity-70"
           }`}
         >
-          <Sparkle /> Ask AI
-        </a>
+          <Sparkle /> <span className="hidden sm:inline">Ask AI</span>
+        </button>
       </nav>
     </header>
   );
@@ -864,8 +867,229 @@ function Footer() {
   );
 }
 
+const ASK_SUGGESTIONS = [
+  "What's your strongest project?",
+  "Tell me about the Punjab Land Records project",
+  "Can you tell me more about yourself?",
+  "What's your design + code background?",
+];
+
+// Grounded in the site's own content — no external AI backend.
+function askReply(q: string): string {
+  const t = q.toLowerCase();
+  const match = projects.find((p) => t.includes(p.title.toLowerCase()));
+  if (match) return `${match.title} — ${match.description} You can open it from the Work section.`;
+  if (t.includes("strongest") || t.includes("best") || t.includes("project"))
+    return `My most-liked project is ${projects[0].title} — ${projects[0].description} It's in the Work section.`;
+  if (t.includes("yourself") || t.includes("about") || t.includes("who"))
+    return ABOUT_PARAGRAPHS[0];
+  if (t.includes("background") || t.includes("code") || t.includes("design") || t.includes("skill"))
+    return "I'm a UI/UX designer who also builds — design in Figma, Framer & Protopie, and engineering in React, TypeScript, Tailwind and more. See the Skills & Tools section.";
+  if (t.includes("experience") || t.includes("work") || t.includes("job"))
+    return `Right now I'm a ${experience[0].role} at ${experience[0].company}. The Experience section has the full timeline.`;
+  return "Thanks for asking! For anything specific, reach out via the Contact button — always happy to talk.";
+}
+
+function AskDrawer({ open, onClose }: { open: boolean; onClose: () => void }) {
+  const [messages, setMessages] = useState<{ role: "user" | "bot"; text: string }[]>([]);
+  const [input, setInput] = useState("");
+  const [popover, setPopover] = useState<null | "ask" | "browse">(null);
+  const bodyRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
+    if (open) document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [open, onClose]);
+
+  useEffect(() => {
+    bodyRef.current?.scrollTo({ top: bodyRef.current.scrollHeight, behavior: "smooth" });
+  }, [messages]);
+
+  const submit = (text: string) => {
+    const q = text.trim();
+    if (!q) return;
+    setInput("");
+    setPopover(null);
+    setMessages((m) => [...m, { role: "user", text: q }]);
+    window.setTimeout(
+      () => setMessages((m) => [...m, { role: "bot", text: askReply(q) }]),
+      450,
+    );
+  };
+
+  return (
+    <>
+      <div
+        onClick={onClose}
+        className={`fixed inset-0 z-50 bg-black/25 backdrop-blur-[1px] transition-opacity duration-300 ${
+          open ? "opacity-100" : "pointer-events-none opacity-0"
+        }`}
+        aria-hidden="true"
+      />
+      <aside
+        role="dialog"
+        aria-label="Ask Priti"
+        aria-modal="true"
+        className={`fixed right-0 top-0 z-50 flex h-full w-full max-w-md flex-col bg-card shadow-2xl transition-transform duration-300 ease-out ${
+          open ? "translate-x-0" : "translate-x-full"
+        }`}
+      >
+        <div className="flex items-center justify-between border-b border-border px-5 py-4">
+          <div className="flex items-center gap-2">
+            <Sparkles className="h-4 w-4 text-foreground" aria-hidden="true" />
+            <span className="font-medium">Ask Priti</span>
+            <span
+              title="This is a demo assistant grounded in my case studies — check the project pages for the full story."
+              className="flex h-4 w-4 cursor-help items-center justify-center rounded-full bg-foreground/10 text-muted-foreground"
+            >
+              <Info className="h-3 w-3" aria-hidden="true" />
+            </span>
+          </div>
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Close"
+            className="rounded-full p-1 text-muted-foreground transition-colors hover:bg-foreground/[0.06] hover:text-foreground"
+          >
+            <X className="h-5 w-5" aria-hidden="true" />
+          </button>
+        </div>
+
+        <div ref={bodyRef} className="flex-1 overflow-y-auto px-5 py-6">
+          {messages.length === 0 ? (
+            <>
+              <h3 className="text-2xl font-semibold tracking-tight">Ask me anything.</h3>
+              <ul className="mt-6 space-y-4">
+                {ASK_SUGGESTIONS.map((s) => (
+                  <li key={s}>
+                    <button
+                      type="button"
+                      onClick={() => submit(s)}
+                      className="group flex w-full items-start gap-3 text-left text-[15px] text-foreground/80 transition-colors hover:text-foreground"
+                    >
+                      <CornerDownRight className="mt-0.5 h-4 w-4 shrink-0 text-foreground/40 group-hover:text-foreground" aria-hidden="true" />
+                      {s}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </>
+          ) : (
+            <div className="space-y-4">
+              {messages.map((m, i) => (
+                <div
+                  key={i}
+                  className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-[15px] leading-relaxed ${
+                    m.role === "user"
+                      ? "ml-auto bg-primary text-primary-foreground"
+                      : "bg-background text-foreground/90"
+                  }`}
+                >
+                  {m.text}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <div className="relative border-t border-border p-4">
+          {popover && (
+            <div className="absolute inset-x-4 bottom-full mb-2 rounded-2xl border border-border bg-background p-4 shadow-lg">
+              <p className="mb-3 text-xs text-muted-foreground">
+                {popover === "ask" ? "Try asking" : "Browse case studies"}
+              </p>
+              {popover === "ask" ? (
+                <ul className="space-y-3">
+                  {ASK_SUGGESTIONS.map((s) => (
+                    <li key={s}>
+                      <button
+                        type="button"
+                        onClick={() => submit(s)}
+                        className="group flex w-full items-start gap-3 text-left text-[15px] text-foreground/80 hover:text-foreground"
+                      >
+                        <CornerDownRight className="mt-0.5 h-4 w-4 shrink-0 text-foreground/40 group-hover:text-foreground" aria-hidden="true" />
+                        {s}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <ul className="space-y-3">
+                  {projects.map((p) => (
+                    <li key={p.id}>
+                      <button
+                        type="button"
+                        onClick={() => submit(`Tell me about ${p.title}`)}
+                        className="group flex w-full items-start gap-3 text-left"
+                      >
+                        <Inbox className="mt-0.5 h-4 w-4 shrink-0 text-foreground/40 group-hover:text-foreground" aria-hidden="true" />
+                        <span>
+                          <span className="block text-[15px] font-medium text-foreground">{p.title}</span>
+                          <span className="block text-[13px] text-muted-foreground">{p.description}</span>
+                        </span>
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          )}
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              submit(input);
+            }}
+            className="rounded-2xl border border-border bg-background p-3"
+          >
+            <input
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder="Ask about Priti…"
+              className="w-full bg-transparent px-1 text-[15px] outline-none placeholder:text-muted-foreground"
+            />
+            <div className="mt-3 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => setPopover((p) => (p === "ask" ? null : "ask"))}
+                  aria-label="Suggested questions"
+                  className={`flex h-9 w-9 items-center justify-center rounded-full transition-colors ${
+                    popover === "ask" ? "bg-foreground/10 text-foreground" : "text-muted-foreground hover:bg-foreground/[0.06]"
+                  }`}
+                >
+                  <Wand2 className="h-4 w-4" aria-hidden="true" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setPopover((p) => (p === "browse" ? null : "browse"))}
+                  aria-label="Browse case studies"
+                  className={`flex h-9 w-9 items-center justify-center rounded-full transition-colors ${
+                    popover === "browse" ? "bg-foreground/10 text-foreground" : "text-muted-foreground hover:bg-foreground/[0.06]"
+                  }`}
+                >
+                  <Inbox className="h-4 w-4" aria-hidden="true" />
+                </button>
+              </div>
+              <button
+                type="submit"
+                aria-label="Send"
+                disabled={!input.trim()}
+                className="flex h-9 w-9 items-center justify-center rounded-full bg-primary text-primary-foreground transition-opacity disabled:opacity-40"
+              >
+                <ArrowUp className="h-4 w-4" aria-hidden="true" />
+              </button>
+            </div>
+          </form>
+        </div>
+      </aside>
+    </>
+  );
+}
+
 export default function App() {
   useTapSound();
+  const [askOpen, setAskOpen] = useState(false);
   const [page, setPage] = useState<"home" | "projects">("home");
   const [projectsTab, setProjectsTab] = useState<"case" | "creative">("case");
   const openProjects = (tab: "case" | "creative") => {
@@ -890,7 +1114,7 @@ export default function App() {
     <div className="min-h-screen bg-background text-foreground antialiased">
       {page === "home" ? (
         <>
-          <Header />
+          <Header onOpenAsk={() => setAskOpen(true)} />
           <SideNav />
           <main className="mx-auto max-w-3xl px-6">
             <Hero />
@@ -906,6 +1130,7 @@ export default function App() {
         <ProjectsPage onBack={() => setPage("home")} initialTab={projectsTab} />
       )}
       <Footer />
+      <AskDrawer open={askOpen} onClose={() => setAskOpen(false)} />
     </div>
   );
 }
