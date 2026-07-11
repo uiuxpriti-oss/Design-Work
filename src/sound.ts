@@ -29,7 +29,7 @@ export function playTap(): void {
   body.frequency.setValueAtTime(180, now);
   body.frequency.exponentialRampToValueAtTime(110, now + 0.05);
   bodyGain.gain.setValueAtTime(0.0001, now);
-  bodyGain.gain.exponentialRampToValueAtTime(0.07, now + 0.004);
+  bodyGain.gain.exponentialRampToValueAtTime(0.1, now + 0.004);
   bodyGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.06);
   body.connect(bodyGain).connect(ac.destination);
   body.start(now);
@@ -40,7 +40,7 @@ export function playTap(): void {
   const tickGain = ac.createGain();
   tick.type = "triangle";
   tick.frequency.setValueAtTime(1100, now);
-  tickGain.gain.setValueAtTime(0.03, now);
+  tickGain.gain.setValueAtTime(0.045, now);
   tickGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.02);
   tick.connect(tickGain).connect(ac.destination);
   tick.start(now);

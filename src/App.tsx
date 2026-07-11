@@ -38,6 +38,7 @@ function useActiveSection(ids: string[]) {
   // While a click-driven scroll is in flight, ignore observer updates so the
   // clicked tab stays active instead of flickering through intervening sections.
   const lockUntil = useRef(0);
+  const firstRun = useRef(true);
   useEffect(() => {
     const sections = ids
       .map((id) => document.getElementById(id))
@@ -48,7 +49,15 @@ function useActiveSection(ids: string[]) {
         const visible = entries
           .filter((e) => e.isIntersecting)
           .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
-        if (visible[0]) setActive(visible[0].target.id);
+        if (!visible[0]) return;
+        const id = visible[0].target.id;
+        setActive((prev) => {
+          // Tap as the scroll-spy highlight moves to a new section (but not on
+          // first load, and not for click-driven changes which tap already).
+          if (prev !== id && !firstRun.current) playTap();
+          firstRun.current = false;
+          return id;
+        });
       },
       { rootMargin: "-45% 0px -50% 0px", threshold: [0, 0.25, 0.5, 1] },
     );
