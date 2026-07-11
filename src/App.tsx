@@ -77,8 +77,8 @@ function Header() {
   }, []);
   return (
     <header className="sticky top-0 z-30">
-      <nav className="mx-auto flex max-w-3xl items-center justify-between px-6 py-5">
-        <div className="flex items-center gap-4">
+      <nav className="mx-auto flex max-w-3xl items-center justify-between px-4 py-4 sm:px-6 sm:py-5">
+        <div className="flex items-center gap-2 sm:gap-4">
           <a href="/" className="shrink-0" aria-label="Home">
             {avatar ? (
               <img
@@ -91,7 +91,7 @@ function Header() {
             )}
           </a>
           <div
-            className={`flex items-center gap-1 rounded-full p-1 transition-colors duration-300 ${
+            className={`flex items-center gap-0.5 rounded-full p-1 transition-colors duration-300 sm:gap-1 ${
               scrolled ? GLASS : "border border-transparent bg-foreground/[0.06]"
             }`}
           >
@@ -103,7 +103,7 @@ function Header() {
                   href={`#${id}`}
                   onClick={() => setActive(id)}
                   aria-current={isActive ? "page" : undefined}
-                  className={`inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-[15px] font-medium leading-none outline-none transition duration-200 ease-out active:scale-[0.96] focus-visible:ring-2 focus-visible:ring-foreground/20 focus-visible:ring-offset-2 focus-visible:ring-offset-background ${
+                  className={`inline-flex items-center gap-1 whitespace-nowrap rounded-full px-3 py-1.5 text-[13px] font-medium leading-none outline-none transition duration-200 ease-out active:scale-[0.96] focus-visible:ring-2 focus-visible:ring-foreground/20 focus-visible:ring-offset-2 focus-visible:ring-offset-background sm:gap-1.5 sm:px-4 sm:py-2 sm:text-[15px] ${
                     isActive
                       ? "bg-background text-foreground shadow-sm active:bg-background"
                       : "text-foreground/70 hover:bg-foreground/[0.05] hover:text-foreground active:bg-foreground/[0.09]"
@@ -120,7 +120,7 @@ function Header() {
           href={links.cal}
           target="_blank"
           rel="noreferrer"
-          className={`inline-flex items-center gap-1.5 rounded-full px-3.5 py-2 text-sm text-foreground transition-colors duration-300 ${
+          className={`hidden items-center gap-1.5 rounded-full px-3.5 py-2 text-sm text-foreground transition-colors duration-300 sm:inline-flex ${
             scrolled
               ? `${GLASS} hover:bg-white/60`
               : "border border-transparent hover:opacity-70"
@@ -193,7 +193,7 @@ function SideNav() {
 
 function Hero() {
   return (
-    <section id="home" className="scroll-mt-24 py-36">
+    <section id="home" className="scroll-mt-24 py-20 sm:py-28 xl:py-36">
       <p className="text-sm font-medium text-foreground mb-4">Priti Jani</p>
       <p className="text-[17px] leading-relaxed text-foreground/90 max-w-xl">
         I'm a{" "}
@@ -428,7 +428,7 @@ function FloatingContact() {
 function Footer() {
   return (
     <footer className="border-t border-border">
-      <div className="mx-auto max-w-3xl px-6 py-6 flex items-center justify-between text-sm text-muted-foreground">
+      <div className="mx-auto flex max-w-3xl flex-col gap-3 px-6 py-6 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
         <p>© 2026 Made by Priti Jani</p>
         <div className="flex items-center gap-4">
           <a href="#" className="hover:text-foreground">
