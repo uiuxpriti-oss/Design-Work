@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import {
   Heart,
   ArrowUpRight,
@@ -396,12 +396,31 @@ function ProjectsPage({ onBack }: { onBack: () => void }) {
   );
 }
 
+function SectionHeading({
+  eyebrow,
+  title,
+}: {
+  eyebrow: string;
+  title: ReactNode;
+}) {
+  return (
+    <div>
+      <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
+        {eyebrow}
+      </p>
+      <h2 className="mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">
+        {title}
+      </h2>
+    </div>
+  );
+}
+
 function About() {
   return (
-    <section id="about" className="mt-24">
+    <section id="about" className="mt-24 scroll-mt-24">
       <div>
-        <p className="text-sm font-medium mb-4">About me</p>
-        <div className="space-y-4 text-[15px] leading-relaxed text-foreground/85 max-w-lg">
+        <SectionHeading eyebrow="About" title="about me" />
+        <div className="mt-8 space-y-4 text-[15px] leading-relaxed text-foreground/85 max-w-lg">
           <p>
             I'm Priti, a UI/UX designer focused on crafting clear, intuitive, and
             user-centric digital experiences — from SaaS dashboards to mobile-first apps
@@ -534,14 +553,7 @@ function Experience() {
   return (
     <section id="experience" className="mt-24 scroll-mt-24">
       <div className="flex items-start justify-between gap-4">
-        <div>
-          <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
-            Experience
-          </p>
-          <h2 className="mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">
-            where I have worked
-          </h2>
-        </div>
+        <SectionHeading eyebrow="Experience" title="where I have worked" />
         <div className="flex shrink-0 items-center gap-1 rounded-full bg-foreground/[0.06] p-1 text-sm">
           {(["list", "timeline"] as const).map((v) => (
             <button
@@ -569,8 +581,8 @@ function Experience() {
 function SkillsAndTools() {
   return (
     <section id="skills-tools" className="mt-24 scroll-mt-24">
-      <p className="mb-2 text-sm font-medium">Skills &amp; Tools</p>
-      <div>
+      <SectionHeading eyebrow="Skills & Tools" title="what I work with" />
+      <div className="mt-8">
         {skillCategories.map((cat) => (
           <div
             key={cat.label}
@@ -599,13 +611,15 @@ function Creatives() {
   return (
     <section id="creatives" className="mt-24 scroll-mt-24">
       <div className="mx-auto max-w-3xl px-6">
-        <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
-          Creative
-        </p>
-        <div className="mt-2 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-          <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">
-            Beyond the <span className="font-serif italic">brief</span>
-          </h2>
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+          <SectionHeading
+            eyebrow="Creative"
+            title={
+              <>
+                Beyond the <span className="font-serif italic">brief</span>
+              </>
+            }
+          />
           <p className="max-w-xs text-[15px] leading-relaxed text-muted-foreground">
             Logos, posters, and explorations — work that lives outside the sprint.
           </p>
