@@ -3,9 +3,7 @@ import {
   Heart,
   ArrowUpRight,
   ArrowRight,
-  ArrowLeft,
   ArrowUp,
-  ChevronDown,
   Inbox,
   CircleUserRound,
   Sparkles,
@@ -175,17 +173,25 @@ function Header({
             })}
           </div>
         </div>
-        <button
-          type="button"
-          onClick={onOpenAsk}
-          className={`inline-flex items-center gap-1.5 rounded-full px-3 py-2 text-sm text-foreground transition-colors duration-300 sm:px-3.5 ${
-            scrolled
-              ? `${NAV_SOLID} hover:bg-foreground/[0.04]`
-              : "border border-transparent hover:opacity-70"
-          }`}
-        >
-          <Sparkle /> <span className="hidden sm:inline">Ask AI</span>
-        </button>
+        {scrolled ? (
+          <a
+            href={links.cal}
+            target="_blank"
+            rel="noreferrer"
+            className={`inline-flex items-center gap-1.5 rounded-full px-3 py-2 text-sm font-medium text-foreground transition-colors duration-300 sm:px-3.5 ${NAV_SOLID} hover:bg-foreground/[0.04]`}
+          >
+            <Mail className="h-4 w-4" aria-hidden="true" />{" "}
+            <span className="hidden sm:inline">Contact</span>
+          </a>
+        ) : (
+          <button
+            type="button"
+            onClick={onOpenAsk}
+            className="inline-flex items-center gap-1.5 rounded-full border border-transparent px-3 py-2 text-sm text-foreground transition-colors duration-300 hover:opacity-70 sm:px-3.5"
+          >
+            <Sparkle /> <span className="hidden sm:inline">Ask AI</span>
+          </button>
+        )}
       </nav>
     </header>
   );
@@ -431,6 +437,38 @@ function CreativeGridCard({
   );
 }
 
+function SubPageTopBar({
+  onBack,
+  width = "max-w-4xl",
+}: {
+  onBack: () => void;
+  width?: string;
+}) {
+  return (
+    <div
+      className={`mx-auto flex ${width} items-center justify-between px-6 pt-6 sm:pt-8`}
+    >
+      <button
+        type="button"
+        onClick={onBack}
+        className="inline-flex items-center gap-2 rounded-full bg-foreground/[0.06] px-4 py-2 text-sm font-medium text-foreground outline-none transition-all duration-200 ease-out hover:bg-foreground/[0.1] active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-foreground/20"
+      >
+        <CornerDownLeft className="h-4 w-4" aria-hidden="true" />
+        Return
+      </button>
+      <a
+        href={links.cal}
+        target="_blank"
+        rel="noreferrer"
+        className="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-sm font-medium text-primary-foreground outline-none transition-all duration-200 ease-out hover:opacity-90 active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-foreground/25"
+      >
+        <Send className="h-4 w-4" aria-hidden="true" />
+        Contact
+      </a>
+    </div>
+  );
+}
+
 function ProjectsPage({
   onBack,
   initialTab,
@@ -445,26 +483,7 @@ function ProjectsPage({
   ] as const;
   return (
     <>
-      <header className="sticky top-0 z-30">
-        <nav className="mx-auto flex max-w-3xl items-center justify-between px-4 py-4 sm:px-6 sm:py-5">
-          <button
-            type="button"
-            onClick={onBack}
-            className="shrink-0"
-            aria-label="Back to home"
-          >
-            <span className="inline-block h-8 w-8 rounded-full bg-foreground align-middle" />
-          </button>
-          <button
-            type="button"
-            onClick={onBack}
-            className="inline-flex items-center gap-1.5 rounded-full bg-foreground/[0.06] px-4 py-2 text-sm font-medium text-foreground outline-none transition-all duration-200 ease-out hover:bg-foreground/[0.1] active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-foreground/20 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-          >
-            <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-            Back
-          </button>
-        </nav>
-      </header>
+      <SubPageTopBar onBack={onBack} width="max-w-3xl" />
       <main className="mx-auto max-w-3xl px-6 pb-32">
         <section className="pt-16 pb-8">
           <SectionHeading eyebrow="Archive" title="all work" />
@@ -552,69 +571,49 @@ function ContactBadge() {
   );
 }
 
-function ExperienceList() {
-  const [openIdx, setOpenIdx] = useState(0);
+function ExperienceLogo({ job }: { job: (typeof experience)[number] }) {
+  const [ok, setOk] = useState(true);
+  if (job.logo.src && ok) {
+    return (
+      <img
+        src={job.logo.src}
+        alt={job.company}
+        onError={() => setOk(false)}
+        className="h-11 w-11 shrink-0 rounded-xl object-contain ring-1 ring-border"
+      />
+    );
+  }
   return (
-    <ul>
-      {experience.map((job, i) => {
-        const open = openIdx === i;
-        return (
-          <li key={i} className="flex gap-4 sm:gap-5">
-            <div className="flex flex-col items-center">
-              <div
-                className={`relative z-10 flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl text-[11px] font-bold lowercase ${job.logo.className}`}
-              >
-                {job.logo.text}
-                {job.present && (
-                  <span className="absolute -right-0.5 -top-0.5 h-3 w-3 rounded-full border-2 border-background bg-emerald-500" />
-                )}
-              </div>
-              {i < experience.length - 1 && (
-                <span className="mt-1 w-px flex-1 bg-border" />
+    <div
+      className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-[13px] font-bold ${job.logo.className}`}
+    >
+      {job.logo.text}
+    </div>
+  );
+}
+
+function ExperienceList() {
+  return (
+    <ul className="divide-y divide-border border-t border-border">
+      {experience.map((job, i) => (
+        <li key={i} className="flex items-start justify-between gap-6 py-8">
+          <div className="min-w-0">
+            <h3 className="flex items-center gap-2 text-lg font-semibold text-foreground">
+              {job.role}
+              {job.present && (
+                <span className="inline-block h-2 w-2 rounded-full bg-emerald-500" />
               )}
-            </div>
-            <div className="flex-1 pb-8">
-              <button
-                type="button"
-                onClick={() => setOpenIdx(open ? -1 : i)}
-                className="flex w-full items-start justify-between gap-4 rounded-md text-left outline-none focus-visible:ring-2 focus-visible:ring-foreground/20"
-              >
-                <div>
-                  <p className="text-lg font-medium text-foreground">{job.company}</p>
-                  <p className="text-muted-foreground">{job.role}</p>
-                </div>
-                <div className="flex shrink-0 items-center gap-2 pt-1 font-mono text-[13px] text-muted-foreground">
-                  <span className="hidden sm:inline">{job.period}</span>
-                  {job.bullets && (
-                    <ChevronDown
-                      className={`h-4 w-4 transition-transform duration-200 ${open ? "rotate-180" : ""}`}
-                      aria-hidden="true"
-                    />
-                  )}
-                </div>
-              </button>
-              <p className="mt-1 font-mono text-[12px] text-muted-foreground sm:hidden">
-                {job.period}
-              </p>
-              {open && job.bullets && (
-                <div className="mt-4 space-y-3">
-                  {job.summary && (
-                    <p className="text-[15px] text-foreground/85">{job.summary}</p>
-                  )}
-                  <ul className="space-y-2.5">
-                    {job.bullets.map((b, bi) => (
-                      <li key={bi} className="flex gap-3 text-[15px] text-foreground/80">
-                        <span className="mt-0.5 text-foreground/40">✳</span>
-                        <span>{b}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-            </div>
-          </li>
-        );
-      })}
+            </h3>
+            <p className="mt-1 text-sm text-muted-foreground">{job.period}</p>
+            <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-foreground/85">
+              {job.description}
+            </p>
+            <p className="mt-4 text-[15px] font-medium text-foreground">{job.company}</p>
+            <p className="text-sm text-muted-foreground">{job.location}</p>
+          </div>
+          <ExperienceLogo job={job} />
+        </li>
+      ))}
     </ul>
   );
 }
@@ -643,16 +642,16 @@ function SkillsAndTools() {
             <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
               {cat.label}
             </p>
-            <p className="flex flex-wrap items-center gap-x-1 gap-y-1.5 text-[15px] leading-relaxed text-foreground/85">
-              {cat.items.map((item, i) => (
-                <span key={item} className="inline-flex items-center">
-                  {i > 0 && <span className="mr-1 text-foreground/25">/</span>}
-                  <span className="cursor-default rounded-md px-1.5 py-0.5 transition-colors duration-200 hover:bg-foreground/[0.07] hover:text-foreground">
-                    {item}
-                  </span>
+            <div className="flex flex-wrap gap-2">
+              {cat.items.map((item) => (
+                <span
+                  key={item}
+                  className="cursor-default select-none rounded-full border border-border bg-foreground/[0.03] px-3 py-1.5 text-[14px] text-foreground/85 transition-all duration-200 ease-out hover:-translate-y-0.5 hover:rotate-[-1.5deg] hover:border-foreground hover:bg-foreground hover:text-background hover:shadow-sm"
+                >
+                  {item}
                 </span>
               ))}
-            </p>
+            </div>
           </div>
         ))}
       </div>
@@ -898,25 +897,7 @@ function IfNotDesign() {
 function AboutPage({ onBack }: { onBack: () => void }) {
   return (
     <>
-      <div className="mx-auto flex max-w-4xl items-center justify-between px-6 pt-6 sm:pt-8">
-        <button
-          type="button"
-          onClick={onBack}
-          className="inline-flex items-center gap-2 rounded-full bg-foreground/[0.06] px-4 py-2 text-sm font-medium text-foreground outline-none transition-all duration-200 ease-out hover:bg-foreground/[0.1] active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-foreground/20"
-        >
-          <CornerDownLeft className="h-4 w-4" aria-hidden="true" />
-          Return
-        </button>
-        <a
-          href={links.cal}
-          target="_blank"
-          rel="noreferrer"
-          className="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-sm font-medium text-primary-foreground outline-none transition-all duration-200 ease-out hover:opacity-90 active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-foreground/25"
-        >
-          <Send className="h-4 w-4" aria-hidden="true" />
-          Contact
-        </a>
-      </div>
+      <SubPageTopBar onBack={onBack} width="max-w-4xl" />
       <main className="mx-auto max-w-4xl px-6 pb-32">
         <AboutMeSection />
         <Experience />
@@ -930,7 +911,13 @@ function AboutPage({ onBack }: { onBack: () => void }) {
   );
 }
 
-function FloatingContact() {
+function FloatingAsk({
+  onOpenAsk,
+  hidden,
+}: {
+  onOpenAsk: () => void;
+  hidden?: boolean;
+}) {
   const [show, setShow] = useState(false);
   useEffect(() => {
     const onScroll = () => {
@@ -949,22 +936,22 @@ function FloatingContact() {
       window.removeEventListener("resize", onScroll);
     };
   }, []);
+  const visible = show && !hidden;
   return (
     <div
       className={`fixed inset-x-0 bottom-6 z-40 flex justify-center px-6 transition-all duration-300 ease-out ${
-        show
+        visible
           ? "opacity-100 translate-y-0"
           : "pointer-events-none opacity-0 translate-y-4"
       }`}
     >
-      <a
-        href={links.cal}
-        target="_blank"
-        rel="noreferrer"
+      <button
+        type="button"
+        onClick={onOpenAsk}
         className="inline-flex items-center gap-2 rounded-full bg-primary text-primary-foreground px-5 py-2.5 text-sm font-medium shadow-lg shadow-black/15 outline-none transition duration-200 ease-out hover:opacity-90 active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-foreground/25 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
       >
-        <Mail className="h-4 w-4" aria-hidden="true" /> Contact
-      </a>
+        <Sparkle /> Ask AI
+      </button>
     </div>
   );
 }
@@ -1328,7 +1315,6 @@ export default function App() {
             <SkillsAndTools />
           </main>
           <Creatives onViewAll={() => openProjects("creative")} />
-          <FloatingContact />
         </>
       ) : page === "projects" ? (
         <ProjectsPage onBack={() => setPage("home")} initialTab={projectsTab} />
@@ -1337,6 +1323,7 @@ export default function App() {
       )}
       <Footer />
       </div>
+      <FloatingAsk onOpenAsk={() => setAskOpen(true)} hidden={askOpen} />
       <AskPanel open={askOpen} onClose={() => setAskOpen(false)} />
     </div>
   );

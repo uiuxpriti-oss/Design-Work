@@ -119,60 +119,53 @@ export const links = {
 };
 
 export interface Experience {
-  company: string;
   role: string;
   period: string;
+  description: string;
+  company: string;
+  location: string;
   present?: boolean;
-  /** Monogram tile: short text + Tailwind bg/text classes. Swap for a real logo later. */
-  logo: { text: string; className: string };
-  summary?: string;
-  bullets?: string[];
+  /** Monogram fallback tile; drop the real logo at `src` (under /public) to use it. */
+  logo: { text: string; className: string; src?: string };
 }
 
 export const experience: Experience[] = [
   {
-    company: "tata 1mg",
-    role: "senior product designer",
-    period: "apr 2025 to present",
+    role: "UI/UX Designer",
+    period: "June 2024 – Present",
     present: true,
-    logo: { text: "1mg", className: "bg-[#fb5a47] text-black" },
-    summary: "Building AI product for internal workflow. Built Health insights from 1-10",
-    bullets: [
-      "Led end-to-end design of an AI health platform converting lab reports into actionable insights.",
-      "Designed analysis and tracking systems, boosting DAU by 19×.",
-      "Enabled conversational AI health assistance, cutting bounce rates by 25%.",
-      "Scaled modular AI UX across diagnostics, pharmacy, and consultation verticals.",
-      "Partnered cross-functionally to deliver a clinically accurate and scalable experience.",
-    ],
+    description:
+      "Working on end-to-end product design for B2B SaaS platforms, collaborating with cross-functional teams to improve workflows, usability, feature adoption, and overall user experience.",
+    company: "Netlink Software Group America Inc",
+    location: "Bhopal, India",
+    logo: { text: "N", className: "bg-[#1e56a0] text-white", src: "/logos/netlink.png" },
   },
   {
-    company: "district by zomato",
-    role: "designer",
-    period: "jan 2025 - apr 2025",
-    logo: { text: "dist", className: "bg-[#6d28d9] text-white" },
-    bullets: [
-      "Designed discovery and booking flows for the events and dining experience.",
-      "Shaped a cohesive visual language across a fast-moving consumer product.",
-    ],
+    role: "UI/UX Designer",
+    period: "Jul 2023 – Jun 2024",
+    description:
+      "Designed a SaaS product end-to-end in an agile team, built a scalable design system, and translated client ideas into intuitive, user-tested flows while strengthening brand identity.",
+    company: "Shanti Infosoft LLP",
+    location: "Indore, India",
+    logo: { text: "S", className: "bg-[#e8502e] text-white", src: "/logos/shanti.png" },
   },
   {
-    company: "tata 1mg",
-    role: "product designer 2",
-    period: "2022 - 2025",
-    logo: { text: "1mg", className: "bg-[#fb5a47] text-black" },
-    bullets: [
-      "Owned end-to-end design across diagnostics and pharmacy journeys.",
-      "Built and maintained design-system components used org-wide.",
-    ],
+    role: "UI/UX & Graphic Designer",
+    period: "Aug 2022 – Jun 2023",
+    description:
+      "Delivered UI designs across web, mobile, e-commerce, and pitch decks with a focus on usability and brand impact.",
+    company: "Incscale Technology",
+    location: "Ahmedabad",
+    logo: { text: "iS", className: "bg-white text-[#e8502e] ring-1 ring-border", src: "/logos/incscale.png" },
   },
   {
-    company: "aarti industries",
-    role: "process engineer",
-    period: "2021 - 2022",
-    logo: { text: "aa", className: "bg-gradient-to-br from-orange-500 to-rose-500 text-white" },
-    bullets: [
-      "Optimised plant processes and reporting before transitioning into product design.",
-    ],
+    role: "Graphic Designer Intern",
+    period: "Summer 2017",
+    description:
+      "Created engaging social media posters and graphics to support awareness campaigns.",
+    company: "Aashman Foundation",
+    location: "Remote",
+    logo: { text: "A", className: "bg-[#29abe2] text-white", src: "/logos/aashman.png" },
   },
 ];
 
@@ -221,7 +214,7 @@ export const skillCategories: SkillCategory[] = [
   },
   {
     label: "Engineering & Development",
-    items: ["React", "TypeScript", "Tailwind CSS", "SCSS", "Git", "Pantheon"],
+    items: ["HTML", "CSS", "Bootstrap 5", "SCSS", "Drupal 11", "Git", "Pantheon"],
   },
 ];
 
