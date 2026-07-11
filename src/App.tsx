@@ -4,13 +4,22 @@ import {
   ArrowUpRight,
   ArrowRight,
   ArrowLeft,
+  ArrowUp,
+  ChevronDown,
   Inbox,
   CircleUserRound,
   Sparkles,
   Mail,
   type LucideIcon,
 } from "lucide-react";
-import { projects, skills, tools, links } from "./data/content";
+import {
+  projects,
+  skillCategories,
+  creatives,
+  experience,
+  quotes,
+  links,
+} from "./data/content";
 
 // Number of case studies shown on the home page; the rest live on /all-projects.
 const HOME_PROJECT_COUNT = 5;
@@ -330,7 +339,7 @@ function Work({ onViewAll }: { onViewAll: () => void }) {
       {HOME_PROJECTS.map((project) => (
         <ProjectCard key={project.id} project={project} />
       ))}
-      <div className="pt-2">
+      <div className="flex justify-center pt-4">
         <button
           type="button"
           onClick={onViewAll}
@@ -377,7 +386,7 @@ function ProjectsPage({ onBack }: { onBack: () => void }) {
             Every case study in one place — {projects.length} in total.
           </p>
         </section>
-        <section className="space-y-6">
+        <section className="grid grid-cols-1 gap-6 sm:grid-cols-2">
           {projects.map((project) => (
             <ProjectCard key={project.id} project={project} />
           ))}
@@ -434,27 +443,190 @@ function About() {
   );
 }
 
+function ExperienceList() {
+  const [openIdx, setOpenIdx] = useState(0);
+  return (
+    <ul>
+      {experience.map((job, i) => {
+        const open = openIdx === i;
+        return (
+          <li key={i} className="flex gap-4 sm:gap-5">
+            <div className="flex flex-col items-center">
+              <div
+                className={`relative z-10 flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl text-[11px] font-bold lowercase ${job.logo.className}`}
+              >
+                {job.logo.text}
+                {job.present && (
+                  <span className="absolute -right-0.5 -top-0.5 h-3 w-3 rounded-full border-2 border-background bg-emerald-500" />
+                )}
+              </div>
+              {i < experience.length - 1 && (
+                <span className="mt-1 w-px flex-1 bg-border" />
+              )}
+            </div>
+            <div className="flex-1 pb-8">
+              <button
+                type="button"
+                onClick={() => setOpenIdx(open ? -1 : i)}
+                className="flex w-full items-start justify-between gap-4 rounded-md text-left outline-none focus-visible:ring-2 focus-visible:ring-foreground/20"
+              >
+                <div>
+                  <p className="text-lg font-medium text-foreground">{job.company}</p>
+                  <p className="text-muted-foreground">{job.role}</p>
+                </div>
+                <div className="flex shrink-0 items-center gap-2 pt-1 font-mono text-[13px] text-muted-foreground">
+                  <span className="hidden sm:inline">{job.period}</span>
+                  {job.bullets && (
+                    <ChevronDown
+                      className={`h-4 w-4 transition-transform duration-200 ${open ? "rotate-180" : ""}`}
+                      aria-hidden="true"
+                    />
+                  )}
+                </div>
+              </button>
+              <p className="mt-1 font-mono text-[12px] text-muted-foreground sm:hidden">
+                {job.period}
+              </p>
+              {open && job.bullets && (
+                <div className="mt-4 space-y-3">
+                  {job.summary && (
+                    <p className="text-[15px] text-foreground/85">{job.summary}</p>
+                  )}
+                  <ul className="space-y-2.5">
+                    {job.bullets.map((b, bi) => (
+                      <li key={bi} className="flex gap-3 text-[15px] text-foreground/80">
+                        <span className="mt-0.5 text-foreground/40">✳</span>
+                        <span>{b}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+          </li>
+        );
+      })}
+    </ul>
+  );
+}
+
+function ExperienceTimeline() {
+  return (
+    <ol className="relative ml-1 border-l border-border pl-6">
+      {experience.map((job, i) => (
+        <li key={i} className="relative pb-8 last:pb-0">
+          <span className="absolute -left-[29px] top-1.5 h-2.5 w-2.5 rounded-full bg-foreground ring-4 ring-background" />
+          <div className="flex flex-wrap items-baseline justify-between gap-x-4">
+            <p className="font-medium text-foreground">
+              {job.company}
+              <span className="font-normal text-muted-foreground"> · {job.role}</span>
+            </p>
+            <p className="font-mono text-[13px] text-muted-foreground">{job.period}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+  );
+}
+
+function Experience() {
+  const [view, setView] = useState<"list" | "timeline">("list");
+  return (
+    <section id="experience" className="mt-24 scroll-mt-24">
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
+            Experience
+          </p>
+          <h2 className="mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">
+            where I have worked
+          </h2>
+        </div>
+        <div className="flex shrink-0 items-center gap-1 rounded-full bg-foreground/[0.06] p-1 text-sm">
+          {(["list", "timeline"] as const).map((v) => (
+            <button
+              key={v}
+              type="button"
+              onClick={() => setView(v)}
+              className={`rounded-full px-3.5 py-1.5 transition-colors ${
+                view === v
+                  ? "bg-primary text-primary-foreground"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              {v}
+            </button>
+          ))}
+        </div>
+      </div>
+      <div className="mt-10">
+        {view === "list" ? <ExperienceList /> : <ExperienceTimeline />}
+      </div>
+    </section>
+  );
+}
+
 function SkillsAndTools() {
   return (
     <section id="skills-tools" className="mt-24 scroll-mt-24">
-      <p className="text-sm font-medium mb-4">Skills &amp; Tools</p>
-      <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-3 text-[15px] text-foreground/85 max-w-lg">
-        {skills.map(({ label, icon: Icon }) => (
-          <li key={label} className="flex items-center gap-2">
-            <Icon className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
-            {label}
-          </li>
-        ))}
-      </ul>
-      <div className="mt-8 flex flex-wrap gap-2">
-        {tools.map((tool) => (
-          <span
-            key={tool}
-            className="inline-flex items-center rounded-full bg-card px-3.5 py-1.5 text-[14px] text-foreground/85"
+      <p className="mb-2 text-sm font-medium">Skills &amp; Tools</p>
+      <div>
+        {skillCategories.map((cat) => (
+          <div
+            key={cat.label}
+            className="grid grid-cols-1 gap-2 border-t border-border py-6 sm:grid-cols-[190px_1fr] sm:gap-8"
           >
-            {tool}
-          </span>
+            <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
+              {cat.label}
+            </p>
+            <p className="text-[15px] leading-relaxed text-foreground/85">
+              {cat.items.map((item, i) => (
+                <span key={item}>
+                  {i > 0 && <span className="mx-2 text-foreground/25">/</span>}
+                  {item}
+                </span>
+              ))}
+            </p>
+          </div>
         ))}
+      </div>
+    </section>
+  );
+}
+
+function Creatives() {
+  const row = [...creatives, ...creatives];
+  return (
+    <section id="creatives" className="mt-24 scroll-mt-24">
+      <div className="mx-auto max-w-3xl px-6">
+        <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
+          Creative
+        </p>
+        <div className="mt-2 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+          <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">
+            Beyond the <span className="font-serif italic">brief</span>
+          </h2>
+          <p className="max-w-xs text-[15px] leading-relaxed text-muted-foreground">
+            Logos, posters, and explorations — work that lives outside the sprint.
+          </p>
+        </div>
+      </div>
+      <div className="marquee-track relative mt-10 overflow-hidden">
+        <div className="animate-marquee marquee-anim flex w-max gap-4 px-2">
+          {row.map((c, i) => (
+            <a
+              key={i}
+              href={links.behance}
+              target="_blank"
+              rel="noreferrer"
+              className={`group h-40 w-64 shrink-0 overflow-hidden rounded-2xl bg-gradient-to-br ${c.gradient} ring-1 ring-border transition-transform duration-300 hover:-translate-y-1`}
+            >
+              <div className="flex h-full items-center justify-center text-sm font-medium text-foreground/70">
+                {c.name}
+              </div>
+            </a>
+          ))}
+        </div>
       </div>
     </section>
   );
@@ -490,20 +662,51 @@ function FloatingContact() {
 }
 
 function Footer() {
+  const line = [...quotes, ...quotes];
   return (
-    <footer className="border-t border-border">
-      <div className="mx-auto flex max-w-3xl flex-col gap-3 px-6 py-6 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
-        <p>© 2026 Made by Priti Jani</p>
-        <div className="flex items-center gap-4">
-          <a href="#" className="hover:text-foreground">
-            Twitter
-          </a>
-          <a href="#" className="hover:text-foreground">
+    <footer className="mt-24">
+      <div className="marquee-track overflow-hidden border-y border-border py-6">
+        <div className="animate-marquee marquee-anim flex w-max items-center gap-8">
+          {line.map((quote, i) => (
+            <span
+              key={i}
+              className="flex items-center gap-8 whitespace-nowrap font-serif text-2xl italic text-foreground/60 sm:text-[28px]"
+            >
+              {quote}
+              <span className="not-italic text-foreground/25">✳</span>
+            </span>
+          ))}
+        </div>
+      </div>
+      <div className="mx-auto flex max-w-3xl flex-col gap-4 px-6 py-8 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
+        <p className="text-xs uppercase tracking-wider">© 2026 Priti Jani.</p>
+        <p className="font-serif italic">Designed with conviction, built with care.</p>
+        <div className="flex items-center gap-4 text-xs font-medium uppercase tracking-wider sm:gap-5">
+          <a
+            href={links.linkedin}
+            target="_blank"
+            rel="noreferrer"
+            className="hover:text-foreground"
+          >
             LinkedIn
           </a>
           <a href={links.email} className="hover:text-foreground">
             Email
           </a>
+          <a href={links.cv} className="hover:text-foreground">
+            CV
+          </a>
+          <a href={links.coverLetter} className="hover:text-foreground">
+            Cover Letter
+          </a>
+          <button
+            type="button"
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            aria-label="Back to top"
+            className="flex h-9 w-9 items-center justify-center rounded-full border border-border transition-colors hover:bg-card"
+          >
+            <ArrowUp className="h-4 w-4" aria-hidden="true" />
+          </button>
         </div>
       </div>
     </footer>
@@ -533,12 +736,14 @@ export default function App() {
         <>
           <Header />
           <SideNav />
-          <main className="mx-auto max-w-3xl px-6 pb-32">
+          <main className="mx-auto max-w-3xl px-6">
             <Hero />
             <Work onViewAll={() => setPage("projects")} />
             <About />
+            <Experience />
             <SkillsAndTools />
           </main>
+          <Creatives />
           <FloatingContact />
         </>
       ) : (

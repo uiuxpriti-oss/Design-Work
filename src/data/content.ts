@@ -112,4 +112,150 @@ export const links = {
   cal: "https://cal.com/design-uiuxpriti-jim9zm/",
   email: "mailto:design.uiuxpriti@gmail.com",
   emailAddress: "design.uiuxpriti@gmail.com",
+  linkedin: "https://www.linkedin.com/in/uiuxpriti/",
+  behance: "https://www.behance.net/pritijani",
+  cv: "#",
+  coverLetter: "#",
 };
+
+export interface Experience {
+  company: string;
+  role: string;
+  period: string;
+  present?: boolean;
+  /** Monogram tile: short text + Tailwind bg/text classes. Swap for a real logo later. */
+  logo: { text: string; className: string };
+  summary?: string;
+  bullets?: string[];
+}
+
+export const experience: Experience[] = [
+  {
+    company: "tata 1mg",
+    role: "senior product designer",
+    period: "apr 2025 to present",
+    present: true,
+    logo: { text: "1mg", className: "bg-[#fb5a47] text-black" },
+    summary: "Building AI product for internal workflow. Built Health insights from 1-10",
+    bullets: [
+      "Led end-to-end design of an AI health platform converting lab reports into actionable insights.",
+      "Designed analysis and tracking systems, boosting DAU by 19×.",
+      "Enabled conversational AI health assistance, cutting bounce rates by 25%.",
+      "Scaled modular AI UX across diagnostics, pharmacy, and consultation verticals.",
+      "Partnered cross-functionally to deliver a clinically accurate and scalable experience.",
+    ],
+  },
+  {
+    company: "district by zomato",
+    role: "designer",
+    period: "jan 2025 - apr 2025",
+    logo: { text: "dist", className: "bg-[#6d28d9] text-white" },
+    bullets: [
+      "Designed discovery and booking flows for the events and dining experience.",
+      "Shaped a cohesive visual language across a fast-moving consumer product.",
+    ],
+  },
+  {
+    company: "tata 1mg",
+    role: "product designer 2",
+    period: "2022 - 2025",
+    logo: { text: "1mg", className: "bg-[#fb5a47] text-black" },
+    bullets: [
+      "Owned end-to-end design across diagnostics and pharmacy journeys.",
+      "Built and maintained design-system components used org-wide.",
+    ],
+  },
+  {
+    company: "aarti industries",
+    role: "process engineer",
+    period: "2021 - 2022",
+    logo: { text: "aa", className: "bg-gradient-to-br from-orange-500 to-rose-500 text-white" },
+    bullets: [
+      "Optimised plant processes and reporting before transitioning into product design.",
+    ],
+  },
+];
+
+export interface SkillCategory {
+  label: string;
+  items: string[];
+}
+
+export const skillCategories: SkillCategory[] = [
+  {
+    label: "Design & Product Thinking",
+    items: [
+      "UX Strategy",
+      "Systems Thinking",
+      "User Research",
+      "Information Architecture",
+      "Design Systems",
+      "Usability Testing",
+      "UX Copywriting",
+      "Product Positioning",
+      "A/B Testing",
+      "Journey Mapping",
+    ],
+  },
+  {
+    label: "Interaction & Prototyping",
+    items: [
+      "Wireframing",
+      "Prototyping",
+      "Motion & Micro-interactions",
+      "Figma",
+      "Figma Make",
+      "Framer",
+      "Protopie",
+    ],
+  },
+  {
+    label: "AI Tools & Workflow",
+    items: [
+      "Claude",
+      "Claude Code",
+      "Figma MCP",
+      "Prompt Engineering",
+      "AI-Augmented Design",
+    ],
+  },
+  {
+    label: "Engineering & Development",
+    items: [
+      "React",
+      "TypeScript",
+      "Tailwind CSS",
+      "SCSS",
+      "Drupal 11",
+      "Bootstrap 5",
+      "Git",
+      "Pantheon",
+    ],
+  },
+];
+
+export interface Creative {
+  name: string;
+  gradient: string;
+}
+
+// Drop-in gradient placeholders for the Behance creative work.
+export const creatives: Creative[] = [
+  { name: "Nidavellir", gradient: "from-teal-400/30 to-indigo-500/30" },
+  { name: "Commenda", gradient: "from-emerald-400/30 to-slate-500/30" },
+  { name: "Atz", gradient: "from-sky-400/30 to-violet-500/30" },
+  { name: "Mr. Kirana", gradient: "from-emerald-500/30 to-teal-700/30" },
+  { name: "Business Icon Pack", gradient: "from-indigo-400/30 to-purple-500/30" },
+  { name: "Neutron Star", gradient: "from-violet-500/30 to-indigo-700/30" },
+  { name: "Chat Bubble AI", gradient: "from-cyan-400/30 to-blue-500/30" },
+  { name: "Butterfly Mark", gradient: "from-fuchsia-400/30 to-rose-500/30" },
+];
+
+// Looping footer marquee phrases.
+export const quotes: string[] = [
+  "Grace under pressure",
+  "Demonstrate, don't describe",
+  "Design with conviction",
+  "Systems over screens",
+  "Details people feel",
+];

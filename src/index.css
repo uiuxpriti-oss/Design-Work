@@ -30,3 +30,37 @@
     text-rendering: optimizeLegibility;
   }
 }
+
+@layer utilities {
+  @keyframes marquee-left {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  @keyframes marquee-right {
+    from {
+      transform: translateX(-50%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+  .animate-marquee {
+    animation: marquee-left var(--marquee-duration, 40s) linear infinite;
+  }
+  .animate-marquee-rev {
+    animation: marquee-right var(--marquee-duration, 40s) linear infinite;
+  }
+  .marquee-track:hover .marquee-anim {
+    animation-play-state: paused;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .animate-marquee,
+    .animate-marquee-rev {
+      animation: none;
+    }
+  }
+}
