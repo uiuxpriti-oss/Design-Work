@@ -9,6 +9,18 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { projects, skills, tools, writing, links } from "./data/content";
+import { playTap } from "./sound";
+
+function useTapSound() {
+  useEffect(() => {
+    const onPointerDown = (e: PointerEvent) => {
+      if (e.button !== 0) return; // primary button / touch only
+      playTap();
+    };
+    document.addEventListener("pointerdown", onPointerDown);
+    return () => document.removeEventListener("pointerdown", onPointerDown);
+  }, []);
+}
 
 function Sparkle() {
   return <span className="text-xs">✦</span>;
@@ -373,6 +385,7 @@ function Footer() {
 }
 
 export default function App() {
+  useTapSound();
   return (
     <div className="min-h-screen bg-background text-foreground antialiased">
       <Header />
