@@ -193,7 +193,7 @@ function SideNav() {
 
 function Hero() {
   return (
-    <section id="home" className="scroll-mt-24 pt-36 pb-20">
+    <section id="home" className="scroll-mt-24 py-36">
       <p className="text-sm font-medium text-foreground mb-4">Priti Jani</p>
       <p className="text-[17px] leading-relaxed text-foreground/90 max-w-xl">
         I'm a{" "}
