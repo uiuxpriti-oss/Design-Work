@@ -4,6 +4,7 @@ import {
   ArrowUpRight,
   ArrowRight,
   ArrowUp,
+  ChevronDown,
   Inbox,
   CircleUserRound,
   Sparkles,
@@ -16,7 +17,6 @@ import {
   Play,
   Pause,
   CornerDownLeft,
-  Send,
   type LucideIcon,
 } from "lucide-react";
 import {
@@ -178,7 +178,7 @@ function Header({
             href={links.cal}
             target="_blank"
             rel="noreferrer"
-            className={`inline-flex items-center gap-1.5 rounded-full px-3 py-2 text-sm font-medium text-foreground transition-colors duration-300 sm:px-3.5 ${NAV_SOLID} hover:bg-foreground/[0.04]`}
+            className="inline-flex items-center gap-1.5 rounded-full bg-primary px-3 py-2 text-sm font-medium text-primary-foreground shadow-sm outline-none transition-all duration-300 ease-out hover:opacity-90 active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-foreground/25 sm:px-3.5"
           >
             <Mail className="h-4 w-4" aria-hidden="true" />{" "}
             <span className="hidden sm:inline">Contact</span>
@@ -462,7 +462,7 @@ function SubPageTopBar({
         rel="noreferrer"
         className="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-sm font-medium text-primary-foreground outline-none transition-all duration-200 ease-out hover:opacity-90 active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-foreground/25"
       >
-        <Send className="h-4 w-4" aria-hidden="true" />
+        <Mail className="h-4 w-4" aria-hidden="true" />
         Contact
       </a>
     </div>
@@ -573,47 +573,76 @@ function ContactBadge() {
 
 function ExperienceLogo({ job }: { job: (typeof experience)[number] }) {
   const [ok, setOk] = useState(true);
-  if (job.logo.src && ok) {
-    return (
-      <img
-        src={job.logo.src}
-        alt={job.company}
-        onError={() => setOk(false)}
-        className="h-11 w-11 shrink-0 rounded-xl object-contain ring-1 ring-border"
-      />
-    );
-  }
   return (
-    <div
-      className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-[13px] font-bold ${job.logo.className}`}
-    >
-      {job.logo.text}
+    <div className="relative z-10 h-12 w-12 shrink-0">
+      {job.logo.src && ok ? (
+        <img
+          src={job.logo.src}
+          alt={job.company}
+          onError={() => setOk(false)}
+          className="h-12 w-12 rounded-2xl bg-white object-contain p-1 ring-1 ring-border"
+        />
+      ) : (
+        <div
+          className={`flex h-12 w-12 items-center justify-center rounded-2xl text-[13px] font-bold ${job.logo.className}`}
+        >
+          {job.logo.text}
+        </div>
+      )}
+      {job.present && (
+        <span className="absolute -right-0.5 -top-0.5 h-3 w-3 rounded-full border-2 border-background bg-emerald-500" />
+      )}
     </div>
   );
 }
 
 function ExperienceList() {
+  const [openIdx, setOpenIdx] = useState(0);
   return (
-    <ul className="divide-y divide-border border-t border-border">
-      {experience.map((job, i) => (
-        <li key={i} className="flex items-start justify-between gap-6 py-8">
-          <div className="min-w-0">
-            <h3 className="flex items-center gap-2 text-lg font-semibold text-foreground">
-              {job.role}
-              {job.present && (
-                <span className="inline-block h-2 w-2 rounded-full bg-emerald-500" />
+    <ul>
+      {experience.map((job, i) => {
+        const open = openIdx === i;
+        return (
+          <li key={i} className="flex gap-4 sm:gap-5">
+            <div className="flex flex-col items-center">
+              <ExperienceLogo job={job} />
+              {i < experience.length - 1 && (
+                <span className="mt-1 w-px flex-1 bg-border" />
               )}
-            </h3>
-            <p className="mt-1 text-sm text-muted-foreground">{job.period}</p>
-            <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-foreground/85">
-              {job.description}
-            </p>
-            <p className="mt-4 text-[15px] font-medium text-foreground">{job.company}</p>
-            <p className="text-sm text-muted-foreground">{job.location}</p>
-          </div>
-          <ExperienceLogo job={job} />
-        </li>
-      ))}
+            </div>
+            <div className="flex-1 pb-8">
+              <button
+                type="button"
+                onClick={() => setOpenIdx(open ? -1 : i)}
+                className="flex w-full items-start justify-between gap-4 rounded-md text-left outline-none focus-visible:ring-2 focus-visible:ring-foreground/20"
+              >
+                <div>
+                  <p className="text-lg font-medium text-foreground">{job.company}</p>
+                  <p className="text-muted-foreground">{job.role}</p>
+                </div>
+                <div className="flex shrink-0 items-center gap-2 pt-1 font-mono text-[13px] text-muted-foreground">
+                  <span className="hidden sm:inline">{job.period}</span>
+                  <ChevronDown
+                    className={`h-4 w-4 transition-transform duration-200 ${open ? "rotate-180" : ""}`}
+                    aria-hidden="true"
+                  />
+                </div>
+              </button>
+              <p className="mt-1 font-mono text-[12px] text-muted-foreground sm:hidden">
+                {job.period}
+              </p>
+              {open && (
+                <div className="mt-4 space-y-2">
+                  <p className="text-[15px] leading-relaxed text-foreground/85">
+                    {job.description}
+                  </p>
+                  <p className="text-sm text-muted-foreground">{job.location}</p>
+                </div>
+              )}
+            </div>
+          </li>
+        );
+      })}
     </ul>
   );
 }
