@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import {
   Heart,
   ArrowUpRight,
-  Home,
+  Inbox,
   CircleUserRound,
   Sparkles,
   Mail,
@@ -27,10 +27,13 @@ function Sparkle() {
 }
 
 const NAV: { id: string; label: string; icon: LucideIcon }[] = [
-  { id: "home", label: "Home", icon: Home },
+  { id: "work", label: "Work", icon: Inbox },
   { id: "about", label: "About", icon: CircleUserRound },
   { id: "skills-tools", label: "Skills & Tools", icon: Sparkles },
 ];
+
+const GLASS =
+  "border border-white/50 bg-white/40 shadow-sm backdrop-blur-md";
 
 function useActiveSection(ids: string[]) {
   const [active, setActive] = useState(ids[0]);
@@ -65,6 +68,13 @@ function Header() {
   // Drop a photo at /public/avatar.jpg (or set a URL) to replace the placeholder dot.
   const avatar = "";
   const [active, setActive] = useActiveSection(NAV.map((n) => n.id));
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 20);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
   return (
     <header className="sticky top-0 z-30">
       <nav className="mx-auto flex max-w-3xl items-center justify-between px-6 py-5">
@@ -80,7 +90,11 @@ function Header() {
               <span className="inline-block h-8 w-8 rounded-full bg-foreground align-middle" />
             )}
           </a>
-          <div className="flex items-center gap-1 rounded-full bg-foreground/[0.06] p-1">
+          <div
+            className={`flex items-center gap-1 rounded-full p-1 transition-colors duration-300 ${
+              scrolled ? GLASS : "border border-transparent bg-foreground/[0.06]"
+            }`}
+          >
             {NAV.map(({ id, label, icon: Icon }) => {
               const isActive = active === id;
               return (
@@ -106,7 +120,11 @@ function Header() {
           href={links.cal}
           target="_blank"
           rel="noreferrer"
-          className="inline-flex items-center gap-1.5 rounded-full border border-white/50 bg-white/40 px-3.5 py-2 text-sm text-foreground shadow-sm backdrop-blur-md transition-colors hover:bg-white/60"
+          className={`inline-flex items-center gap-1.5 rounded-full px-3.5 py-2 text-sm text-foreground transition-colors duration-300 ${
+            scrolled
+              ? `${GLASS} hover:bg-white/60`
+              : "border border-transparent hover:opacity-70"
+          }`}
         >
           <Sparkle /> Ask AI
         </a>
