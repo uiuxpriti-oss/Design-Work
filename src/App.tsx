@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import {
   Heart,
   ArrowUpRight,
+  ArrowRight,
+  ArrowLeft,
   Inbox,
   CircleUserRound,
   Sparkles,
@@ -9,6 +11,10 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { projects, skills, tools, links } from "./data/content";
+
+// Number of case studies shown on the home page; the rest live on /all-projects.
+const HOME_PROJECT_COUNT = 5;
+const HOME_PROJECTS = projects.slice(0, HOME_PROJECT_COUNT);
 import { playTap } from "./sound";
 
 function useTapSound() {
@@ -79,7 +85,12 @@ function Header() {
     <header className="sticky top-0 z-30">
       <nav className="mx-auto flex max-w-3xl items-center justify-between px-4 py-4 sm:px-6 sm:py-5">
         <div className="flex items-center gap-2 sm:gap-4">
-          <a href="/" className="shrink-0" aria-label="Home">
+          <button
+            type="button"
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            className="shrink-0"
+            aria-label="Back to top"
+          >
             {avatar ? (
               <img
                 src={avatar}
@@ -89,7 +100,7 @@ function Header() {
             ) : (
               <span className="inline-block h-8 w-8 rounded-full bg-foreground align-middle" />
             )}
-          </a>
+          </button>
           <div
             className={`flex items-center gap-0.5 rounded-full p-1 transition-colors duration-300 sm:gap-1 ${
               scrolled ? GLASS : "border border-transparent bg-foreground/[0.06]"
@@ -134,7 +145,7 @@ function Header() {
 }
 
 function SideNav() {
-  const [active, selectActive] = useActiveSection(projects.map((p) => p.id));
+  const [active, selectActive] = useActiveSection(HOME_PROJECTS.map((p) => p.id));
   const [show, setShow] = useState(false);
   useEffect(() => {
     const onScroll = () => setShow(window.scrollY > window.innerHeight * 0.5);
@@ -152,7 +163,7 @@ function SideNav() {
       }`}
     >
       <ul className="space-y-3 text-[14px]">
-        {projects.map((p, i) => {
+        {HOME_PROJECTS.map((p, i) => {
           const isActive = active === p.id;
           return (
             <li
@@ -313,13 +324,66 @@ function ProjectCard({ project }: { project: (typeof projects)[number] }) {
   );
 }
 
-function Work() {
+function Work({ onViewAll }: { onViewAll: () => void }) {
   return (
     <section id="work" className="space-y-6">
-      {projects.map((project) => (
+      {HOME_PROJECTS.map((project) => (
         <ProjectCard key={project.id} project={project} />
       ))}
+      <div className="pt-2">
+        <button
+          type="button"
+          onClick={onViewAll}
+          className="group inline-flex items-center gap-2 rounded-full bg-foreground/[0.06] px-5 py-2.5 text-sm font-medium text-foreground outline-none transition-all duration-200 ease-out hover:bg-foreground/[0.1] active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-foreground/20 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+        >
+          View all projects
+          <ArrowRight
+            className="h-4 w-4 transition-transform group-hover:translate-x-0.5"
+            aria-hidden="true"
+          />
+        </button>
+      </div>
     </section>
+  );
+}
+
+function ProjectsPage({ onBack }: { onBack: () => void }) {
+  return (
+    <>
+      <header className="sticky top-0 z-30">
+        <nav className="mx-auto flex max-w-3xl items-center justify-between px-4 py-4 sm:px-6 sm:py-5">
+          <button
+            type="button"
+            onClick={onBack}
+            className="shrink-0"
+            aria-label="Back to home"
+          >
+            <span className="inline-block h-8 w-8 rounded-full bg-foreground align-middle" />
+          </button>
+          <button
+            type="button"
+            onClick={onBack}
+            className="inline-flex items-center gap-1.5 rounded-full bg-foreground/[0.06] px-4 py-2 text-sm font-medium text-foreground outline-none transition-all duration-200 ease-out hover:bg-foreground/[0.1] active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-foreground/20 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+          >
+            <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+            Back
+          </button>
+        </nav>
+      </header>
+      <main className="mx-auto max-w-3xl px-6 pb-32">
+        <section className="pt-16 pb-10">
+          <p className="text-sm font-medium text-foreground">All projects</p>
+          <p className="mt-2 text-[15px] leading-relaxed text-muted-foreground">
+            Every case study in one place — {projects.length} in total.
+          </p>
+        </section>
+        <section className="space-y-6">
+          {projects.map((project) => (
+            <ProjectCard key={project.id} project={project} />
+          ))}
+        </section>
+      </main>
+    </>
   );
 }
 
@@ -448,17 +512,38 @@ function Footer() {
 
 export default function App() {
   useTapSound();
+  const [page, setPage] = useState<"home" | "projects">("home");
+  useEffect(() => {
+    // Jump to top on page change. Run after layout settles (double rAF) and
+    // bypass the CSS smooth-scroll so it's an instant reset, not an animation.
+    const jump = () =>
+      window.scrollTo({ top: 0, left: 0, behavior: "instant" as ScrollBehavior });
+    let inner = 0;
+    const outer = requestAnimationFrame(() => {
+      inner = requestAnimationFrame(jump);
+    });
+    return () => {
+      cancelAnimationFrame(outer);
+      cancelAnimationFrame(inner);
+    };
+  }, [page]);
   return (
     <div className="min-h-screen bg-background text-foreground antialiased">
-      <Header />
-      <SideNav />
-      <main className="mx-auto max-w-3xl px-6 pb-32">
-        <Hero />
-        <Work />
-        <About />
-        <SkillsAndTools />
-      </main>
-      <FloatingContact />
+      {page === "home" ? (
+        <>
+          <Header />
+          <SideNav />
+          <main className="mx-auto max-w-3xl px-6 pb-32">
+            <Hero />
+            <Work onViewAll={() => setPage("projects")} />
+            <About />
+            <SkillsAndTools />
+          </main>
+          <FloatingContact />
+        </>
+      ) : (
+        <ProjectsPage onBack={() => setPage("home")} />
+      )}
       <Footer />
     </div>
   );
