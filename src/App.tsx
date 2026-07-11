@@ -1,41 +1,85 @@
-import { Heart, ArrowUpRight } from "lucide-react";
+import { useEffect, useState } from "react";
+import {
+  Heart,
+  ArrowUpRight,
+  Inbox,
+  CircleUserRound,
+  Sparkles,
+  Wrench,
+  type LucideIcon,
+} from "lucide-react";
 import { projects, skills, tools, writing, links } from "./data/content";
 
 function Sparkle() {
   return <span className="text-xs">✦</span>;
 }
 
+const NAV: { id: string; label: string; icon: LucideIcon }[] = [
+  { id: "work", label: "Work", icon: Inbox },
+  { id: "about", label: "About", icon: CircleUserRound },
+  { id: "skills", label: "Skills", icon: Sparkles },
+  { id: "tools", label: "Tools", icon: Wrench },
+];
+
+function useActiveSection(ids: string[]) {
+  const [active, setActive] = useState(ids[0]);
+  useEffect(() => {
+    const sections = ids
+      .map((id) => document.getElementById(id))
+      .filter((el): el is HTMLElement => el !== null);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+        if (visible[0]) setActive(visible[0].target.id);
+      },
+      { rootMargin: "-45% 0px -50% 0px", threshold: [0, 0.25, 0.5, 1] },
+    );
+    sections.forEach((s) => observer.observe(s));
+    return () => observer.disconnect();
+  }, [ids]);
+  return active;
+}
+
 function Header() {
   // Drop a photo at /public/avatar.jpg (or set a URL) to replace the placeholder dot.
   const avatar = "";
+  const active = useActiveSection(NAV.map((n) => n.id));
   return (
     <header className="sticky top-0 z-30 backdrop-blur-md bg-background/70">
       <nav className="mx-auto flex max-w-3xl items-center justify-between px-6 py-5">
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-4">
           <a href="/" className="shrink-0" aria-label="Home">
             {avatar ? (
               <img
                 src={avatar}
                 alt="Priti Jani"
-                className="h-7 w-7 rounded-full object-cover align-middle"
+                className="h-8 w-8 rounded-full object-cover align-middle"
               />
             ) : (
-              <span className="inline-block h-7 w-7 rounded-full bg-foreground align-middle" />
+              <span className="inline-block h-8 w-8 rounded-full bg-foreground align-middle" />
             )}
           </a>
-          <div className="flex items-center gap-6 text-sm text-muted-foreground">
-            <a href="#work" className="hover:text-foreground transition-colors">
-              Work
-            </a>
-            <a href="#about" className="hover:text-foreground transition-colors">
-              About
-            </a>
-            <a href="#skills" className="hover:text-foreground transition-colors">
-              Skills
-            </a>
-            <a href="#tools" className="hover:text-foreground transition-colors">
-              Tools
-            </a>
+          <div className="flex items-center gap-1 rounded-full bg-foreground/[0.06] p-1">
+            {NAV.map(({ id, label, icon: Icon }) => {
+              const isActive = active === id;
+              return (
+                <a
+                  key={id}
+                  href={`#${id}`}
+                  aria-current={isActive ? "page" : undefined}
+                  className={`inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-[15px] font-medium leading-none transition-colors ${
+                    isActive
+                      ? "bg-background text-foreground shadow-sm"
+                      : "text-foreground/80 hover:text-foreground"
+                  }`}
+                >
+                  {isActive && <Icon className="h-4 w-4" aria-hidden="true" />}
+                  {label}
+                </a>
+              );
+            })}
           </div>
         </div>
         <a
