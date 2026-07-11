@@ -13,3 +13,9 @@ vite.config.js
 
 # distribution artifacts
 *.bundle
+
+# local preview/capture artifacts
+_artifact_preview.html
+_preview_body.html
+_preview_css.txt
+preview-full.png
