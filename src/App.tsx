@@ -356,7 +356,39 @@ function Work({ onViewAll }: { onViewAll: () => void }) {
   );
 }
 
-function ProjectsPage({ onBack }: { onBack: () => void }) {
+function CreativeGridCard({
+  creative,
+}: {
+  creative: (typeof creatives)[number];
+}) {
+  return (
+    <a
+      href={links.behance}
+      target="_blank"
+      rel="noreferrer"
+      className={`group block overflow-hidden rounded-2xl bg-gradient-to-br ${creative.gradient} ring-1 ring-border transition-transform duration-300 hover:-translate-y-1`}
+    >
+      <div className="flex aspect-[4/3] items-center justify-center">
+        <span className="text-sm font-medium text-foreground/70">
+          {creative.name}
+        </span>
+      </div>
+    </a>
+  );
+}
+
+function ProjectsPage({
+  onBack,
+  initialTab,
+}: {
+  onBack: () => void;
+  initialTab: "case" | "creative";
+}) {
+  const [tab, setTab] = useState<"case" | "creative">(initialTab);
+  const TABS = [
+    { id: "case", label: "Case Studies" },
+    { id: "creative", label: "Creatives" },
+  ] as const;
   return (
     <>
       <header className="sticky top-0 z-30">
@@ -380,16 +412,33 @@ function ProjectsPage({ onBack }: { onBack: () => void }) {
         </nav>
       </header>
       <main className="mx-auto max-w-3xl px-6 pb-32">
-        <section className="pt-16 pb-10">
-          <p className="text-sm font-medium text-foreground">All projects</p>
-          <p className="mt-2 text-[15px] leading-relaxed text-muted-foreground">
-            Every case study in one place — {projects.length} in total.
-          </p>
+        <section className="pt-16 pb-8">
+          <SectionHeading eyebrow="Archive" title="all work" />
+          <div className="mt-6 inline-flex items-center gap-1 rounded-full bg-foreground/[0.06] p-1 text-sm">
+            {TABS.map((t) => (
+              <button
+                key={t.id}
+                type="button"
+                onClick={() => setTab(t.id)}
+                className={`rounded-full px-4 py-1.5 font-medium transition-colors ${
+                  tab === t.id
+                    ? "bg-background text-foreground shadow-sm"
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                {t.label}
+              </button>
+            ))}
+          </div>
         </section>
         <section className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-          {projects.map((project) => (
-            <ProjectCard key={project.id} project={project} />
-          ))}
+          {tab === "case"
+            ? projects.map((project) => (
+                <ProjectCard key={project.id} project={project} />
+              ))
+            : creatives.map((creative, i) => (
+                <CreativeGridCard key={i} creative={creative} />
+              ))}
         </section>
       </main>
     </>
@@ -455,7 +504,7 @@ function About() {
             </a>
             .
           </p>
-          <p className="font-serif italic text-2xl pt-2">— Priti</p>
+          <p className="italic text-2xl pt-2">— Priti</p>
         </div>
       </div>
     </section>
@@ -606,36 +655,47 @@ function SkillsAndTools() {
   );
 }
 
-function Creatives() {
+function Creatives({ onViewAll }: { onViewAll: () => void }) {
   const row = [...creatives, ...creatives];
   return (
     <section id="creatives" className="mt-24 scroll-mt-24">
       <div className="mx-auto max-w-3xl px-6">
-        <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+        <div className="flex items-start justify-between gap-4">
           <SectionHeading
             eyebrow="Creative"
             title={
               <>
-                Beyond the <span className="font-serif italic">brief</span>
+                Beyond the <span className="italic">brief</span>
               </>
             }
           />
-          <p className="max-w-xs text-[15px] leading-relaxed text-muted-foreground">
-            Logos, posters, and explorations — work that lives outside the sprint.
-          </p>
+          <button
+            type="button"
+            onClick={onViewAll}
+            className="group mt-1 inline-flex shrink-0 items-center gap-2 rounded-full bg-foreground/[0.06] px-4 py-2 text-sm font-medium text-foreground outline-none transition-all duration-200 ease-out hover:bg-foreground/[0.1] active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-foreground/20 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+          >
+            View all
+            <ArrowRight
+              className="h-4 w-4 transition-transform group-hover:translate-x-0.5"
+              aria-hidden="true"
+            />
+          </button>
         </div>
+        <p className="mt-3 max-w-md text-[15px] leading-relaxed text-muted-foreground">
+          Logos, posters, and explorations — work that lives outside the sprint.
+        </p>
       </div>
       <div className="marquee-track relative mt-10 overflow-hidden">
-        <div className="animate-marquee marquee-anim flex w-max gap-4 px-2">
+        <div className="animate-marquee marquee-anim flex w-max gap-5 px-2">
           {row.map((c, i) => (
             <a
               key={i}
               href={links.behance}
               target="_blank"
               rel="noreferrer"
-              className={`group h-40 w-64 shrink-0 overflow-hidden rounded-2xl bg-gradient-to-br ${c.gradient} ring-1 ring-border transition-transform duration-300 hover:-translate-y-1`}
+              className={`group h-56 w-80 shrink-0 overflow-hidden rounded-2xl bg-gradient-to-br ${c.gradient} ring-1 ring-border transition-transform duration-300 hover:-translate-y-1`}
             >
-              <div className="flex h-full items-center justify-center text-sm font-medium text-foreground/70">
+              <div className="flex h-full items-center justify-center text-base font-medium text-foreground/70">
                 {c.name}
               </div>
             </a>
@@ -649,11 +709,21 @@ function Creatives() {
 function FloatingContact() {
   const [show, setShow] = useState(false);
   useEffect(() => {
-    const onScroll = () =>
-      setShow(window.scrollY > window.innerHeight * 0.6);
+    const onScroll = () => {
+      const footer = document.querySelector("footer");
+      // Hide once the footer enters the viewport so it never overlaps the footer.
+      const nearFooter = footer
+        ? footer.getBoundingClientRect().top < window.innerHeight - 24
+        : false;
+      setShow(window.scrollY > window.innerHeight * 0.6 && !nearFooter);
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
   }, []);
   return (
     <div
@@ -684,7 +754,7 @@ function Footer() {
           {line.map((quote, i) => (
             <span
               key={i}
-              className="flex items-center gap-8 whitespace-nowrap font-serif text-2xl italic text-foreground/60 sm:text-[28px]"
+              className="flex items-center gap-8 whitespace-nowrap text-2xl italic text-foreground/60 sm:text-[28px]"
             >
               {quote}
               <span className="not-italic text-foreground/25">✳</span>
@@ -692,9 +762,9 @@ function Footer() {
           ))}
         </div>
       </div>
-      <div className="mx-auto flex max-w-3xl flex-col gap-4 px-6 py-8 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
+      <div className="mx-auto flex max-w-3xl flex-col items-center gap-4 px-6 pt-10 pb-28 text-center text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between sm:pb-10 sm:text-left">
         <p className="text-xs uppercase tracking-wider">© 2026 Priti Jani.</p>
-        <p className="font-serif italic">Designed with conviction, built with care.</p>
+        <p className="italic">Designed with conviction, built with care.</p>
         <div className="flex items-center gap-4 text-xs font-medium uppercase tracking-wider sm:gap-5">
           <a
             href={links.linkedin}
@@ -730,6 +800,11 @@ function Footer() {
 export default function App() {
   useTapSound();
   const [page, setPage] = useState<"home" | "projects">("home");
+  const [projectsTab, setProjectsTab] = useState<"case" | "creative">("case");
+  const openProjects = (tab: "case" | "creative") => {
+    setProjectsTab(tab);
+    setPage("projects");
+  };
   useEffect(() => {
     // Jump to top on page change. Run after layout settles (double rAF) and
     // bypass the CSS smooth-scroll so it's an instant reset, not an animation.
@@ -752,16 +827,16 @@ export default function App() {
           <SideNav />
           <main className="mx-auto max-w-3xl px-6">
             <Hero />
-            <Work onViewAll={() => setPage("projects")} />
+            <Work onViewAll={() => openProjects("case")} />
             <About />
             <Experience />
             <SkillsAndTools />
           </main>
-          <Creatives />
+          <Creatives onViewAll={() => openProjects("creative")} />
           <FloatingContact />
         </>
       ) : (
-        <ProjectsPage onBack={() => setPage("home")} />
+        <ProjectsPage onBack={() => setPage("home")} initialTab={projectsTab} />
       )}
       <Footer />
     </div>
