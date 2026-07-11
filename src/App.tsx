@@ -1,27 +1,42 @@
 import { Heart, ArrowUpRight } from "lucide-react";
-import { projects, expertise, writing, links } from "./data/content";
+import { projects, skills, tools, writing, links } from "./data/content";
 
 function Sparkle() {
   return <span className="text-xs">✦</span>;
 }
 
 function Header() {
+  // Drop a photo at /public/avatar.jpg (or set a URL) to replace the placeholder dot.
+  const avatar = "";
   return (
     <header className="sticky top-0 z-30 backdrop-blur-md bg-background/70">
       <nav className="mx-auto flex max-w-3xl items-center justify-between px-6 py-5">
-        <a href="/" className="font-serif text-lg tracking-tight" aria-label="Home">
-          <span className="inline-block h-6 w-6 rounded-full bg-foreground align-middle" />
-        </a>
-        <div className="flex items-center gap-6 text-sm text-muted-foreground">
-          <a href="#work" className="hover:text-foreground transition-colors">
-            Work
+        <div className="flex items-center gap-6">
+          <a href="/" className="shrink-0" aria-label="Home">
+            {avatar ? (
+              <img
+                src={avatar}
+                alt="Priti Jani"
+                className="h-7 w-7 rounded-full object-cover align-middle"
+              />
+            ) : (
+              <span className="inline-block h-7 w-7 rounded-full bg-foreground align-middle" />
+            )}
           </a>
-          <a href="#about" className="hover:text-foreground transition-colors">
-            About
-          </a>
-          <a href="#writing" className="hover:text-foreground transition-colors">
-            Writing
-          </a>
+          <div className="flex items-center gap-6 text-sm text-muted-foreground">
+            <a href="#work" className="hover:text-foreground transition-colors">
+              Work
+            </a>
+            <a href="#about" className="hover:text-foreground transition-colors">
+              About
+            </a>
+            <a href="#skills" className="hover:text-foreground transition-colors">
+              Skills
+            </a>
+            <a href="#tools" className="hover:text-foreground transition-colors">
+              Tools
+            </a>
+          </div>
         </div>
         <a
           href={links.cal}
@@ -156,10 +171,7 @@ function Work() {
 
 function About() {
   return (
-    <section
-      id="about"
-      className="mt-24 grid grid-cols-1 sm:grid-cols-[1fr_180px] gap-10"
-    >
+    <section id="about" className="mt-24">
       <div>
         <p className="text-sm font-medium mb-4">About me</p>
         <div className="space-y-4 text-[15px] leading-relaxed text-foreground/85 max-w-lg">
@@ -200,16 +212,39 @@ function About() {
           <p className="font-serif italic text-2xl pt-2">— Priti</p>
         </div>
       </div>
-      <div>
-        <p className="text-sm font-medium mb-4">Expertise</p>
-        <ul className="space-y-3 text-[14px] text-foreground/85">
-          {expertise.map(({ label, icon: Icon }) => (
-            <li key={label} className="flex items-center gap-2">
-              <Icon className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
-              {label}
-            </li>
-          ))}
-        </ul>
+    </section>
+  );
+}
+
+function Skills() {
+  return (
+    <section id="skills" className="mt-24">
+      <p className="text-sm font-medium mb-4">Skills</p>
+      <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-3 text-[15px] text-foreground/85 max-w-lg">
+        {skills.map(({ label, icon: Icon }) => (
+          <li key={label} className="flex items-center gap-2">
+            <Icon className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+            {label}
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
+function Tools() {
+  return (
+    <section id="tools" className="mt-24">
+      <p className="text-sm font-medium mb-4">Tools</p>
+      <div className="flex flex-wrap gap-2">
+        {tools.map((tool) => (
+          <span
+            key={tool}
+            className="inline-flex items-center rounded-full bg-card px-3.5 py-1.5 text-[14px] text-foreground/85"
+          >
+            {tool}
+          </span>
+        ))}
       </div>
     </section>
   );
@@ -264,6 +299,8 @@ export default function App() {
         <Hero />
         <Work />
         <About />
+        <Skills />
+        <Tools />
         <Writing />
       </main>
       <Footer />

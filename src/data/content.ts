@@ -72,17 +72,29 @@ export const projects: Project[] = [
   },
 ];
 
-export interface Expertise {
+export interface Skill {
   label: string;
   icon: LucideIcon;
 }
 
-export const expertise: Expertise[] = [
+export const skills: Skill[] = [
   { label: "Product Design", icon: Palette },
   { label: "UX / UI Design", icon: Sparkles },
   { label: "Design Systems", icon: Layers },
   { label: "End-to-end Design", icon: Boxes },
   { label: "Product Strategy", icon: LineChart },
+];
+
+// Starter list — edit to match the tools you actually use.
+export const tools: string[] = [
+  "Figma",
+  "Adobe XD",
+  "Photoshop",
+  "Illustrator",
+  "Framer",
+  "Notion",
+  "Miro",
+  "Webflow",
 ];
 
 export interface WritingEntry {
