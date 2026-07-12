@@ -15,6 +15,7 @@ import {
   Inbox,
   CircleUserRound,
   Home,
+  Menu,
   Sparkles,
   Send,
   Copy,
@@ -367,6 +368,7 @@ function Header({
         ? "about"
         : "home";
   const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
     onScroll();
@@ -374,6 +376,7 @@ function Header({
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
   const go = (id: string) => {
+    setMenuOpen(false);
     if (id === "home") onHome();
     else if (id === "work") onWork();
     else onAbout();
@@ -400,7 +403,7 @@ function Header({
             )}
           </button>
           <div
-            className={`flex items-center gap-0.5 rounded-full p-1 transition-colors duration-300 sm:gap-1 ${
+            className={`hidden items-center gap-0.5 rounded-full p-1 transition-colors duration-300 sm:flex sm:gap-1 ${
               scrolled ? NAV_SOLID : "border border-transparent bg-foreground/[0.06]"
             }`}
           >
@@ -425,7 +428,7 @@ function Header({
             })}
           </div>
         </div>
-        <div className="flex items-center gap-1 sm:gap-2">
+        <div className="relative flex items-center gap-1 sm:gap-2">
           <ThemeToggle scrolled={scrolled} />
           <a
             href={links.cv}
@@ -440,7 +443,7 @@ function Header({
           {scrolled ? (
             <ContactButton
               align="right"
-              className="inline-flex items-center gap-1.5 rounded-full bg-primary px-3 py-2 text-sm font-medium text-primary-foreground shadow-sm outline-none transition-all duration-300 ease-out hover:opacity-90 active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-foreground/25 sm:px-3.5"
+              className="hidden items-center gap-1.5 rounded-full bg-primary px-3 py-2 text-sm font-medium text-primary-foreground shadow-sm outline-none transition-all duration-300 ease-out hover:opacity-90 active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-foreground/25 sm:inline-flex sm:px-3.5"
             >
               <Send className="h-4 w-4" aria-hidden="true" />{" "}
               <span className="hidden sm:inline">Contact</span>
@@ -449,12 +452,90 @@ function Header({
             <button
               type="button"
               onClick={onOpenAsk}
-              className="group inline-flex items-center gap-1.5 rounded-full border border-transparent px-3 py-2 text-sm text-foreground transition-colors duration-300 hover:opacity-70 sm:px-3.5"
+              className="group hidden items-center gap-1.5 rounded-full border border-transparent px-3 py-2 text-sm text-foreground transition-colors duration-300 hover:opacity-70 sm:inline-flex sm:px-3.5"
             >
               <span className="inline-flex items-center gap-1.5 bg-gradient-to-r from-indigo-500 via-fuchsia-500 to-pink-500 bg-clip-text font-medium text-transparent">
                 <Sparkle /> <span className="hidden sm:inline">Ask AI</span>
               </span>
             </button>
+          )}
+
+          {/* Mobile menu button */}
+          <button
+            type="button"
+            onClick={() => setMenuOpen((v) => !v)}
+            aria-label={menuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={menuOpen}
+            className={`inline-flex h-9 w-9 items-center justify-center rounded-full text-foreground/80 outline-none transition-colors duration-300 hover:bg-foreground/[0.1] focus-visible:ring-2 focus-visible:ring-foreground/20 sm:hidden ${
+              scrolled ? NAV_SOLID : "border border-transparent bg-foreground/[0.06]"
+            }`}
+          >
+            {menuOpen ? (
+              <X className="h-5 w-5" aria-hidden="true" />
+            ) : (
+              <Menu className="h-5 w-5" aria-hidden="true" />
+            )}
+          </button>
+
+          {/* Mobile dropdown menu */}
+          {menuOpen && (
+            <>
+              <div
+                className="fixed inset-0 z-40 sm:hidden"
+                onClick={() => setMenuOpen(false)}
+                aria-hidden="true"
+              />
+              <div className="absolute right-0 top-full z-50 mt-2 w-60 origin-top-right rounded-2xl border border-border bg-card p-2 shadow-xl sm:hidden">
+                {NAV.map(({ id, label, icon: Icon }) => {
+                  const isActive = active === id;
+                  return (
+                    <button
+                      key={id}
+                      type="button"
+                      onClick={() => go(id)}
+                      aria-current={isActive ? "page" : undefined}
+                      className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-[15px] font-medium transition-colors ${
+                        isActive
+                          ? "bg-foreground/[0.06] text-foreground"
+                          : "text-foreground/70 hover:bg-foreground/[0.04]"
+                      }`}
+                    >
+                      <Icon className="h-[18px] w-[18px]" aria-hidden="true" />
+                      {label}
+                    </button>
+                  );
+                })}
+                <div className="my-1.5 h-px bg-border" />
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMenuOpen(false);
+                    onOpenAsk();
+                  }}
+                  className="flex w-full items-center rounded-xl px-3 py-2.5 text-left hover:bg-foreground/[0.04]"
+                >
+                  <span className="inline-flex items-center gap-3 bg-gradient-to-r from-indigo-500 via-fuchsia-500 to-pink-500 bg-clip-text text-[15px] font-semibold text-transparent">
+                    <Sparkle /> Ask AI
+                  </span>
+                </button>
+                <a
+                  href={links.cv}
+                  target="_blank"
+                  rel="noreferrer"
+                  onClick={() => setMenuOpen(false)}
+                  className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-[15px] font-medium text-foreground/80 hover:bg-foreground/[0.04]"
+                >
+                  <FileText className="h-[18px] w-[18px]" aria-hidden="true" /> CV / Resume
+                </a>
+                <a
+                  href={links.email}
+                  onClick={() => setMenuOpen(false)}
+                  className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-[15px] font-medium text-foreground/80 hover:bg-foreground/[0.04]"
+                >
+                  <Send className="h-[18px] w-[18px]" aria-hidden="true" /> Contact
+                </a>
+              </div>
+            </>
           )}
         </div>
       </nav>
