@@ -751,7 +751,7 @@ function ProjectsPage({
       {tab === "case" && <SideNav items={projects} watchId="case-studies" />}
       <main className="mx-auto max-w-3xl px-6 pb-32">
         <section className="pt-10 pb-8">
-          <SectionHeading eyebrow="Archive" title="all work" />
+          <SectionHeading eyebrow="Work" title="All Work" />
           <div className="mt-6 inline-flex items-center gap-1 rounded-full bg-foreground/[0.06] p-1 text-sm">
             {TABS.map((t) => (
               <button
