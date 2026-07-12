@@ -514,45 +514,109 @@ function SideNav({
 }
 
 function Hero() {
+  const current = experience[0];
+  const previous = experience.slice(1, 3);
+  const shortName = (c: string) =>
+    c.replace(/\s+(LLP|Inc\.?|America Inc|Technology|Pvt\.? Ltd\.?)$/i, "").trim();
   return (
-    <section id="home" className="relative scroll-mt-24 overflow-hidden">
-      <div
-        className="pointer-events-none absolute inset-0 bg-gradient-to-r from-orange-100/70 via-background to-emerald-100/70 opacity-80 dark:from-orange-500/10 dark:via-background dark:to-emerald-500/10 dark:opacity-100"
-        aria-hidden="true"
-      />
-      <div className="relative mx-auto max-w-[52rem] px-6 pt-14 pb-12 sm:pt-16 sm:pb-14 xl:pt-20 xl:pb-16">
-      <p className="text-sm font-medium text-foreground">Priti Jani</p>
-      <div className="mb-6 mt-2">
-        <span className="inline-flex items-center gap-2 rounded-full bg-blue-100 px-3.5 py-1.5 text-[13px] font-medium text-blue-600 dark:bg-blue-500/15 dark:text-blue-400">
-          <span className="text-[11px]" aria-hidden="true">✦</span>
-          Product Designer · 4 years of experience · Open to work
-        </span>
-      </div>
-      <p className="text-[17px] leading-relaxed text-foreground/90 max-w-xl">
-        I design enterprise systems that reduce cognitive load, simplify
-        decision-making, and help teams move faster under pressure:{" "}
-        <span className="font-semibold text-foreground">
-          ↓ 50% task time, 3× faster onboarding
-        </span>
-      </p>
-      <p className="text-[17px] leading-relaxed text-foreground/90 max-w-xl mt-4">
-        I turn complex requirements into simple, usable solutions — obsessing over the
-        details people don't notice, but always feel.
-      </p>
-      <div className="mt-6 flex items-center gap-3">
-        <ContactButton
-          align="left"
-          className="inline-flex items-center gap-2 rounded-full bg-primary text-primary-foreground px-4 py-2 text-sm font-medium hover:opacity-90 transition-opacity"
-        >
-          <Send className="h-4 w-4" aria-hidden="true" /> Contact
-        </ContactButton>
-        <a
-          href="#work"
-          className="inline-flex items-center gap-2 rounded-full bg-foreground/[0.06] px-4 py-2 text-sm text-foreground outline-none transition-all duration-200 ease-out hover:bg-foreground/[0.1] active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-foreground/20 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-        >
-          View work
-        </a>
-      </div>
+    <section id="home" className="scroll-mt-24 px-4 pt-8 pb-14 sm:px-6 sm:pt-10">
+      <div className="mx-auto max-w-[64rem]">
+        <div className="relative overflow-hidden rounded-[28px] bg-[#123026] px-7 py-10 shadow-sm sm:px-12 sm:py-14 lg:px-16">
+          {/* faint grid texture */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 opacity-[0.05] [background-image:linear-gradient(to_right,#fff_1px,transparent_1px),linear-gradient(to_bottom,#fff_1px,transparent_1px)] [background-size:44px_44px]"
+          />
+          {/* soft warm glow */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-amber-300/10 blur-3xl"
+          />
+          <div className="relative max-w-2xl">
+            <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl">
+              Priti Jani
+            </h1>
+            <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-2">
+              <p className="text-lg font-medium text-amber-400">Product Designer</p>
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-400/10 px-2.5 py-1 text-xs font-medium text-emerald-300 ring-1 ring-emerald-400/20">
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" aria-hidden="true" />
+                Open to work
+              </span>
+            </div>
+            <p className="mt-6 text-[16px] leading-relaxed text-white/75 sm:text-[17px]">
+              Product Designer with 4+ years designing enterprise and B2B SaaS
+              products at scale. Currently designing end-to-end platforms and
+              scalable design systems at Netlink — turning complex, data-heavy
+              requirements into simple, usable flows. I obsess over the details
+              people don&apos;t notice, but always feel. Great design is
+              invisible; it just works.
+            </p>
+
+            <div className="mt-7 flex flex-wrap items-center gap-3">
+              <a
+                href="#work"
+                className="inline-flex items-center gap-2 rounded-full bg-amber-400 px-5 py-2.5 text-sm font-semibold text-[#123026] outline-none transition-all duration-200 ease-out hover:bg-amber-300 active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-amber-300/50"
+              >
+                View work
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </a>
+              <ContactButton
+                align="left"
+                className="inline-flex items-center gap-2 rounded-full border border-white/20 px-5 py-2.5 text-sm font-medium text-white outline-none transition-colors duration-200 hover:bg-white/10 focus-visible:ring-2 focus-visible:ring-white/25"
+              >
+                <Send className="h-4 w-4" aria-hidden="true" /> Contact
+              </ContactButton>
+            </div>
+
+            <p className="mt-8 text-[15px] text-white/55">
+              Reach out via{" "}
+              <a
+                href={links.email}
+                className="font-medium text-amber-400 underline underline-offset-4 transition-colors hover:text-amber-300"
+              >
+                mail
+              </a>{" "}
+              or on{" "}
+              <a
+                href={links.linkedin}
+                target="_blank"
+                rel="noreferrer"
+                className="font-medium text-amber-400 underline underline-offset-4 transition-colors hover:text-amber-300"
+              >
+                LinkedIn
+              </a>
+            </p>
+
+            <div className="mt-6 flex flex-col gap-4 border-t border-white/10 pt-6 sm:flex-row sm:items-center sm:gap-10">
+              <div className="flex items-center gap-2.5">
+                <span className="text-[13px] text-white/45">Currently at</span>
+                <span
+                  className={`grid h-6 w-6 shrink-0 place-items-center rounded-md text-[11px] font-semibold ${current.logo.className}`}
+                >
+                  {current.logo.text}
+                </span>
+                <span className="text-[13px] font-medium text-white/80">
+                  Netlink Software Group
+                </span>
+              </div>
+              <div className="flex items-center gap-3">
+                <span className="text-[13px] text-white/45">Previously</span>
+                {previous.map((job) => (
+                  <span key={job.company} className="flex items-center gap-1.5">
+                    <span
+                      className={`grid h-6 w-6 shrink-0 place-items-center rounded-md text-[11px] font-semibold ${job.logo.className}`}
+                    >
+                      {job.logo.text}
+                    </span>
+                    <span className="text-[13px] font-medium text-white/70">
+                      {shortName(job.company)}
+                    </span>
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );
