@@ -330,7 +330,7 @@ function Header({
   };
   return (
     <header className="sticky top-0 z-30">
-      <nav className="mx-auto flex max-w-3xl items-center justify-between px-4 py-4 sm:px-6 sm:py-5">
+      <nav className="mx-auto flex max-w-[52rem] items-center justify-between px-4 py-4 sm:px-6 sm:py-5">
         <div className="flex items-center gap-2 sm:gap-4">
           <button
             type="button"
@@ -749,7 +749,7 @@ function ProjectsPage({
   return (
     <>
       {tab === "case" && <SideNav items={projects} watchId="case-studies" />}
-      <main className="mx-auto max-w-3xl px-6 pb-32">
+      <main className="mx-auto max-w-[52rem] px-6 pb-32">
         <section className="pt-10 pb-8">
           <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
             All Work
@@ -1035,7 +1035,7 @@ function Creatives({ onViewAll }: { onViewAll: () => void }) {
   const row = [...creatives, ...creatives];
   return (
     <section id="creatives" className="mt-24 scroll-mt-24">
-      <div className="mx-auto max-w-3xl px-6">
+      <div className="mx-auto max-w-[52rem] px-6">
         <div className="flex items-start justify-between gap-4">
           <SectionHeading
             eyebrow="Creative"
@@ -1279,7 +1279,7 @@ function IfNotDesign() {
 function AboutPage() {
   return (
     <>
-      <main className="mx-auto max-w-3xl px-6 pb-32">
+      <main className="mx-auto max-w-[52rem] px-6 pb-32">
         <AboutMeSection />
         <Experience />
         <WorkingWithMe />
@@ -1376,7 +1376,7 @@ function Footer() {
           ))}
         </div>
       </div>
-      <div className="mx-auto flex max-w-3xl flex-col items-center gap-4 px-6 pt-10 pb-28 text-center text-sm text-muted-foreground sm:flex-row sm:items-start sm:justify-between sm:pb-10 sm:text-left">
+      <div className="mx-auto flex max-w-[52rem] flex-col items-center gap-4 px-6 pt-10 pb-28 text-center text-sm text-muted-foreground sm:flex-row sm:items-start sm:justify-between sm:pb-10 sm:text-left">
         <div className="space-y-1">
           <p className="whitespace-nowrap text-xs uppercase tracking-wider">© 2026 Priti Jani.</p>
           <p className="text-[13px]">Created with lots of Procrastination 🥲 &amp; Inspiration ☕️</p>
@@ -1740,7 +1740,7 @@ export default function App() {
         {page === "home" ? (
           <>
             <SideNav />
-            <main className="mx-auto max-w-3xl px-6">
+            <main className="mx-auto max-w-[52rem] px-6">
               <Hero />
               <Work onViewAll={() => openProjects("case")} />
               <SkillsAndTools />
