@@ -515,7 +515,12 @@ function Hero() {
   return (
     <section id="home" className="scroll-mt-24 py-20 sm:py-28 xl:py-36">
       <p className="text-sm font-medium text-foreground">Priti Jani</p>
-      <p className="mb-6 mt-0.5 text-sm text-muted-foreground">Product Designer</p>
+      <div className="mb-6 mt-2">
+        <span className="inline-flex items-center gap-2 rounded-full bg-blue-100 px-3.5 py-1.5 text-[13px] font-medium text-blue-600 dark:bg-blue-500/15 dark:text-blue-400">
+          <span className="text-[11px]" aria-hidden="true">✦</span>
+          Product Designer · 4 years of experience · Open to work
+        </span>
+      </div>
       <p className="text-[17px] leading-relaxed text-foreground/90 max-w-xl">
         I design enterprise systems that reduce cognitive load, simplify
         decision-making, and help teams move faster under pressure:{" "}
