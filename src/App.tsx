@@ -1,4 +1,10 @@
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  type ReactNode,
+  type MouseEvent as ReactMouseEvent,
+} from "react";
 import {
   Heart,
   ArrowUpRight,
@@ -325,7 +331,7 @@ function ThemeToggle() {
       type="button"
       onClick={toggle}
       aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}
-      className="inline-flex h-9 w-9 items-center justify-center rounded-full text-foreground/70 outline-none transition-colors duration-200 hover:bg-foreground/[0.06] hover:text-foreground focus-visible:ring-2 focus-visible:ring-foreground/20"
+      className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border bg-card text-foreground/80 shadow-sm outline-none transition-colors duration-200 hover:bg-foreground/[0.06] hover:text-foreground focus-visible:ring-2 focus-visible:ring-foreground/20"
     >
       {dark ? (
         <Sun className="h-[18px] w-[18px]" aria-hidden="true" />
@@ -419,6 +425,14 @@ function Header({
         </div>
         <div className="flex items-center gap-1 sm:gap-2">
           <ThemeToggle />
+          <a
+            href={links.cv}
+            target="_blank"
+            rel="noreferrer"
+            className="hidden items-center gap-1.5 rounded-full border border-border bg-card px-3 py-2 text-sm font-medium text-foreground shadow-sm outline-none transition-colors duration-300 hover:bg-foreground/[0.06] focus-visible:ring-2 focus-visible:ring-foreground/25 sm:inline-flex sm:px-3.5"
+          >
+            <FileText className="h-4 w-4" aria-hidden="true" /> CV
+          </a>
           {scrolled ? (
             <ContactButton
               align="right"
@@ -518,10 +532,33 @@ function Hero() {
   const previous = experience.slice(1, 3);
   const shortName = (c: string) =>
     c.replace(/\s+(LLP|Inc\.?|America Inc|Technology|Pvt\.? Ltd\.?)$/i, "").trim();
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [tilt, setTilt] = useState({ rx: 0, ry: 0, on: false });
+  const onMove = (e: ReactMouseEvent<HTMLDivElement>) => {
+    const el = cardRef.current;
+    if (!el || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const r = el.getBoundingClientRect();
+    const px = (e.clientX - r.left) / r.width - 0.5;
+    const py = (e.clientY - r.top) / r.height - 0.5;
+    const MAX = 6;
+    setTilt({ rx: -py * MAX, ry: px * MAX, on: true });
+  };
+  const onLeave = () => setTilt({ rx: 0, ry: 0, on: false });
   return (
-    <section id="home" className="scroll-mt-24 px-4 pt-8 pb-14 sm:px-6 sm:pt-10">
-      <div className="mx-auto max-w-[52rem] [perspective:1600px]">
-        <div className="group relative overflow-hidden rounded-[28px] bg-[#22453A] px-7 py-10 shadow-lg transition-[transform,box-shadow] duration-500 ease-out will-change-transform hover:shadow-2xl hover:[transform:rotateX(2deg)_rotateY(-3deg)_scale(1.02)] sm:px-12 sm:py-14 lg:px-16">
+    <section id="home" className="scroll-mt-24 pt-8 pb-14 sm:pt-10">
+      <div className="mx-auto max-w-[52rem] px-4 sm:px-6 [perspective:1600px]">
+        <div
+          ref={cardRef}
+          onMouseMove={onMove}
+          onMouseLeave={onLeave}
+          style={{
+            transform: `rotateX(${tilt.rx}deg) rotateY(${tilt.ry}deg) scale(${tilt.on ? 1.015 : 1})`,
+            transition: tilt.on
+              ? "transform 80ms ease-out, box-shadow 300ms ease-out"
+              : "transform 500ms ease-out, box-shadow 300ms ease-out",
+          }}
+          className="group relative overflow-hidden rounded-[28px] bg-[#22453A] px-7 py-10 shadow-lg will-change-transform [transform-style:preserve-3d] hover:shadow-2xl sm:px-12 sm:py-14 lg:px-16"
+        >
           {/* faint grid texture */}
           <div
             aria-hidden="true"

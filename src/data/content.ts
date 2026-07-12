@@ -632,7 +632,7 @@ export const links = {
   emailAddress: "design.uiuxpriti@gmail.com",
   linkedin: "https://www.linkedin.com/in/uiuxpriti/",
   behance: "https://www.behance.net/pritijani",
-  cv: "#",
+  cv: "/Priti-Jani-CV.pdf",
   coverLetter: "#",
 };
 
