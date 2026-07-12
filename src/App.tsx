@@ -8,14 +8,15 @@ import {
   Inbox,
   CircleUserRound,
   Sparkles,
-  Mail,
+  Send,
+  Copy,
+  Check,
+  ExternalLink,
   X,
   Info,
   Wand2,
   CornerDownRight,
   RotateCcw,
-  Play,
-  Pause,
   CornerDownLeft,
   type LucideIcon,
 } from "lucide-react";
@@ -35,7 +36,7 @@ import {
 // Number of case studies shown on the home page; the rest live on /all-projects.
 const HOME_PROJECT_COUNT = 5;
 const HOME_PROJECTS = projects.slice(0, HOME_PROJECT_COUNT);
-import { playTap } from "./sound";
+import { playTap, playSong, type SongHandle } from "./sound";
 
 function useTapSound() {
   useEffect(() => {
@@ -49,7 +50,127 @@ function useTapSound() {
 }
 
 function Sparkle() {
-  return <span className="text-xs">✦</span>;
+  return (
+    <span className="inline-block text-xs transition-transform group-hover:animate-sparkle">
+      ✦
+    </span>
+  );
+}
+
+const LINKEDIN_HANDLE = "@uiuxpriti";
+
+/**
+ * Contact trigger + "Get in touch" popover (email with copy, LinkedIn link).
+ * `align` controls which edge the popover hangs from the button.
+ */
+function ContactButton({
+  className,
+  align = "right",
+  children,
+}: {
+  className: string;
+  align?: "left" | "right";
+  children: ReactNode;
+}) {
+  const [open, setOpen] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const onDoc = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    };
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
+    document.addEventListener("mousedown", onDoc);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("mousedown", onDoc);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [open]);
+
+  const copyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText(links.emailAddress);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 1600);
+    } catch {
+      /* clipboard unavailable */
+    }
+  };
+
+  return (
+    <div ref={ref} className="relative">
+      <button
+        type="button"
+        onClick={() => setOpen((o) => !o)}
+        aria-expanded={open}
+        aria-haspopup="dialog"
+        className={className}
+      >
+        {children}
+      </button>
+      <div
+        role="dialog"
+        aria-label="Get in touch"
+        className={`absolute top-full z-50 mt-2 w-[24rem] max-w-[calc(100vw-2rem)] origin-top rounded-2xl bg-neutral-900 p-5 text-white shadow-2xl ring-1 ring-white/10 transition-all duration-200 ease-out ${
+          align === "right" ? "right-0" : "left-0"
+        } ${
+          open
+            ? "pointer-events-auto opacity-100 translate-y-0 scale-100"
+            : "pointer-events-none opacity-0 -translate-y-1 scale-[0.98]"
+        }`}
+      >
+        <div className="flex items-center justify-between">
+          <span className="text-[15px] font-medium text-white/60">Get in touch</span>
+          <button
+            type="button"
+            onClick={() => setOpen(false)}
+            aria-label="Close"
+            className="text-white/50 transition-colors hover:text-white"
+          >
+            <X className="h-4 w-4" aria-hidden="true" />
+          </button>
+        </div>
+
+        <div className="mt-5 flex items-center justify-between gap-3">
+          <div className="min-w-0">
+            <p className="text-[13px] text-white/45">Email</p>
+            <p className="truncate text-[15px] font-semibold">{links.emailAddress}</p>
+          </div>
+          <button
+            type="button"
+            onClick={copyEmail}
+            aria-label={copied ? "Email copied" : "Copy email"}
+            className="shrink-0 rounded-lg p-2 text-white/60 transition-colors hover:bg-white/10 hover:text-white"
+          >
+            {copied ? (
+              <Check className="h-5 w-5 text-emerald-400" aria-hidden="true" />
+            ) : (
+              <Copy className="h-5 w-5" aria-hidden="true" />
+            )}
+          </button>
+        </div>
+
+        <div className="mt-5 flex items-center justify-between gap-3">
+          <div className="min-w-0">
+            <p className="text-[13px] text-white/45">LinkedIn</p>
+            <p className="truncate text-[15px] font-semibold">{LINKEDIN_HANDLE}</p>
+          </div>
+          <a
+            href={links.linkedin}
+            target="_blank"
+            rel="noreferrer"
+            aria-label="Open LinkedIn profile"
+            className="shrink-0 rounded-lg p-2 text-white/60 transition-colors hover:bg-white/10 hover:text-white"
+          >
+            <ExternalLink className="h-5 w-5" aria-hidden="true" />
+          </a>
+        </div>
+      </div>
+    </div>
+  );
 }
 
 const NAV: { id: string; label: string; icon: LucideIcon }[] = [
@@ -174,20 +295,18 @@ function Header({
           </div>
         </div>
         {scrolled ? (
-          <a
-            href={links.cal}
-            target="_blank"
-            rel="noreferrer"
+          <ContactButton
+            align="right"
             className="inline-flex items-center gap-1.5 rounded-full bg-primary px-3 py-2 text-sm font-medium text-primary-foreground shadow-sm outline-none transition-all duration-300 ease-out hover:opacity-90 active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-foreground/25 sm:px-3.5"
           >
-            <Mail className="h-4 w-4" aria-hidden="true" />{" "}
+            <Send className="h-4 w-4" aria-hidden="true" />{" "}
             <span className="hidden sm:inline">Contact</span>
-          </a>
+          </ContactButton>
         ) : (
           <button
             type="button"
             onClick={onOpenAsk}
-            className="inline-flex items-center gap-1.5 rounded-full border border-transparent px-3 py-2 text-sm text-foreground transition-colors duration-300 hover:opacity-70 sm:px-3.5"
+            className="group inline-flex items-center gap-1.5 rounded-full border border-transparent px-3 py-2 text-sm text-foreground transition-colors duration-300 hover:opacity-70 sm:px-3.5"
           >
             <Sparkle /> <span className="hidden sm:inline">Ask AI</span>
           </button>
@@ -283,14 +402,12 @@ function Hero() {
         details people don't notice, but always feel.
       </p>
       <div className="mt-6 flex items-center gap-3">
-        <a
-          href={links.cal}
-          target="_blank"
-          rel="noreferrer"
+        <ContactButton
+          align="left"
           className="inline-flex items-center gap-2 rounded-full bg-primary text-primary-foreground px-4 py-2 text-sm font-medium hover:opacity-90 transition-opacity"
         >
-          <Mail className="h-4 w-4" aria-hidden="true" /> Contact
-        </a>
+          <Send className="h-4 w-4" aria-hidden="true" /> Contact
+        </ContactButton>
         <a
           href="#work"
           className="inline-flex items-center gap-2 rounded-full bg-foreground/[0.06] px-4 py-2 text-sm text-foreground outline-none transition-all duration-200 ease-out hover:bg-foreground/[0.1] active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-foreground/20 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
@@ -463,15 +580,13 @@ function SubPageTopBar({
           <CornerDownLeft className="h-4 w-4" aria-hidden="true" />
           Return
         </button>
-        <a
-          href={links.cal}
-          target="_blank"
-          rel="noreferrer"
+        <ContactButton
+          align="right"
           className="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-sm font-medium text-primary-foreground outline-none transition-all duration-200 ease-out hover:opacity-90 active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-foreground/25"
         >
-          <Mail className="h-4 w-4" aria-hidden="true" />
+          <Send className="h-4 w-4" aria-hidden="true" />
           Contact
-        </a>
+        </ContactButton>
       </div>
     </div>
   );
@@ -765,46 +880,38 @@ function Creatives({ onViewAll }: { onViewAll: () => void }) {
 
 const SONG_TITLE = "Nothing's Gonna Change My Love for You";
 const SONG_ARTIST = "George Benson";
-const SONG_URL =
-  "https://open.spotify.com/search/Nothing's%20Gonna%20Change%20My%20Love%20for%20You%20George%20Benson";
 
 function OnRepeatCard() {
   const [playing, setPlaying] = useState(false);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const songRef = useRef<SongHandle | null>(null);
 
   const toggle = () => {
-    if (!audioRef.current) {
-      // Drop the track at /public/on-repeat.mp3 to play it inline.
-      const a = new Audio("/on-repeat.mp3");
-      a.loop = true;
-      a.addEventListener("ended", () => setPlaying(false));
-      audioRef.current = a;
-    }
-    const a = audioRef.current;
     if (playing) {
-      a.pause();
+      songRef.current?.stop();
+      songRef.current = null;
       setPlaying(false);
       return;
     }
-    a.play()
-      .then(() => setPlaying(true))
-      .catch(() => {
-        // No local audio file — open the track on Spotify instead.
-        window.open(SONG_URL, "_blank", "noopener,noreferrer");
-      });
+    songRef.current = playSong(() => setPlaying(false));
+    setPlaying(true);
   };
 
+  useEffect(() => () => songRef.current?.stop(), []);
+
   return (
-    <button
-      type="button"
-      onClick={toggle}
-      aria-pressed={playing}
-      aria-label={`${playing ? "Pause" : "Play"} ${SONG_TITLE} by ${SONG_ARTIST}`}
-      className="group w-full rounded-3xl border border-border bg-card p-8 text-center outline-none transition-colors hover:bg-card/70 focus-visible:ring-2 focus-visible:ring-foreground/20 sm:text-left"
-    >
-      <div className="relative mx-auto h-28 w-28 sm:mx-0">
+    <div className="w-full rounded-3xl border border-border bg-card p-8 text-center sm:text-left">
+      {/* The vinyl itself is the control: click it to drop the tonearm and play. */}
+      <button
+        type="button"
+        onClick={toggle}
+        aria-pressed={playing}
+        aria-label={`${playing ? "Stop" : "Play"} ${SONG_TITLE} by ${SONG_ARTIST}`}
+        className="group relative mx-auto block h-28 w-28 rounded-full outline-none focus-visible:ring-2 focus-visible:ring-foreground/25 focus-visible:ring-offset-4 focus-visible:ring-offset-card sm:mx-0"
+      >
         <div
-          className={`h-full w-full rounded-full ${playing ? "animate-record" : ""}`}
+          className={`h-full w-full rounded-full transition-transform duration-500 group-hover:scale-[1.03] ${
+            playing ? "animate-record" : ""
+          }`}
           style={{
             background:
               "radial-gradient(circle at center, #e11d48 0 9%, #0a0a0a 9% 13%, #1c1c1c 13% 100%)",
@@ -819,29 +926,21 @@ function OnRepeatCard() {
               "repeating-radial-gradient(circle at center, rgba(255,255,255,0.05) 0 1px, transparent 1px 4px)",
           }}
         />
-        <span className="absolute left-1/2 top-1/2 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-red-600 ring-2 ring-black/50" />
+        <span className="pointer-events-none absolute left-1/2 top-1/2 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-red-600 ring-2 ring-black/50" />
+        {/* White tonearm — swings onto the record while the song plays. */}
         <span
-          className={`absolute -right-2 h-20 w-1.5 origin-top rounded-full bg-neutral-300 transition-transform duration-300 ${
-            playing ? "-top-3 rotate-[26deg]" : "-top-4 rotate-[10deg]"
+          className={`pointer-events-none absolute -right-2 h-20 w-1.5 origin-top rounded-full bg-neutral-300 shadow-sm transition-all duration-500 ease-out ${
+            playing ? "-top-3 rotate-[26deg]" : "-top-5 rotate-[-8deg]"
           }`}
-        />
-        <span className="absolute -bottom-1 -right-1 flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-md transition-transform group-hover:scale-105">
-          {playing ? (
-            <Pause className="h-4 w-4" aria-hidden="true" />
-          ) : (
-            <Play className="h-4 w-4 translate-x-[1px]" aria-hidden="true" />
-          )}
+        >
+          <span className="absolute -top-1 left-1/2 h-3 w-3 -translate-x-1/2 rounded-full bg-neutral-400" />
         </span>
-      </div>
+      </button>
       <h3 className="mt-6 text-xl font-semibold">On repeat</h3>
       <p className="mt-2 text-[15px] leading-relaxed text-muted-foreground">
         {onRepeat}
       </p>
-      <p className="mt-3 text-[13px] font-medium text-foreground/80">
-        {playing ? "♫ Now playing" : "▶ Tap to play"} — {SONG_TITLE}
-        <span className="text-muted-foreground"> · {SONG_ARTIST}</span>
-      </p>
-    </button>
+    </div>
   );
 }
 
@@ -849,12 +948,10 @@ function AboutMeSection() {
   return (
     <section className="grid items-start gap-10 pt-16 md:grid-cols-[1fr_300px]">
       <div>
-        <SectionHeading eyebrow="About" title="about me" />
-        <p className="mt-8 text-[17px] leading-relaxed text-foreground/85">
-          Hi, I'm Priti — a Senior Product Designer at Tata 1mg, recovering
-          chemical engineer, and lifelong tinkerer.
+        <p className="mb-8 text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
+          About
         </p>
-        <div className="mt-8">
+        <div>
           <p className="text-[15px] font-semibold text-foreground">
             these days I'm learning:
           </p>
@@ -882,7 +979,7 @@ function WorkingWithMe() {
       <div className="mt-10 grid items-start gap-10 md:grid-cols-[1fr_300px]">
         <div className="space-y-7">
           {principles.map((p) => (
-            <p key={p.tag} className="text-[16px] leading-relaxed text-foreground/85">
+            <p key={p.tag} className="text-[15px] leading-relaxed text-foreground/85">
               <span
                 className={`mr-2 inline-block rounded-md border px-2 py-0.5 text-[15px] font-medium ${p.tagClass}`}
               >
@@ -990,7 +1087,7 @@ function FloatingAsk({
       <button
         type="button"
         onClick={onOpenAsk}
-        className="inline-flex items-center gap-2 rounded-full bg-primary text-primary-foreground px-5 py-2.5 text-sm font-medium shadow-lg shadow-black/15 outline-none transition duration-200 ease-out hover:opacity-90 active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-foreground/25 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+        className="group inline-flex items-center gap-2 rounded-full bg-primary text-primary-foreground px-5 py-2.5 text-sm font-medium shadow-lg shadow-black/15 outline-none transition duration-200 ease-out hover:opacity-90 active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-foreground/25 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
       >
         <Sparkle /> Ask AI
       </button>
