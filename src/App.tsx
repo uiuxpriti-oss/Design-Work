@@ -45,8 +45,6 @@ import {
   LayoutGrid,
   Droplets,
   GitBranch,
-  Images,
-  Eye,
   TrendingUp,
   Type,
   Palette,
@@ -621,114 +619,24 @@ function Work({
 }) {
   return (
     <section id="work" className="space-y-6">
-      {HOME_PROJECTS.map((project) => (
-        <ProjectCard key={project.id} project={project} onOpen={onOpen} />
-      ))}
-      <MoreWorkFolder onViewAll={onViewAll} />
-    </section>
-  );
-}
-
-// Subtle film-grain used on the folder front, matching the reference texture.
-const GRAIN =
-  "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E\")";
-
-// "More [folder] Work" — a small folder whose cards fan out and a primary
-// Contact-style pill appears on hover; clicking anywhere opens the full archive.
-function MoreWorkFolder({ onViewAll }: { onViewAll: () => void }) {
-  const [hover, setHover] = useState(false);
-  const cards = [
-    {
-      grad: "from-[#d6e0f7] to-[#c3d0f2]",
-      rest: "translate(calc(-50% - 6px), 4px) rotate(-4deg)",
-      hov: "translate(calc(-50% - 42px), -36px) rotate(-11deg) scale(0.82)",
-      kind: "plain" as const,
-    },
-    {
-      grad: "from-[#c8d1f4] to-[#b4c0ef]",
-      rest: "translate(calc(-50% + 8px), 2px) rotate(5deg)",
-      hov: "translate(calc(-50% + 40px), -34px) rotate(11deg) scale(0.82)",
-      kind: "plain" as const,
-    },
-    {
-      grad: "from-[#f7f1d9] to-[#efe5c2]",
-      rest: "translate(-50%, -2px) rotate(0deg)",
-      hov: "translate(-50%, -46px) rotate(-1deg) scale(0.82)",
-      kind: "cream" as const,
-    },
-  ];
-  const word =
-    "text-[12px] font-medium uppercase tracking-[0.14em] text-muted-foreground";
-  return (
-    <div className="flex justify-center overflow-hidden pt-6">
-      <div className="origin-center -my-2 scale-[0.85] sm:my-0 sm:scale-100">
+      <div className="flex items-start justify-between gap-4">
+        <SectionHeading eyebrow="Work" title="Selected work" />
         <button
           type="button"
           onClick={onViewAll}
-          onMouseEnter={() => setHover(true)}
-          onMouseLeave={() => setHover(false)}
-          onFocus={() => setHover(true)}
-          onBlur={() => setHover(false)}
-          aria-label="View all projects"
-          className="group flex items-center gap-2.5 rounded-2xl outline-none focus-visible:ring-2 focus-visible:ring-foreground/20 focus-visible:ring-offset-4 focus-visible:ring-offset-background"
+          className="group mt-1 inline-flex shrink-0 items-center gap-2 rounded-full bg-foreground/[0.06] px-4 py-2 text-sm font-medium text-foreground outline-none transition-all duration-200 ease-out hover:bg-foreground/[0.1] active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-foreground/20 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
         >
-          <span className={word}>More</span>
-
-          <div className="relative h-40 w-56 shrink-0">
-            {/* Folder back tab (macOS slant) + back panel */}
-            <div
-              className="absolute left-[7%] top-[3%] h-[20%] w-[44%] rounded-tl-xl bg-gradient-to-b from-[#e7e7e7] to-[#d8d8d8]"
-              style={{ clipPath: "polygon(0 0, 74% 0, 100% 100%, 0 100%)" }}
-            />
-            <div className="absolute inset-x-0 bottom-0 top-[17%] rounded-[18px] bg-gradient-to-b from-[#e6e6e6] to-[#d4d4d4]" />
-
-            {/* Peeking project cards (behind the folder front) */}
-            {cards.map((c, i) => (
-              <div
-                key={i}
-                className={`absolute bottom-[26%] left-1/2 h-[50%] w-[64%] overflow-hidden rounded-xl bg-gradient-to-br ${c.grad} shadow-md ring-2 ring-white transition-transform duration-500 ease-out`}
-                style={{ transform: hover ? c.hov : c.rest }}
-              >
-                {c.kind === "cream" && (
-                  <>
-                    <span className="absolute left-[32%] top-1.5 h-2.5 w-[2px] rounded-full bg-neutral-900/70" />
-                    <span className="absolute left-[62%] top-1.5 h-2.5 w-[2px] rounded-full bg-neutral-900/70" />
-                  </>
-                )}
-              </div>
-            ))}
-
-            {/* Folder front face + grain */}
-            <div className="absolute inset-x-0 bottom-0 top-[28%] overflow-hidden rounded-[18px] bg-gradient-to-b from-[#fbfbfb] to-[#e3e3e3] shadow-[0_10px_26px_rgba(0,0,0,0.13)] ring-1 ring-black/[0.03]">
-              <span
-                className="pointer-events-none absolute inset-0 opacity-[0.2] mix-blend-multiply"
-                style={{ backgroundImage: GRAIN }}
-                aria-hidden="true"
-              />
-            </div>
-
-            {/* Resting state icon */}
-            <Images
-              className={`absolute left-1/2 top-[64%] h-6 w-6 -translate-x-1/2 -translate-y-1/2 text-neutral-400 transition-opacity duration-300 ${
-                hover ? "opacity-0" : "opacity-100"
-              }`}
-              aria-hidden="true"
-            />
-
-            {/* Hover: primary Contact-style pill */}
-            <span
-              className={`absolute left-1/2 top-[64%] flex -translate-x-1/2 -translate-y-1/2 items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-lg transition-all duration-300 ${
-                hover ? "scale-100 opacity-100" : "scale-90 opacity-0"
-              }`}
-            >
-              View <Eye className="h-4 w-4" aria-hidden="true" />
-            </span>
-          </div>
-
-          <span className={word}>Work</span>
+          View all
+          <ArrowRight
+            className="h-4 w-4 transition-transform group-hover:translate-x-0.5"
+            aria-hidden="true"
+          />
         </button>
       </div>
-    </div>
+      {HOME_PROJECTS.map((project) => (
+        <ProjectCard key={project.id} project={project} onOpen={onOpen} />
+      ))}
+    </section>
   );
 }
 
