@@ -324,14 +324,16 @@ function useTheme() {
   return { dark, toggle: () => setDark((v) => !v) };
 }
 
-function ThemeToggle() {
+function ThemeToggle({ scrolled = false }: { scrolled?: boolean }) {
   const { dark, toggle } = useTheme();
   return (
     <button
       type="button"
       onClick={toggle}
       aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}
-      className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-transparent bg-foreground/[0.06] text-foreground/80 outline-none transition-colors duration-200 hover:bg-foreground/[0.1] hover:text-foreground focus-visible:ring-2 focus-visible:ring-foreground/20"
+      className={`inline-flex h-9 w-9 items-center justify-center rounded-full text-foreground/80 outline-none transition-colors duration-300 hover:bg-foreground/[0.1] hover:text-foreground focus-visible:ring-2 focus-visible:ring-foreground/20 ${
+        scrolled ? NAV_SOLID : "border border-transparent bg-foreground/[0.06]"
+      }`}
     >
       {dark ? (
         <Sun className="h-[18px] w-[18px]" aria-hidden="true" />
@@ -424,12 +426,14 @@ function Header({
           </div>
         </div>
         <div className="flex items-center gap-1 sm:gap-2">
-          <ThemeToggle />
+          <ThemeToggle scrolled={scrolled} />
           <a
             href={links.cv}
             target="_blank"
             rel="noreferrer"
-            className="hidden items-center gap-1.5 rounded-full border border-transparent bg-foreground/[0.06] px-3 py-2 text-sm font-medium text-foreground outline-none transition-colors duration-300 hover:bg-foreground/[0.1] focus-visible:ring-2 focus-visible:ring-foreground/25 sm:inline-flex sm:px-3.5"
+            className={`hidden items-center gap-1.5 rounded-full px-3 py-2 text-sm font-medium text-foreground outline-none transition-colors duration-300 hover:bg-foreground/[0.1] focus-visible:ring-2 focus-visible:ring-foreground/25 sm:inline-flex sm:px-3.5 ${
+              scrolled ? NAV_SOLID : "border border-transparent bg-foreground/[0.06]"
+            }`}
           >
             <FileText className="h-4 w-4" aria-hidden="true" /> CV
           </a>
