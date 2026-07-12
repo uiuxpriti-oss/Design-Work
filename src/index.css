@@ -12,6 +12,19 @@
     --primary-foreground: 0 0% 100%;
     --muted-foreground: 30 6% 44%;
     --border: 40 8% 90%;
+    color-scheme: light;
+  }
+
+  :root.dark {
+    /* Warm near-black dark theme */
+    --background: 24 10% 7%;
+    --foreground: 40 10% 92%;
+    --card: 24 8% 12%;
+    --primary: 40 10% 92%;
+    --primary-foreground: 24 12% 8%;
+    --muted-foreground: 40 5% 58%;
+    --border: 30 6% 20%;
+    color-scheme: dark;
   }
 
   * {
@@ -28,6 +41,9 @@
     color: hsl(var(--foreground));
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
+    transition:
+      background-color 0.3s ease,
+      color 0.3s ease;
   }
 }
 

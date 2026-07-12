@@ -61,6 +61,8 @@ import {
   FlaskConical,
   Smartphone,
   Lightbulb,
+  Sun,
+  Moon,
   type LucideIcon,
 } from "lucide-react";
 import {
@@ -298,6 +300,40 @@ function useActiveSection(ids: string[]) {
   return [active, selectActive] as const;
 }
 
+function useTheme() {
+  const [dark, setDark] = useState(() => {
+    if (typeof document === "undefined") return false;
+    return document.documentElement.classList.contains("dark");
+  });
+  useEffect(() => {
+    document.documentElement.classList.toggle("dark", dark);
+    try {
+      localStorage.setItem("theme", dark ? "dark" : "light");
+    } catch {
+      /* ignore */
+    }
+  }, [dark]);
+  return { dark, toggle: () => setDark((v) => !v) };
+}
+
+function ThemeToggle() {
+  const { dark, toggle } = useTheme();
+  return (
+    <button
+      type="button"
+      onClick={toggle}
+      aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}
+      className="inline-flex h-9 w-9 items-center justify-center rounded-full text-foreground/70 outline-none transition-colors duration-200 hover:bg-foreground/[0.06] hover:text-foreground focus-visible:ring-2 focus-visible:ring-foreground/20"
+    >
+      {dark ? (
+        <Sun className="h-[18px] w-[18px]" aria-hidden="true" />
+      ) : (
+        <Moon className="h-[18px] w-[18px]" aria-hidden="true" />
+      )}
+    </button>
+  );
+}
+
 function Header({
   page,
   onOpenAsk,
@@ -379,23 +415,26 @@ function Header({
             })}
           </div>
         </div>
-        {scrolled ? (
-          <ContactButton
-            align="right"
-            className="inline-flex items-center gap-1.5 rounded-full bg-primary px-3 py-2 text-sm font-medium text-primary-foreground shadow-sm outline-none transition-all duration-300 ease-out hover:opacity-90 active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-foreground/25 sm:px-3.5"
-          >
-            <Send className="h-4 w-4" aria-hidden="true" />{" "}
-            <span className="hidden sm:inline">Contact</span>
-          </ContactButton>
-        ) : (
-          <button
-            type="button"
-            onClick={onOpenAsk}
-            className="group inline-flex items-center gap-1.5 rounded-full border border-transparent px-3 py-2 text-sm text-foreground transition-colors duration-300 hover:opacity-70 sm:px-3.5"
-          >
-            <Sparkle /> <span className="hidden sm:inline">Ask AI</span>
-          </button>
-        )}
+        <div className="flex items-center gap-1 sm:gap-2">
+          <ThemeToggle />
+          {scrolled ? (
+            <ContactButton
+              align="right"
+              className="inline-flex items-center gap-1.5 rounded-full bg-primary px-3 py-2 text-sm font-medium text-primary-foreground shadow-sm outline-none transition-all duration-300 ease-out hover:opacity-90 active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-foreground/25 sm:px-3.5"
+            >
+              <Send className="h-4 w-4" aria-hidden="true" />{" "}
+              <span className="hidden sm:inline">Contact</span>
+            </ContactButton>
+          ) : (
+            <button
+              type="button"
+              onClick={onOpenAsk}
+              className="group inline-flex items-center gap-1.5 rounded-full border border-transparent px-3 py-2 text-sm text-foreground transition-colors duration-300 hover:opacity-70 sm:px-3.5"
+            >
+              <Sparkle /> <span className="hidden sm:inline">Ask AI</span>
+            </button>
+          )}
+        </div>
       </nav>
     </header>
   );
@@ -619,12 +658,14 @@ function Work({
 }) {
   return (
     <section id="work" className="space-y-6">
-      <div className="flex items-start justify-between gap-4">
-        <SectionHeading eyebrow="Work" title="Selected work" />
+      <div className="flex items-center justify-between gap-4">
+        <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
+          Selected Work
+        </p>
         <button
           type="button"
           onClick={onViewAll}
-          className="group mt-1 inline-flex shrink-0 items-center gap-2 rounded-full bg-foreground/[0.06] px-4 py-2 text-sm font-medium text-foreground outline-none transition-all duration-200 ease-out hover:bg-foreground/[0.1] active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-foreground/20 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+          className="group inline-flex shrink-0 items-center gap-2 rounded-full bg-foreground/[0.06] px-4 py-2 text-sm font-medium text-foreground outline-none transition-all duration-200 ease-out hover:bg-foreground/[0.1] active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-foreground/20 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
         >
           View all
           <ArrowRight
@@ -801,9 +842,15 @@ function CaseStudyPage({
       </button>
 
       <header className="mt-8">
-        <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
-          {cs.eyebrow}
-        </p>
+        <div className="flex flex-wrap items-center gap-3">
+          <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
+            {cs.eyebrow}
+          </p>
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-300/50 bg-amber-100/60 px-2.5 py-1 text-[11px] font-medium text-amber-800 dark:border-amber-400/30 dark:bg-amber-400/10 dark:text-amber-300">
+            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-amber-500" />
+            In progress
+          </span>
+        </div>
         <h1 className="mt-3 text-3xl font-semibold tracking-tight sm:text-5xl">
           {project.title}
         </h1>
