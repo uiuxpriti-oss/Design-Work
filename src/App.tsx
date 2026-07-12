@@ -515,7 +515,12 @@ function SideNav({
 
 function Hero() {
   return (
-    <section id="home" className="scroll-mt-24 pt-14 pb-12 sm:pt-16 sm:pb-14 xl:pt-20 xl:pb-16">
+    <section id="home" className="relative scroll-mt-24 overflow-hidden">
+      <div
+        className="pointer-events-none absolute inset-0 bg-gradient-to-r from-orange-100/70 via-background to-emerald-100/70 opacity-80 dark:from-orange-500/10 dark:via-background dark:to-emerald-500/10 dark:opacity-100"
+        aria-hidden="true"
+      />
+      <div className="relative mx-auto max-w-[52rem] px-6 pt-14 pb-12 sm:pt-16 sm:pb-14 xl:pt-20 xl:pb-16">
       <p className="text-sm font-medium text-foreground">Priti Jani</p>
       <div className="mb-6 mt-2">
         <span className="inline-flex items-center gap-2 rounded-full bg-blue-100 px-3.5 py-1.5 text-[13px] font-medium text-blue-600 dark:bg-blue-500/15 dark:text-blue-400">
@@ -547,6 +552,7 @@ function Hero() {
         >
           View work
         </a>
+      </div>
       </div>
     </section>
   );
@@ -1836,13 +1842,12 @@ function BackToTop() {
 
 function FooterCTA() {
   return (
-    <section className="mx-auto mt-24 max-w-[64rem] px-6">
-      <div className="relative overflow-hidden rounded-[28px] border border-border">
-        <div
-          className="pointer-events-none absolute inset-0 bg-gradient-to-r from-orange-100/70 via-background to-emerald-100/70 opacity-80 dark:from-orange-500/10 dark:via-background dark:to-emerald-500/10 dark:opacity-100"
-          aria-hidden="true"
-        />
-        <div className="relative mx-auto max-w-[52rem] px-6 py-20 text-center sm:py-24">
+    <section className="relative mt-24 overflow-hidden">
+      <div
+        className="pointer-events-none absolute inset-0 bg-gradient-to-r from-orange-100/70 via-background to-emerald-100/70 opacity-80 dark:from-orange-500/10 dark:via-background dark:to-emerald-500/10 dark:opacity-100"
+        aria-hidden="true"
+      />
+      <div className="relative mx-auto max-w-[52rem] px-6 py-20 text-center sm:py-24">
         <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">
           Let&apos;s build something together{" "}
           <span className="text-foreground/50" aria-hidden="true">
@@ -1868,7 +1873,6 @@ function FooterCTA() {
           >
             Send an email
           </a>
-        </div>
         </div>
       </div>
     </section>
@@ -2264,9 +2268,7 @@ export default function App() {
           <>
             <SideNav />
             <main>
-              <div className="mx-auto max-w-[52rem] px-6">
-                <Hero />
-              </div>
+              <Hero />
               <FocusAreas />
               <div className="mx-auto max-w-[52rem] px-6">
                 <Work onViewAll={() => openProjects("case")} onOpen={openCase} />
