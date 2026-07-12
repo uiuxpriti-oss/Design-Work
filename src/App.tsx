@@ -250,7 +250,6 @@ function ContactButton({
 const NAV: { id: string; label: string; icon: LucideIcon }[] = [
   { id: "home", label: "Home", icon: Home },
   { id: "work", label: "Work", icon: Inbox },
-  { id: "skills-tools", label: "Skills & Tools", icon: Sparkles },
   { id: "about", label: "About", icon: CircleUserRound },
 ];
 
@@ -302,23 +301,19 @@ function Header({
   onOpenAsk,
   onHome,
   onWork,
-  onSkills,
   onAbout,
 }: {
   page: "home" | "projects" | "about";
   onOpenAsk: () => void;
   onHome: () => void;
   onWork: () => void;
-  onSkills: () => void;
   onAbout: () => void;
 }) {
   // Drop a photo at /public/avatar.jpg to show it here; falls back to the dot.
   const avatar = "/avatar.jpg";
   const [avatarOk, setAvatarOk] = useState(true);
-  // Scroll-spy only matters on the home page (Home vs Skills & Tools).
-  const [homeActive, selectHome] = useActiveSection(["home", "skills-tools"]);
   const active =
-    page === "projects" ? "work" : page === "about" ? "about" : homeActive;
+    page === "projects" ? "work" : page === "about" ? "about" : "home";
   const [scrolled, setScrolled] = useState(false);
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -327,17 +322,9 @@ function Header({
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
   const go = (id: string) => {
-    if (id === "home") {
-      onHome();
-      if (page === "home") selectHome("home");
-    } else if (id === "work") {
-      onWork();
-    } else if (id === "skills-tools") {
-      onSkills();
-      if (page === "home") selectHome("skills-tools");
-    } else {
-      onAbout();
-    }
+    if (id === "home") onHome();
+    else if (id === "work") onWork();
+    else onAbout();
   };
   return (
     <header className="sticky top-0 z-30">
@@ -1669,14 +1656,6 @@ export default function App() {
       setPage("home");
     }
   };
-  const goSkills = () => {
-    if (page === "home") {
-      document.getElementById("skills-tools")?.scrollIntoView({ behavior: "smooth" });
-    } else {
-      setScrollTarget("skills-tools");
-      setPage("home");
-    }
-  };
   useEffect(() => {
     // On page change, jump to the target section (or top). Run after layout
     // settles (double rAF) and bypass CSS smooth-scroll for an instant reset.
@@ -1712,7 +1691,6 @@ export default function App() {
           onOpenAsk={() => setAskOpen(true)}
           onHome={goHome}
           onWork={() => openProjects("case")}
-          onSkills={goSkills}
           onAbout={() => setPage("about")}
         />
         {page === "home" ? (
