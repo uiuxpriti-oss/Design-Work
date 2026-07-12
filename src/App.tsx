@@ -331,7 +331,7 @@ function ThemeToggle() {
       type="button"
       onClick={toggle}
       aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}
-      className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border bg-card text-foreground/80 shadow-sm outline-none transition-colors duration-200 hover:bg-foreground/[0.06] hover:text-foreground focus-visible:ring-2 focus-visible:ring-foreground/20"
+      className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-transparent bg-foreground/[0.06] text-foreground/80 outline-none transition-colors duration-200 hover:bg-foreground/[0.1] hover:text-foreground focus-visible:ring-2 focus-visible:ring-foreground/20"
     >
       {dark ? (
         <Sun className="h-[18px] w-[18px]" aria-hidden="true" />
@@ -429,7 +429,7 @@ function Header({
             href={links.cv}
             target="_blank"
             rel="noreferrer"
-            className="hidden items-center gap-1.5 rounded-full border border-border bg-card px-3 py-2 text-sm font-medium text-foreground shadow-sm outline-none transition-colors duration-300 hover:bg-foreground/[0.06] focus-visible:ring-2 focus-visible:ring-foreground/25 sm:inline-flex sm:px-3.5"
+            className="hidden items-center gap-1.5 rounded-full border border-transparent bg-foreground/[0.06] px-3 py-2 text-sm font-medium text-foreground outline-none transition-colors duration-300 hover:bg-foreground/[0.1] focus-visible:ring-2 focus-visible:ring-foreground/25 sm:inline-flex sm:px-3.5"
           >
             <FileText className="h-4 w-4" aria-hidden="true" /> CV
           </a>
