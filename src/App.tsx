@@ -1404,34 +1404,58 @@ function Creatives({ onViewAll }: { onViewAll: () => void }) {
 
 const SONG_TITLE = "Nothing's Gonna Change My Love for You";
 const SONG_ARTIST = "George Benson";
-const SONG_EMBED =
-  "https://open.spotify.com/embed/track/0vB4Vd6PtkJSEnWsmqATnZ?utm_source=generator";
-const SONG_LINK = "https://open.spotify.com/track/0vB4Vd6PtkJSEnWsmqATnZ";
+const SONG_SRC =
+  "https://framerusercontent.com/assets/dbfXhxrq9gcV71LtkTp42qHE.mp4";
 
 function OnRepeatCard() {
-  const [open, setOpen] = useState(false);
+  const [playing, setPlaying] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  const toggle = () => {
+    const a = audioRef.current;
+    if (!a) return;
+    if (playing) {
+      a.pause();
+      setPlaying(false);
+      return;
+    }
+    a.play()
+      .then(() => setPlaying(true))
+      .catch(() => setPlaying(false));
+  };
+
+  useEffect(() => () => audioRef.current?.pause(), []);
 
   return (
-    <div className="w-full rounded-3xl border border-border bg-card p-6 text-center transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md sm:text-left">
-      {/* The vinyl is the control: click it to drop the tonearm and reveal the player. */}
+    <div
+      className="w-full rounded-3xl border border-border p-6 text-center transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md sm:text-left"
+      style={{ backgroundColor: "rgba(238, 241, 245, 0.3)" }}
+    >
+      <audio
+        ref={audioRef}
+        src={SONG_SRC}
+        loop
+        preload="metadata"
+        onEnded={() => setPlaying(false)}
+      />
+      {/* The vinyl is the control: click it to drop the tonearm and play. */}
       <button
         type="button"
-        onClick={() => setOpen((v) => !v)}
-        aria-pressed={open}
-        aria-expanded={open}
-        aria-label={`${open ? "Hide" : "Play"} ${SONG_TITLE} by ${SONG_ARTIST}`}
+        onClick={toggle}
+        aria-pressed={playing}
+        aria-label={`${playing ? "Pause" : "Play"} ${SONG_TITLE} by ${SONG_ARTIST}`}
         className="group relative mx-auto block h-24 w-24 rounded-full outline-none focus-visible:ring-2 focus-visible:ring-foreground/25 focus-visible:ring-offset-4 focus-visible:ring-offset-card sm:mx-0"
       >
         {/* Warm glow while playing */}
         <span
           className={`pointer-events-none absolute -inset-1.5 rounded-full bg-rose-500/25 blur-md transition-opacity duration-500 ${
-            open ? "animate-pulse opacity-100" : "opacity-0"
+            playing ? "animate-pulse opacity-100" : "opacity-0"
           }`}
           aria-hidden="true"
         />
         <div
           className={`relative h-full w-full rounded-full transition-transform duration-500 group-hover:scale-105 group-hover:rotate-3 group-active:scale-95 ${
-            open ? "animate-record" : ""
+            playing ? "animate-record" : ""
           }`}
           style={{
             background:
@@ -1450,16 +1474,16 @@ function OnRepeatCard() {
         <span className="pointer-events-none absolute left-1/2 top-1/2 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-red-600 ring-2 ring-black/50" />
         {/* Play/pause hint that pops in on hover */}
         <span className="pointer-events-none absolute left-1/2 top-1/2 flex h-8 w-8 -translate-x-1/2 -translate-y-1/2 scale-0 items-center justify-center rounded-full bg-black/55 text-white opacity-0 backdrop-blur-sm transition-all duration-200 group-hover:scale-100 group-hover:opacity-100">
-          {open ? (
+          {playing ? (
             <Pause className="h-4 w-4" aria-hidden="true" />
           ) : (
             <Play className="h-4 w-4 translate-x-[1px]" aria-hidden="true" />
           )}
         </span>
-        {/* White tonearm — swings onto the record while the player is open. */}
+        {/* White tonearm — swings onto the record while the song plays. */}
         <span
           className={`pointer-events-none absolute -right-1.5 h-16 w-1.5 origin-top rounded-full bg-neutral-300 shadow-sm transition-all duration-500 ease-out ${
-            open ? "-top-2 rotate-[26deg]" : "-top-4 rotate-[-8deg]"
+            playing ? "-top-2 rotate-[26deg]" : "-top-4 rotate-[-8deg]"
           }`}
         >
           <span className="absolute -top-1 left-1/2 h-2.5 w-2.5 -translate-x-1/2 rounded-full bg-neutral-400" />
@@ -1467,7 +1491,7 @@ function OnRepeatCard() {
       </button>
       <div className="mt-5 flex items-center justify-center gap-2 sm:justify-start">
         <h3 className="text-lg font-semibold">On repeat</h3>
-        {open && (
+        {playing && (
           <span className="flex h-3.5 items-end gap-[3px]" aria-hidden="true">
             {[0, 1, 2, 3].map((i) => (
               <span
@@ -1482,30 +1506,6 @@ function OnRepeatCard() {
       <p className="mt-2 text-[14px] leading-relaxed text-muted-foreground">
         {onRepeat}
       </p>
-      {/* Real track — plays via the Spotify embed (works on the live site).
-          The "Open in Spotify" link is a fallback for sandboxes that block it. */}
-      {open && (
-        <div className="mt-4">
-          <iframe
-            title={`${SONG_TITLE} by ${SONG_ARTIST}`}
-            src={SONG_EMBED}
-            width="100%"
-            height={152}
-            style={{ border: 0, borderRadius: 12 }}
-            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-            loading="lazy"
-          />
-          <a
-            href={SONG_LINK}
-            target="_blank"
-            rel="noreferrer"
-            className="mt-2 inline-flex items-center gap-1 text-[13px] text-muted-foreground transition-colors hover:text-foreground"
-          >
-            Open in Spotify
-            <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
-          </a>
-        </div>
-      )}
     </div>
   );
 }
