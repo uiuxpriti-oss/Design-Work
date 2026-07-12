@@ -833,3 +833,53 @@ export const quotes: string[] = [
   "Systems over screens",
   "Details people feel",
 ];
+
+// ---------------------------------------------------------------------------
+// Awards & accolades — edit names/issuers and drop certificate images into
+// /public/awards/. Card falls back to a gradient when no image is present.
+// ---------------------------------------------------------------------------
+
+export interface Award {
+  title: string;
+  issuer: string;
+  year: string;
+  description: string;
+  /** Certificate image under /public. Falls back to the gradient when missing. */
+  certificate?: string;
+  gradient: string;
+}
+
+export const awards: Award[] = [
+  {
+    title: "Honorable Mention",
+    issuer: "Awwwards",
+    year: "2024",
+    description: "Recognised for craft, motion, and interaction design on a B2B SaaS platform.",
+    certificate: "/awards/awwwards.jpg",
+    gradient: "from-indigo-200 via-blue-100 to-sky-100",
+  },
+  {
+    title: "UI Design Award",
+    issuer: "CSS Design Awards",
+    year: "2023",
+    description: "Awarded for a clean, accessible dashboard interface and design system.",
+    certificate: "/awards/cssda.jpg",
+    gradient: "from-emerald-200 via-teal-100 to-green-100",
+  },
+  {
+    title: "Design Excellence",
+    issuer: "Netlink Software",
+    year: "2024",
+    description: "Internal award for end-to-end product design impact across the org.",
+    certificate: "/awards/design-excellence.jpg",
+    gradient: "from-amber-200 via-orange-100 to-rose-100",
+  },
+  {
+    title: "UX Research Certification",
+    issuer: "Interaction Design Foundation",
+    year: "2022",
+    description: "Certified in user research, usability testing, and evaluation methods.",
+    certificate: "/awards/ux-research.jpg",
+    gradient: "from-rose-200 via-pink-100 to-fuchsia-100",
+  },
+];

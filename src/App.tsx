@@ -63,6 +63,8 @@ import {
   Lightbulb,
   Sun,
   Moon,
+  Award,
+  Maximize2,
   type LucideIcon,
 } from "lucide-react";
 import {
@@ -71,6 +73,7 @@ import {
   skillCategories,
   creatives,
   experience,
+  awards,
   quotes,
   links,
   learning,
@@ -1398,6 +1401,67 @@ function SkillsAndTools() {
   );
 }
 
+function AwardCard({ a }: { a: (typeof awards)[number] }) {
+  const [imgOk, setImgOk] = useState(true);
+  const hasImg = Boolean(a.certificate) && imgOk;
+  return (
+    <div className="group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-card transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md">
+      <a
+        href={a.certificate}
+        target={a.certificate ? "_blank" : undefined}
+        rel="noreferrer"
+        className="relative block aspect-[16/10] overflow-hidden border-b border-border bg-background/40 outline-none focus-visible:ring-2 focus-visible:ring-foreground/25"
+        aria-label={`View ${a.title} certificate`}
+      >
+        {hasImg ? (
+          <img
+            src={a.certificate}
+            alt={`${a.title} certificate`}
+            onError={() => setImgOk(false)}
+            loading="lazy"
+            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+          />
+        ) : (
+          <div className={`h-full w-full bg-gradient-to-br ${a.gradient}`} />
+        )}
+        {/* Hover overlay revealing the certificate */}
+        <span className="pointer-events-none absolute inset-0 flex items-center justify-center bg-black/0 opacity-0 transition-all duration-200 group-hover:bg-black/25 group-hover:opacity-100">
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-white/90 px-3 py-1.5 text-[12px] font-medium text-neutral-900 shadow-sm">
+            <Maximize2 className="h-3.5 w-3.5" aria-hidden="true" /> View certificate
+          </span>
+        </span>
+      </a>
+      <div className="flex items-start gap-3 p-5">
+        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-foreground/[0.06] text-foreground">
+          <Award className="h-5 w-5" aria-hidden="true" />
+        </span>
+        <div className="min-w-0">
+          <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
+            {a.issuer} · {a.year}
+          </p>
+          <h3 className="mt-1 text-[15px] font-semibold text-foreground">{a.title}</h3>
+          <p className="mt-1 text-[14px] leading-relaxed text-muted-foreground">
+            {a.description}
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Awards() {
+  return (
+    <section id="awards" className="mt-24 scroll-mt-24">
+      <SectionHeading eyebrow="Recognition" title="Awards & accolades" />
+      <div className="mt-8 grid gap-5 sm:grid-cols-2">
+        {awards.map((a) => (
+          <AwardCard key={a.title} a={a} />
+        ))}
+      </div>
+    </section>
+  );
+}
+
 function CreativeMarqueeRow({ reverse }: { reverse: boolean }) {
   const items = reverse ? [...creatives].reverse() : creatives;
   const line = [...items, ...items];
@@ -2196,6 +2260,7 @@ export default function App() {
               <div className="mx-auto max-w-[52rem] px-6">
                 <Work onViewAll={() => openProjects("case")} onOpen={openCase} />
                 <SkillsAndTools />
+                <Awards />
               </div>
             </main>
             <Creatives onViewAll={() => openProjects("creative")} />
