@@ -112,7 +112,11 @@ export interface CaseStudy {
   tags: { role: string[]; status: string[]; type: string[]; tools: string[] };
   meta: { role: string; timeline: string; team: string; tools: string };
   overview: string;
-  problem: { text: string; goals: string[] };
+  problem: {
+    text: string;
+    goals: string[];
+    stats?: { value: string; label: string }[];
+  };
   research: { text: string; findings: string[] };
   process: { step: string; text: string }[];
   solution: { text: string; highlights: { title: string; text: string }[] };
@@ -135,6 +139,7 @@ export const caseStudies: Record<string, CaseStudy> = {
     overview:
       "Punjab Land Records digitises services like Jamabandi, Mutation, and Fard requests. The legacy portal was dense and form-heavy, pushing most citizens toward agents. The goal was a self-serve experience clear enough for first-time, low-digital-literacy users.",
     problem: {
+      stats: [{"value":"80%","label":"couldn’t name the right service"},{"value":"1 in 3","label":"gave up and used an agent"},{"value":"#1 call","label":"‘where is my request?’"}],
       text:
         "Property records are high-stakes and unfamiliar. Users didn't know which service they needed, forms failed silently, and status was invisible after submitting — so people gave up or paid an agent.",
       goals: [
@@ -192,6 +197,7 @@ export const caseStudies: Record<string, CaseStudy> = {
     overview:
       "Avoda helps healthcare professionals showcase skills and get hired quickly. The core challenge was building trust fast — an employer needs to gauge a candidate's fit and credibility in seconds, and a worker needs onboarding that respects a busy shift schedule.",
     problem: {
+      stats: [{"value":"3 in 5","label":"abandoned onboarding"},{"value":"70%","label":"distrusted a single rating"},{"value":"38%","label":"profiles left incomplete"}],
       text:
         "Staffing apps optimise for volume, not trust. Profiles looked identical, credentials were hard to verify, and onboarding was too long for people working 12-hour shifts.",
       goals: [
@@ -249,6 +255,7 @@ export const caseStudies: Record<string, CaseStudy> = {
     overview:
       "Baladi Express bundles many verticals into a single app and website for the Qatar market. The design had to make switching between very different categories feel effortless while keeping search, cart, and checkout consistent across web and mobile.",
     problem: {
+      stats: [{"value":"61%","label":"got lost switching categories"},{"value":"1 in 4","label":"searches hit the wrong category"},{"value":"3→1","label":"apps users had to juggle"}],
       text:
         "Multi-category apps often feel like several apps stitched together. Users got lost switching between food and grocery, and search returned the wrong category's results.",
       goals: [
@@ -306,6 +313,7 @@ export const caseStudies: Record<string, CaseStudy> = {
     overview:
       "Cakes & Celebrations turns cake ordering into a joyful, guided experience. The design needed to balance a delightful, celebratory brand with a genuinely usable customisation and gifting flow.",
     problem: {
+      stats: [{"value":"58%","label":"felt overwhelmed by options"},{"value":"44%","label":"couldn’t find the gifting flow"},{"value":"33%","label":"abandoned the customiser"}],
       text:
         "Custom cake sites overwhelm people with options and hide the gifting flow. Users couldn't picture their cake or figure out how to send it to someone else.",
       goals: [
@@ -363,6 +371,7 @@ export const caseStudies: Record<string, CaseStudy> = {
     overview:
       "Tabnet's Comp Suite quantifies cyber risk in financial terms. The design had to make a technical, credibility-sensitive product feel precise and trustworthy to security leaders and executives alike.",
     problem: {
+      stats: [{"value":"9/10","label":"wanted proof over adjectives"},{"value":"2×","label":"longer sales conversations"},{"value":"46%","label":"bounced on jargon-heavy pages"}],
       text:
         "Security tooling either looks toy-like or drowns users in jargon. Tabnet needed a confident, data-driven identity that signalled rigour without alienating non-technical stakeholders.",
       goals: [
@@ -420,6 +429,7 @@ export const caseStudies: Record<string, CaseStudy> = {
     overview:
       "Advance Academic Web brings scattered school operations — students, employees, fees, attendance — into a single system. The design needed to make dense administrative data feel calm and glanceable for non-technical school staff.",
     problem: {
+      stats: [{"value":"4 hrs","label":"per monthly report, by hand"},{"value":"70%","label":"of data lived in spreadsheets"},{"value":"2","label":"metrics checked every day"}],
       text:
         "School admins juggled spreadsheets and disconnected tools. Key numbers were buried, and reports took hours to assemble by hand.",
       goals: [
@@ -477,6 +487,7 @@ export const caseStudies: Record<string, CaseStudy> = {
     overview:
       "LeadsDemos lets teams build and organise demo experiences — landing pages, dashboards, full sites — from one place. The design centred on a ‘My Sites’ hub that makes managing many demos feel light and organised.",
     problem: {
+      stats: [{"value":"60%","label":"of demos were near-duplicates"},{"value":"0","label":"single place to find them"},{"value":"2.8×","label":"wasted rebuild effort"}],
       text:
         "Sales teams recreated demos from scratch each time and lost track of versions. There was no single place to see, launch, or reuse existing demos.",
       goals: [
@@ -534,6 +545,7 @@ export const caseStudies: Record<string, CaseStudy> = {
     overview:
       "This tool listens to support calls and generates transcripts, customer and agent summaries, sentiment over time, and upsell ideas. The design had to make a dense, AI-generated screen feel calm, trustworthy, and skimmable.",
     problem: {
+      stats: [{"value":"55%","label":"of review time wasted"},{"value":"1 screen","label":"of untrusted AI text"},{"value":"30%","label":"of upsell signals missed"}],
       text:
         "AI outputs can feel like a wall of text you can't trust. Managers needed to grasp a call's outcome, sentiment, and next action in seconds — without reading the whole transcript.",
       goals: [

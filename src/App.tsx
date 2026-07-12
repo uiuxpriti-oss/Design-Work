@@ -259,7 +259,7 @@ const NAV: { id: string; label: string; icon: LucideIcon }[] = [
 
 // Solid pill for the scrolled nav — opaque so it stays readable over content
 // (glassmorphism washed out against the page cards).
-const NAV_SOLID = "border border-border bg-background shadow-sm";
+const NAV_SOLID = "border border-border bg-card shadow-sm";
 
 function useActiveSection(ids: string[]) {
   const [active, setActive] = useState(ids[0]);
@@ -404,7 +404,7 @@ function Header({
                   aria-current={isActive ? "page" : undefined}
                   className={`inline-flex items-center gap-1 whitespace-nowrap rounded-full px-3 py-1.5 text-[13px] font-medium leading-none outline-none transition duration-200 ease-out active:scale-[0.96] focus-visible:ring-2 focus-visible:ring-foreground/20 focus-visible:ring-offset-2 focus-visible:ring-offset-background sm:gap-1.5 sm:px-4 sm:py-2 sm:text-[15px] ${
                     isActive
-                      ? "bg-background text-foreground shadow-sm active:bg-background"
+                      ? "bg-background text-foreground shadow-sm ring-1 ring-black/[0.06] active:bg-background dark:ring-white/10"
                       : "text-foreground/70 hover:bg-foreground/[0.05] hover:text-foreground active:bg-foreground/[0.09]"
                   }`}
                 >
@@ -842,7 +842,7 @@ function renderRich(text: string) {
 function TagGroup({ label, items }: { label: string; items: string[] }) {
   return (
     <div>
-      <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-blue-600 dark:text-blue-400">
+      <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
         {label}
       </p>
       <div className="mt-3 flex flex-wrap gap-2">
@@ -971,7 +971,7 @@ function CaseStudyPage({
 
       <section id="cs-intro" className="mt-12 grid scroll-mt-24 gap-10 border-t border-border pt-10 md:grid-cols-[1fr_240px]">
         <div>
-          <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-blue-600 dark:text-blue-400">
+          <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
             Intro
           </p>
           <div className="mt-5 space-y-5 text-[16px] leading-relaxed text-foreground/85">
@@ -1000,6 +1000,20 @@ function CaseStudyPage({
             </li>
           ))}
         </ul>
+        {cs.problem.stats && cs.problem.stats.length > 0 && (
+          <div className="mt-10 grid grid-cols-1 gap-8 border-t border-border pt-8 sm:grid-cols-3">
+            {cs.problem.stats.map((st) => (
+              <div key={st.label}>
+                <p className="text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">
+                  {st.value}
+                </p>
+                <p className="mt-2 text-[14px] leading-snug text-muted-foreground">
+                  {st.label}
+                </p>
+              </div>
+            ))}
+          </div>
+        )}
       </CaseSection>
 
       <CaseSection id="cs-research" eyebrow="Research" title="What I learned">
@@ -1392,6 +1406,7 @@ const SONG_TITLE = "Nothing's Gonna Change My Love for You";
 const SONG_ARTIST = "George Benson";
 const SONG_EMBED =
   "https://open.spotify.com/embed/track/0vB4Vd6PtkJSEnWsmqATnZ?utm_source=generator";
+const SONG_LINK = "https://open.spotify.com/track/0vB4Vd6PtkJSEnWsmqATnZ";
 
 function OnRepeatCard() {
   const [open, setOpen] = useState(false);
@@ -1467,7 +1482,8 @@ function OnRepeatCard() {
       <p className="mt-2 text-[14px] leading-relaxed text-muted-foreground">
         {onRepeat}
       </p>
-      {/* Real track — plays via Spotify. Hit play in the embed. */}
+      {/* Real track — plays via the Spotify embed (works on the live site).
+          The "Open in Spotify" link is a fallback for sandboxes that block it. */}
       {open && (
         <div className="mt-4">
           <iframe
@@ -1479,6 +1495,15 @@ function OnRepeatCard() {
             allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
             loading="lazy"
           />
+          <a
+            href={SONG_LINK}
+            target="_blank"
+            rel="noreferrer"
+            className="mt-2 inline-flex items-center gap-1 text-[13px] text-muted-foreground transition-colors hover:text-foreground"
+          >
+            Open in Spotify
+            <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
+          </a>
         </div>
       )}
     </div>
