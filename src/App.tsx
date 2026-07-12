@@ -1682,6 +1682,45 @@ function BackToTop() {
   );
 }
 
+function FooterCTA() {
+  return (
+    <section className="relative mt-24 overflow-hidden">
+      <div
+        className="pointer-events-none absolute inset-0 bg-gradient-to-r from-orange-100/70 via-background to-emerald-100/70 opacity-80 dark:from-orange-500/10 dark:via-background dark:to-emerald-500/10 dark:opacity-100"
+        aria-hidden="true"
+      />
+      <div className="relative mx-auto max-w-[52rem] px-6 py-20 text-center sm:py-24">
+        <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">
+          Let&apos;s build something together{" "}
+          <span className="text-foreground/50" aria-hidden="true">
+            ✦
+          </span>
+        </h2>
+        <p className="mx-auto mt-4 max-w-lg text-[15px] leading-relaxed text-muted-foreground">
+          Whether you have a product that needs a refresh, a new idea that needs
+          shaping, or just want to talk design — I&apos;d love to hear from you.
+        </p>
+        <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+          <a
+            href={links.cal}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-orange-400 to-rose-400 px-6 py-3 text-sm font-medium text-white shadow-sm outline-none transition-all duration-200 ease-out hover:opacity-90 active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-foreground/25"
+          >
+            Book a call
+          </a>
+          <a
+            href={links.email}
+            className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-6 py-3 text-sm font-medium text-foreground outline-none transition-colors duration-200 hover:bg-card focus-visible:ring-2 focus-visible:ring-foreground/25"
+          >
+            Send an email
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function Footer() {
   const line = [...quotes, ...quotes];
   return (
@@ -2088,6 +2127,7 @@ export default function App() {
         ) : (
           <AboutPage />
         )}
+        <FooterCTA />
         <Footer />
       </div>
       <FloatingAsk onOpenAsk={() => setAskOpen(true)} hidden={askOpen} />
