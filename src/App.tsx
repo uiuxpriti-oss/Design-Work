@@ -2098,8 +2098,12 @@ function AskPanel({ open, onClose }: { open: boolean; onClose: () => void }) {
     >
       <div className="flex shrink-0 items-center justify-between border-b border-border px-5 py-4">
         <div className="flex items-center gap-2">
-          <Sparkles className="h-4 w-4 text-foreground" aria-hidden="true" />
-          <span className="text-[15px] font-medium">Ask Priti</span>
+          <span className="inline-flex items-center bg-gradient-to-r from-indigo-500 via-fuchsia-500 to-pink-500 bg-clip-text text-transparent">
+            <Sparkle />
+          </span>
+          <span className="bg-gradient-to-r from-indigo-500 via-fuchsia-500 to-pink-500 bg-clip-text text-[15px] font-semibold text-transparent">
+            Ask AI
+          </span>
           <span className="group relative flex h-4 w-4 cursor-help items-center justify-center rounded-full bg-foreground/10 text-muted-foreground">
             <Info className="h-3 w-3" aria-hidden="true" />
             <span className="pointer-events-none absolute left-0 top-full z-10 mt-2 w-64 -translate-x-1/4 rounded-xl bg-foreground px-3.5 py-2.5 text-[13px] leading-relaxed text-background opacity-0 shadow-lg transition-opacity duration-150 group-hover:opacity-100">
@@ -2162,12 +2166,16 @@ function AskPanel({ open, onClose }: { open: boolean; onClose: () => void }) {
                 </div>
               ))}
               {typing && (
-                <div className="flex max-w-[85%] items-center gap-2 rounded-2xl bg-background px-4 py-3">
-                  <span className="text-[13px] text-muted-foreground">Priti AI is thinking</span>
-                  <span className="flex items-center gap-1" aria-hidden="true">
-                    <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-muted-foreground/60 [animation-delay:-0.3s]" />
-                    <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-muted-foreground/60 [animation-delay:-0.15s]" />
-                    <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-muted-foreground/60" />
+                <div className="flex max-w-[85%] items-center gap-2.5 rounded-2xl bg-background px-4 py-3">
+                  <span className="flex items-center gap-1.5" aria-hidden="true">
+                    <span className="h-2.5 w-2.5 animate-loader-pulse rounded-[3px] bg-gradient-to-br from-indigo-500 to-fuchsia-500" />
+                    <span className="h-2.5 w-2.5 animate-loader-pulse rounded-full bg-gradient-to-br from-fuchsia-500 to-pink-500 [animation-delay:0.16s]" />
+                    <span className="inline-flex rotate-45">
+                      <span className="block h-2.5 w-2.5 animate-loader-pulse rounded-[2px] bg-gradient-to-br from-pink-500 to-indigo-500 [animation-delay:0.32s]" />
+                    </span>
+                  </span>
+                  <span className="bg-gradient-to-r from-indigo-500 via-fuchsia-500 to-pink-500 bg-clip-text text-[13px] font-medium text-transparent">
+                    Generating response…
                   </span>
                 </div>
               )}
