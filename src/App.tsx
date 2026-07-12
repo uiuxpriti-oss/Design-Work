@@ -534,10 +534,6 @@ function SideNav({
 }
 
 function Hero() {
-  const current = experience[0];
-  const previous = experience.slice(1, 3);
-  const shortName = (c: string) =>
-    c.replace(/\s+(LLP|Inc\.?|America Inc|Technology|Pvt\.? Ltd\.?)$/i, "").trim();
   const cardRef = useRef<HTMLDivElement>(null);
   const [tilt, setTilt] = useState({ rx: 0, ry: 0, on: false });
   const onMove = (e: ReactMouseEvent<HTMLDivElement>) => {
@@ -633,35 +629,6 @@ function Hero() {
                 LinkedIn
               </a>
             </p>
-
-            <div className="mt-6 flex flex-col gap-2.5">
-              <div className="flex items-center gap-2.5">
-                <span className="text-[13px] text-white/60">Currently at</span>
-                <span
-                  className={`grid h-6 w-6 shrink-0 place-items-center rounded-md text-[11px] font-semibold ${current.logo.className}`}
-                >
-                  {current.logo.text}
-                </span>
-                <span className="text-[13px] font-medium text-white/85">
-                  Netlink Software Group
-                </span>
-              </div>
-              <div className="flex items-center gap-2.5">
-                <span className="text-[13px] text-white/60">Previously</span>
-                {previous.map((job) => (
-                  <span key={job.company} className="flex items-center gap-1.5">
-                    <span
-                      className={`grid h-6 w-6 shrink-0 place-items-center rounded-md text-[11px] font-semibold ${job.logo.className}`}
-                    >
-                      {job.logo.text}
-                    </span>
-                    <span className="text-[13px] font-medium text-white/75">
-                      {shortName(job.company)}
-                    </span>
-                  </span>
-                ))}
-              </div>
-            </div>
           </div>
         </div>
       </div>
