@@ -419,7 +419,9 @@ function Hero() {
       <p className="text-sm font-medium text-foreground mb-4">Priti Jani</p>
       <p className="text-[17px] leading-relaxed text-foreground/90 max-w-xl">
         I'm a{" "}
-        <span className="bg-foreground/10 px-1.5 py-0.5 rounded">UI/UX designer</span>{" "}
+        <span className="rounded bg-blue-200/60 px-1.5 py-0.5 font-medium text-blue-600">
+          product designer
+        </span>{" "}
         with 3.5+ years of experience, focused on end-to-end product design for B2B
         SaaS and consumer products.
       </p>
@@ -1245,7 +1247,7 @@ function askReply(q: string): string {
   if (t.includes("yourself") || t.includes("about") || t.includes("who"))
     return ABOUT_PARAGRAPHS[0];
   if (t.includes("background") || t.includes("code") || t.includes("design") || t.includes("skill"))
-    return "I'm a UI/UX designer who also builds — design in Figma, Framer & Protopie, and engineering in React, TypeScript, Tailwind and more. See the Skills & Tools section.";
+    return "I'm a product designer who also builds — design in Figma, Framer & Protopie, and engineering in React, TypeScript, Tailwind and more. See the Skills & Tools section.";
   if (t.includes("experience") || t.includes("work") || t.includes("job"))
     return `Right now I'm a ${experience[0].role} at ${experience[0].company}. The Experience section has the full timeline.`;
   return "Thanks for asking! For anything specific, reach out via the Contact button — always happy to talk.";

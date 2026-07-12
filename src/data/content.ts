@@ -131,7 +131,7 @@ export interface Experience {
 
 export const experience: Experience[] = [
   {
-    role: "UI/UX Designer",
+    role: "Product Designer",
     period: "June 2024 – Present",
     present: true,
     description:
@@ -141,7 +141,7 @@ export const experience: Experience[] = [
     logo: { text: "N", className: "bg-[#1e56a0] text-white", src: "/logos/netlink.png" },
   },
   {
-    role: "UI/UX Designer",
+    role: "Product Designer",
     period: "Jul 2023 – Jun 2024",
     description:
       "Designed a SaaS product end-to-end in an agile team, built a scalable design system, and translated client ideas into intuitive, user-tested flows while strengthening brand identity.",
@@ -150,7 +150,7 @@ export const experience: Experience[] = [
     logo: { text: "S", className: "bg-[#e8502e] text-white", src: "/logos/shanti.png" },
   },
   {
-    role: "UI/UX & Graphic Designer",
+    role: "Product & Graphic Designer",
     period: "Aug 2022 – Jun 2023",
     description:
       "Delivered UI designs across web, mobile, e-commerce, and pitch decks with a focus on usability and brand impact.",
