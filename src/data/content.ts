@@ -851,35 +851,30 @@ export interface Award {
 
 export const awards: Award[] = [
   {
-    title: "Honorable Mention",
-    issuer: "Awwwards",
-    year: "2024",
-    description: "Recognised for craft, motion, and interaction design on a B2B SaaS platform.",
-    certificate: "/awards/awwwards.jpg",
-    gradient: "from-indigo-200 via-blue-100 to-sky-100",
-  },
-  {
-    title: "UI Design Award",
-    issuer: "CSS Design Awards",
+    title: "National Excellence Award",
+    issuer: "Indore Voyage",
     year: "2023",
-    description: "Awarded for a clean, accessible dashboard interface and design system.",
-    certificate: "/awards/cssda.jpg",
-    gradient: "from-emerald-200 via-teal-100 to-green-100",
-  },
-  {
-    title: "Design Excellence",
-    issuer: "Netlink Software",
-    year: "2024",
-    description: "Internal award for end-to-end product design impact across the org.",
-    certificate: "/awards/design-excellence.jpg",
+    description:
+      "Recognised nationally for outstanding magazine design: editorial layouts, typography, and visual storytelling for the Indore Voyage publication.",
+    certificate: "/awards/national-excellence.jpg",
     gradient: "from-amber-200 via-orange-100 to-rose-100",
   },
   {
-    title: "UX Research Certification",
-    issuer: "Interaction Design Foundation",
+    title: "Pinnacle Award",
+    issuer: "Netlink Software Group",
     year: "2022",
-    description: "Certified in user research, usability testing, and evaluation methods.",
-    certificate: "/awards/ux-research.jpg",
-    gradient: "from-rose-200 via-pink-100 to-fuchsia-100",
+    description:
+      "Awarded for delivery excellence on the SiriusXM products — acknowledged for design quality, cross-team collaboration, and on-time execution.",
+    certificate: "/awards/pinnacle-award.jpg",
+    gradient: "from-indigo-200 via-blue-100 to-sky-100",
+  },
+  {
+    title: "Best Performer",
+    issuer: "Lumenore",
+    year: "2023",
+    description:
+      "Recognised as best performer for consistent delivery quality, design leadership, and impactful contributions across key product initiatives.",
+    certificate: "/awards/best-performer.jpg",
+    gradient: "from-emerald-200 via-teal-100 to-green-100",
   },
 ];

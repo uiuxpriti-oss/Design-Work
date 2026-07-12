@@ -1,15 +1,14 @@
 # Award & certificate images
 
-Drop your certificate/award images here with these filenames. Each shows as a
-16:10 thumbnail that zooms on hover and opens full-size on click. Until a file
-exists, the card shows a gradient placeholder. Edit names/issuers/years in
-`src/data/content.ts` (the `awards` array).
+Drop your certificate images here with these filenames. Each floats in as a
+preview when you hover the award row (desktop) and opens full-size on click.
+Until a file exists, a gradient placeholder is shown. Edit the `awards` array
+in `src/data/content.ts` to change names, issuers, and descriptions.
 
-| File                     | Award (edit freely)          |
-| ------------------------ | ---------------------------- |
-| `awwwards.jpg`           | Awwwards — Honorable Mention |
-| `cssda.jpg`              | CSS Design Awards — UI Design|
-| `design-excellence.jpg`  | Design Excellence (Netlink)  |
-| `ux-research.jpg`        | UX Research Certification    |
+| File                       | Award                                   |
+| -------------------------- | --------------------------------------- |
+| `national-excellence.jpg`  | National Excellence Award — Indore Voyage |
+| `pinnacle-award.jpg`       | Pinnacle Award — Netlink Software Group  |
+| `best-performer.jpg`       | Best Performer — Lumenore                |
 
 `.png`/`.webp` also work — update the `certificate` paths in content.ts to match.

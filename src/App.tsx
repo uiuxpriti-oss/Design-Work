@@ -64,7 +64,6 @@ import {
   Sun,
   Moon,
   Award,
-  Maximize2,
   type LucideIcon,
 } from "lucide-react";
 import {
@@ -516,7 +515,7 @@ function SideNav({
 
 function Hero() {
   return (
-    <section id="home" className="scroll-mt-24 py-20 sm:py-28 xl:py-36">
+    <section id="home" className="scroll-mt-24 pt-20 pb-8 sm:pt-28 sm:pb-10 xl:pt-36 xl:pb-12">
       <p className="text-sm font-medium text-foreground">Priti Jani</p>
       <div className="mb-6 mt-2">
         <span className="inline-flex items-center gap-2 rounded-full bg-blue-100 px-3.5 py-1.5 text-[13px] font-medium text-blue-600 dark:bg-blue-500/15 dark:text-blue-400">
@@ -574,8 +573,8 @@ const SPECIALTIES = [
 function FocusAreas() {
   const row = [...SPECIALTIES, ...SPECIALTIES];
   return (
-    <section className="mt-16">
-      <div className="mx-auto max-w-6xl border-t border-border px-6 pt-10">
+    <section className="mt-6">
+      <div className="border-t border-border px-6 pt-10 sm:px-10">
         <div className="grid grid-cols-1 gap-x-8 gap-y-8 sm:grid-cols-2 lg:grid-cols-4">
           {FOCUS_AREAS.map((f) => (
             <div key={f.n} className="lg:border-l lg:border-border lg:pl-5">
@@ -1401,48 +1400,58 @@ function SkillsAndTools() {
   );
 }
 
-function AwardCard({ a }: { a: (typeof awards)[number] }) {
+function AwardRow({ a, n }: { a: (typeof awards)[number]; n: number }) {
   const [imgOk, setImgOk] = useState(true);
   const hasImg = Boolean(a.certificate) && imgOk;
   return (
-    <div className="group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-card transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md">
+    <div className="group relative border-t border-border">
       <a
         href={a.certificate}
         target={a.certificate ? "_blank" : undefined}
         rel="noreferrer"
-        className="relative block aspect-[16/10] overflow-hidden border-b border-border bg-background/40 outline-none focus-visible:ring-2 focus-visible:ring-foreground/25"
         aria-label={`View ${a.title} certificate`}
+        className="grid grid-cols-1 gap-x-8 gap-y-3 py-8 outline-none transition-colors focus-visible:bg-foreground/[0.02] sm:grid-cols-[1fr_1fr] sm:items-start"
       >
-        {hasImg ? (
-          <img
-            src={a.certificate}
-            alt={`${a.title} certificate`}
-            onError={() => setImgOk(false)}
-            loading="lazy"
-            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-          />
-        ) : (
-          <div className={`h-full w-full bg-gradient-to-br ${a.gradient}`} />
-        )}
-        {/* Hover overlay revealing the certificate */}
-        <span className="pointer-events-none absolute inset-0 flex items-center justify-center bg-black/0 opacity-0 transition-all duration-200 group-hover:bg-black/25 group-hover:opacity-100">
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-white/90 px-3 py-1.5 text-[12px] font-medium text-neutral-900 shadow-sm">
-            <Maximize2 className="h-3.5 w-3.5" aria-hidden="true" /> View certificate
+        <div className="flex gap-4">
+          <span className="pt-1 text-[13px] tabular-nums text-muted-foreground/70">
+            {String(n).padStart(2, "0")}
           </span>
-        </span>
-      </a>
-      <div className="flex items-start gap-3 p-5">
-        <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-foreground/[0.06] text-foreground">
-          <Award className="h-5 w-5" aria-hidden="true" />
-        </span>
-        <div className="min-w-0">
-          <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
-            {a.issuer} · {a.year}
-          </p>
-          <h3 className="mt-1 text-[15px] font-semibold text-foreground">{a.title}</h3>
-          <p className="mt-1 text-[14px] leading-relaxed text-muted-foreground">
+          <div>
+            <h3 className="text-xl font-semibold tracking-tight text-foreground transition-[font-style] group-hover:italic sm:text-2xl">
+              {a.title}
+            </h3>
+            <p className="mt-1.5 text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
+              {a.issuer}
+            </p>
+          </div>
+        </div>
+        <div className="flex items-start justify-between gap-6 sm:pl-2">
+          <p className="max-w-md text-[14px] leading-relaxed text-muted-foreground">
             {a.description}
           </p>
+          <span className="hidden shrink-0 items-center gap-1 pt-1 text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground transition-colors group-hover:text-foreground sm:inline-flex">
+            View
+            <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
+          </span>
+        </div>
+      </a>
+
+      {/* Certificate preview — floats in on hover (desktop) */}
+      <div className="pointer-events-none absolute right-0 top-1/2 z-20 hidden w-[300px] -translate-y-1/2 translate-x-6 scale-95 overflow-hidden rounded-xl bg-card opacity-0 shadow-2xl ring-1 ring-border transition-all duration-200 ease-out group-hover:translate-x-2 group-hover:scale-100 group-hover:opacity-100 xl:block">
+        <div className="aspect-[16/11] w-full overflow-hidden">
+          {hasImg ? (
+            <img
+              src={a.certificate}
+              alt={`${a.title} certificate`}
+              onError={() => setImgOk(false)}
+              loading="lazy"
+              className="h-full w-full object-cover"
+            />
+          ) : (
+            <div className={`flex h-full w-full items-center justify-center bg-gradient-to-br ${a.gradient}`}>
+              <Award className="h-8 w-8 text-foreground/30" aria-hidden="true" />
+            </div>
+          )}
         </div>
       </div>
     </div>
@@ -1453,9 +1462,9 @@ function Awards() {
   return (
     <section id="awards" className="mt-24 scroll-mt-24">
       <SectionHeading eyebrow="Recognition" title="Awards & accolades" />
-      <div className="mt-8 grid gap-5 sm:grid-cols-2">
-        {awards.map((a) => (
-          <AwardCard key={a.title} a={a} />
+      <div className="mt-8 border-b border-border">
+        {awards.map((a, i) => (
+          <AwardRow key={a.title} a={a} n={i + 1} />
         ))}
       </div>
     </section>
