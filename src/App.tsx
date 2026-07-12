@@ -605,33 +605,35 @@ function Work({ onViewAll }: { onViewAll: () => void }) {
 const GRAIN =
   "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E\")";
 
-// "More [folder] Work" — the folder's cards fan out (smaller) and a yellow View
-// pill appears on hover; clicking anywhere opens the full archive.
+// "More [folder] Work" — a small folder whose cards fan out and a primary
+// Contact-style pill appears on hover; clicking anywhere opens the full archive.
 function MoreWorkFolder({ onViewAll }: { onViewAll: () => void }) {
   const [hover, setHover] = useState(false);
   const cards = [
     {
       grad: "from-[#d6e0f7] to-[#c3d0f2]",
       rest: "translate(calc(-50% - 6px), 4px) rotate(-4deg)",
-      hov: "translate(calc(-50% - 54px), -46px) rotate(-11deg) scale(0.82)",
+      hov: "translate(calc(-50% - 42px), -36px) rotate(-11deg) scale(0.82)",
       kind: "plain" as const,
     },
     {
       grad: "from-[#c8d1f4] to-[#b4c0ef]",
       rest: "translate(calc(-50% + 8px), 2px) rotate(5deg)",
-      hov: "translate(calc(-50% + 52px), -44px) rotate(11deg) scale(0.82)",
+      hov: "translate(calc(-50% + 40px), -34px) rotate(11deg) scale(0.82)",
       kind: "plain" as const,
     },
     {
       grad: "from-[#f7f1d9] to-[#efe5c2]",
       rest: "translate(-50%, -2px) rotate(0deg)",
-      hov: "translate(-50%, -58px) rotate(-1deg) scale(0.82)",
+      hov: "translate(-50%, -46px) rotate(-1deg) scale(0.82)",
       kind: "cream" as const,
     },
   ];
+  const word =
+    "text-[12px] font-medium uppercase tracking-[0.14em] text-muted-foreground";
   return (
-    <div className="flex justify-center overflow-hidden pt-8">
-      <div className="origin-center -my-6 scale-[0.62] sm:my-0 sm:scale-100">
+    <div className="flex justify-center overflow-hidden pt-6">
+      <div className="origin-center -my-2 scale-[0.85] sm:my-0 sm:scale-100">
         <button
           type="button"
           onClick={onViewAll}
@@ -640,40 +642,38 @@ function MoreWorkFolder({ onViewAll }: { onViewAll: () => void }) {
           onFocus={() => setHover(true)}
           onBlur={() => setHover(false)}
           aria-label="View all projects"
-          className="group flex items-center gap-4 rounded-2xl outline-none focus-visible:ring-2 focus-visible:ring-foreground/20 focus-visible:ring-offset-4 focus-visible:ring-offset-background"
+          className="group flex items-center gap-2.5 rounded-2xl outline-none focus-visible:ring-2 focus-visible:ring-foreground/20 focus-visible:ring-offset-4 focus-visible:ring-offset-background"
         >
-          <span className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
-            More
-          </span>
+          <span className={word}>More</span>
 
-          <div className="relative h-52 w-72 shrink-0">
+          <div className="relative h-40 w-56 shrink-0">
             {/* Folder back tab (macOS slant) + back panel */}
             <div
-              className="absolute left-[7%] top-[3%] h-[20%] w-[44%] rounded-tl-2xl bg-gradient-to-b from-[#e7e7e7] to-[#d8d8d8]"
+              className="absolute left-[7%] top-[3%] h-[20%] w-[44%] rounded-tl-xl bg-gradient-to-b from-[#e7e7e7] to-[#d8d8d8]"
               style={{ clipPath: "polygon(0 0, 74% 0, 100% 100%, 0 100%)" }}
             />
-            <div className="absolute inset-x-0 bottom-0 top-[17%] rounded-[22px] bg-gradient-to-b from-[#e5e5e5] to-[#d3d3d3]" />
+            <div className="absolute inset-x-0 bottom-0 top-[17%] rounded-[18px] bg-gradient-to-b from-[#e6e6e6] to-[#d4d4d4]" />
 
             {/* Peeking project cards (behind the folder front) */}
             {cards.map((c, i) => (
               <div
                 key={i}
-                className={`absolute bottom-[26%] left-1/2 h-[50%] w-[64%] overflow-hidden rounded-2xl bg-gradient-to-br ${c.grad} shadow-md ring-2 ring-white transition-transform duration-500 ease-out`}
+                className={`absolute bottom-[26%] left-1/2 h-[50%] w-[64%] overflow-hidden rounded-xl bg-gradient-to-br ${c.grad} shadow-md ring-2 ring-white transition-transform duration-500 ease-out`}
                 style={{ transform: hover ? c.hov : c.rest }}
               >
                 {c.kind === "cream" && (
                   <>
-                    <span className="absolute left-[32%] top-2 h-3 w-[3px] rounded-full bg-neutral-900/80" />
-                    <span className="absolute left-[62%] top-2 h-3 w-[3px] rounded-full bg-neutral-900/80" />
+                    <span className="absolute left-[32%] top-1.5 h-2.5 w-[2px] rounded-full bg-neutral-900/70" />
+                    <span className="absolute left-[62%] top-1.5 h-2.5 w-[2px] rounded-full bg-neutral-900/70" />
                   </>
                 )}
               </div>
             ))}
 
             {/* Folder front face + grain */}
-            <div className="absolute inset-x-0 bottom-0 top-[28%] overflow-hidden rounded-[22px] bg-gradient-to-b from-[#fafafa] to-[#e2e2e2] shadow-[0_14px_34px_rgba(0,0,0,0.14)]">
+            <div className="absolute inset-x-0 bottom-0 top-[28%] overflow-hidden rounded-[18px] bg-gradient-to-b from-[#fbfbfb] to-[#e3e3e3] shadow-[0_10px_26px_rgba(0,0,0,0.13)] ring-1 ring-black/[0.03]">
               <span
-                className="pointer-events-none absolute inset-0 opacity-[0.22] mix-blend-multiply"
+                className="pointer-events-none absolute inset-0 opacity-[0.2] mix-blend-multiply"
                 style={{ backgroundImage: GRAIN }}
                 aria-hidden="true"
               />
@@ -681,15 +681,15 @@ function MoreWorkFolder({ onViewAll }: { onViewAll: () => void }) {
 
             {/* Resting state icon */}
             <Images
-              className={`absolute left-1/2 top-[64%] h-8 w-8 -translate-x-1/2 -translate-y-1/2 text-neutral-400 transition-opacity duration-300 ${
+              className={`absolute left-1/2 top-[64%] h-6 w-6 -translate-x-1/2 -translate-y-1/2 text-neutral-400 transition-opacity duration-300 ${
                 hover ? "opacity-0" : "opacity-100"
               }`}
               aria-hidden="true"
             />
 
-            {/* Hover: yellow View pill */}
+            {/* Hover: primary Contact-style pill */}
             <span
-              className={`absolute left-1/2 top-[64%] flex -translate-x-1/2 -translate-y-1/2 items-center gap-2 rounded-full bg-amber-400 px-5 py-2.5 text-base font-medium text-neutral-900 shadow-lg transition-all duration-300 ${
+              className={`absolute left-1/2 top-[64%] flex -translate-x-1/2 -translate-y-1/2 items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-lg transition-all duration-300 ${
                 hover ? "scale-100 opacity-100" : "scale-90 opacity-0"
               }`}
             >
@@ -697,9 +697,7 @@ function MoreWorkFolder({ onViewAll }: { onViewAll: () => void }) {
             </span>
           </div>
 
-          <span className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
-            Work
-          </span>
+          <span className={word}>Work</span>
         </button>
       </div>
     </div>
@@ -751,7 +749,9 @@ function ProjectsPage({
       {tab === "case" && <SideNav items={projects} watchId="case-studies" />}
       <main className="mx-auto max-w-3xl px-6 pb-32">
         <section className="pt-10 pb-8">
-          <SectionHeading eyebrow="Work" title="All Work" />
+          <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
+            All Work
+          </p>
           <div className="mt-6 inline-flex items-center gap-1 rounded-full bg-foreground/[0.06] p-1 text-sm">
             {TABS.map((t) => (
               <button
@@ -1307,6 +1307,28 @@ function FloatingAsk({
   );
 }
 
+function BackToTop() {
+  const [show, setShow] = useState(false);
+  useEffect(() => {
+    const onScroll = () => setShow(window.scrollY > window.innerHeight * 0.6);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+  return (
+    <button
+      type="button"
+      onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+      aria-label="Back to top"
+      className={`fixed bottom-6 right-6 z-40 flex h-11 w-11 items-center justify-center rounded-full border border-border bg-background shadow-lg outline-none transition-all duration-300 ease-out hover:bg-card active:scale-95 focus-visible:ring-2 focus-visible:ring-foreground/25 ${
+        show ? "opacity-100 translate-y-0" : "pointer-events-none opacity-0 translate-y-4"
+      }`}
+    >
+      <ArrowUp className="h-4 w-4" aria-hidden="true" />
+    </button>
+  );
+}
+
 function Footer() {
   const line = [...quotes, ...quotes];
   return (
@@ -1347,14 +1369,6 @@ function Footer() {
           <a href={links.coverLetter} className="hover:text-foreground">
             Cover Letter
           </a>
-          <button
-            type="button"
-            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-            aria-label="Back to top"
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-border transition-colors hover:bg-card"
-          >
-            <ArrowUp className="h-4 w-4" aria-hidden="true" />
-          </button>
         </div>
       </div>
     </footer>
@@ -1711,6 +1725,7 @@ export default function App() {
         <Footer />
       </div>
       <FloatingAsk onOpenAsk={() => setAskOpen(true)} hidden={askOpen} />
+      <BackToTop />
       <AskPanel open={askOpen} onClose={() => setAskOpen(false)} />
     </div>
   );
