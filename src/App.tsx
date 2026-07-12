@@ -524,7 +524,7 @@ function Hero() {
       <p className="text-[17px] leading-relaxed text-foreground/90 max-w-xl">
         I design enterprise systems that reduce cognitive load, simplify
         decision-making, and help teams move faster under pressure:{" "}
-        <span className="rounded bg-blue-200/60 px-1.5 py-0.5 font-medium text-blue-600">
+        <span className="font-semibold text-foreground">
           ↓ 50% task time, 3× faster onboarding
         </span>
       </p>
@@ -545,6 +545,62 @@ function Hero() {
         >
           View work
         </a>
+      </div>
+    </section>
+  );
+}
+
+const FOCUS_AREAS = [
+  { n: "01", title: "AI-Powered UX", text: "Intelligent interfaces that reduce cognitive load" },
+  { n: "02", title: "Data-Heavy Platforms", text: "BI, analytics, and insight delivery at scale" },
+  { n: "03", title: "Complex Workflows", text: "Turning multi-step processes into clear flows" },
+  { n: "04", title: "Decision-Centric Design", text: "Systems built around how people actually decide" },
+];
+
+const SPECIALTIES = [
+  "Design Systems",
+  "Enterprise UX",
+  "Design → Code",
+  "BI Platforms",
+  "AI Tooling",
+  "Healthcare",
+  "GovTech",
+  "E-commerce",
+];
+
+function FocusAreas() {
+  const row = [...SPECIALTIES, ...SPECIALTIES];
+  return (
+    <section className="border-t border-border pt-10">
+      <div className="grid grid-cols-1 gap-x-8 gap-y-8 sm:grid-cols-2 lg:grid-cols-4">
+        {FOCUS_AREAS.map((f) => (
+          <div key={f.n} className="lg:border-l lg:border-border lg:pl-5">
+            <p className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.14em]">
+              <span className="text-muted-foreground">{f.n}</span>
+              <span className="text-foreground">{f.title}</span>
+            </p>
+            <p className="mt-2 text-[14px] leading-relaxed text-muted-foreground">
+              {f.text}
+            </p>
+          </div>
+        ))}
+      </div>
+
+      {/* Specialty marquee */}
+      <div className="marquee-track mt-12 overflow-hidden border-y border-border py-5">
+        <div className="animate-marquee marquee-anim flex w-max items-center gap-6">
+          {row.map((s, i) => (
+            <span
+              key={i}
+              className="flex items-center gap-6 whitespace-nowrap text-2xl font-semibold uppercase tracking-tight text-foreground/80 sm:text-3xl"
+            >
+              {s}
+              <span className="font-normal text-muted-foreground/50" aria-hidden="true">
+                &amp;
+              </span>
+            </span>
+          ))}
+        </div>
       </div>
     </section>
   );
@@ -672,7 +728,7 @@ function Work({
   onOpen: (id: string) => void;
 }) {
   return (
-    <section id="work" className="space-y-6">
+    <section id="work" className="mt-24 space-y-6">
       <div className="flex items-center justify-between gap-4">
         <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
           Selected Work
@@ -1409,34 +1465,40 @@ const SONG_SRC =
 
 function OnRepeatCard() {
   const [playing, setPlaying] = useState(false);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const mediaRef = useRef<HTMLVideoElement | null>(null);
 
   const toggle = () => {
-    const a = audioRef.current;
-    if (!a) return;
+    const m = mediaRef.current;
+    if (!m) return;
     if (playing) {
-      a.pause();
+      m.pause();
       setPlaying(false);
       return;
     }
-    a.play()
+    m.play()
       .then(() => setPlaying(true))
       .catch(() => setPlaying(false));
   };
 
-  useEffect(() => () => audioRef.current?.pause(), []);
+  useEffect(() => () => mediaRef.current?.pause(), []);
 
   return (
     <div
       className="w-full rounded-3xl border border-border p-6 text-center transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md sm:text-left"
       style={{ backgroundColor: "rgba(238, 241, 245, 0.3)" }}
     >
-      <audio
-        ref={audioRef}
+      {/* Hidden video plays the mp4's audio reliably across browsers. */}
+      <video
+        ref={mediaRef}
         src={SONG_SRC}
         loop
+        playsInline
         preload="metadata"
         onEnded={() => setPlaying(false)}
+        onPause={() => setPlaying(false)}
+        onPlay={() => setPlaying(true)}
+        className="pointer-events-none absolute h-px w-px opacity-0"
+        aria-hidden="true"
       />
       {/* The vinyl is the control: click it to drop the tonearm and play. */}
       <button
@@ -1724,7 +1786,7 @@ function FooterCTA() {
 function Footer() {
   const line = [...quotes, ...quotes];
   return (
-    <footer className="mt-24">
+    <footer>
       <div className="marquee-track overflow-hidden border-y border-border py-4">
         <div className="animate-marquee marquee-anim flex w-max items-center gap-6">
           {line.map((quote, i) => (
@@ -2111,6 +2173,7 @@ export default function App() {
             <SideNav />
             <main className="mx-auto max-w-[52rem] px-6">
               <Hero />
+              <FocusAreas />
               <Work onViewAll={() => openProjects("case")} onOpen={openCase} />
               <SkillsAndTools />
             </main>
