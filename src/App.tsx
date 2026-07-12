@@ -143,7 +143,7 @@ function Sparkle() {
   );
 }
 
-const LINKEDIN_HANDLE = "@uiuxpriti";
+const LINKEDIN_HANDLE = "@priti-jani14";
 
 /**
  * Contact trigger + "Get in touch" popover (email with copy, LinkedIn link).

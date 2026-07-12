@@ -628,9 +628,9 @@ export const writing: WritingEntry[] = [
 
 export const links = {
   cal: "https://cal.com/design-uiuxpriti-jim9zm/",
-  email: "mailto:design.uiuxpriti@gmail.com",
-  emailAddress: "design.uiuxpriti@gmail.com",
-  linkedin: "https://www.linkedin.com/in/uiuxpriti/",
+  email: "mailto:uiuxpriti@gmail.com",
+  emailAddress: "uiuxpriti@gmail.com",
+  linkedin: "https://www.linkedin.com/in/priti-jani14/",
   behance: "https://www.behance.net/pritijani",
   cv: "/Priti-Jani-CV.pdf",
   coverLetter: "#",
