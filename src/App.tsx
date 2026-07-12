@@ -44,6 +44,8 @@ import {
   Droplets,
   GitBranch,
   Server,
+  Images,
+  Eye,
   type LucideIcon,
 } from "lucide-react";
 import {
@@ -63,6 +65,34 @@ import {
 const HOME_PROJECT_COUNT = 5;
 const HOME_PROJECTS = projects.slice(0, HOME_PROJECT_COUNT);
 import { playTap, playSong, type SongHandle } from "./sound";
+import {
+  FigmaLogo,
+  FramerLogo,
+  Html5Logo,
+  Css3Logo,
+  BootstrapLogo,
+  SassLogo,
+  DrupalLogo,
+  GitLogo,
+  ClaudeLogo,
+} from "./brands";
+
+type BrandLogo = (props: { className?: string }) => JSX.Element;
+
+const BRAND_LOGOS: Record<string, BrandLogo> = {
+  Figma: FigmaLogo,
+  "Figma Make": FigmaLogo,
+  "Figma MCP": FigmaLogo,
+  Framer: FramerLogo,
+  Claude: ClaudeLogo,
+  "Claude Code": ClaudeLogo,
+  HTML: Html5Logo,
+  CSS: Css3Logo,
+  "Bootstrap 5": BootstrapLogo,
+  SCSS: SassLogo,
+  "Drupal 11": DrupalLogo,
+  Git: GitLogo,
+};
 
 function useTapSound() {
   useEffect(() => {
@@ -201,8 +231,8 @@ function ContactButton({
 
 const NAV: { id: string; label: string; icon: LucideIcon }[] = [
   { id: "work", label: "Work", icon: Inbox },
-  { id: "about", label: "About", icon: CircleUserRound },
   { id: "skills-tools", label: "Skills & Tools", icon: Sparkles },
+  { id: "about", label: "About", icon: CircleUserRound },
 ];
 
 // Solid pill for the scrolled nav — opaque so it stays readable over content
@@ -541,20 +571,104 @@ function Work({ onViewAll }: { onViewAll: () => void }) {
       {HOME_PROJECTS.map((project) => (
         <ProjectCard key={project.id} project={project} />
       ))}
-      <div className="flex justify-center pt-4">
+      <MoreWorkFolder onViewAll={onViewAll} />
+    </section>
+  );
+}
+
+const SERIF = { fontFamily: "Georgia, 'Times New Roman', serif" };
+
+// "More [folder] Work" — the folder's cards fan out and a yellow View pill
+// appears on hover; clicking anywhere opens the full archive.
+function MoreWorkFolder({ onViewAll }: { onViewAll: () => void }) {
+  const [hover, setHover] = useState(false);
+  const cards = [
+    {
+      grad: "from-indigo-300 to-indigo-400",
+      rest: "translate(-50%, 6px) rotate(-5deg)",
+      hov: "translate(calc(-50% - 66px), -74px) rotate(-14deg)",
+      dark: false,
+    },
+    {
+      grad: "from-amber-100 to-amber-200",
+      rest: "translate(-50%, -2px) rotate(1deg)",
+      hov: "translate(-50%, -94px) rotate(-1deg)",
+      dark: false,
+    },
+    {
+      grad: "from-rose-500 to-neutral-900",
+      rest: "translate(-50%, 2px) rotate(7deg)",
+      hov: "translate(calc(-50% + 62px), -66px) rotate(13deg)",
+      dark: true,
+    },
+  ];
+  return (
+    <div className="flex justify-center overflow-hidden pt-8">
+      <div className="origin-center -my-6 scale-[0.62] sm:my-0 sm:scale-100">
         <button
           type="button"
           onClick={onViewAll}
-          className="group inline-flex items-center gap-2 rounded-full bg-foreground/[0.06] px-5 py-2.5 text-sm font-medium text-foreground outline-none transition-all duration-200 ease-out hover:bg-foreground/[0.1] active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-foreground/20 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+          onMouseEnter={() => setHover(true)}
+          onMouseLeave={() => setHover(false)}
+          onFocus={() => setHover(true)}
+          onBlur={() => setHover(false)}
+          aria-label="View all projects"
+          className="group flex items-center gap-3 rounded-2xl outline-none focus-visible:ring-2 focus-visible:ring-foreground/20 focus-visible:ring-offset-4 focus-visible:ring-offset-background"
         >
-          View all projects
-          <ArrowRight
-            className="h-4 w-4 transition-transform group-hover:translate-x-0.5"
-            aria-hidden="true"
-          />
+          <span style={SERIF} className="text-5xl text-foreground">
+            More
+          </span>
+
+          <div className="relative h-44 w-72 shrink-0">
+            {/* Folder back + tab */}
+            <div className="absolute left-8 top-1 h-9 w-32 rounded-t-2xl bg-gradient-to-b from-neutral-200 to-neutral-300" />
+            <div className="absolute inset-x-0 bottom-0 top-7 rounded-2xl bg-gradient-to-b from-neutral-200 to-neutral-300" />
+
+            {/* Peeking project cards (behind the folder front) */}
+            {cards.map((c, i) => (
+              <div
+                key={i}
+                className={`absolute bottom-8 left-1/2 h-28 w-44 overflow-hidden rounded-2xl bg-gradient-to-br ${c.grad} shadow-lg ring-1 ring-black/5 transition-transform duration-500 ease-out`}
+                style={{ transform: hover ? c.hov : c.rest }}
+              >
+                {c.dark ? (
+                  <span className="absolute left-3 top-3 h-8 w-8 rounded-[10px] bg-gradient-to-br from-rose-400 to-rose-600 shadow" />
+                ) : (
+                  <span className="absolute inset-3 rounded-xl bg-white/70">
+                    <span className="absolute left-2 top-2 h-1.5 w-10 rounded-full bg-neutral-300" />
+                    <span className="absolute left-2 top-5 h-1.5 w-16 rounded-full bg-neutral-200" />
+                  </span>
+                )}
+              </div>
+            ))}
+
+            {/* Folder front face */}
+            <div className="absolute inset-x-0 bottom-0 top-12 rounded-2xl bg-gradient-to-b from-neutral-100 to-neutral-300 shadow-[0_12px_30px_rgba(0,0,0,0.12)]" />
+
+            {/* Resting state icon */}
+            <Images
+              className={`absolute left-1/2 top-[62%] h-7 w-7 -translate-x-1/2 -translate-y-1/2 text-neutral-400 transition-opacity duration-300 ${
+                hover ? "opacity-0" : "opacity-100"
+              }`}
+              aria-hidden="true"
+            />
+
+            {/* Hover: yellow View pill */}
+            <span
+              className={`absolute left-1/2 top-[62%] flex -translate-x-1/2 -translate-y-1/2 items-center gap-2 rounded-full bg-amber-400 px-6 py-3 text-lg font-medium text-neutral-900 shadow-lg transition-all duration-300 ${
+                hover ? "scale-100 opacity-100" : "scale-90 opacity-0"
+              }`}
+            >
+              View <Eye className="h-5 w-5" aria-hidden="true" />
+            </span>
+          </div>
+
+          <span style={SERIF} className="text-5xl text-foreground">
+            Work
+          </span>
         </button>
       </div>
-    </section>
+    </div>
   );
 }
 
@@ -865,13 +979,18 @@ function SkillsAndTools() {
             </p>
             <div className="flex flex-wrap gap-2">
               {cat.items.map((item) => {
+                const Brand = BRAND_LOGOS[item];
                 const Icon = SKILL_ICONS[item] ?? Sparkles;
                 return (
                   <span
                     key={item}
                     className="inline-flex cursor-default select-none items-center gap-1.5 rounded-full border border-border bg-foreground/[0.03] px-3 py-1.5 text-[14px] text-foreground/85 transition-all duration-200 ease-out hover:-translate-y-0.5 hover:rotate-[-1.5deg] hover:border-foreground hover:bg-foreground hover:text-background hover:shadow-sm"
                   >
-                    <Icon className="h-3.5 w-3.5 opacity-70" aria-hidden="true" />
+                    {Brand ? (
+                      <Brand className="h-4 w-4 shrink-0" />
+                    ) : (
+                      <Icon className="h-3.5 w-3.5 opacity-70" aria-hidden="true" />
+                    )}
                     {item}
                   </span>
                 );
