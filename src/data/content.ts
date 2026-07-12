@@ -208,16 +208,6 @@ export const skillCategories: SkillCategory[] = [
     ],
   },
   {
-    label: "Design Systems",
-    items: [
-      "Tokens",
-      "Component Libraries",
-      "Governance",
-      "Documentation",
-      "Multi-brand Systems",
-    ],
-  },
-  {
     label: "UI & Visual Design",
     items: [
       "Visual Design",
@@ -227,15 +217,6 @@ export const skillCategories: SkillCategory[] = [
       "Responsive Design",
       "Accessibility",
       "WCAG",
-    ],
-  },
-  {
-    label: "Collaboration & Leadership",
-    items: [
-      "Cross-Functional Collaboration",
-      "Stakeholder Communication",
-      "Design-Engineering Handoff",
-      "Campaign & Growth Design",
     ],
   },
   {

@@ -90,6 +90,19 @@
   .animate-record {
     animation: record-spin 4s linear infinite;
   }
+  @keyframes eq {
+    0%,
+    100% {
+      height: 25%;
+    }
+    50% {
+      height: 100%;
+    }
+  }
+  .animate-eq {
+    height: 100%;
+    animation: eq 0.9s ease-in-out infinite;
+  }
   @keyframes sparkle-twinkle {
     0% {
       transform: rotate(0deg) scale(1);
@@ -108,7 +121,8 @@
     .animate-marquee,
     .animate-marquee-rev,
     .animate-wave,
-    .animate-sparkle {
+    .animate-sparkle,
+    .animate-eq {
       animation: none;
     }
   }

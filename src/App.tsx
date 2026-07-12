@@ -18,6 +18,8 @@ import {
   Wand2,
   CornerDownRight,
   RotateCcw,
+  Play,
+  Pause,
   Target,
   Network,
   Search,
@@ -1112,17 +1114,24 @@ function OnRepeatCard() {
   useEffect(() => () => songRef.current?.stop(), []);
 
   return (
-    <div className="w-full rounded-3xl border border-border bg-card p-8 text-center sm:text-left">
+    <div className="w-full rounded-3xl border border-border bg-card p-6 text-center transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md sm:text-left">
       {/* The vinyl itself is the control: click it to drop the tonearm and play. */}
       <button
         type="button"
         onClick={toggle}
         aria-pressed={playing}
         aria-label={`${playing ? "Stop" : "Play"} ${SONG_TITLE} by ${SONG_ARTIST}`}
-        className="group relative mx-auto block h-28 w-28 rounded-full outline-none focus-visible:ring-2 focus-visible:ring-foreground/25 focus-visible:ring-offset-4 focus-visible:ring-offset-card sm:mx-0"
+        className="group relative mx-auto block h-24 w-24 rounded-full outline-none focus-visible:ring-2 focus-visible:ring-foreground/25 focus-visible:ring-offset-4 focus-visible:ring-offset-card sm:mx-0"
       >
+        {/* Warm glow while playing */}
+        <span
+          className={`pointer-events-none absolute -inset-1.5 rounded-full bg-rose-500/25 blur-md transition-opacity duration-500 ${
+            playing ? "animate-pulse opacity-100" : "opacity-0"
+          }`}
+          aria-hidden="true"
+        />
         <div
-          className={`h-full w-full rounded-full transition-transform duration-500 group-hover:scale-[1.03] ${
+          className={`relative h-full w-full rounded-full transition-transform duration-500 group-hover:scale-105 group-hover:rotate-3 group-active:scale-95 ${
             playing ? "animate-record" : ""
           }`}
           style={{
@@ -1140,17 +1149,38 @@ function OnRepeatCard() {
           }}
         />
         <span className="pointer-events-none absolute left-1/2 top-1/2 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-red-600 ring-2 ring-black/50" />
+        {/* Play/pause hint that pops in on hover */}
+        <span className="pointer-events-none absolute left-1/2 top-1/2 flex h-8 w-8 -translate-x-1/2 -translate-y-1/2 scale-0 items-center justify-center rounded-full bg-black/55 text-white opacity-0 backdrop-blur-sm transition-all duration-200 group-hover:scale-100 group-hover:opacity-100">
+          {playing ? (
+            <Pause className="h-4 w-4" aria-hidden="true" />
+          ) : (
+            <Play className="h-4 w-4 translate-x-[1px]" aria-hidden="true" />
+          )}
+        </span>
         {/* White tonearm — swings onto the record while the song plays. */}
         <span
-          className={`pointer-events-none absolute -right-2 h-20 w-1.5 origin-top rounded-full bg-neutral-300 shadow-sm transition-all duration-500 ease-out ${
-            playing ? "-top-3 rotate-[26deg]" : "-top-5 rotate-[-8deg]"
+          className={`pointer-events-none absolute -right-1.5 h-16 w-1.5 origin-top rounded-full bg-neutral-300 shadow-sm transition-all duration-500 ease-out ${
+            playing ? "-top-2 rotate-[26deg]" : "-top-4 rotate-[-8deg]"
           }`}
         >
-          <span className="absolute -top-1 left-1/2 h-3 w-3 -translate-x-1/2 rounded-full bg-neutral-400" />
+          <span className="absolute -top-1 left-1/2 h-2.5 w-2.5 -translate-x-1/2 rounded-full bg-neutral-400" />
         </span>
       </button>
-      <h3 className="mt-6 text-xl font-semibold">On repeat</h3>
-      <p className="mt-2 text-[15px] leading-relaxed text-muted-foreground">
+      <div className="mt-5 flex items-center justify-center gap-2 sm:justify-start">
+        <h3 className="text-lg font-semibold">On repeat</h3>
+        {playing && (
+          <span className="flex h-3.5 items-end gap-[3px]" aria-hidden="true">
+            {[0, 1, 2, 3].map((i) => (
+              <span
+                key={i}
+                className="w-[3px] rounded-full bg-foreground/70 animate-eq"
+                style={{ animationDelay: `${i * 0.15}s` }}
+              />
+            ))}
+          </span>
+        )}
+      </div>
+      <p className="mt-2 text-[14px] leading-relaxed text-muted-foreground">
         {onRepeat}
       </p>
     </div>
@@ -1159,7 +1189,7 @@ function OnRepeatCard() {
 
 function AboutMeSection() {
   return (
-    <section className="grid items-start gap-10 pt-16 md:grid-cols-[1fr_300px]">
+    <section className="grid items-start gap-10 pt-16 md:grid-cols-[1fr_260px]">
       <div>
         <p className="mb-8 text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
           About
@@ -1249,7 +1279,7 @@ function IfNotDesign() {
 function AboutPage() {
   return (
     <>
-      <main className="mx-auto max-w-4xl px-6 pb-32">
+      <main className="mx-auto max-w-3xl px-6 pb-32">
         <AboutMeSection />
         <Experience />
         <WorkingWithMe />
