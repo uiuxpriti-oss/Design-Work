@@ -571,32 +571,34 @@ const SPECIALTIES = [
 function FocusAreas() {
   const row = [...SPECIALTIES, ...SPECIALTIES];
   return (
-    <section className="border-t border-border pt-10">
-      <div className="grid grid-cols-1 gap-x-8 gap-y-8 sm:grid-cols-2 lg:grid-cols-4">
-        {FOCUS_AREAS.map((f) => (
-          <div key={f.n} className="lg:border-l lg:border-border lg:pl-5">
-            <p className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.14em]">
-              <span className="text-muted-foreground">{f.n}</span>
-              <span className="text-foreground">{f.title}</span>
-            </p>
-            <p className="mt-2 text-[14px] leading-relaxed text-muted-foreground">
-              {f.text}
-            </p>
-          </div>
-        ))}
+    <section className="mt-16">
+      <div className="mx-auto max-w-6xl border-t border-border px-6 pt-10">
+        <div className="grid grid-cols-1 gap-x-8 gap-y-8 sm:grid-cols-2 lg:grid-cols-4">
+          {FOCUS_AREAS.map((f) => (
+            <div key={f.n} className="lg:border-l lg:border-border lg:pl-5">
+              <p className="flex items-start gap-2 text-[11px] font-semibold uppercase tracking-[0.14em]">
+                <span className="text-muted-foreground">{f.n}</span>
+                <span className="text-foreground">{f.title}</span>
+              </p>
+              <p className="mt-2 text-[14px] leading-relaxed text-muted-foreground">
+                {f.text}
+              </p>
+            </div>
+          ))}
+        </div>
       </div>
 
-      {/* Specialty marquee */}
-      <div className="marquee-track mt-12 overflow-hidden border-y border-border py-5">
+      {/* Specialty marquee — full-bleed, footer styling */}
+      <div className="marquee-track mt-12 overflow-hidden border-y border-border py-4">
         <div className="animate-marquee marquee-anim flex w-max items-center gap-6">
           {row.map((s, i) => (
             <span
               key={i}
-              className="flex items-center gap-6 whitespace-nowrap text-2xl font-semibold uppercase tracking-tight text-foreground/80 sm:text-3xl"
+              className="flex items-center gap-6 whitespace-nowrap text-[15px] italic text-foreground/55"
             >
               {s}
-              <span className="font-normal text-muted-foreground/50" aria-hidden="true">
-                &amp;
+              <span className="not-italic text-foreground/25" aria-hidden="true">
+                ✳
               </span>
             </span>
           ))}
@@ -1396,8 +1398,46 @@ function SkillsAndTools() {
   );
 }
 
+function CreativeMarqueeRow({ reverse }: { reverse: boolean }) {
+  const items = reverse ? [...creatives].reverse() : creatives;
+  const line = [...items, ...items];
+  return (
+    <div className="marquee-track overflow-hidden">
+      <div
+        className={`marquee-anim flex w-max gap-6 ${
+          reverse ? "animate-marquee-rev" : "animate-marquee"
+        }`}
+      >
+        {line.map((c, i) => (
+          <a
+            key={i}
+            href={links.behance}
+            target="_blank"
+            rel="noreferrer"
+            className={`group relative h-72 w-[26rem] shrink-0 overflow-hidden rounded-3xl bg-gradient-to-br ${c.gradient} ring-1 ring-border transition-transform duration-300 hover:-translate-y-1`}
+          >
+            <span
+              aria-hidden="true"
+              className="pointer-events-none absolute -right-4 -top-10 select-none text-[160px] font-bold leading-none text-foreground/[0.06]"
+            >
+              {c.name[0]}
+            </span>
+            <ArrowUpRight
+              className="absolute right-5 top-5 h-5 w-5 text-foreground/40 opacity-0 transition-opacity duration-200 group-hover:opacity-100"
+              aria-hidden="true"
+            />
+            <div className="absolute inset-x-0 bottom-0 flex flex-col p-6">
+              <p className="text-lg font-medium text-foreground">{c.name}</p>
+              <p className="text-[14px] text-muted-foreground">{c.category}</p>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function Creatives({ onViewAll }: { onViewAll: () => void }) {
-  const row = [...creatives, ...creatives];
   return (
     <section id="creatives" className="mt-24 scroll-mt-24">
       <div className="mx-auto max-w-[52rem] px-6">
@@ -1425,34 +1465,11 @@ function Creatives({ onViewAll }: { onViewAll: () => void }) {
         <p className="mt-3 max-w-md text-[15px] leading-relaxed text-muted-foreground">
           Logos, posters, and explorations — work that lives outside the sprint.
         </p>
-        <div className="marquee-track relative mt-10 overflow-hidden rounded-2xl">
-          <div className="animate-marquee marquee-anim flex w-max gap-5">
-          {row.map((c, i) => (
-            <a
-              key={i}
-              href={links.behance}
-              target="_blank"
-              rel="noreferrer"
-              className={`group relative h-56 w-80 shrink-0 overflow-hidden rounded-2xl bg-gradient-to-br ${c.gradient} ring-1 ring-border transition-transform duration-300 hover:-translate-y-1`}
-            >
-              <span
-                aria-hidden="true"
-                className="pointer-events-none absolute -right-3 -top-8 select-none text-[120px] font-bold leading-none text-foreground/[0.06]"
-              >
-                {c.name[0]}
-              </span>
-              <ArrowUpRight
-                className="absolute right-4 top-4 h-4 w-4 text-foreground/40 opacity-0 transition-opacity duration-200 group-hover:opacity-100"
-                aria-hidden="true"
-              />
-              <div className="absolute inset-x-0 bottom-0 flex flex-col p-5">
-                <p className="text-base font-medium text-foreground">{c.name}</p>
-                <p className="text-[13px] text-muted-foreground">{c.category}</p>
-              </div>
-            </a>
-          ))}
-          </div>
-        </div>
+      </div>
+      {/* Full-bleed, two opposing rows of larger cards */}
+      <div className="mt-10 space-y-6">
+        <CreativeMarqueeRow reverse={false} />
+        <CreativeMarqueeRow reverse={true} />
       </div>
     </section>
   );
@@ -2171,11 +2188,15 @@ export default function App() {
         {page === "home" ? (
           <>
             <SideNav />
-            <main className="mx-auto max-w-[52rem] px-6">
-              <Hero />
+            <main>
+              <div className="mx-auto max-w-[52rem] px-6">
+                <Hero />
+              </div>
               <FocusAreas />
-              <Work onViewAll={() => openProjects("case")} onOpen={openCase} />
-              <SkillsAndTools />
+              <div className="mx-auto max-w-[52rem] px-6">
+                <Work onViewAll={() => openProjects("case")} onOpen={openCase} />
+                <SkillsAndTools />
+              </div>
             </main>
             <Creatives onViewAll={() => openProjects("creative")} />
           </>
