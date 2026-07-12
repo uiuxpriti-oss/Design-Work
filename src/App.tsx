@@ -295,7 +295,7 @@ function Hero() {
           href="#work"
           className="inline-flex items-center gap-2 rounded-full bg-foreground/[0.06] px-4 py-2 text-sm text-foreground outline-none transition-all duration-200 ease-out hover:bg-foreground/[0.1] active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-foreground/20 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
         >
-          Explore
+          View work
         </a>
       </div>
     </section>
@@ -1093,6 +1093,7 @@ function AskPanel({ open, onClose }: { open: boolean; onClose: () => void }) {
   const [input, setInput] = useState("");
   const [popover, setPopover] = useState<null | "ask" | "browse">(null);
   const [followups, setFollowups] = useState<string[]>([]);
+  const [typing, setTyping] = useState(false);
   const bodyRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -1103,19 +1104,21 @@ function AskPanel({ open, onClose }: { open: boolean; onClose: () => void }) {
 
   useEffect(() => {
     bodyRef.current?.scrollTo({ top: bodyRef.current.scrollHeight, behavior: "smooth" });
-  }, [messages, followups]);
+  }, [messages, followups, typing]);
 
   const submit = (text: string) => {
     const q = text.trim();
-    if (!q) return;
+    if (!q || typing) return;
     setInput("");
     setPopover(null);
     setFollowups([]);
     setMessages((m) => [...m, { role: "user", text: q }]);
+    setTyping(true);
     window.setTimeout(() => {
+      setTyping(false);
       setMessages((m) => [...m, { role: "bot", text: askReply(q) }]);
       setFollowups(pickFollowups(q));
-    }, 450);
+    }, 1100);
   };
 
   const reset = () => {
@@ -1123,6 +1126,7 @@ function AskPanel({ open, onClose }: { open: boolean; onClose: () => void }) {
     setFollowups([]);
     setInput("");
     setPopover(null);
+    setTyping(false);
   };
 
   return (
@@ -1198,6 +1202,16 @@ function AskPanel({ open, onClose }: { open: boolean; onClose: () => void }) {
                   {m.text}
                 </div>
               ))}
+              {typing && (
+                <div className="flex max-w-[85%] items-center gap-2 rounded-2xl bg-background px-4 py-3">
+                  <span className="text-[13px] text-muted-foreground">Priti AI is thinking</span>
+                  <span className="flex items-center gap-1" aria-hidden="true">
+                    <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-muted-foreground/60 [animation-delay:-0.3s]" />
+                    <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-muted-foreground/60 [animation-delay:-0.15s]" />
+                    <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-muted-foreground/60" />
+                  </span>
+                </div>
+              )}
               {followups.length > 0 && (
                 <div className="pt-2">
                   <p className="text-[13px] text-muted-foreground">Keep exploring</p>
