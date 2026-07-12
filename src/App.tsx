@@ -7,6 +7,7 @@ import {
   ChevronDown,
   Inbox,
   CircleUserRound,
+  Home,
   Sparkles,
   Send,
   Copy,
@@ -17,7 +18,6 @@ import {
   Wand2,
   CornerDownRight,
   RotateCcw,
-  CornerDownLeft,
   Target,
   Network,
   Search,
@@ -40,12 +40,26 @@ import {
   FileCode,
   Braces,
   LayoutGrid,
-  Paintbrush,
   Droplets,
   GitBranch,
-  Server,
   Images,
   Eye,
+  TrendingUp,
+  Type,
+  Palette,
+  Layout,
+  Accessibility,
+  FileText,
+  Users,
+  MessagesSquare,
+  Workflow,
+  Megaphone,
+  Layers,
+  ShieldCheck,
+  Coins,
+  FlaskConical,
+  Smartphone,
+  Lightbulb,
   type LucideIcon,
 } from "lucide-react";
 import {
@@ -75,6 +89,8 @@ import {
   DrupalLogo,
   GitLogo,
   ClaudeLogo,
+  NotionLogo,
+  LottieLabLogo,
 } from "./brands";
 
 type BrandLogo = (props: { className?: string }) => JSX.Element;
@@ -92,6 +108,8 @@ const BRAND_LOGOS: Record<string, BrandLogo> = {
   SCSS: SassLogo,
   "Drupal 11": DrupalLogo,
   Git: GitLogo,
+  Notion: NotionLogo,
+  LottieLab: LottieLabLogo,
 };
 
 function useTapSound() {
@@ -230,6 +248,7 @@ function ContactButton({
 }
 
 const NAV: { id: string; label: string; icon: LucideIcon }[] = [
+  { id: "home", label: "Home", icon: Home },
   { id: "work", label: "Work", icon: Inbox },
   { id: "skills-tools", label: "Skills & Tools", icon: Sparkles },
   { id: "about", label: "About", icon: CircleUserRound },
@@ -279,16 +298,27 @@ function useActiveSection(ids: string[]) {
 }
 
 function Header({
+  page,
   onOpenAsk,
-  onOpenAbout,
+  onHome,
+  onWork,
+  onSkills,
+  onAbout,
 }: {
+  page: "home" | "projects" | "about";
   onOpenAsk: () => void;
-  onOpenAbout: () => void;
+  onHome: () => void;
+  onWork: () => void;
+  onSkills: () => void;
+  onAbout: () => void;
 }) {
   // Drop a photo at /public/avatar.jpg to show it here; falls back to the dot.
   const avatar = "/avatar.jpg";
   const [avatarOk, setAvatarOk] = useState(true);
-  const [active, setActive] = useActiveSection(NAV.map((n) => n.id));
+  // Scroll-spy only matters on the home page (Home vs Skills & Tools).
+  const [homeActive, selectHome] = useActiveSection(["home", "skills-tools"]);
+  const active =
+    page === "projects" ? "work" : page === "about" ? "about" : homeActive;
   const [scrolled, setScrolled] = useState(false);
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -296,15 +326,28 @@ function Header({
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+  const go = (id: string) => {
+    if (id === "home") {
+      onHome();
+      if (page === "home") selectHome("home");
+    } else if (id === "work") {
+      onWork();
+    } else if (id === "skills-tools") {
+      onSkills();
+      if (page === "home") selectHome("skills-tools");
+    } else {
+      onAbout();
+    }
+  };
   return (
     <header className="sticky top-0 z-30">
       <nav className="mx-auto flex max-w-3xl items-center justify-between px-4 py-4 sm:px-6 sm:py-5">
         <div className="flex items-center gap-2 sm:gap-4">
           <button
             type="button"
-            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            onClick={onHome}
             className="shrink-0"
-            aria-label="Back to top"
+            aria-label="Home"
           >
             {avatar && avatarOk ? (
               <img
@@ -325,17 +368,10 @@ function Header({
             {NAV.map(({ id, label, icon: Icon }) => {
               const isActive = active === id;
               return (
-                <a
+                <button
                   key={id}
-                  href={id === "about" ? "#" : `#${id}`}
-                  onClick={(e) => {
-                    if (id === "about") {
-                      e.preventDefault();
-                      onOpenAbout();
-                    } else {
-                      setActive(id);
-                    }
-                  }}
+                  type="button"
+                  onClick={() => go(id)}
                   aria-current={isActive ? "page" : undefined}
                   className={`inline-flex items-center gap-1 whitespace-nowrap rounded-full px-3 py-1.5 text-[13px] font-medium leading-none outline-none transition duration-200 ease-out active:scale-[0.96] focus-visible:ring-2 focus-visible:ring-foreground/20 focus-visible:ring-offset-2 focus-visible:ring-offset-background sm:gap-1.5 sm:px-4 sm:py-2 sm:text-[15px] ${
                     isActive
@@ -345,7 +381,7 @@ function Header({
                 >
                   {isActive && <Icon className="h-4 w-4" aria-hidden="true" />}
                   {label}
-                </a>
+                </button>
               );
             })}
           </div>
@@ -502,6 +538,7 @@ function useLike(id: string, base: number) {
 
 function ProjectCard({ project }: { project: (typeof projects)[number] }) {
   const { liked, count, toggle } = useLike(project.id, project.likes);
+  const [imgOk, setImgOk] = useState(true);
   return (
     <article
       id={project.id}
@@ -509,11 +546,12 @@ function ProjectCard({ project }: { project: (typeof projects)[number] }) {
     >
       <a href={project.href} target="_blank" rel="noreferrer" className="block">
         <div className="aspect-[16/10] w-full overflow-hidden rounded-2xl bg-background/40">
-          {project.image ? (
+          {project.image && imgOk ? (
             <img
               src={project.image}
               alt={project.title}
               loading="lazy"
+              onError={() => setImgOk(false)}
               className="h-full w-full object-cover"
             />
           ) : (
@@ -576,30 +614,32 @@ function Work({ onViewAll }: { onViewAll: () => void }) {
   );
 }
 
-const SERIF = { fontFamily: "Georgia, 'Times New Roman', serif" };
+// Subtle film-grain used on the folder front, matching the reference texture.
+const GRAIN =
+  "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E\")";
 
-// "More [folder] Work" — the folder's cards fan out and a yellow View pill
-// appears on hover; clicking anywhere opens the full archive.
+// "More [folder] Work" — the folder's cards fan out (smaller) and a yellow View
+// pill appears on hover; clicking anywhere opens the full archive.
 function MoreWorkFolder({ onViewAll }: { onViewAll: () => void }) {
   const [hover, setHover] = useState(false);
   const cards = [
     {
-      grad: "from-indigo-300 to-indigo-400",
-      rest: "translate(-50%, 6px) rotate(-5deg)",
-      hov: "translate(calc(-50% - 66px), -74px) rotate(-14deg)",
-      dark: false,
+      grad: "from-[#d6e0f7] to-[#c3d0f2]",
+      rest: "translate(calc(-50% - 6px), 4px) rotate(-4deg)",
+      hov: "translate(calc(-50% - 54px), -46px) rotate(-11deg) scale(0.82)",
+      kind: "plain" as const,
     },
     {
-      grad: "from-amber-100 to-amber-200",
-      rest: "translate(-50%, -2px) rotate(1deg)",
-      hov: "translate(-50%, -94px) rotate(-1deg)",
-      dark: false,
+      grad: "from-[#c8d1f4] to-[#b4c0ef]",
+      rest: "translate(calc(-50% + 8px), 2px) rotate(5deg)",
+      hov: "translate(calc(-50% + 52px), -44px) rotate(11deg) scale(0.82)",
+      kind: "plain" as const,
     },
     {
-      grad: "from-rose-500 to-neutral-900",
-      rest: "translate(-50%, 2px) rotate(7deg)",
-      hov: "translate(calc(-50% + 62px), -66px) rotate(13deg)",
-      dark: true,
+      grad: "from-[#f7f1d9] to-[#efe5c2]",
+      rest: "translate(-50%, -2px) rotate(0deg)",
+      hov: "translate(-50%, -58px) rotate(-1deg) scale(0.82)",
+      kind: "cream" as const,
     },
   ];
   return (
@@ -613,41 +653,48 @@ function MoreWorkFolder({ onViewAll }: { onViewAll: () => void }) {
           onFocus={() => setHover(true)}
           onBlur={() => setHover(false)}
           aria-label="View all projects"
-          className="group flex items-center gap-3 rounded-2xl outline-none focus-visible:ring-2 focus-visible:ring-foreground/20 focus-visible:ring-offset-4 focus-visible:ring-offset-background"
+          className="group flex items-center gap-4 rounded-2xl outline-none focus-visible:ring-2 focus-visible:ring-foreground/20 focus-visible:ring-offset-4 focus-visible:ring-offset-background"
         >
-          <span style={SERIF} className="text-5xl text-foreground">
+          <span className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
             More
           </span>
 
-          <div className="relative h-44 w-72 shrink-0">
-            {/* Folder back + tab */}
-            <div className="absolute left-8 top-1 h-9 w-32 rounded-t-2xl bg-gradient-to-b from-neutral-200 to-neutral-300" />
-            <div className="absolute inset-x-0 bottom-0 top-7 rounded-2xl bg-gradient-to-b from-neutral-200 to-neutral-300" />
+          <div className="relative h-52 w-72 shrink-0">
+            {/* Folder back tab (macOS slant) + back panel */}
+            <div
+              className="absolute left-[7%] top-[3%] h-[20%] w-[44%] rounded-tl-2xl bg-gradient-to-b from-[#e7e7e7] to-[#d8d8d8]"
+              style={{ clipPath: "polygon(0 0, 74% 0, 100% 100%, 0 100%)" }}
+            />
+            <div className="absolute inset-x-0 bottom-0 top-[17%] rounded-[22px] bg-gradient-to-b from-[#e5e5e5] to-[#d3d3d3]" />
 
             {/* Peeking project cards (behind the folder front) */}
             {cards.map((c, i) => (
               <div
                 key={i}
-                className={`absolute bottom-8 left-1/2 h-28 w-44 overflow-hidden rounded-2xl bg-gradient-to-br ${c.grad} shadow-lg ring-1 ring-black/5 transition-transform duration-500 ease-out`}
+                className={`absolute bottom-[26%] left-1/2 h-[50%] w-[64%] overflow-hidden rounded-2xl bg-gradient-to-br ${c.grad} shadow-md ring-2 ring-white transition-transform duration-500 ease-out`}
                 style={{ transform: hover ? c.hov : c.rest }}
               >
-                {c.dark ? (
-                  <span className="absolute left-3 top-3 h-8 w-8 rounded-[10px] bg-gradient-to-br from-rose-400 to-rose-600 shadow" />
-                ) : (
-                  <span className="absolute inset-3 rounded-xl bg-white/70">
-                    <span className="absolute left-2 top-2 h-1.5 w-10 rounded-full bg-neutral-300" />
-                    <span className="absolute left-2 top-5 h-1.5 w-16 rounded-full bg-neutral-200" />
-                  </span>
+                {c.kind === "cream" && (
+                  <>
+                    <span className="absolute left-[32%] top-2 h-3 w-[3px] rounded-full bg-neutral-900/80" />
+                    <span className="absolute left-[62%] top-2 h-3 w-[3px] rounded-full bg-neutral-900/80" />
+                  </>
                 )}
               </div>
             ))}
 
-            {/* Folder front face */}
-            <div className="absolute inset-x-0 bottom-0 top-12 rounded-2xl bg-gradient-to-b from-neutral-100 to-neutral-300 shadow-[0_12px_30px_rgba(0,0,0,0.12)]" />
+            {/* Folder front face + grain */}
+            <div className="absolute inset-x-0 bottom-0 top-[28%] overflow-hidden rounded-[22px] bg-gradient-to-b from-[#fafafa] to-[#e2e2e2] shadow-[0_14px_34px_rgba(0,0,0,0.14)]">
+              <span
+                className="pointer-events-none absolute inset-0 opacity-[0.22] mix-blend-multiply"
+                style={{ backgroundImage: GRAIN }}
+                aria-hidden="true"
+              />
+            </div>
 
             {/* Resting state icon */}
             <Images
-              className={`absolute left-1/2 top-[62%] h-7 w-7 -translate-x-1/2 -translate-y-1/2 text-neutral-400 transition-opacity duration-300 ${
+              className={`absolute left-1/2 top-[64%] h-8 w-8 -translate-x-1/2 -translate-y-1/2 text-neutral-400 transition-opacity duration-300 ${
                 hover ? "opacity-0" : "opacity-100"
               }`}
               aria-hidden="true"
@@ -655,15 +702,15 @@ function MoreWorkFolder({ onViewAll }: { onViewAll: () => void }) {
 
             {/* Hover: yellow View pill */}
             <span
-              className={`absolute left-1/2 top-[62%] flex -translate-x-1/2 -translate-y-1/2 items-center gap-2 rounded-full bg-amber-400 px-6 py-3 text-lg font-medium text-neutral-900 shadow-lg transition-all duration-300 ${
+              className={`absolute left-1/2 top-[64%] flex -translate-x-1/2 -translate-y-1/2 items-center gap-2 rounded-full bg-amber-400 px-5 py-2.5 text-base font-medium text-neutral-900 shadow-lg transition-all duration-300 ${
                 hover ? "scale-100 opacity-100" : "scale-90 opacity-0"
               }`}
             >
-              View <Eye className="h-5 w-5" aria-hidden="true" />
+              View <Eye className="h-4 w-4" aria-hidden="true" />
             </span>
           </div>
 
-          <span style={SERIF} className="text-5xl text-foreground">
+          <span className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
             Work
           </span>
         </button>
@@ -702,43 +749,9 @@ function CreativeGridCard({
   );
 }
 
-function SubPageTopBar({
-  onBack,
-  width = "max-w-4xl",
-}: {
-  onBack: () => void;
-  width?: string;
-}) {
-  return (
-    <div className="sticky top-0 z-30 bg-background/85 backdrop-blur-sm">
-      <div
-        className={`mx-auto flex ${width} items-center justify-between px-6 py-5`}
-      >
-        <button
-          type="button"
-          onClick={onBack}
-          className="inline-flex items-center gap-2 rounded-full bg-foreground/[0.06] px-4 py-2 text-sm font-medium text-foreground outline-none transition-all duration-200 ease-out hover:bg-foreground/[0.1] active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-foreground/20"
-        >
-          <CornerDownLeft className="h-4 w-4" aria-hidden="true" />
-          Return
-        </button>
-        <ContactButton
-          align="right"
-          className="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-sm font-medium text-primary-foreground outline-none transition-all duration-200 ease-out hover:opacity-90 active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-foreground/25"
-        >
-          <Send className="h-4 w-4" aria-hidden="true" />
-          Contact
-        </ContactButton>
-      </div>
-    </div>
-  );
-}
-
 function ProjectsPage({
-  onBack,
   initialTab,
 }: {
-  onBack: () => void;
   initialTab: "case" | "creative";
 }) {
   const [tab, setTab] = useState<"case" | "creative">(initialTab);
@@ -748,7 +761,6 @@ function ProjectsPage({
   ] as const;
   return (
     <>
-      <SubPageTopBar onBack={onBack} width="max-w-3xl" />
       {tab === "case" && <SideNav items={projects} watchId="case-studies" />}
       <main className="mx-auto max-w-3xl px-6 pb-32">
         <section className="pt-10 pb-8">
@@ -931,18 +943,47 @@ function Experience() {
 const SKILL_ICONS: Record<string, LucideIcon> = {
   // Design & Product Thinking
   "UX Strategy": Target,
+  "Product Thinking": Lightbulb,
+  "Product Design": Boxes,
+  "UX/UI": Layout,
+  "Interaction Design": MousePointerClick,
   "Systems Thinking": Network,
   "User Research": Search,
+  Discovery: Compass,
   "Information Architecture": ListTree,
-  "Design Systems": Boxes,
   "Usability Testing": ClipboardCheck,
-  "UX Copywriting": PenLine,
-  "Product Positioning": Compass,
   "A/B Testing": GitCompare,
+  Experimentation: FlaskConical,
+  "Conversion Rate Optimisation": TrendingUp,
   "Journey Mapping": Route,
+  "Data-Informed Decisions": TrendingUp,
+  "Product Positioning": Compass,
+  "UX Copywriting": PenLine,
+  "Design QA": ShieldCheck,
+  "Product Psychology": Users,
+  // Design Systems
+  Tokens: Coins,
+  "Component Libraries": Layers,
+  Governance: ShieldCheck,
+  Documentation: FileText,
+  "Multi-brand Systems": Boxes,
+  // UI & Visual Design
+  "Visual Design": Palette,
+  Typography: Type,
+  Layout: LayoutGrid,
+  Branding: Palette,
+  "Responsive Design": Smartphone,
+  Accessibility: Accessibility,
+  WCAG: Accessibility,
+  // Collaboration & Leadership
+  "Cross-Functional Collaboration": Users,
+  "Stakeholder Communication": MessagesSquare,
+  "Design-Engineering Handoff": Workflow,
+  "Campaign & Growth Design": Megaphone,
   // Interaction & Prototyping
   Wireframing: Frame,
   Prototyping: MousePointerClick,
+  "User Testing": ClipboardCheck,
   "Motion & Micro-interactions": Zap,
   Figma: Figma,
   "Figma Make": Wand2,
@@ -958,10 +999,8 @@ const SKILL_ICONS: Record<string, LucideIcon> = {
   HTML: FileCode,
   CSS: Braces,
   "Bootstrap 5": LayoutGrid,
-  SCSS: Paintbrush,
   "Drupal 11": Droplets,
   Git: GitBranch,
-  Pantheon: Server,
 };
 
 function SkillsAndTools() {
@@ -1220,10 +1259,9 @@ function IfNotDesign() {
   );
 }
 
-function AboutPage({ onBack }: { onBack: () => void }) {
+function AboutPage() {
   return (
     <>
-      <SubPageTopBar onBack={onBack} width="max-w-4xl" />
       <main className="mx-auto max-w-4xl px-6 pb-32">
         <AboutMeSection />
         <Experience />
@@ -1617,15 +1655,42 @@ export default function App() {
   const [askOpen, setAskOpen] = useState(false);
   const [page, setPage] = useState<"home" | "projects" | "about">("home");
   const [projectsTab, setProjectsTab] = useState<"case" | "creative">("case");
+  // When navigating back to the home page, scroll to this section (else top).
+  const [scrollTarget, setScrollTarget] = useState<string | null>(null);
   const openProjects = (tab: "case" | "creative") => {
     setProjectsTab(tab);
     setPage("projects");
   };
+  const goHome = () => {
+    if (page === "home") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } else {
+      setScrollTarget(null);
+      setPage("home");
+    }
+  };
+  const goSkills = () => {
+    if (page === "home") {
+      document.getElementById("skills-tools")?.scrollIntoView({ behavior: "smooth" });
+    } else {
+      setScrollTarget("skills-tools");
+      setPage("home");
+    }
+  };
   useEffect(() => {
-    // Jump to top on page change. Run after layout settles (double rAF) and
-    // bypass the CSS smooth-scroll so it's an instant reset, not an animation.
-    const jump = () =>
+    // On page change, jump to the target section (or top). Run after layout
+    // settles (double rAF) and bypass CSS smooth-scroll for an instant reset.
+    const jump = () => {
+      if (page === "home" && scrollTarget) {
+        const el = document.getElementById(scrollTarget);
+        if (el) {
+          el.scrollIntoView({ behavior: "instant" as ScrollBehavior });
+          setScrollTarget(null);
+          return;
+        }
+      }
       window.scrollTo({ top: 0, left: 0, behavior: "instant" as ScrollBehavior });
+    };
     let inner = 0;
     const outer = requestAnimationFrame(() => {
       inner = requestAnimationFrame(jump);
@@ -1634,7 +1699,7 @@ export default function App() {
       cancelAnimationFrame(outer);
       cancelAnimationFrame(inner);
     };
-  }, [page]);
+  }, [page, scrollTarget]);
   return (
     <div className="min-h-screen bg-background text-foreground antialiased">
       <div
@@ -1642,26 +1707,30 @@ export default function App() {
           askOpen ? "lg:pr-[28rem]" : ""
         }`}
       >
-      {page === "home" ? (
-        <>
-          <Header
-            onOpenAsk={() => setAskOpen(true)}
-            onOpenAbout={() => setPage("about")}
-          />
-          <SideNav />
-          <main className="mx-auto max-w-3xl px-6">
-            <Hero />
-            <Work onViewAll={() => openProjects("case")} />
-            <SkillsAndTools />
-          </main>
-          <Creatives onViewAll={() => openProjects("creative")} />
-        </>
-      ) : page === "projects" ? (
-        <ProjectsPage onBack={() => setPage("home")} initialTab={projectsTab} />
-      ) : (
-        <AboutPage onBack={() => setPage("home")} />
-      )}
-      <Footer />
+        <Header
+          page={page}
+          onOpenAsk={() => setAskOpen(true)}
+          onHome={goHome}
+          onWork={() => openProjects("case")}
+          onSkills={goSkills}
+          onAbout={() => setPage("about")}
+        />
+        {page === "home" ? (
+          <>
+            <SideNav />
+            <main className="mx-auto max-w-3xl px-6">
+              <Hero />
+              <Work onViewAll={() => openProjects("case")} />
+              <SkillsAndTools />
+            </main>
+            <Creatives onViewAll={() => openProjects("creative")} />
+          </>
+        ) : page === "projects" ? (
+          <ProjectsPage initialTab={projectsTab} />
+        ) : (
+          <AboutPage />
+        )}
+        <Footer />
       </div>
       <FloatingAsk onOpenAsk={() => setAskOpen(true)} hidden={askOpen} />
       <AskPanel open={askOpen} onClose={() => setAskOpen(false)} />

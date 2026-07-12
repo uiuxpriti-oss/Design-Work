@@ -93,6 +93,33 @@ export function GitLogo({ className = box }: P) {
   );
 }
 
+export function NotionLogo({ className = box }: P) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} aria-hidden="true">
+      <rect width="24" height="24" rx="5" fill="#fff" stroke="#e5e5e5" />
+      <path
+        fill="#000"
+        d="M8 7.2 7 7.1v9.3l1.4-.1v-6l4.4 6.2 1.5-.1V7l-1.4.1v5.8L8.5 7.1z"
+      />
+    </svg>
+  );
+}
+
+export function LottieLabLogo({ className = box }: P) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} aria-hidden="true">
+      <defs>
+        <linearGradient id="ll" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stopColor="#00C6AE" />
+          <stop offset="1" stopColor="#3B5BFF" />
+        </linearGradient>
+      </defs>
+      <rect width="24" height="24" rx="6" fill="url(#ll)" />
+      <path fill="#fff" d="M9 7.5v9l7.5-4.5z" />
+    </svg>
+  );
+}
+
 export function ClaudeLogo({ className = box }: P) {
   return (
     <svg

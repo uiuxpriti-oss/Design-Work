@@ -83,41 +83,108 @@ export function playTap(): void {
 // ---------------------------------------------------------------------------
 // "On repeat" song player.
 // Plays the real recording from /public/on-repeat.mp3 inline when present.
-// If that file isn't bundled, the actual track is opened so it genuinely plays
-// (a synthesized stand-in would not BE the song).
+// If that file isn't bundled, an inline instrumental stand-in is synthesized so
+// the record always plays audible music (no network, no pop-ups required).
 // ---------------------------------------------------------------------------
 
 export interface SongHandle {
   stop: () => void;
-  /** true when playback is happening in an external tab, not inline. */
-  external?: boolean;
 }
 
-// The real track — opened when no local recording is bundled.
-export const SONG_URL =
-  "https://www.youtube.com/results?search_query=Nothing%27s+Gonna+Change+My+Love+for+You+George+Benson";
+function playNote(
+  ac: AudioContext,
+  dest: AudioNode,
+  freq: number,
+  start: number,
+  dur: number,
+  type: OscillatorType,
+  vol: number,
+) {
+  const osc = ac.createOscillator();
+  const gain = ac.createGain();
+  osc.type = type;
+  osc.frequency.value = freq;
+  gain.gain.setValueAtTime(0.0001, start);
+  gain.gain.exponentialRampToValueAtTime(vol, start + 0.04);
+  gain.gain.exponentialRampToValueAtTime(0.0001, start + dur);
+  osc.connect(gain).connect(dest);
+  osc.start(start);
+  osc.stop(start + dur + 0.05);
+}
+
+// Gentle looping ballad phrase. [frequency, beats]; freq 0 = rest.
+const MELODY: [number, number][] = [
+  [659.25, 1], [587.33, 1], [523.25, 2],
+  [587.33, 1], [659.25, 1], [783.99, 2],
+  [880.0, 1.5], [783.99, 0.5], [659.25, 1], [587.33, 1],
+  [523.25, 4],
+];
+const BASS: [number, number][] = [
+  [130.81, 4], [98.0, 4], [110.0, 4], [87.31, 4],
+];
+
+function synthSong(ac: AudioContext): SongHandle {
+  if (ac.state === "suspended") void ac.resume();
+  const beat = 60 / 66;
+  let stopped = false;
+  const timers: number[] = [];
+
+  const master = ac.createGain();
+  master.gain.setValueAtTime(0.0001, ac.currentTime);
+  master.gain.exponentialRampToValueAtTime(0.5, ac.currentTime + 0.6);
+  master.connect(ac.destination);
+
+  const loopLen = MELODY.reduce((s, [, b]) => s + b, 0) * beat;
+  const scheduleLoop = (startTime: number) => {
+    let t = startTime;
+    for (const [f, b] of MELODY) {
+      if (f > 0) playNote(ac, master, f, t, b * beat * 0.92, "triangle", 0.16);
+      t += b * beat;
+    }
+    let tb = startTime;
+    for (const [f, b] of BASS) {
+      if (f > 0) playNote(ac, master, f, tb, b * beat * 0.9, "sine", 0.13);
+      tb += b * beat;
+    }
+    const id = window.setTimeout(() => {
+      if (!stopped) scheduleLoop(ac.currentTime + 0.03);
+    }, loopLen * 1000 - 70);
+    timers.push(id);
+  };
+  scheduleLoop(ac.currentTime + 0.1);
+
+  return {
+    stop() {
+      stopped = true;
+      timers.forEach((id) => window.clearTimeout(id));
+      const now = ac.currentTime;
+      master.gain.cancelScheduledValues(now);
+      master.gain.setValueAtTime(master.gain.value, now);
+      master.gain.linearRampToValueAtTime(0.0001, now + 0.25);
+    },
+  };
+}
 
 /**
  * Start the "on repeat" song. Plays /on-repeat.mp3 inline if present, otherwise
- * opens the real track. Returns a handle whose stop() halts inline playback.
+ * an inline instrumental stand-in so the record always makes sound.
  */
 export function playSong(onEnd?: () => void): SongHandle {
   const audio = new Audio("/on-repeat.mp3");
   audio.loop = true;
   audio.addEventListener("ended", () => onEnd?.());
+  let synth: SongHandle | null = null;
 
-  const handle: SongHandle = {
+  audio.play().catch(() => {
+    const ac = getCtx();
+    if (ac) synth = synthSong(ac);
+  });
+
+  return {
     stop() {
       audio.pause();
       audio.currentTime = 0;
+      synth?.stop();
     },
   };
-
-  audio.play().catch(() => {
-    // No local recording bundled — open the real song so it actually plays.
-    handle.external = true;
-    window.open(SONG_URL, "_blank", "noopener,noreferrer");
-  });
-
-  return handle;
 }

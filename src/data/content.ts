@@ -20,6 +20,7 @@ export const projects: Project[] = [
     description: "Redesigning the digital land records experience.",
     href: "https://uiuxpriti.com/projects/punjab-land-records",
     likes: 32,
+    image: "/projects/punjab-land-records.jpg",
     gradient: "from-emerald-200 via-teal-100 to-slate-200",
   },
   {
@@ -28,6 +29,7 @@ export const projects: Project[] = [
     description: "A collaborative product journey from idea to launch.",
     href: "https://uiuxpriti.com/projects/avoda",
     likes: 28,
+    image: "/projects/avoda.jpg",
     gradient: "from-indigo-300 via-blue-200 to-sky-100",
   },
   {
@@ -36,6 +38,7 @@ export const projects: Project[] = [
     description: "A focused SaaS interface exploring depth over noise.",
     href: "https://uiuxpriti.com/projects/rabbithole",
     likes: 24,
+    image: "/projects/rabbithole.jpg",
     gradient: "from-zinc-800 via-neutral-700 to-stone-900",
   },
   {
@@ -44,6 +47,7 @@ export const projects: Project[] = [
     description: "A trustworthy identity for a modern security product.",
     href: "https://uiuxpriti.com/projects/tabnet-security",
     likes: 21,
+    image: "/projects/tabnet-security.jpg",
     gradient: "from-slate-700 via-cyan-800 to-slate-900",
   },
   {
@@ -52,6 +56,7 @@ export const projects: Project[] = [
     description: "A calm, content-first web experience for academia.",
     href: "https://uiuxpriti.com/projects/academic-web",
     likes: 19,
+    image: "/projects/academic-web.jpg",
     gradient: "from-amber-100 via-stone-100 to-neutral-200",
   },
   {
@@ -60,6 +65,7 @@ export const projects: Project[] = [
     description: "Streamlining CRM workflows into a single, clear surface.",
     href: "https://uiuxpriti.com/projects/leadsdemos",
     likes: 17,
+    image: "/projects/leadsdemos.jpg",
     gradient: "from-violet-300 via-purple-200 to-fuchsia-100",
   },
   {
@@ -68,6 +74,7 @@ export const projects: Project[] = [
     description: "Turning raw transcripts into insight, at a glance.",
     href: "https://uiuxpriti.com/projects/audio-transcript-analysis",
     likes: 22,
+    image: "/projects/audio-transcript-analysis.jpg",
     gradient: "from-rose-200 via-orange-100 to-amber-100",
   },
 ];
@@ -179,15 +186,56 @@ export const skillCategories: SkillCategory[] = [
     label: "Design & Product Thinking",
     items: [
       "UX Strategy",
+      "Product Thinking",
+      "Product Design",
+      "UX/UI",
+      "Interaction Design",
       "Systems Thinking",
       "User Research",
+      "Discovery",
       "Information Architecture",
-      "Design Systems",
       "Usability Testing",
-      "UX Copywriting",
-      "Product Positioning",
       "A/B Testing",
+      "Experimentation",
+      "Conversion Rate Optimisation",
       "Journey Mapping",
+      "Data-Informed Decisions",
+      "Product Positioning",
+      "UX Copywriting",
+      "Design QA",
+      "Product Psychology",
+      "Notion",
+    ],
+  },
+  {
+    label: "Design Systems",
+    items: [
+      "Tokens",
+      "Component Libraries",
+      "Governance",
+      "Documentation",
+      "Multi-brand Systems",
+    ],
+  },
+  {
+    label: "UI & Visual Design",
+    items: [
+      "Visual Design",
+      "Typography",
+      "Layout",
+      "Branding",
+      "Responsive Design",
+      "Accessibility",
+      "WCAG",
+    ],
+  },
+  {
+    label: "Collaboration & Leadership",
+    items: [
+      "Cross-Functional Collaboration",
+      "Stakeholder Communication",
+      "Design-Engineering Handoff",
+      "Campaign & Growth Design",
     ],
   },
   {
@@ -195,11 +243,13 @@ export const skillCategories: SkillCategory[] = [
     items: [
       "Wireframing",
       "Prototyping",
+      "User Testing",
       "Motion & Micro-interactions",
       "Figma",
       "Figma Make",
       "Framer",
       "Protopie",
+      "LottieLab",
     ],
   },
   {
@@ -214,7 +264,7 @@ export const skillCategories: SkillCategory[] = [
   },
   {
     label: "Engineering & Development",
-    items: ["HTML", "CSS", "Bootstrap 5", "SCSS", "Drupal 11", "Git", "Pantheon"],
+    items: ["HTML", "CSS", "Bootstrap 5", "Drupal 11", "Git"],
   },
 ];
 
