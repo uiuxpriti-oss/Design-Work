@@ -18,6 +18,32 @@ import {
   CornerDownRight,
   RotateCcw,
   CornerDownLeft,
+  Target,
+  Network,
+  Search,
+  ListTree,
+  Boxes,
+  ClipboardCheck,
+  PenLine,
+  Compass,
+  GitCompare,
+  Route,
+  Frame,
+  MousePointerClick,
+  Zap,
+  Figma,
+  Framer,
+  Component,
+  Terminal,
+  Plug,
+  MessageSquareText,
+  FileCode,
+  Braces,
+  LayoutGrid,
+  Paintbrush,
+  Droplets,
+  GitBranch,
+  Server,
   type LucideIcon,
 } from "lucide-react";
 import {
@@ -786,6 +812,42 @@ function Experience() {
   );
 }
 
+const SKILL_ICONS: Record<string, LucideIcon> = {
+  // Design & Product Thinking
+  "UX Strategy": Target,
+  "Systems Thinking": Network,
+  "User Research": Search,
+  "Information Architecture": ListTree,
+  "Design Systems": Boxes,
+  "Usability Testing": ClipboardCheck,
+  "UX Copywriting": PenLine,
+  "Product Positioning": Compass,
+  "A/B Testing": GitCompare,
+  "Journey Mapping": Route,
+  // Interaction & Prototyping
+  Wireframing: Frame,
+  Prototyping: MousePointerClick,
+  "Motion & Micro-interactions": Zap,
+  Figma: Figma,
+  "Figma Make": Wand2,
+  Framer: Framer,
+  Protopie: Component,
+  // AI Tools & Workflow
+  Claude: Sparkles,
+  "Claude Code": Terminal,
+  "Figma MCP": Plug,
+  "Prompt Engineering": MessageSquareText,
+  "AI-Augmented Design": Wand2,
+  // Engineering & Development
+  HTML: FileCode,
+  CSS: Braces,
+  "Bootstrap 5": LayoutGrid,
+  SCSS: Paintbrush,
+  "Drupal 11": Droplets,
+  Git: GitBranch,
+  Pantheon: Server,
+};
+
 function SkillsAndTools() {
   return (
     <section id="skills-tools" className="mt-24 scroll-mt-24">
@@ -800,14 +862,18 @@ function SkillsAndTools() {
               {cat.label}
             </p>
             <div className="flex flex-wrap gap-2">
-              {cat.items.map((item) => (
-                <span
-                  key={item}
-                  className="cursor-default select-none rounded-full border border-border bg-foreground/[0.03] px-3 py-1.5 text-[14px] text-foreground/85 transition-all duration-200 ease-out hover:-translate-y-0.5 hover:rotate-[-1.5deg] hover:border-foreground hover:bg-foreground hover:text-background hover:shadow-sm"
-                >
-                  {item}
-                </span>
-              ))}
+              {cat.items.map((item) => {
+                const Icon = SKILL_ICONS[item] ?? Sparkles;
+                return (
+                  <span
+                    key={item}
+                    className="inline-flex cursor-default select-none items-center gap-1.5 rounded-full border border-border bg-foreground/[0.03] px-3 py-1.5 text-[14px] text-foreground/85 transition-all duration-200 ease-out hover:-translate-y-0.5 hover:rotate-[-1.5deg] hover:border-foreground hover:bg-foreground hover:text-background hover:shadow-sm"
+                  >
+                    <Icon className="h-3.5 w-3.5 opacity-70" aria-hidden="true" />
+                    {item}
+                  </span>
+                );
+              })}
             </div>
           </div>
         ))}
