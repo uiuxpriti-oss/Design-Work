@@ -3,6 +3,7 @@ import {
   Heart,
   ArrowUpRight,
   ArrowRight,
+  ArrowLeft,
   ArrowUp,
   ChevronDown,
   Inbox,
@@ -66,6 +67,7 @@ import {
 } from "lucide-react";
 import {
   projects,
+  caseStudies,
   skillCategories,
   creatives,
   experience,
@@ -305,7 +307,7 @@ function Header({
   onWork,
   onAbout,
 }: {
-  page: "home" | "projects" | "about";
+  page: "home" | "projects" | "about" | "case";
   onOpenAsk: () => void;
   onHome: () => void;
   onWork: () => void;
@@ -315,7 +317,11 @@ function Header({
   const avatar = "/avatar.jpg";
   const [avatarOk, setAvatarOk] = useState(true);
   const active =
-    page === "projects" ? "work" : page === "about" ? "about" : "home";
+    page === "projects" || page === "case"
+      ? "work"
+      : page === "about"
+        ? "about"
+        : "home";
   const [scrolled, setScrolled] = useState(false);
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -525,7 +531,13 @@ function useLike(id: string, base: number) {
   return { liked, count: base + (liked ? 1 : 0), toggle };
 }
 
-function ProjectCard({ project }: { project: (typeof projects)[number] }) {
+function ProjectCard({
+  project,
+  onOpen,
+}: {
+  project: (typeof projects)[number];
+  onOpen: (id: string) => void;
+}) {
   const { liked, count, toggle } = useLike(project.id, project.likes);
   const [imgOk, setImgOk] = useState(true);
   return (
@@ -533,7 +545,12 @@ function ProjectCard({ project }: { project: (typeof projects)[number] }) {
       id={project.id}
       className="rounded-3xl bg-card p-4 sm:p-6 transition-colors hover:bg-card/80 scroll-mt-24"
     >
-      <a href={project.href} target="_blank" rel="noreferrer" className="block">
+      <button
+        type="button"
+        onClick={() => onOpen(project.id)}
+        aria-label={`Open ${project.title} case study`}
+        className="block w-full rounded-2xl outline-none focus-visible:ring-2 focus-visible:ring-foreground/25 focus-visible:ring-offset-2 focus-visible:ring-offset-card"
+      >
         <div className="aspect-[16/10] w-full overflow-hidden rounded-2xl bg-background/40">
           {project.image && imgOk ? (
             <img
@@ -541,7 +558,7 @@ function ProjectCard({ project }: { project: (typeof projects)[number] }) {
               alt={project.title}
               loading="lazy"
               onError={() => setImgOk(false)}
-              className="h-full w-full object-cover"
+              className="h-full w-full object-cover transition-transform duration-500 hover:scale-[1.02]"
             />
           ) : (
             <div
@@ -550,7 +567,7 @@ function ProjectCard({ project }: { project: (typeof projects)[number] }) {
             />
           )}
         </div>
-      </a>
+      </button>
       <div className="mt-4 flex items-start justify-between gap-6 px-1">
         <button
           type="button"
@@ -569,10 +586,9 @@ function ProjectCard({ project }: { project: (typeof projects)[number] }) {
           />
           <span className={liked ? "text-foreground" : undefined}>{count}</span>
         </button>
-        <a
-          href={project.href}
-          target="_blank"
-          rel="noreferrer"
+        <button
+          type="button"
+          onClick={() => onOpen(project.id)}
           className="group inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors"
         >
           View project
@@ -580,23 +596,33 @@ function ProjectCard({ project }: { project: (typeof projects)[number] }) {
             className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
             aria-hidden="true"
           />
-        </a>
+        </button>
       </div>
       <div className="mt-2 px-1">
-        <h3 className="text-[15px] font-medium text-foreground">
+        <button
+          type="button"
+          onClick={() => onOpen(project.id)}
+          className="text-left text-[15px] font-medium text-foreground hover:opacity-80 transition-opacity"
+        >
           {project.title}
           <span className="text-muted-foreground font-normal"> — {project.description}</span>
-        </h3>
+        </button>
       </div>
     </article>
   );
 }
 
-function Work({ onViewAll }: { onViewAll: () => void }) {
+function Work({
+  onViewAll,
+  onOpen,
+}: {
+  onViewAll: () => void;
+  onOpen: (id: string) => void;
+}) {
   return (
     <section id="work" className="space-y-6">
       {HOME_PROJECTS.map((project) => (
-        <ProjectCard key={project.id} project={project} />
+        <ProjectCard key={project.id} project={project} onOpen={onOpen} />
       ))}
       <MoreWorkFolder onViewAll={onViewAll} />
     </section>
@@ -738,8 +764,10 @@ function CreativeGridCard({
 
 function ProjectsPage({
   initialTab,
+  onOpen,
 }: {
   initialTab: "case" | "creative";
+  onOpen: (id: string) => void;
 }) {
   const [tab, setTab] = useState<"case" | "creative">(initialTab);
   const TABS = [
@@ -774,7 +802,7 @@ function ProjectsPage({
         {tab === "case" ? (
           <section id="case-studies" className="space-y-6">
             {projects.map((project) => (
-              <ProjectCard key={project.id} project={project} />
+              <ProjectCard key={project.id} project={project} onOpen={onOpen} />
             ))}
           </section>
         ) : (
@@ -805,6 +833,219 @@ function SectionHeading({
         {title}
       </h2>
     </div>
+  );
+}
+
+function CaseSection({
+  eyebrow,
+  title,
+  children,
+}: {
+  eyebrow: string;
+  title?: string;
+  children: ReactNode;
+}) {
+  return (
+    <section className="mt-16">
+      <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
+        {eyebrow}
+      </p>
+      {title && (
+        <h2 className="mt-2 text-2xl font-semibold tracking-tight sm:text-3xl">
+          {title}
+        </h2>
+      )}
+      <div className="mt-5">{children}</div>
+    </section>
+  );
+}
+
+function CaseStudyPage({
+  id,
+  onBack,
+  onOpen,
+}: {
+  id: string;
+  onBack: () => void;
+  onOpen: (id: string) => void;
+}) {
+  const project = projects.find((p) => p.id === id);
+  const cs = caseStudies[id];
+  const [imgOk, setImgOk] = useState(true);
+  useEffect(() => setImgOk(true), [id]);
+  if (!project || !cs) return null;
+  const idx = projects.findIndex((p) => p.id === id);
+  const next = projects[(idx + 1) % projects.length];
+  const meta: [string, string][] = [
+    ["Role", cs.meta.role],
+    ["Timeline", cs.meta.timeline],
+    ["Team", cs.meta.team],
+    ["Tools", cs.meta.tools],
+  ];
+  return (
+    <main className="mx-auto max-w-[52rem] px-6 pb-32">
+      <button
+        type="button"
+        onClick={onBack}
+        className="mt-6 inline-flex items-center gap-1.5 text-sm text-muted-foreground outline-none transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-foreground/20"
+      >
+        <ArrowLeft className="h-4 w-4" aria-hidden="true" /> All work
+      </button>
+
+      <header className="mt-8">
+        <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
+          {cs.eyebrow}
+        </p>
+        <h1 className="mt-3 text-3xl font-semibold tracking-tight sm:text-5xl">
+          {project.title}
+        </h1>
+        <p className="mt-4 max-w-2xl text-[17px] leading-relaxed text-foreground/85">
+          {cs.summary}
+        </p>
+      </header>
+
+      <div className="mt-8 aspect-[16/10] w-full overflow-hidden rounded-3xl bg-background/40 ring-1 ring-border">
+        {project.image && imgOk ? (
+          <img
+            src={project.image}
+            alt={project.title}
+            onError={() => setImgOk(false)}
+            className="h-full w-full object-cover"
+          />
+        ) : (
+          <div className={`h-full w-full bg-gradient-to-br ${project.gradient}`} />
+        )}
+      </div>
+
+      <dl className="mt-8 grid grid-cols-2 gap-6 border-y border-border py-6 sm:grid-cols-4">
+        {meta.map(([k, v]) => (
+          <div key={k}>
+            <dt className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
+              {k}
+            </dt>
+            <dd className="mt-1.5 text-[14px] leading-snug text-foreground/90">{v}</dd>
+          </div>
+        ))}
+      </dl>
+
+      <CaseSection eyebrow="Overview">
+        <p className="max-w-2xl text-[16px] leading-relaxed text-foreground/85">
+          {cs.overview}
+        </p>
+      </CaseSection>
+
+      <CaseSection eyebrow="The problem" title="The challenge">
+        <p className="max-w-2xl text-[15px] leading-relaxed text-foreground/85">
+          {cs.problem.text}
+        </p>
+        <ul className="mt-6 space-y-3">
+          {cs.problem.goals.map((g) => (
+            <li key={g} className="flex gap-3 text-[15px] text-foreground/85">
+              <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-foreground/40" />
+              {g}
+            </li>
+          ))}
+        </ul>
+      </CaseSection>
+
+      <CaseSection eyebrow="Research" title="What I learned">
+        <p className="max-w-2xl text-[15px] leading-relaxed text-foreground/85">
+          {cs.research.text}
+        </p>
+        <div className="mt-6 grid gap-3 sm:grid-cols-3">
+          {cs.research.findings.map((f, i) => (
+            <div
+              key={i}
+              className="rounded-2xl border border-border bg-card p-4 text-[14px] leading-relaxed text-foreground/85"
+            >
+              {f}
+            </div>
+          ))}
+        </div>
+      </CaseSection>
+
+      <CaseSection eyebrow="Process" title="How I got there">
+        <ol className="space-y-5">
+          {cs.process.map((s, i) => (
+            <li key={i} className="flex gap-4">
+              <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-foreground text-[13px] font-semibold text-background">
+                {i + 1}
+              </span>
+              <div>
+                <p className="text-[15px] font-medium text-foreground">{s.step}</p>
+                <p className="mt-1 text-[15px] leading-relaxed text-foreground/80">
+                  {s.text}
+                </p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </CaseSection>
+
+      <CaseSection eyebrow="Solution" title="The solution">
+        <p className="max-w-2xl text-[15px] leading-relaxed text-foreground/85">
+          {cs.solution.text}
+        </p>
+        <div className="mt-6 grid gap-4 sm:grid-cols-3">
+          {cs.solution.highlights.map((h) => (
+            <div key={h.title} className="rounded-2xl border border-border bg-card p-5">
+              <p className="text-[15px] font-semibold text-foreground">{h.title}</p>
+              <p className="mt-1.5 text-[14px] leading-relaxed text-muted-foreground">
+                {h.text}
+              </p>
+            </div>
+          ))}
+        </div>
+        {/* Screen slots — drop more images into public/projects to fill these. */}
+        <div className="mt-4 grid gap-4 sm:grid-cols-2">
+          {[2, 3].map((n) => (
+            <div
+              key={n}
+              className={`flex aspect-[16/10] items-center justify-center rounded-2xl bg-gradient-to-br ${project.gradient} ring-1 ring-border`}
+            >
+              <span className="text-[12px] font-medium uppercase tracking-[0.14em] text-foreground/40">
+                Screen {n}
+              </span>
+            </div>
+          ))}
+        </div>
+      </CaseSection>
+
+      <CaseSection eyebrow="Impact" title="Outcomes">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+          {cs.outcomes.metrics.map((m) => (
+            <div key={m.label} className="rounded-2xl border border-border bg-card p-5">
+              <p className="text-3xl font-semibold tracking-tight text-foreground">
+                {m.value}
+              </p>
+              <p className="mt-1 text-[13px] text-muted-foreground">{m.label}</p>
+            </div>
+          ))}
+        </div>
+        <p className="mt-6 max-w-2xl text-[15px] leading-relaxed text-foreground/85">
+          {cs.outcomes.text}
+        </p>
+      </CaseSection>
+
+      <button
+        type="button"
+        onClick={() => onOpen(next.id)}
+        className="group mt-20 flex w-full items-center justify-between gap-6 rounded-3xl border border-border bg-card p-6 text-left outline-none transition-colors hover:bg-card/70 focus-visible:ring-2 focus-visible:ring-foreground/20 sm:p-8"
+      >
+        <span>
+          <span className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
+            Next project
+          </span>
+          <span className="mt-1 block text-xl font-semibold text-foreground sm:text-2xl">
+            {next.title}
+          </span>
+        </span>
+        <ArrowRight
+          className="h-6 w-6 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-1 group-hover:text-foreground"
+          aria-hidden="true"
+        />
+      </button>
+    </main>
   );
 }
 
@@ -1684,13 +1925,20 @@ function AskPanel({ open, onClose }: { open: boolean; onClose: () => void }) {
 export default function App() {
   useTapSound();
   const [askOpen, setAskOpen] = useState(false);
-  const [page, setPage] = useState<"home" | "projects" | "about">("home");
+  const [page, setPage] = useState<"home" | "projects" | "about" | "case">(
+    "home",
+  );
   const [projectsTab, setProjectsTab] = useState<"case" | "creative">("case");
+  const [caseId, setCaseId] = useState<string | null>(null);
   // When navigating back to the home page, scroll to this section (else top).
   const [scrollTarget, setScrollTarget] = useState<string | null>(null);
   const openProjects = (tab: "case" | "creative") => {
     setProjectsTab(tab);
     setPage("projects");
+  };
+  const openCase = (id: string) => {
+    setCaseId(id);
+    setPage("case");
   };
   const goHome = () => {
     if (page === "home") {
@@ -1722,7 +1970,7 @@ export default function App() {
       cancelAnimationFrame(outer);
       cancelAnimationFrame(inner);
     };
-  }, [page, scrollTarget]);
+  }, [page, caseId, scrollTarget]);
   return (
     <div className="min-h-screen bg-background text-foreground antialiased">
       <div
@@ -1742,13 +1990,19 @@ export default function App() {
             <SideNav />
             <main className="mx-auto max-w-[52rem] px-6">
               <Hero />
-              <Work onViewAll={() => openProjects("case")} />
+              <Work onViewAll={() => openProjects("case")} onOpen={openCase} />
               <SkillsAndTools />
             </main>
             <Creatives onViewAll={() => openProjects("creative")} />
           </>
         ) : page === "projects" ? (
-          <ProjectsPage initialTab={projectsTab} />
+          <ProjectsPage initialTab={projectsTab} onOpen={openCase} />
+        ) : page === "case" && caseId ? (
+          <CaseStudyPage
+            id={caseId}
+            onBack={() => openProjects("case")}
+            onOpen={openCase}
+          />
         ) : (
           <AboutPage />
         )}
