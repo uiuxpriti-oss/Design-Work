@@ -622,14 +622,11 @@ function Hero() {
   );
 }
 
-const FOCUS_AREAS = [
-  { n: "01", title: "AI-Powered UX", text: "Intelligent interfaces that reduce cognitive load" },
-  { n: "02", title: "Data-Heavy Platforms", text: "BI, analytics, and insight delivery at scale" },
-  { n: "03", title: "Complex Workflows", text: "Turning multi-step processes into clear flows" },
-  { n: "04", title: "Decision-Centric Design", text: "Systems built around how people actually decide" },
-];
-
 const SPECIALTIES = [
+  "AI-Powered UX",
+  "Data-Heavy Platforms",
+  "Complex Workflows",
+  "Decision-Centric Design",
   "Design Systems",
   "Enterprise UX",
   "Design → Code",
@@ -643,25 +640,9 @@ const SPECIALTIES = [
 function FocusAreas() {
   const row = [...SPECIALTIES, ...SPECIALTIES];
   return (
-    <section className="mt-6">
-      <div className="border-t border-border px-6 pt-10 sm:px-10">
-        <div className="grid grid-cols-1 gap-x-8 gap-y-8 sm:grid-cols-2 lg:grid-cols-4">
-          {FOCUS_AREAS.map((f) => (
-            <div key={f.n} className="lg:border-l lg:border-border lg:pl-5">
-              <p className="flex items-start gap-2 text-[11px] font-semibold uppercase tracking-[0.14em]">
-                <span className="text-muted-foreground">{f.n}</span>
-                <span className="text-foreground">{f.title}</span>
-              </p>
-              <p className="mt-2 text-[14px] leading-relaxed text-muted-foreground">
-                {f.text}
-              </p>
-            </div>
-          ))}
-        </div>
-      </div>
-
+    <section className="mt-8">
       {/* Specialty marquee — full-bleed, footer styling */}
-      <div className="marquee-track mt-12 overflow-hidden border-y border-border py-4">
+      <div className="marquee-track overflow-hidden border-y border-border py-4">
         <div className="animate-marquee marquee-anim flex w-max items-center gap-6">
           {row.map((s, i) => (
             <span
