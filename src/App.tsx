@@ -630,20 +630,20 @@ function Hero() {
               </a>
             </p>
 
-            <div className="mt-6 flex flex-col gap-4 border-t border-white/10 pt-6 sm:flex-row sm:items-center sm:gap-10">
+            <div className="mt-7 flex flex-col gap-3">
               <div className="flex items-center gap-2.5">
-                <span className="text-[13px] text-white/45">Currently at</span>
+                <span className="text-[13px] text-white/60">Currently at</span>
                 <span
                   className={`grid h-6 w-6 shrink-0 place-items-center rounded-md text-[11px] font-semibold ${current.logo.className}`}
                 >
                   {current.logo.text}
                 </span>
-                <span className="text-[13px] font-medium text-white/80">
+                <span className="text-[13px] font-medium text-white/85">
                   Netlink Software Group
                 </span>
               </div>
-              <div className="flex items-center gap-3">
-                <span className="text-[13px] text-white/45">Previously</span>
+              <div className="flex items-center gap-2.5">
+                <span className="text-[13px] text-white/60">Previously</span>
                 {previous.map((job) => (
                   <span key={job.company} className="flex items-center gap-1.5">
                     <span
@@ -651,7 +651,7 @@ function Hero() {
                     >
                       {job.logo.text}
                     </span>
-                    <span className="text-[13px] font-medium text-white/70">
+                    <span className="text-[13px] font-medium text-white/75">
                       {shortName(job.company)}
                     </span>
                   </span>
