@@ -563,36 +563,43 @@ function Hero() {
               ? "transform 80ms ease-out, box-shadow 300ms ease-out"
               : "transform 500ms ease-out, box-shadow 300ms ease-out",
           }}
-          className="group relative overflow-hidden rounded-[28px] bg-[#22453A] px-7 py-10 shadow-lg will-change-transform [transform-style:preserve-3d] hover:shadow-2xl sm:px-12 sm:py-14 lg:px-16"
+          className="group relative overflow-hidden rounded-[28px] bg-[#11332a] px-7 py-9 shadow-lg will-change-transform [transform-style:preserve-3d] hover:shadow-2xl sm:px-12 sm:py-11 lg:px-14"
         >
-          {/* card background with baked-in scrapbook stickers */}
+          {/* desktop: full composite with camera + journal stickers */}
           <img
             src="/hero-card.webp"
             alt=""
             aria-hidden="true"
-            className="pointer-events-none absolute inset-0 h-full w-full object-cover object-right"
+            className="pointer-events-none absolute inset-0 hidden h-full w-full object-cover object-right lg:block"
           />
-          <div className="relative max-w-2xl lg:max-w-[26rem]">
-            <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl">
+          {/* mobile: faint grid + journal peeking at the bottom-right */}
+          <div className="pointer-events-none absolute inset-0 lg:hidden" aria-hidden="true">
+            <div className="absolute inset-0 opacity-[0.05] [background-image:linear-gradient(to_right,#fff_1px,transparent_1px),linear-gradient(to_bottom,#fff_1px,transparent_1px)] [background-size:40px_40px]" />
+            <img
+              src="/hero-journal.webp"
+              alt=""
+              className="absolute -bottom-7 right-0 w-[50%] max-w-[210px] translate-x-20"
+            />
+          </div>
+          <div className="relative max-w-2xl lg:max-w-[30rem]">
+            <h1 className="text-3xl font-bold tracking-tight text-white sm:text-[2.75rem]">
               Priti Jani
             </h1>
-            <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-2">
-              <p className="text-lg font-medium text-[#E3A64A]">Product Designer</p>
+            <div className="mt-2.5 flex flex-wrap items-center gap-x-3 gap-y-2">
+              <p className="text-[17px] font-medium text-[#E3A64A]">Product Designer</p>
               <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-400/10 px-2.5 py-1 text-xs font-medium text-emerald-300 ring-1 ring-emerald-400/20">
                 <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" aria-hidden="true" />
                 Open to work
               </span>
             </div>
-            <p className="mt-6 text-[16px] leading-relaxed text-white/75 sm:text-[17px]">
+            <p className="mt-5 text-[15px] leading-relaxed text-white/75 sm:text-base">
               Product Designer with 4+ years designing enterprise and B2B SaaS
-              products at scale. Currently designing end-to-end platforms and
-              scalable design systems at Netlink — turning complex, data-heavy
-              requirements into simple, usable flows. I obsess over the details
-              people don&apos;t notice, but always feel. Great design is
-              invisible; it just works.
+              products at scale. I turn complex, data-heavy requirements into
+              simple, usable flows — obsessing over the details people
+              don&apos;t notice, but always feel.
             </p>
 
-            <div className="mt-7 flex flex-wrap items-center gap-3">
+            <div className="mt-6 flex flex-wrap items-center gap-3">
               <a
                 href="#work"
                 className="inline-flex items-center gap-2 rounded-full bg-[#E3A64A] px-5 py-2.5 text-sm font-semibold text-[#22453A] outline-none transition-all duration-200 ease-out hover:bg-[#efba63] active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-[#E3A64A]/50"
@@ -608,7 +615,7 @@ function Hero() {
               </ContactButton>
             </div>
 
-            <p className="mt-8 text-[15px] text-white/55">
+            <p className="mt-6 text-[15px] text-white/55">
               Reach out via{" "}
               <a
                 href={links.email}
@@ -627,7 +634,7 @@ function Hero() {
               </a>
             </p>
 
-            <div className="mt-7 flex flex-col gap-3">
+            <div className="mt-6 flex flex-col gap-2.5">
               <div className="flex items-center gap-2.5">
                 <span className="text-[13px] text-white/60">Currently at</span>
                 <span
