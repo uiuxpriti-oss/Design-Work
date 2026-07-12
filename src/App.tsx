@@ -520,8 +520,8 @@ function Hero() {
     c.replace(/\s+(LLP|Inc\.?|America Inc|Technology|Pvt\.? Ltd\.?)$/i, "").trim();
   return (
     <section id="home" className="scroll-mt-24 px-4 pt-8 pb-14 sm:px-6 sm:pt-10">
-      <div className="mx-auto max-w-[64rem]">
-        <div className="relative overflow-hidden rounded-[28px] bg-[#123026] px-7 py-10 shadow-sm sm:px-12 sm:py-14 lg:px-16">
+      <div className="mx-auto max-w-[52rem] [perspective:1600px]">
+        <div className="group relative overflow-hidden rounded-[28px] bg-[#22453A] px-7 py-10 shadow-lg transition-[transform,box-shadow] duration-500 ease-out will-change-transform hover:shadow-2xl hover:[transform:rotateX(2deg)_rotateY(-3deg)_scale(1.02)] sm:px-12 sm:py-14 lg:px-16">
           {/* faint grid texture */}
           <div
             aria-hidden="true"
@@ -537,7 +537,7 @@ function Hero() {
               Priti Jani
             </h1>
             <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-2">
-              <p className="text-lg font-medium text-amber-400">Product Designer</p>
+              <p className="text-lg font-medium text-[#E3A64A]">Product Designer</p>
               <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-400/10 px-2.5 py-1 text-xs font-medium text-emerald-300 ring-1 ring-emerald-400/20">
                 <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" aria-hidden="true" />
                 Open to work
@@ -555,7 +555,7 @@ function Hero() {
             <div className="mt-7 flex flex-wrap items-center gap-3">
               <a
                 href="#work"
-                className="inline-flex items-center gap-2 rounded-full bg-amber-400 px-5 py-2.5 text-sm font-semibold text-[#123026] outline-none transition-all duration-200 ease-out hover:bg-amber-300 active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-amber-300/50"
+                className="inline-flex items-center gap-2 rounded-full bg-[#E3A64A] px-5 py-2.5 text-sm font-semibold text-[#22453A] outline-none transition-all duration-200 ease-out hover:bg-[#efba63] active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-[#E3A64A]/50"
               >
                 View work
                 <ArrowRight className="h-4 w-4" aria-hidden="true" />
@@ -572,7 +572,7 @@ function Hero() {
               Reach out via{" "}
               <a
                 href={links.email}
-                className="font-medium text-amber-400 underline underline-offset-4 transition-colors hover:text-amber-300"
+                className="font-medium text-[#E3A64A] underline underline-offset-4 transition-colors hover:text-[#efba63]"
               >
                 mail
               </a>{" "}
@@ -581,7 +581,7 @@ function Hero() {
                 href={links.linkedin}
                 target="_blank"
                 rel="noreferrer"
-                className="font-medium text-amber-400 underline underline-offset-4 transition-colors hover:text-amber-300"
+                className="font-medium text-[#E3A64A] underline underline-offset-4 transition-colors hover:text-[#efba63]"
               >
                 LinkedIn
               </a>
