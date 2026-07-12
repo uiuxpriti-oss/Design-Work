@@ -82,7 +82,7 @@ import {
 // Number of case studies shown on the home page; the rest live on /all-projects.
 const HOME_PROJECT_COUNT = 5;
 const HOME_PROJECTS = projects.slice(0, HOME_PROJECT_COUNT);
-import { playTap, playSong, type SongHandle } from "./sound";
+import { playTap } from "./sound";
 import {
   FigmaLogo,
   FramerLogo,
@@ -514,14 +514,14 @@ function SideNav({
 function Hero() {
   return (
     <section id="home" className="scroll-mt-24 py-20 sm:py-28 xl:py-36">
-      <p className="text-sm font-medium text-foreground mb-4">Priti Jani</p>
+      <p className="text-sm font-medium text-foreground">Priti Jani</p>
+      <p className="mb-6 mt-0.5 text-sm text-muted-foreground">Product Designer</p>
       <p className="text-[17px] leading-relaxed text-foreground/90 max-w-xl">
-        I'm a{" "}
+        I design enterprise systems that reduce cognitive load, simplify
+        decision-making, and help teams move faster under pressure:{" "}
         <span className="rounded bg-blue-200/60 px-1.5 py-0.5 font-medium text-blue-600">
-          product designer
-        </span>{" "}
-        with 3.5+ years of experience, focused on end-to-end product design for B2B
-        SaaS and consumer products.
+          ↓ 50% task time, 3× faster onboarding
+        </span>
       </p>
       <p className="text-[17px] leading-relaxed text-foreground/90 max-w-xl mt-4">
         I turn complex requirements into simple, usable solutions — obsessing over the
@@ -644,6 +644,16 @@ function ProjectCard({
           {project.title}
           <span className="text-muted-foreground font-normal"> — {project.description}</span>
         </button>
+        {project.measures && project.measures.length > 0 && (
+          <p className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1 text-[13px] text-muted-foreground">
+            {project.measures.map((m, i) => (
+              <span key={m} className="inline-flex items-center gap-2">
+                {i > 0 && <span className="text-foreground/25" aria-hidden="true">•</span>}
+                {m}
+              </span>
+            ))}
+          </p>
+        )}
       </div>
     </article>
   );
@@ -786,16 +796,18 @@ function SectionHeading({
 }
 
 function CaseSection({
+  id,
   eyebrow,
   title,
   children,
 }: {
+  id?: string;
   eyebrow: string;
   title?: string;
   children: ReactNode;
 }) {
   return (
-    <section className="mt-16">
+    <section id={id} className="mt-16 scroll-mt-24">
       <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
         {eyebrow}
       </p>
@@ -806,6 +818,91 @@ function CaseSection({
       )}
       <div className="mt-5">{children}</div>
     </section>
+  );
+}
+
+// Renders **…** spans in bold; everything else as plain text.
+function renderRich(text: string) {
+  return text.split("**").map((seg, i) =>
+    i % 2 === 1 ? (
+      <strong key={i} className="font-semibold text-foreground">
+        {seg}
+      </strong>
+    ) : (
+      <span key={i}>{seg}</span>
+    ),
+  );
+}
+
+function TagGroup({ label, items }: { label: string; items: string[] }) {
+  return (
+    <div>
+      <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-blue-600 dark:text-blue-400">
+        {label}
+      </p>
+      <div className="mt-3 flex flex-wrap gap-2">
+        {items.map((t) => {
+          const Brand = BRAND_LOGOS[t];
+          return (
+            <span
+              key={t}
+              className="inline-flex items-center gap-1.5 rounded-full bg-foreground/[0.06] px-3 py-1.5 text-[13px] text-foreground/85"
+            >
+              {Brand && <Brand className="h-3.5 w-3.5" />}
+              {t}
+            </span>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+const CASE_SECTIONS = [
+  { id: "cs-intro", label: "Intro" },
+  { id: "cs-problem", label: "The challenge" },
+  { id: "cs-research", label: "Research" },
+  { id: "cs-process", label: "Process" },
+  { id: "cs-solution", label: "Solution" },
+  { id: "cs-impact", label: "Impact" },
+];
+
+// Always-visible scroll-spy rail for the case study detail page.
+function CaseStudyRail() {
+  const [active, selectActive] = useActiveSection(CASE_SECTIONS.map((s) => s.id));
+  return (
+    <aside className="hidden xl:block fixed left-8 top-1/2 z-20 -translate-y-1/2">
+      <ul className="space-y-3 text-[14px]">
+        {CASE_SECTIONS.map((s) => {
+          const isActive = active === s.id;
+          return (
+            <li key={s.id}>
+              <a
+                href={`#${s.id}`}
+                onClick={() => selectActive(s.id)}
+                aria-current={isActive ? "true" : undefined}
+                className={`group flex items-center gap-3.5 rounded-md outline-none transition-colors duration-200 ease-out focus-visible:ring-2 focus-visible:ring-foreground/20 ${
+                  isActive
+                    ? "font-medium text-foreground"
+                    : "text-muted-foreground/60 hover:text-foreground"
+                }`}
+              >
+                <span className="flex w-8 justify-start" aria-hidden="true">
+                  <span
+                    className={`rounded-full transition-all duration-300 ease-out ${
+                      isActive
+                        ? "h-0.5 w-8 bg-foreground"
+                        : "h-px w-4 bg-muted-foreground/50 group-hover:w-6 group-hover:bg-foreground/70"
+                    }`}
+                  />
+                </span>
+                {s.label}
+              </a>
+            </li>
+          );
+        })}
+      </ul>
+    </aside>
   );
 }
 
@@ -825,14 +922,9 @@ function CaseStudyPage({
   if (!project || !cs) return null;
   const idx = projects.findIndex((p) => p.id === id);
   const next = projects[(idx + 1) % projects.length];
-  const meta: [string, string][] = [
-    ["Role", cs.meta.role],
-    ["Timeline", cs.meta.timeline],
-    ["Team", cs.meta.team],
-    ["Tools", cs.meta.tools],
-  ];
   return (
     <main className="mx-auto max-w-[52rem] px-6 pb-32">
+      <CaseStudyRail />
       <button
         type="button"
         onClick={onBack}
@@ -872,24 +964,26 @@ function CaseStudyPage({
         )}
       </div>
 
-      <dl className="mt-8 grid grid-cols-2 gap-6 border-y border-border py-6 sm:grid-cols-4">
-        {meta.map(([k, v]) => (
-          <div key={k}>
-            <dt className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
-              {k}
-            </dt>
-            <dd className="mt-1.5 text-[14px] leading-snug text-foreground/90">{v}</dd>
+      <section id="cs-intro" className="mt-12 grid scroll-mt-24 gap-10 border-t border-border pt-10 md:grid-cols-[1fr_240px]">
+        <div>
+          <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-blue-600 dark:text-blue-400">
+            Intro
+          </p>
+          <div className="mt-5 space-y-5 text-[16px] leading-relaxed text-foreground/85">
+            {cs.intro.map((para, i) => (
+              <p key={i}>{renderRich(para)}</p>
+            ))}
           </div>
-        ))}
-      </dl>
+        </div>
+        <aside className="space-y-6">
+          <TagGroup label="Role" items={cs.tags.role} />
+          <TagGroup label="Status" items={cs.tags.status} />
+          <TagGroup label="Type" items={cs.tags.type} />
+          <TagGroup label="Tools" items={cs.tags.tools} />
+        </aside>
+      </section>
 
-      <CaseSection eyebrow="Overview">
-        <p className="max-w-2xl text-[16px] leading-relaxed text-foreground/85">
-          {cs.overview}
-        </p>
-      </CaseSection>
-
-      <CaseSection eyebrow="The problem" title="The challenge">
+      <CaseSection id="cs-problem" eyebrow="The problem" title="The challenge">
         <p className="max-w-2xl text-[15px] leading-relaxed text-foreground/85">
           {cs.problem.text}
         </p>
@@ -903,7 +997,7 @@ function CaseStudyPage({
         </ul>
       </CaseSection>
 
-      <CaseSection eyebrow="Research" title="What I learned">
+      <CaseSection id="cs-research" eyebrow="Research" title="What I learned">
         <p className="max-w-2xl text-[15px] leading-relaxed text-foreground/85">
           {cs.research.text}
         </p>
@@ -919,7 +1013,7 @@ function CaseStudyPage({
         </div>
       </CaseSection>
 
-      <CaseSection eyebrow="Process" title="How I got there">
+      <CaseSection id="cs-process" eyebrow="Process" title="How I got there">
         <ol className="space-y-5">
           {cs.process.map((s, i) => (
             <li key={i} className="flex gap-4">
@@ -937,7 +1031,7 @@ function CaseStudyPage({
         </ol>
       </CaseSection>
 
-      <CaseSection eyebrow="Solution" title="The solution">
+      <CaseSection id="cs-solution" eyebrow="Solution" title="The solution">
         <p className="max-w-2xl text-[15px] leading-relaxed text-foreground/85">
           {cs.solution.text}
         </p>
@@ -966,7 +1060,7 @@ function CaseStudyPage({
         </div>
       </CaseSection>
 
-      <CaseSection eyebrow="Impact" title="Outcomes">
+      <CaseSection id="cs-impact" eyebrow="Impact" title="Outcomes">
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
           {cs.outcomes.metrics.map((m) => (
             <div key={m.label} className="rounded-2xl border border-border bg-card p-5">
@@ -1291,44 +1385,33 @@ function Creatives({ onViewAll }: { onViewAll: () => void }) {
 
 const SONG_TITLE = "Nothing's Gonna Change My Love for You";
 const SONG_ARTIST = "George Benson";
+const SONG_EMBED =
+  "https://open.spotify.com/embed/track/0vB4Vd6PtkJSEnWsmqATnZ?utm_source=generator";
 
 function OnRepeatCard() {
-  const [playing, setPlaying] = useState(false);
-  const songRef = useRef<SongHandle | null>(null);
-
-  const toggle = () => {
-    if (playing) {
-      songRef.current?.stop();
-      songRef.current = null;
-      setPlaying(false);
-      return;
-    }
-    songRef.current = playSong(() => setPlaying(false));
-    setPlaying(true);
-  };
-
-  useEffect(() => () => songRef.current?.stop(), []);
+  const [open, setOpen] = useState(false);
 
   return (
     <div className="w-full rounded-3xl border border-border bg-card p-6 text-center transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md sm:text-left">
-      {/* The vinyl itself is the control: click it to drop the tonearm and play. */}
+      {/* The vinyl is the control: click it to drop the tonearm and reveal the player. */}
       <button
         type="button"
-        onClick={toggle}
-        aria-pressed={playing}
-        aria-label={`${playing ? "Stop" : "Play"} ${SONG_TITLE} by ${SONG_ARTIST}`}
+        onClick={() => setOpen((v) => !v)}
+        aria-pressed={open}
+        aria-expanded={open}
+        aria-label={`${open ? "Hide" : "Play"} ${SONG_TITLE} by ${SONG_ARTIST}`}
         className="group relative mx-auto block h-24 w-24 rounded-full outline-none focus-visible:ring-2 focus-visible:ring-foreground/25 focus-visible:ring-offset-4 focus-visible:ring-offset-card sm:mx-0"
       >
         {/* Warm glow while playing */}
         <span
           className={`pointer-events-none absolute -inset-1.5 rounded-full bg-rose-500/25 blur-md transition-opacity duration-500 ${
-            playing ? "animate-pulse opacity-100" : "opacity-0"
+            open ? "animate-pulse opacity-100" : "opacity-0"
           }`}
           aria-hidden="true"
         />
         <div
           className={`relative h-full w-full rounded-full transition-transform duration-500 group-hover:scale-105 group-hover:rotate-3 group-active:scale-95 ${
-            playing ? "animate-record" : ""
+            open ? "animate-record" : ""
           }`}
           style={{
             background:
@@ -1347,16 +1430,16 @@ function OnRepeatCard() {
         <span className="pointer-events-none absolute left-1/2 top-1/2 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-red-600 ring-2 ring-black/50" />
         {/* Play/pause hint that pops in on hover */}
         <span className="pointer-events-none absolute left-1/2 top-1/2 flex h-8 w-8 -translate-x-1/2 -translate-y-1/2 scale-0 items-center justify-center rounded-full bg-black/55 text-white opacity-0 backdrop-blur-sm transition-all duration-200 group-hover:scale-100 group-hover:opacity-100">
-          {playing ? (
+          {open ? (
             <Pause className="h-4 w-4" aria-hidden="true" />
           ) : (
             <Play className="h-4 w-4 translate-x-[1px]" aria-hidden="true" />
           )}
         </span>
-        {/* White tonearm — swings onto the record while the song plays. */}
+        {/* White tonearm — swings onto the record while the player is open. */}
         <span
           className={`pointer-events-none absolute -right-1.5 h-16 w-1.5 origin-top rounded-full bg-neutral-300 shadow-sm transition-all duration-500 ease-out ${
-            playing ? "-top-2 rotate-[26deg]" : "-top-4 rotate-[-8deg]"
+            open ? "-top-2 rotate-[26deg]" : "-top-4 rotate-[-8deg]"
           }`}
         >
           <span className="absolute -top-1 left-1/2 h-2.5 w-2.5 -translate-x-1/2 rounded-full bg-neutral-400" />
@@ -1364,7 +1447,7 @@ function OnRepeatCard() {
       </button>
       <div className="mt-5 flex items-center justify-center gap-2 sm:justify-start">
         <h3 className="text-lg font-semibold">On repeat</h3>
-        {playing && (
+        {open && (
           <span className="flex h-3.5 items-end gap-[3px]" aria-hidden="true">
             {[0, 1, 2, 3].map((i) => (
               <span
@@ -1379,6 +1462,20 @@ function OnRepeatCard() {
       <p className="mt-2 text-[14px] leading-relaxed text-muted-foreground">
         {onRepeat}
       </p>
+      {/* Real track — plays via Spotify. Hit play in the embed. */}
+      {open && (
+        <div className="mt-4">
+          <iframe
+            title={`${SONG_TITLE} by ${SONG_ARTIST}`}
+            src={SONG_EMBED}
+            width="100%"
+            height={152}
+            style={{ border: 0, borderRadius: 12 }}
+            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+            loading="lazy"
+          />
+        </div>
+      )}
     </div>
   );
 }
