@@ -5,6 +5,7 @@ import {
   type ReactNode,
   type MouseEvent as ReactMouseEvent,
 } from "react";
+import Lenis from "lenis";
 import {
   Heart,
   ArrowUpRight,
@@ -1676,9 +1677,12 @@ function CertificateLightbox({
     document.addEventListener("keydown", onKey);
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
+    const lenis = (window as unknown as { __lenis?: { stop: () => void; start: () => void } }).__lenis;
+    lenis?.stop();
     return () => {
       document.removeEventListener("keydown", onKey);
       document.body.style.overflow = prev;
+      lenis?.start();
     };
   }, [onClose]);
   return (
@@ -2503,6 +2507,32 @@ function CursorDots() {
 
 export default function App() {
   useTapSound();
+  // Buttery smooth momentum scrolling (disabled for reduced-motion / touch)
+  useEffect(() => {
+    if (
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
+      window.matchMedia("(pointer: coarse)").matches
+    )
+      return;
+    const lenis = new Lenis({
+      duration: 1.15,
+      easing: (t: number) => 1 - Math.pow(1 - t, 3),
+      smoothWheel: true,
+      anchors: true,
+    });
+    (window as unknown as { __lenis?: Lenis }).__lenis = lenis;
+    let raf = 0;
+    const loop = (time: number) => {
+      lenis.raf(time);
+      raf = requestAnimationFrame(loop);
+    };
+    raf = requestAnimationFrame(loop);
+    return () => {
+      cancelAnimationFrame(raf);
+      lenis.destroy();
+      delete (window as unknown as { __lenis?: Lenis }).__lenis;
+    };
+  }, []);
   const [askOpen, setAskOpen] = useState(false);
   const [page, setPage] = useState<"home" | "projects" | "about" | "case">(
     "home",
