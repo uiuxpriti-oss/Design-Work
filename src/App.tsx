@@ -700,18 +700,26 @@ function Hero() {
               Reach out via{" "}
               <a
                 href={links.email}
-                className="font-medium text-[#E3A64A] underline underline-offset-4 transition-colors hover:text-[#efba63]"
+                className="group/mail inline-flex items-center font-medium text-[#E3A64A] underline underline-offset-4 transition-colors hover:text-[#efba63]"
               >
                 mail
+                <Copy
+                  className="ml-0 h-0 w-0 opacity-0 transition-all duration-200 group-hover/mail:ml-1 group-hover/mail:h-3.5 group-hover/mail:w-3.5 group-hover/mail:opacity-100"
+                  aria-hidden="true"
+                />
               </a>{" "}
               or on{" "}
               <a
                 href={links.linkedin}
                 target="_blank"
                 rel="noreferrer"
-                className="font-medium text-[#E3A64A] underline underline-offset-4 transition-colors hover:text-[#efba63]"
+                className="group/li inline-flex items-center font-medium text-[#E3A64A] underline underline-offset-4 transition-colors hover:text-[#efba63]"
               >
                 LinkedIn
+                <ArrowUpRight
+                  className="ml-0 h-0 w-0 opacity-0 transition-all duration-200 group-hover/li:ml-1 group-hover/li:h-3.5 group-hover/li:w-3.5 group-hover/li:opacity-100"
+                  aria-hidden="true"
+                />
               </a>
             </p>
 
