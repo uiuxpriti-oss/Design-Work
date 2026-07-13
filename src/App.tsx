@@ -383,7 +383,13 @@ function Header({
     else onAbout();
   };
   return (
-    <header className="sticky top-0 z-30">
+    <header
+      className={`sticky top-0 z-30 transition-all duration-300 ${
+        scrolled
+          ? "border-b border-border/60 bg-background/70 backdrop-blur-xl"
+          : "border-b border-transparent bg-transparent"
+      }`}
+    >
       <nav className="mx-auto flex max-w-[52rem] items-center justify-between px-4 py-4 sm:px-6 sm:py-5">
         <div className="flex items-center gap-2 sm:gap-4">
           <button
