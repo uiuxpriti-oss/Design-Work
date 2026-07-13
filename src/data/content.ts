@@ -763,18 +763,65 @@ export interface Creative {
   name: string;
   category: string;
   gradient: string;
+  /** Image under /public. Falls back to the gradient when missing. */
+  image?: string;
 }
 
-// Drop-in gradient placeholders for the Behance creative work.
 export const creatives: Creative[] = [
-  { name: "Nidavellir", category: "Brand Identity", gradient: "from-teal-400/30 to-indigo-500/30" },
-  { name: "Commenda", category: "Logo Design", gradient: "from-emerald-400/30 to-slate-500/30" },
-  { name: "Atz", category: "Logo Design", gradient: "from-sky-400/30 to-violet-500/30" },
-  { name: "Mr. Kirana", category: "Brand Identity", gradient: "from-emerald-500/30 to-teal-700/30" },
-  { name: "Business Icon Pack", category: "Icon Set", gradient: "from-indigo-400/30 to-purple-500/30" },
-  { name: "Neutron Star", category: "Concept", gradient: "from-violet-500/30 to-indigo-700/30" },
-  { name: "Chat Bubble AI", category: "Iconography", gradient: "from-cyan-400/30 to-blue-500/30" },
-  { name: "Butterfly Mark", category: "Logo Design", gradient: "from-fuchsia-400/30 to-rose-500/30" },
+  {
+    name: "App Marketing Banners",
+    category: "Banner Design",
+    image: "/creatives/app-marketing-banners.webp",
+    gradient: "from-orange-400/30 to-rose-500/30",
+  },
+  {
+    name: "Grocery App Banners",
+    category: "Marketing Design",
+    image: "/creatives/grocery-app-banners.webp",
+    gradient: "from-emerald-400/30 to-lime-500/30",
+  },
+  {
+    name: "Data Correl",
+    category: "Brand Identity",
+    image: "/creatives/data-correl-logo.webp",
+    gradient: "from-blue-400/30 to-indigo-600/30",
+  },
+  {
+    name: "6G Connectivity",
+    category: "Social Carousel",
+    image: "/creatives/6g-connectivity.webp",
+    gradient: "from-violet-500/30 to-indigo-700/30",
+  },
+  {
+    name: "App Dev Trends 2024",
+    category: "Social Carousel",
+    image: "/creatives/app-dev-trends-2024.webp",
+    gradient: "from-indigo-400/30 to-purple-500/30",
+  },
+  {
+    name: "Software Development",
+    category: "Social Carousel",
+    image: "/creatives/software-dev-carousel.webp",
+    gradient: "from-rose-400/30 to-violet-500/30",
+  },
+  {
+    name: "Shanti Academy",
+    category: "Marketing Campaign",
+    image: "/creatives/shanti-academy-campaign.webp",
+    gradient: "from-sky-400/30 to-red-400/30",
+  },
+  {
+    name: "Open to Work",
+    category: "Social Carousel",
+    image: "/creatives/open-to-work-carousel.webp",
+    gradient: "from-lime-400/30 to-violet-600/30",
+  },
+  {
+    name: "Portfolio Promo",
+    category: "Personal Branding",
+    image: "/creatives/open-to-work-poster.webp",
+    gradient: "from-blue-500/30 to-indigo-600/30",
+  },
 ];
 
 export const aboutIntro =

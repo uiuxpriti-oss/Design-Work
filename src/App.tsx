@@ -958,19 +958,29 @@ function CreativeGridCard({
       rel="noreferrer"
       className={`group relative block aspect-[4/3] overflow-hidden rounded-2xl bg-gradient-to-br ${creative.gradient} ring-1 ring-border transition-transform duration-300 hover:-translate-y-1`}
     >
-      <span
-        aria-hidden="true"
-        className="pointer-events-none absolute -right-4 -top-10 select-none text-[160px] font-bold leading-none text-foreground/[0.06]"
-      >
-        {creative.name[0]}
-      </span>
+      {creative.image ? (
+        <img
+          src={creative.image}
+          alt={creative.name}
+          loading="lazy"
+          className="absolute inset-0 h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.04]"
+        />
+      ) : (
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute -right-4 -top-10 select-none text-[160px] font-bold leading-none text-foreground/[0.06]"
+        >
+          {creative.name[0]}
+        </span>
+      )}
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
       <ArrowUpRight
-        className="absolute right-5 top-5 h-4 w-4 text-foreground/40 opacity-0 transition-opacity duration-200 group-hover:opacity-100"
+        className="absolute right-5 top-5 h-4 w-4 text-white/80 opacity-0 transition-opacity duration-200 group-hover:opacity-100"
         aria-hidden="true"
       />
       <div className="absolute inset-x-0 bottom-0 flex flex-col p-6">
-        <p className="font-medium text-foreground">{creative.name}</p>
-        <p className="text-[13px] text-muted-foreground">{creative.category}</p>
+        <p className="font-medium text-white">{creative.name}</p>
+        <p className="text-[13px] text-white/70">{creative.category}</p>
       </div>
     </a>
   );
@@ -1745,19 +1755,29 @@ function CreativeMarqueeRow({ reverse }: { reverse: boolean }) {
             rel="noreferrer"
             className={`group relative h-72 w-[26rem] shrink-0 overflow-hidden rounded-3xl bg-gradient-to-br ${c.gradient} ring-1 ring-border transition-transform duration-300 hover:-translate-y-1`}
           >
-            <span
-              aria-hidden="true"
-              className="pointer-events-none absolute -right-4 -top-10 select-none text-[160px] font-bold leading-none text-foreground/[0.06]"
-            >
-              {c.name[0]}
-            </span>
+            {c.image ? (
+              <img
+                src={c.image}
+                alt={c.name}
+                loading="lazy"
+                className="absolute inset-0 h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.04]"
+              />
+            ) : (
+              <span
+                aria-hidden="true"
+                className="pointer-events-none absolute -right-4 -top-10 select-none text-[160px] font-bold leading-none text-foreground/[0.06]"
+              >
+                {c.name[0]}
+              </span>
+            )}
+            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
             <ArrowUpRight
-              className="absolute right-5 top-5 h-5 w-5 text-foreground/40 opacity-0 transition-opacity duration-200 group-hover:opacity-100"
+              className="absolute right-5 top-5 h-5 w-5 text-white/80 opacity-0 transition-opacity duration-200 group-hover:opacity-100"
               aria-hidden="true"
             />
             <div className="absolute inset-x-0 bottom-0 flex flex-col p-6">
-              <p className="text-lg font-medium text-foreground">{c.name}</p>
-              <p className="text-[14px] text-muted-foreground">{c.category}</p>
+              <p className="text-lg font-medium text-white">{c.name}</p>
+              <p className="text-[14px] text-white/70">{c.category}</p>
             </div>
           </a>
         ))}
