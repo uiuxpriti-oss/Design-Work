@@ -332,7 +332,7 @@ function ThemeToggle({ scrolled = false }: { scrolled?: boolean }) {
       type="button"
       onClick={toggle}
       aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}
-      className={`inline-flex h-9 w-9 items-center justify-center rounded-full text-foreground/80 outline-none transition-colors duration-300 hover:bg-foreground/[0.1] hover:text-foreground focus-visible:ring-2 focus-visible:ring-foreground/20 ${
+      className={`inline-flex h-9 w-9 items-center justify-center rounded-full text-foreground/80 outline-none transition-colors duration-300 hover:bg-foreground/[0.14] hover:text-foreground focus-visible:ring-2 focus-visible:ring-foreground/20 ${
         scrolled ? NAV_SOLID : "border border-transparent bg-foreground/[0.06]"
       }`}
     >
@@ -434,7 +434,7 @@ function Header({
             href={links.cv}
             target="_blank"
             rel="noreferrer"
-            className={`hidden items-center gap-1.5 rounded-full px-3 py-2 text-sm font-medium text-foreground outline-none transition-colors duration-300 hover:bg-foreground/[0.1] focus-visible:ring-2 focus-visible:ring-foreground/25 sm:inline-flex sm:px-3.5 ${
+            className={`hidden items-center gap-1.5 rounded-full px-3 py-2 text-sm font-medium text-foreground outline-none transition-colors duration-300 hover:bg-foreground/[0.14] focus-visible:ring-2 focus-visible:ring-foreground/25 sm:inline-flex sm:px-3.5 ${
               scrolled ? NAV_SOLID : "border border-transparent bg-foreground/[0.06]"
             }`}
           >
@@ -452,7 +452,7 @@ function Header({
             <button
               type="button"
               onClick={onOpenAsk}
-              className="group hidden items-center gap-1.5 rounded-full border border-transparent px-3 py-2 text-sm text-foreground transition-colors duration-300 hover:opacity-70 sm:inline-flex sm:px-3.5"
+              className="group hidden items-center gap-1.5 rounded-full border border-transparent bg-foreground/[0.06] px-3 py-2 text-sm text-foreground transition-colors duration-300 hover:bg-foreground/[0.14] sm:inline-flex sm:px-3.5"
             >
               <span className="inline-flex items-center gap-1.5 bg-gradient-to-r from-indigo-500 via-fuchsia-500 to-pink-500 bg-clip-text font-medium text-transparent">
                 <Sparkle /> <span className="hidden sm:inline">Ask AI</span>
