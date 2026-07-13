@@ -627,19 +627,19 @@ function Hero() {
     const r = el.getBoundingClientRect();
     const px = (e.clientX - r.left) / r.width - 0.5;
     const py = (e.clientY - r.top) / r.height - 0.5;
-    const MAX = 6;
+    const MAX = 14;
     setTilt({ rx: -py * MAX, ry: px * MAX, on: true });
   };
   const onLeave = () => setTilt({ rx: 0, ry: 0, on: false });
   return (
     <section id="home" className="scroll-mt-24 pt-8 pb-14 sm:pt-10">
-      <div className="mx-auto max-w-[52rem] px-4 sm:px-6 [perspective:1600px]">
+      <div className="mx-auto max-w-[52rem] px-4 sm:px-6 [perspective:1100px]">
         <div
           ref={cardRef}
           onMouseMove={onMove}
           onMouseLeave={onLeave}
           style={{
-            transform: `rotateX(${tilt.rx}deg) rotateY(${tilt.ry}deg) scale(${tilt.on ? 1.015 : 1})`,
+            transform: `rotateX(${tilt.rx}deg) rotateY(${tilt.ry}deg) scale(${tilt.on ? 1.03 : 1})`,
             transition: tilt.on
               ? "transform 80ms ease-out, box-shadow 300ms ease-out"
               : "transform 500ms ease-out, box-shadow 300ms ease-out",
@@ -768,21 +768,23 @@ const SPECIALTIES = [
 function FocusAreas() {
   const row = [...SPECIALTIES, ...SPECIALTIES];
   return (
-    <section className="mt-8">
-      {/* Specialty marquee — full-bleed, footer styling */}
-      <div className="marquee-track overflow-hidden border-y border-border py-4">
-        <div className="animate-marquee marquee-anim flex w-max items-center gap-6">
-          {row.map((s, i) => (
-            <span
-              key={i}
-              className="flex items-center gap-6 whitespace-nowrap text-[15px] italic text-foreground/55"
-            >
-              {s}
-              <span className="not-italic text-foreground/25" aria-hidden="true">
-                ✳
+    <section className="mt-6 overflow-hidden py-10">
+      {/* Tilted green specialty ribbon */}
+      <div className="-rotate-[2.5deg] scale-[1.06]">
+        <div className="marquee-track overflow-hidden border-y border-white/10 bg-[#11332a] py-4 shadow-lg">
+          <div className="animate-marquee marquee-anim flex w-max items-center gap-6">
+            {row.map((s, i) => (
+              <span
+                key={i}
+                className="flex items-center gap-6 whitespace-nowrap text-[15px] font-medium text-white/75"
+              >
+                {s}
+                <span className="text-[#E3A64A]/70" aria-hidden="true">
+                  ✦
+                </span>
               </span>
-            </span>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </section>
