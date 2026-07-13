@@ -2432,6 +2432,47 @@ function AskPanel({ open, onClose }: { open: boolean; onClose: () => void }) {
   );
 }
 
+function CursorDots() {
+  const ref = useRef<HTMLDivElement>(null);
+  const target = useRef({ x: -500, y: -500 });
+  const pos = useRef({ x: -500, y: -500 });
+  const [on, setOn] = useState(false);
+  useEffect(() => {
+    if (
+      window.matchMedia("(pointer: coarse)").matches ||
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    )
+      return;
+    const move = (e: MouseEvent) => {
+      target.current = { x: e.clientX, y: e.clientY };
+      setOn(true);
+    };
+    const leave = () => setOn(false);
+    window.addEventListener("mousemove", move, { passive: true });
+    document.addEventListener("mouseleave", leave);
+    let raf = 0;
+    const tick = () => {
+      pos.current.x += (target.current.x - pos.current.x) * 0.12;
+      pos.current.y += (target.current.y - pos.current.y) * 0.12;
+      const el = ref.current;
+      if (el) {
+        el.style.setProperty("--mx", `${pos.current.x}px`);
+        el.style.setProperty("--my", `${pos.current.y}px`);
+      }
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => {
+      window.removeEventListener("mousemove", move);
+      document.removeEventListener("mouseleave", leave);
+      cancelAnimationFrame(raf);
+    };
+  }, []);
+  return (
+    <div ref={ref} aria-hidden="true" className={`cursor-dots ${on ? "is-on" : ""}`} />
+  );
+}
+
 export default function App() {
   useTapSound();
   const [askOpen, setAskOpen] = useState(false);
@@ -2483,6 +2524,7 @@ export default function App() {
   }, [page, caseId, scrollTarget]);
   return (
     <div className="min-h-screen bg-background text-foreground antialiased">
+      <CursorDots />
       <div
         className={`transition-[padding] duration-300 ease-out ${
           askOpen ? "lg:pr-[28rem]" : ""
