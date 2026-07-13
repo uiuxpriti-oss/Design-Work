@@ -621,6 +621,25 @@ function Hero() {
     c.replace(/\s+(LLP|Inc\.?|America Inc|Technology|Pvt\.? Ltd\.?)$/i, "").trim();
   const cardRef = useRef<HTMLDivElement>(null);
   const [tilt, setTilt] = useState({ rx: 0, ry: 0, on: false });
+  // Cursor-following dot with smooth (lerped) motion
+  const dotRef = useRef<HTMLDivElement>(null);
+  const target = useRef({ x: 0, y: 0 });
+  const pos = useRef({ x: 0, y: 0 });
+  const active = useRef(false);
+  const [dotOn, setDotOn] = useState(false);
+  useEffect(() => {
+    let raf = 0;
+    const tick = () => {
+      pos.current.x += (target.current.x - pos.current.x) * 0.14;
+      pos.current.y += (target.current.y - pos.current.y) * 0.14;
+      if (dotRef.current) {
+        dotRef.current.style.transform = `translate3d(${pos.current.x}px, ${pos.current.y}px, 0)`;
+      }
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, []);
   const onMove = (e: ReactMouseEvent<HTMLDivElement>) => {
     const el = cardRef.current;
     if (!el || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -629,8 +648,19 @@ function Hero() {
     const py = (e.clientY - r.top) / r.height - 0.5;
     const MAX = 20;
     setTilt({ rx: -py * MAX, ry: px * MAX, on: true });
+    // Dot target in card-local coordinates; snap on first enter so it doesn't fly in from a corner
+    target.current = { x: e.clientX - r.left, y: e.clientY - r.top };
+    if (!active.current) {
+      active.current = true;
+      pos.current = { ...target.current };
+      setDotOn(true);
+    }
   };
-  const onLeave = () => setTilt({ rx: 0, ry: 0, on: false });
+  const onLeave = () => {
+    setTilt({ rx: 0, ry: 0, on: false });
+    active.current = false;
+    setDotOn(false);
+  };
   return (
     <section id="home" className="scroll-mt-24 pt-8 pb-14 sm:pt-10">
       <div className="mx-auto max-w-[52rem] px-4 sm:px-6 [perspective:850px]">
@@ -661,6 +691,17 @@ function Hero() {
               alt=""
               className="absolute -bottom-7 right-0 w-[50%] max-w-[210px] translate-x-20"
             />
+          </div>
+          {/* Cursor-following dot (smooth lerp); sits above the bg art, behind the text */}
+          <div
+            ref={dotRef}
+            aria-hidden="true"
+            className={`pointer-events-none absolute left-0 top-0 hidden transition-opacity duration-300 ease-out will-change-transform lg:block ${
+              dotOn ? "opacity-100" : "opacity-0"
+            }`}
+          >
+            <div className="absolute -ml-[85px] -mt-[85px] h-[170px] w-[170px] rounded-full bg-[radial-gradient(circle,rgba(227,166,74,0.22),transparent_65%)] blur-lg" />
+            <div className="absolute -ml-[5px] -mt-[5px] h-2.5 w-2.5 rounded-full bg-[#E3A64A] shadow-[0_0_14px_3px_rgba(227,166,74,0.55)]" />
           </div>
           <div className="relative max-w-2xl lg:max-w-[34rem]">
             <h1 className="text-3xl font-bold tracking-tight text-white sm:text-[2.75rem]">
