@@ -769,9 +769,9 @@ function FocusAreas() {
   const row = [...SPECIALTIES, ...SPECIALTIES];
   return (
     <section className="mt-6 overflow-hidden py-10">
-      {/* Tilted green specialty ribbon */}
-      <div className="-rotate-[2.5deg] scale-[1.06]">
-        <div className="marquee-track overflow-hidden border-y border-white/10 bg-[#11332a] py-4 shadow-lg">
+      {/* Tilted green specialty ribbon — width-extended (no scale) so text stays crisp */}
+      <div className="-rotate-[2.5deg]">
+        <div className="marquee-track -ml-[6%] w-[112%] overflow-hidden border-y border-white/10 bg-[#11332a] py-4 shadow-lg">
           <div className="animate-marquee marquee-anim flex w-max items-center gap-6">
             {row.map((s, i) => (
               <span
