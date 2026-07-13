@@ -1640,7 +1640,7 @@ function AwardRow({ a, n }: { a: (typeof awards)[number]; n: number }) {
               alt={`${a.title} certificate`}
               onError={() => setImgOk(false)}
               loading="lazy"
-              className="h-full w-full object-cover"
+              className="h-full w-full object-cover object-top"
             />
           ) : (
             <div className={`flex h-full w-full items-center justify-center bg-gradient-to-br ${a.gradient}`}>
