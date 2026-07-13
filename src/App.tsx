@@ -454,7 +454,7 @@ function Header({
               onClick={onOpenAsk}
               className="group hidden items-center gap-1.5 rounded-full border border-transparent bg-foreground/[0.06] px-3 py-2 text-sm text-foreground transition-colors duration-300 hover:bg-foreground/[0.14] sm:inline-flex sm:px-3.5"
             >
-              <span className="inline-flex items-center gap-1.5 bg-gradient-to-r from-indigo-500 via-fuchsia-500 to-pink-500 bg-clip-text font-medium text-transparent">
+              <span className="inline-flex items-center gap-1.5 font-medium text-foreground">
                 <Sparkle /> <span className="hidden sm:inline">Ask AI</span>
               </span>
             </button>
@@ -514,7 +514,7 @@ function Header({
                   }}
                   className="flex w-full items-center rounded-xl px-3 py-2.5 text-left hover:bg-foreground/[0.04]"
                 >
-                  <span className="inline-flex items-center gap-3 bg-gradient-to-r from-indigo-500 via-fuchsia-500 to-pink-500 bg-clip-text text-[15px] font-semibold text-transparent">
+                  <span className="inline-flex items-center gap-3 text-[15px] font-semibold text-foreground">
                     <Sparkle /> Ask AI
                   </span>
                 </button>
