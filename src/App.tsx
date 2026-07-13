@@ -1595,17 +1595,26 @@ function SkillsAndTools() {
   );
 }
 
-function AwardRow({ a, n }: { a: (typeof awards)[number]; n: number }) {
+function AwardRow({
+  a,
+  n,
+  onOpen,
+}: {
+  a: (typeof awards)[number];
+  n: number;
+  onOpen: (a: (typeof awards)[number]) => void;
+}) {
   const [imgOk, setImgOk] = useState(true);
   const hasImg = Boolean(a.certificate) && imgOk;
   return (
     <div className="group relative border-t border-border">
-      <a
-        href={a.certificate}
-        target={a.certificate ? "_blank" : undefined}
-        rel="noreferrer"
+      <button
+        type="button"
+        onClick={() => hasImg && onOpen(a)}
         aria-label={`View ${a.title} certificate`}
-        className="grid grid-cols-1 gap-x-8 gap-y-3 py-8 outline-none transition-colors focus-visible:bg-foreground/[0.02] sm:grid-cols-[1fr_1fr] sm:items-start"
+        className={`grid w-full grid-cols-1 gap-x-8 gap-y-3 py-8 text-left outline-none transition-colors focus-visible:bg-foreground/[0.02] sm:grid-cols-[1fr_1fr] sm:items-start ${
+          hasImg ? "cursor-pointer" : "cursor-default"
+        }`}
       >
         <div className="flex gap-4">
           <span className="pt-1 text-[13px] tabular-nums text-muted-foreground/70">
@@ -1629,7 +1638,7 @@ function AwardRow({ a, n }: { a: (typeof awards)[number]; n: number }) {
             <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
           </span>
         </div>
-      </a>
+      </button>
 
       {/* Certificate preview — floats in on hover (desktop) */}
       <div className="pointer-events-none absolute right-0 top-1/2 z-20 hidden w-[300px] -translate-y-1/2 translate-x-6 scale-95 overflow-hidden rounded-xl bg-card opacity-0 shadow-2xl ring-1 ring-border transition-all duration-200 ease-out group-hover:translate-x-2 group-hover:scale-100 group-hover:opacity-100 xl:block">
@@ -1653,15 +1662,69 @@ function AwardRow({ a, n }: { a: (typeof awards)[number]; n: number }) {
   );
 }
 
+function CertificateLightbox({
+  award,
+  onClose,
+}: {
+  award: (typeof awards)[number];
+  onClose: () => void;
+}) {
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    document.addEventListener("keydown", onKey);
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prev;
+    };
+  }, [onClose]);
+  return (
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-label={`${award.title} certificate`}
+      onClick={onClose}
+      className="fixed inset-0 z-[100] flex flex-col items-center justify-center gap-4 bg-black/80 p-4 backdrop-blur-sm sm:p-8"
+    >
+      <button
+        type="button"
+        onClick={onClose}
+        aria-label="Close certificate"
+        className="absolute right-4 top-4 inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white outline-none transition-colors hover:bg-white/20 focus-visible:ring-2 focus-visible:ring-white/40"
+      >
+        <X className="h-5 w-5" aria-hidden="true" />
+      </button>
+      <img
+        src={award.certificate}
+        alt={`${award.title} certificate`}
+        onClick={(e) => e.stopPropagation()}
+        className="max-h-[85vh] max-w-[92vw] rounded-lg object-contain shadow-2xl"
+      />
+      <p className="text-center text-sm text-white/80">
+        <span className="font-semibold text-white">{award.title}</span>
+        <span className="mx-1.5 text-white/40">·</span>
+        {award.issuer} · {award.year}
+      </p>
+    </div>
+  );
+}
+
 function Awards() {
+  const [open, setOpen] = useState<(typeof awards)[number] | null>(null);
   return (
     <section id="awards" className="mt-24 scroll-mt-24">
       <SectionHeading eyebrow="Recognition" title="Awards & accolades" />
       <div className="mt-8 border-b border-border">
         {awards.map((a, i) => (
-          <AwardRow key={a.title} a={a} n={i + 1} />
+          <AwardRow key={a.title} a={a} n={i + 1} onOpen={setOpen} />
         ))}
       </div>
+      {open && (
+        <CertificateLightbox award={open} onClose={() => setOpen(null)} />
+      )}
     </section>
   );
 }
