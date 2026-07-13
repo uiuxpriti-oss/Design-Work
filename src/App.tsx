@@ -388,8 +388,14 @@ function Header({
           <button
             type="button"
             onClick={onHome}
-            className="shrink-0"
             aria-label="Home"
+            aria-hidden={scrolled}
+            tabIndex={scrolled ? -1 : 0}
+            className={`shrink-0 overflow-hidden transition-all duration-500 ease-out ${
+              scrolled
+                ? "pointer-events-none w-0 -translate-x-1 scale-90 opacity-0"
+                : "w-8 translate-x-0 scale-100 opacity-100"
+            }`}
           >
             {avatar && avatarOk ? (
               <img
@@ -403,8 +409,8 @@ function Header({
             )}
           </button>
           <div
-            className={`hidden items-center gap-0.5 rounded-full p-1 transition-colors duration-300 sm:flex sm:gap-1 ${
-              scrolled ? NAV_SOLID : "border border-transparent bg-foreground/[0.06]"
+            className={`hidden items-center gap-0.5 rounded-full p-1 transition-all duration-500 ease-out sm:flex sm:gap-1 ${
+              scrolled ? `${NAV_SOLID} -ml-2 sm:-ml-4` : "border border-transparent bg-foreground/[0.06]"
             }`}
           >
             {NAV.map(({ id, label, icon: Icon }) => {
@@ -2482,7 +2488,7 @@ export default function App() {
     };
   }, [page, caseId, scrollTarget]);
   return (
-    <div className="min-h-screen bg-background text-foreground antialiased">
+    <div className="isolate min-h-screen bg-background text-foreground antialiased">
       <CursorDots />
       <div
         className={`transition-[padding] duration-300 ease-out ${

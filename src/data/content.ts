@@ -850,24 +850,6 @@ export interface Award {
 
 export const awards: Award[] = [
   {
-    title: "National Excellence Award",
-    issuer: "Indore Voyage",
-    year: "2023",
-    description:
-      "Recognised nationally for outstanding magazine design: editorial layouts, typography, and visual storytelling for the Indore Voyage publication.",
-    certificate: "/awards/national-excellence.jpg",
-    gradient: "from-amber-200 via-orange-100 to-rose-100",
-  },
-  {
-    title: "Pinnacle Award",
-    issuer: "Netlink Software Group",
-    year: "2022",
-    description:
-      "Awarded for delivery excellence on the SiriusXM products — acknowledged for design quality, cross-team collaboration, and on-time execution.",
-    certificate: "/awards/pinnacle-award.jpg",
-    gradient: "from-indigo-200 via-blue-100 to-sky-100",
-  },
-  {
     title: "Best Performer of the Quarter",
     issuer: "Lumenore",
     year: "2026",
