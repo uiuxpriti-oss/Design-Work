@@ -948,15 +948,17 @@ function Work({
 
 function CreativeGridCard({
   creative,
+  onOpen,
 }: {
   creative: (typeof creatives)[number];
+  onOpen: (c: (typeof creatives)[number]) => void;
 }) {
   return (
-    <a
-      href={links.behance}
-      target="_blank"
-      rel="noreferrer"
-      className={`group relative block aspect-[4/3] overflow-hidden rounded-2xl bg-gradient-to-br ${creative.gradient} ring-1 ring-border transition-transform duration-300 hover:-translate-y-1`}
+    <button
+      type="button"
+      onClick={() => onOpen(creative)}
+      aria-label={`View ${creative.name}`}
+      className={`group relative block aspect-[4/3] w-full cursor-pointer overflow-hidden rounded-2xl bg-gradient-to-br ${creative.gradient} text-left ring-1 ring-border transition-transform duration-300 hover:-translate-y-1`}
     >
       {creative.image ? (
         <img
@@ -982,7 +984,7 @@ function CreativeGridCard({
         <p className="font-medium text-white">{creative.name}</p>
         <p className="text-[13px] text-white/70">{creative.category}</p>
       </div>
-    </a>
+    </button>
   );
 }
 
@@ -994,6 +996,9 @@ function ProjectsPage({
   onOpen: (id: string) => void;
 }) {
   const [tab, setTab] = useState<"case" | "creative">(initialTab);
+  const [creativeOpen, setCreativeOpen] = useState<
+    (typeof creatives)[number] | null
+  >(null);
   const TABS = [
     { id: "case", label: "Case Studies" },
     { id: "creative", label: "Creatives" },
@@ -1032,11 +1037,21 @@ function ProjectsPage({
         ) : (
           <section className="grid grid-cols-1 gap-6 sm:grid-cols-2">
             {creatives.map((creative, i) => (
-              <CreativeGridCard key={i} creative={creative} />
+              <CreativeGridCard
+                key={i}
+                creative={creative}
+                onOpen={setCreativeOpen}
+              />
             ))}
           </section>
         )}
       </main>
+      {creativeOpen && (
+        <CreativeLightbox
+          item={creativeOpen}
+          onClose={() => setCreativeOpen(null)}
+        />
+      )}
     </>
   );
 }
@@ -1737,7 +1752,13 @@ function Awards() {
   );
 }
 
-function CreativeMarqueeRow({ reverse }: { reverse: boolean }) {
+function CreativeMarqueeRow({
+  reverse,
+  onOpen,
+}: {
+  reverse: boolean;
+  onOpen: (c: (typeof creatives)[number]) => void;
+}) {
   const items = reverse ? [...creatives].reverse() : creatives;
   const line = [...items, ...items];
   return (
@@ -1748,12 +1769,12 @@ function CreativeMarqueeRow({ reverse }: { reverse: boolean }) {
         }`}
       >
         {line.map((c, i) => (
-          <a
+          <button
             key={i}
-            href={links.behance}
-            target="_blank"
-            rel="noreferrer"
-            className={`group relative h-72 w-[26rem] shrink-0 overflow-hidden rounded-3xl bg-gradient-to-br ${c.gradient} ring-1 ring-border transition-transform duration-300 hover:-translate-y-1`}
+            type="button"
+            onClick={() => onOpen(c)}
+            aria-label={`View ${c.name}`}
+            className={`group relative block h-72 w-[26rem] shrink-0 cursor-pointer overflow-hidden rounded-3xl bg-gradient-to-br ${c.gradient} text-left ring-1 ring-border transition-transform duration-300 hover:-translate-y-1`}
           >
             {c.image ? (
               <img
@@ -1779,14 +1800,83 @@ function CreativeMarqueeRow({ reverse }: { reverse: boolean }) {
               <p className="text-lg font-medium text-white">{c.name}</p>
               <p className="text-[14px] text-white/70">{c.category}</p>
             </div>
-          </a>
+          </button>
         ))}
       </div>
     </div>
   );
 }
 
+function CreativeLightbox({
+  item,
+  onClose,
+}: {
+  item: (typeof creatives)[number];
+  onClose: () => void;
+}) {
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    document.addEventListener("keydown", onKey);
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const lenis = (window as unknown as { __lenis?: { stop: () => void; start: () => void } }).__lenis;
+    lenis?.stop();
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prev;
+      lenis?.start();
+    };
+  }, [onClose]);
+  return (
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-label={`${item.name} preview`}
+      onClick={onClose}
+      className="fixed inset-0 z-[100] flex flex-col items-center justify-center gap-4 bg-black/80 p-4 backdrop-blur-sm sm:p-8"
+    >
+      <button
+        type="button"
+        onClick={onClose}
+        aria-label="Close preview"
+        className="absolute right-4 top-4 inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white outline-none transition-colors hover:bg-white/20 focus-visible:ring-2 focus-visible:ring-white/40"
+      >
+        <X className="h-5 w-5" aria-hidden="true" />
+      </button>
+      {item.image && (
+        <img
+          src={item.image}
+          alt={item.name}
+          onClick={(e) => e.stopPropagation()}
+          className="max-h-[82vh] max-w-[92vw] rounded-lg object-contain shadow-2xl"
+        />
+      )}
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-center text-sm text-white/80"
+      >
+        <span className="font-semibold text-white">{item.name}</span>
+        <span className="text-white/40">·</span>
+        <span>{item.category}</span>
+        <a
+          href={links.behance}
+          target="_blank"
+          rel="noreferrer"
+          onClick={(e) => e.stopPropagation()}
+          className="ml-2 inline-flex items-center gap-1 rounded-full bg-white/10 px-3 py-1 font-medium text-white transition-colors hover:bg-white/20"
+        >
+          View on Behance
+          <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
+        </a>
+      </div>
+    </div>
+  );
+}
+
 function Creatives({ onViewAll }: { onViewAll: () => void }) {
+  const [open, setOpen] = useState<(typeof creatives)[number] | null>(null);
   return (
     <section id="creatives" className="mt-24 scroll-mt-24">
       <div className="mx-auto max-w-[52rem] px-6">
@@ -1817,9 +1907,10 @@ function Creatives({ onViewAll }: { onViewAll: () => void }) {
       </div>
       {/* Full-bleed, two opposing rows of larger cards */}
       <div className="mt-10 space-y-6">
-        <CreativeMarqueeRow reverse={false} />
-        <CreativeMarqueeRow reverse={true} />
+        <CreativeMarqueeRow reverse={false} onOpen={setOpen} />
+        <CreativeMarqueeRow reverse={true} onOpen={setOpen} />
       </div>
+      {open && <CreativeLightbox item={open} onClose={() => setOpen(null)} />}
     </section>
   );
 }
