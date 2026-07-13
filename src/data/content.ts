@@ -868,12 +868,39 @@ export const awards: Award[] = [
     gradient: "from-indigo-200 via-blue-100 to-sky-100",
   },
   {
-    title: "Best Performer",
+    title: "Best Performer of the Quarter",
     issuer: "Lumenore",
-    year: "2023",
+    year: "2026",
     description:
-      "Recognised as best performer for consistent delivery quality, design leadership, and impactful contributions across key product initiatives.",
-    certificate: "/awards/best-performer.jpg",
+      "Certificate of Achievement for Best Performer of the Quarter (Q1, Jan–Mar 2026) at Netlink | Lumenore — recognised for hard work and great efforts.",
+    certificate: "/awards/lumenore-best-performer.jpg",
     gradient: "from-emerald-200 via-teal-100 to-green-100",
+  },
+  {
+    title: "Emotional Well-Being with EaR",
+    issuer: "EHAC & SSISM",
+    year: "2021",
+    description:
+      "Certificate of Participation in an online training program on 'Emotional Well-Being with EaR' — 10 sessions, conducted by a BPS-licensed clinical psychologist.",
+    certificate: "/awards/emotional-wellbeing-ear.jpg",
+    gradient: "from-sky-200 via-cyan-100 to-teal-100",
+  },
+  {
+    title: "Digital Skills: User Experience",
+    issuer: "Accenture (FutureLearn)",
+    year: "2022",
+    description:
+      "Certificate of Achievement for completing 'Digital Skills: User Experience' — an introduction to UX and why it matters in an ever-evolving digital world.",
+    certificate: "/awards/accenture-ux.jpg",
+    gradient: "from-fuchsia-200 via-pink-100 to-rose-100",
+  },
+  {
+    title: "User Experience Design Essentials – Adobe XD UI UX Design",
+    issuer: "Udemy",
+    year: "2022",
+    description:
+      "Certificate of Completion for 'User Experience Design Essentials – Adobe XD UI UX Design' (9.5 hours) by Daniel Walter Scott.",
+    certificate: "/awards/udemy-ux-adobe-xd.jpg",
+    gradient: "from-violet-200 via-indigo-100 to-blue-100",
   },
 ];

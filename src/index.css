@@ -169,8 +169,8 @@
     inset: 0;
     z-index: 45;
     pointer-events: none;
-    background-image: radial-gradient(rgba(148, 163, 184, 0.55) 1px, transparent 1.6px);
-    background-size: 24px 24px;
+    background-image: radial-gradient(rgba(148, 163, 184, 0.6) 0.8px, transparent 1.2px);
+    background-size: 16px 16px;
     -webkit-mask-image: radial-gradient(
       220px circle at var(--mx, -500px) var(--my, -500px),
       #000 0%,
