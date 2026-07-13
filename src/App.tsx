@@ -627,19 +627,19 @@ function Hero() {
     const r = el.getBoundingClientRect();
     const px = (e.clientX - r.left) / r.width - 0.5;
     const py = (e.clientY - r.top) / r.height - 0.5;
-    const MAX = 14;
+    const MAX = 20;
     setTilt({ rx: -py * MAX, ry: px * MAX, on: true });
   };
   const onLeave = () => setTilt({ rx: 0, ry: 0, on: false });
   return (
     <section id="home" className="scroll-mt-24 pt-8 pb-14 sm:pt-10">
-      <div className="mx-auto max-w-[52rem] px-4 sm:px-6 [perspective:1100px]">
+      <div className="mx-auto max-w-[52rem] px-4 sm:px-6 [perspective:850px]">
         <div
           ref={cardRef}
           onMouseMove={onMove}
           onMouseLeave={onLeave}
           style={{
-            transform: `rotateX(${tilt.rx}deg) rotateY(${tilt.ry}deg) scale(${tilt.on ? 1.03 : 1})`,
+            transform: `rotateX(${tilt.rx}deg) rotateY(${tilt.ry}deg) scale(${tilt.on ? 1.05 : 1})`,
             transition: tilt.on
               ? "transform 80ms ease-out, box-shadow 300ms ease-out"
               : "transform 500ms ease-out, box-shadow 300ms ease-out",
