@@ -776,23 +776,26 @@ const SPECIALTIES = [
 function FocusAreas() {
   const row = [...SPECIALTIES, ...SPECIALTIES];
   return (
-    <section className="mt-6 overflow-hidden py-10">
-      {/* Tilted green specialty ribbon — width-extended (no scale) so text stays crisp */}
-      <div className="-rotate-[2.5deg]">
-        <div className="marquee-track -ml-[6%] w-[112%] overflow-hidden border-y border-white/10 bg-[#11332a] py-4 shadow-lg">
-          <div className="animate-marquee marquee-anim flex w-max items-center gap-6">
-            {row.map((s, i) => (
+    <section className="relative mt-6 overflow-hidden py-12">
+      {/* Tilted green band — a separate static element, so its edges stay crisp */}
+      <div
+        className="pointer-events-none absolute left-1/2 top-1/2 h-[64px] w-[130%] -translate-x-1/2 -translate-y-1/2 -rotate-[2.5deg] border-y border-white/10 bg-[#11332a] shadow-lg"
+        aria-hidden="true"
+      />
+      {/* Upright marquee text (no rotation → never resampled → sharp); edge fade hides where the tilted band meets the straight row */}
+      <div className="marquee-track relative overflow-hidden [mask-image:linear-gradient(90deg,transparent,#000_13%,#000_87%,transparent)] [-webkit-mask-image:linear-gradient(90deg,transparent,#000_13%,#000_87%,transparent)]">
+        <div className="animate-marquee marquee-anim flex w-max items-center gap-6 py-2">
+          {row.map((s, i) => (
               <span
                 key={i}
-                className="flex items-center gap-6 whitespace-nowrap text-[15px] font-medium text-white/75"
+                className="flex items-center gap-6 whitespace-nowrap text-[15px] font-medium text-white/85"
               >
                 {s}
-                <span className="text-[#E3A64A]/70" aria-hidden="true">
+                <span className="text-[#E3A64A]/75" aria-hidden="true">
                   ✦
                 </span>
               </span>
             ))}
-          </div>
         </div>
       </div>
     </section>
