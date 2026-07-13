@@ -2101,9 +2101,6 @@ function Footer() {
           <a href={links.cv} className="hover:text-foreground">
             Resume
           </a>
-          <a href={links.coverLetter} className="hover:text-foreground">
-            Cover Letter
-          </a>
         </div>
       </div>
     </footer>

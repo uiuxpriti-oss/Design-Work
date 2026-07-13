@@ -633,7 +633,6 @@ export const links = {
   linkedin: "https://www.linkedin.com/in/priti-jani14/",
   behance: "https://www.behance.net/pritijani",
   cv: "/Priti-Jani-CV.pdf",
-  coverLetter: "#",
 };
 
 export interface Experience {
