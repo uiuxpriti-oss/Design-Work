@@ -269,7 +269,7 @@ const NAV: { id: string; label: string; icon: LucideIcon }[] = [
 
 // Solid pill for the scrolled nav — opaque so it stays readable over content
 // (glassmorphism washed out against the page cards).
-const NAV_SOLID = "border border-border bg-card shadow-sm";
+const NAV_SOLID = "border border-border bg-card shadow-lg";
 
 function useActiveSection(ids: string[]) {
   const [active, setActive] = useState(ids[0]);
@@ -326,16 +326,14 @@ function useTheme() {
   return { dark, toggle: () => setDark((v) => !v) };
 }
 
-function ThemeToggle({ scrolled = false }: { scrolled?: boolean }) {
+function ThemeToggle() {
   const { dark, toggle } = useTheme();
   return (
     <button
       type="button"
       onClick={toggle}
       aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}
-      className={`inline-flex h-9 w-9 items-center justify-center rounded-full text-foreground/80 outline-none transition-colors duration-300 hover:bg-foreground/[0.14] hover:text-foreground focus-visible:ring-2 focus-visible:ring-foreground/20 ${
-        scrolled ? NAV_SOLID : "border border-transparent bg-foreground/[0.06]"
-      }`}
+      className={`inline-flex h-9 w-9 items-center justify-center rounded-full text-foreground/80 outline-none transition-colors duration-300 hover:text-foreground focus-visible:ring-2 focus-visible:ring-foreground/20 ${NAV_SOLID}`}
     >
       {dark ? (
         <Sun className="h-[18px] w-[18px]" aria-hidden="true" />
@@ -383,13 +381,7 @@ function Header({
     else onAbout();
   };
   return (
-    <header
-      className={`sticky top-0 z-30 transition-all duration-300 ${
-        scrolled
-          ? "border-b border-border/60 bg-background/70 backdrop-blur-xl"
-          : "border-b border-transparent bg-transparent"
-      }`}
-    >
+    <header className="sticky top-0 z-30">
       <nav className="mx-auto flex max-w-[52rem] items-center justify-between px-4 py-4 sm:px-6 sm:py-5">
         <div className="flex items-center gap-2 sm:gap-4">
           <button
@@ -409,15 +401,15 @@ function Header({
                 src={avatar}
                 alt="Priti Jani"
                 onError={() => setAvatarOk(false)}
-                className="h-8 w-8 rounded-full object-cover align-middle"
+                className="h-9 w-9 rounded-full object-cover align-middle shadow-lg ring-2 ring-card"
               />
             ) : (
               <span className="inline-block h-8 w-8 rounded-full bg-foreground align-middle" />
             )}
           </button>
           <div
-            className={`hidden items-center gap-0.5 rounded-full p-1 transition-all duration-500 ease-out sm:flex sm:gap-1 ${
-              scrolled ? `${NAV_SOLID} -ml-2 sm:-ml-4` : "border border-transparent bg-foreground/[0.06]"
+            className={`hidden items-center gap-0.5 rounded-full p-1 transition-all duration-500 ease-out sm:flex sm:gap-1 ${NAV_SOLID} ${
+              scrolled ? "-ml-2 sm:-ml-4" : ""
             }`}
           >
             {NAV.map(({ id, label, icon: Icon }) => {
@@ -442,14 +434,12 @@ function Header({
           </div>
         </div>
         <div className="relative flex items-center gap-1 sm:gap-2">
-          <ThemeToggle scrolled={scrolled} />
+          <ThemeToggle />
           <a
             href={links.cv}
             target="_blank"
             rel="noreferrer"
-            className={`hidden items-center gap-1.5 rounded-full px-3 py-2 text-sm font-medium text-foreground outline-none transition-colors duration-300 hover:bg-foreground/[0.14] focus-visible:ring-2 focus-visible:ring-foreground/25 sm:inline-flex sm:px-3.5 ${
-              scrolled ? NAV_SOLID : "border border-transparent bg-foreground/[0.06]"
-            }`}
+            className={`hidden items-center gap-1.5 rounded-full px-3 py-2 text-sm font-medium text-foreground outline-none transition-colors duration-300 focus-visible:ring-2 focus-visible:ring-foreground/25 sm:inline-flex sm:px-3.5 ${NAV_SOLID}`}
           >
             <FileText className="h-4 w-4" aria-hidden="true" /> Resume
           </a>
@@ -465,7 +455,7 @@ function Header({
             <button
               type="button"
               onClick={onOpenAsk}
-              className="group hidden items-center gap-1.5 rounded-full border border-transparent bg-foreground/[0.06] px-3 py-2 text-sm text-foreground transition-colors duration-300 hover:bg-foreground/[0.14] sm:inline-flex sm:px-3.5"
+              className={`group hidden items-center gap-1.5 rounded-full px-3 py-2 text-sm text-foreground transition-colors duration-300 sm:inline-flex sm:px-3.5 ${NAV_SOLID}`}
             >
               <span className="inline-flex items-center gap-1.5 font-medium text-foreground">
                 <Sparkle /> <span className="hidden sm:inline">Ask AI</span>
@@ -479,9 +469,7 @@ function Header({
             onClick={() => setMenuOpen((v) => !v)}
             aria-label={menuOpen ? "Close menu" : "Open menu"}
             aria-expanded={menuOpen}
-            className={`inline-flex h-9 w-9 items-center justify-center rounded-full text-foreground/80 outline-none transition-colors duration-300 hover:bg-foreground/[0.1] focus-visible:ring-2 focus-visible:ring-foreground/20 sm:hidden ${
-              scrolled ? NAV_SOLID : "border border-transparent bg-foreground/[0.06]"
-            }`}
+            className={`inline-flex h-9 w-9 items-center justify-center rounded-full text-foreground/80 outline-none transition-colors duration-300 focus-visible:ring-2 focus-visible:ring-foreground/20 sm:hidden ${NAV_SOLID}`}
           >
             {menuOpen ? (
               <X className="h-5 w-5" aria-hidden="true" />
