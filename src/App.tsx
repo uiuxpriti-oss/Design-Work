@@ -438,7 +438,7 @@ function Header({
               scrolled ? NAV_SOLID : "border border-transparent bg-foreground/[0.06]"
             }`}
           >
-            <FileText className="h-4 w-4" aria-hidden="true" /> CV
+            <FileText className="h-4 w-4" aria-hidden="true" /> Resume
           </a>
           {scrolled ? (
             <ContactButton
@@ -525,7 +525,7 @@ function Header({
                   onClick={() => setMenuOpen(false)}
                   className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-[15px] font-medium text-foreground/80 hover:bg-foreground/[0.04]"
                 >
-                  <FileText className="h-[18px] w-[18px]" aria-hidden="true" /> CV / Resume
+                  <FileText className="h-[18px] w-[18px]" aria-hidden="true" /> Resume
                 </a>
                 <a
                   href={links.email}
@@ -2099,7 +2099,7 @@ function Footer() {
             Email
           </a>
           <a href={links.cv} className="hover:text-foreground">
-            CV
+            Resume
           </a>
           <a href={links.coverLetter} className="hover:text-foreground">
             Cover Letter
