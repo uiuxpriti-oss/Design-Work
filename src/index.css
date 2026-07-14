@@ -135,24 +135,16 @@ html.lenis body {
     animation: eq 0.9s ease-in-out infinite;
   }
   @keyframes sparkle-twinkle {
-    0% {
-      transform: rotate(0deg) scale(1) translateY(0);
-    }
-    25% {
-      transform: rotate(90deg) scale(1.25) translateY(-2px);
+    0%,
+    100% {
+      transform: rotate(0deg) scale(1);
     }
     50% {
-      transform: rotate(180deg) scale(1.1) translateY(0);
-    }
-    75% {
-      transform: rotate(270deg) scale(1.25) translateY(-2px);
-    }
-    100% {
-      transform: rotate(360deg) scale(1) translateY(0);
+      transform: rotate(180deg) scale(1.15);
     }
   }
   .animate-sparkle {
-    animation: sparkle-twinkle 1.2s ease-in-out infinite;
+    animation: sparkle-twinkle 2s cubic-bezier(0.45, 0, 0.55, 1) infinite;
   }
   @keyframes loader-pulse {
     0%,

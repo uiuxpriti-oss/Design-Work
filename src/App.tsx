@@ -1915,14 +1915,13 @@ function Creatives({ onViewAll }: { onViewAll: () => void }) {
   );
 }
 
-const SONG_TITLE = "Nothing's Gonna Change My Love for You";
-const SONG_ARTIST = "George Benson";
-const SONG_SRC =
-  "https://framerusercontent.com/assets/dbfXhxrq9gcV71LtkTp42qHE.mp4";
+const SONG_TITLE = "The Winner Takes It All";
+const SONG_ARTIST = "ABBA";
+const SONG_SRC = "/on-repeat.mp3";
 
 function OnRepeatCard() {
   const [playing, setPlaying] = useState(false);
-  const mediaRef = useRef<HTMLVideoElement | null>(null);
+  const mediaRef = useRef<HTMLAudioElement | null>(null);
 
   const toggle = () => {
     const m = mediaRef.current;
@@ -1944,12 +1943,11 @@ function OnRepeatCard() {
       className="w-full rounded-3xl border border-border p-6 text-center transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md sm:text-left"
       style={{ backgroundColor: "rgba(238, 241, 245, 0.3)" }}
     >
-      {/* Hidden video plays the mp4's audio reliably across browsers. */}
-      <video
+      {/* Hidden audio element plays the track when the vinyl is clicked. */}
+      <audio
         ref={mediaRef}
         src={SONG_SRC}
         loop
-        playsInline
         preload="metadata"
         onEnded={() => setPlaying(false)}
         onPause={() => setPlaying(false)}
@@ -2162,7 +2160,7 @@ function FloatingAsk({
   const visible = show && !hidden;
   return (
     <div
-      className={`fixed inset-x-0 bottom-6 z-40 flex justify-center px-6 transition-all duration-300 ease-out ${
+      className={`fixed inset-x-0 bottom-6 z-40 flex items-center justify-center gap-3 px-6 transition-all duration-300 ease-out ${
         visible
           ? "opacity-100 translate-y-0"
           : "pointer-events-none opacity-0 translate-y-4"
@@ -2173,33 +2171,19 @@ function FloatingAsk({
         onClick={onOpenAsk}
         className="group inline-flex items-center gap-2 rounded-full bg-neutral-900 px-5 py-2.5 text-sm font-medium shadow-lg shadow-black/25 ring-1 ring-white/10 outline-none transition duration-200 ease-out hover:bg-neutral-800 active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-foreground/25 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
       >
-        <span className="inline-flex items-center gap-2 bg-gradient-to-r from-indigo-300 via-fuchsia-300 to-pink-300 bg-clip-text text-transparent">
+        <span className="inline-flex items-center gap-2 text-white">
           <Sparkle /> Ask AI
         </span>
       </button>
+      <button
+        type="button"
+        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+        aria-label="Back to top"
+        className="flex h-11 w-11 items-center justify-center rounded-full border border-border bg-background shadow-lg outline-none transition-all duration-200 ease-out hover:bg-card active:scale-95 focus-visible:ring-2 focus-visible:ring-foreground/25"
+      >
+        <ArrowUp className="h-4 w-4" aria-hidden="true" />
+      </button>
     </div>
-  );
-}
-
-function BackToTop() {
-  const [show, setShow] = useState(false);
-  useEffect(() => {
-    const onScroll = () => setShow(window.scrollY > window.innerHeight * 0.6);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-  return (
-    <button
-      type="button"
-      onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-      aria-label="Back to top"
-      className={`fixed bottom-6 right-6 z-40 flex h-11 w-11 items-center justify-center rounded-full border border-border bg-background shadow-lg outline-none transition-all duration-300 ease-out hover:bg-card active:scale-95 focus-visible:ring-2 focus-visible:ring-foreground/25 ${
-        show ? "opacity-100 translate-y-0" : "pointer-events-none opacity-0 translate-y-4"
-      }`}
-    >
-      <ArrowUp className="h-4 w-4" aria-hidden="true" />
-    </button>
   );
 }
 
@@ -2372,10 +2356,10 @@ function AskPanel({ open, onClose }: { open: boolean; onClose: () => void }) {
     >
       <div className="flex shrink-0 items-center justify-between border-b border-border px-5 py-4">
         <div className="flex items-center gap-2">
-          <span className="inline-flex items-center bg-gradient-to-r from-indigo-500 via-fuchsia-500 to-pink-500 bg-clip-text text-transparent">
+          <span className="inline-flex items-center text-foreground">
             <Sparkle />
           </span>
-          <span className="bg-gradient-to-r from-indigo-500 via-fuchsia-500 to-pink-500 bg-clip-text text-[15px] font-semibold text-transparent">
+          <span className="text-[15px] font-semibold text-foreground">
             Ask AI
           </span>
           <span className="group relative flex h-4 w-4 cursor-help items-center justify-center rounded-full bg-foreground/10 text-muted-foreground">
@@ -2729,7 +2713,6 @@ export default function App() {
         <Footer />
       </div>
       <FloatingAsk onOpenAsk={() => setAskOpen(true)} hidden={askOpen} />
-      <BackToTop />
       <AskPanel open={askOpen} onClose={() => setAskOpen(false)} />
     </div>
   );
