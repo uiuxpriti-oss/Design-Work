@@ -923,10 +923,15 @@ function Work({
 }) {
   return (
     <section id="work" className="mt-24 space-y-6">
-      <div className="flex items-center justify-between gap-4">
-        <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
-          Selected Work
-        </p>
+      <div className="flex items-end justify-between gap-4">
+        <div className="space-y-1">
+          <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
+            Selected Work
+          </p>
+          <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">
+            Case studies
+          </h2>
+        </div>
         <button
           type="button"
           onClick={onViewAll}
