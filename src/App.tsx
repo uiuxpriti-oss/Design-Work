@@ -358,7 +358,7 @@ function Header({
   onAbout: () => void;
 }) {
   // Drop a photo at /public/avatar.jpg to show it here; falls back to the dot.
-  const avatar = "/avatar.jpg";
+  const avatar = "avatar.jpg";
   const [avatarOk, setAvatarOk] = useState(true);
   const active =
     page === "projects" || page === "case"
@@ -649,7 +649,7 @@ function Hero() {
         >
           {/* desktop: full composite with camera + journal stickers */}
           <img
-            src="/hero-card.webp"
+            src="hero-card.webp"
             alt=""
             aria-hidden="true"
             className="pointer-events-none absolute inset-0 hidden h-full w-full object-cover object-right lg:block"
@@ -658,7 +658,7 @@ function Hero() {
           <div className="pointer-events-none absolute inset-0 lg:hidden" aria-hidden="true">
             <div className="absolute inset-0 opacity-[0.05] [background-image:linear-gradient(to_right,#fff_1px,transparent_1px),linear-gradient(to_bottom,#fff_1px,transparent_1px)] [background-size:40px_40px]" />
             <img
-              src="/hero-journal.webp"
+              src="hero-journal.webp"
               alt=""
               className="absolute -bottom-7 right-0 w-[50%] max-w-[210px] translate-x-20"
             />
@@ -1917,7 +1917,7 @@ function Creatives({ onViewAll }: { onViewAll: () => void }) {
 
 const SONG_TITLE = "The Winner Takes It All";
 const SONG_ARTIST = "ABBA";
-const SONG_SRC = "/on-repeat.mp3";
+const SONG_SRC = "on-repeat.mp3";
 
 function OnRepeatCard() {
   const [playing, setPlaying] = useState(false);

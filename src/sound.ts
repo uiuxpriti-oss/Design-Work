@@ -187,7 +187,7 @@ function synthSong(ac: AudioContext): SongHandle {
  * an inline instrumental stand-in so the record always makes sound.
  */
 export function playSong(onEnd?: () => void): SongHandle {
-  const audio = new Audio("/on-repeat.mp3");
+  const audio = new Audio("on-repeat.mp3");
   audio.loop = true;
   audio.addEventListener("ended", () => onEnd?.());
   let synth: SongHandle | null = null;
