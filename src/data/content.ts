@@ -769,6 +769,36 @@ export interface Creative {
 
 export const creatives: Creative[] = [
   {
+    name: "MySaloonTime",
+    category: "App Marketing",
+    image: "/creatives/mysaloontime.webp",
+    gradient: "from-orange-400/30 to-amber-500/30",
+  },
+  {
+    name: "Neant Agency",
+    category: "Social Carousel",
+    image: "/creatives/neant-agency.webp",
+    gradient: "from-violet-500/30 to-purple-700/30",
+  },
+  {
+    name: "Correl App",
+    category: "App Icon",
+    image: "/creatives/correl-app.webp",
+    gradient: "from-blue-500/30 to-indigo-700/30",
+  },
+  {
+    name: "Career Crush",
+    category: "Logo Design",
+    image: "/creatives/career-crush-logo.webp",
+    gradient: "from-orange-400/30 to-rose-400/30",
+  },
+  {
+    name: "Career Crush — Concept",
+    category: "Brand Ideation",
+    image: "/creatives/career-crush-concept.webp",
+    gradient: "from-amber-300/30 to-orange-400/30",
+  },
+  {
     name: "App Marketing Banners",
     category: "Banner Design",
     image: "/creatives/app-marketing-banners.webp",
