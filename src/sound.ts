@@ -1,8 +1,10 @@
-// Tap click sound. Two modes:
-//   1. If you drop the real sound file at /public/tap.mp3 (or .wav), it is
-//      loaded once and played — use this to match ktz.dk exactly.
-//   2. Otherwise a soft synthesized "pop" is generated via the Web Audio API,
-//      so the app stays self-contained with no asset files required.
+// Tap click sound. The real recording is inlined as a base64 data URI
+// (see tap-sound.ts) and decoded once, so the actual tap always plays —
+// no runtime fetch of /tap.mp3 (which fails on static/single-file hosting
+// and made the synthesized fallback "pop" play instead). The synth pop
+// only ever runs as a last resort if Web Audio decoding is unavailable.
+
+import { TAP_SOUND_DATA_URI } from "./tap-sound";
 
 let ctx: AudioContext | null = null;
 let sample: AudioBuffer | null = null;
@@ -22,18 +24,19 @@ function getCtx(): AudioContext | null {
   return ctx;
 }
 
-// Attempt to load an optional real sound file, once.
+// Decode the inlined tap recording once. Data URIs resolve with no server,
+// so this works identically in dev, static builds, and single-file HTML.
 function loadSample(ac: AudioContext) {
   if (sampleTried) return;
   sampleTried = true;
-  fetch("/tap.mp3")
-    .then((res) => (res.ok ? res.arrayBuffer() : Promise.reject()))
+  fetch(TAP_SOUND_DATA_URI)
+    .then((res) => res.arrayBuffer())
     .then((buf) => ac.decodeAudioData(buf))
     .then((decoded) => {
       sample = decoded;
     })
     .catch(() => {
-      /* no sample file — synthesized fallback is used instead */
+      /* decoding unavailable — synthesized fallback is used instead */
     });
 }
 
@@ -78,6 +81,20 @@ export function playTap(): void {
   if (!ac) return;
   loadSample(ac);
   if (!playSample(ac)) playSynth(ac);
+}
+
+// Warm up the AudioContext + decode the tap sample on the first user gesture
+// anywhere on the page, so the real recording is ready before the first tap
+// (otherwise that first tap falls back to the synthesized pop).
+if (typeof window !== "undefined") {
+  const warm = () => {
+    const ac = getCtx();
+    if (ac) loadSample(ac);
+    window.removeEventListener("pointerdown", warm);
+    window.removeEventListener("keydown", warm);
+  };
+  window.addEventListener("pointerdown", warm, { once: true, passive: true });
+  window.addEventListener("keydown", warm, { once: true });
 }
 
 // ---------------------------------------------------------------------------

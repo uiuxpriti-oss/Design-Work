@@ -1,4 +1,11 @@
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  type ReactNode,
+  type MouseEvent as ReactMouseEvent,
+} from "react";
+import Lenis from "lenis";
 import {
   Heart,
   ArrowUpRight,
@@ -9,6 +16,7 @@ import {
   Inbox,
   CircleUserRound,
   Home,
+  Menu,
   Sparkles,
   Send,
   Copy,
@@ -137,7 +145,7 @@ function Sparkle() {
   );
 }
 
-const LINKEDIN_HANDLE = "@uiuxpriti";
+const LINKEDIN_HANDLE = "@priti-jani14";
 
 /**
  * Contact trigger + "Get in touch" popover (email with copy, LinkedIn link).
@@ -261,7 +269,7 @@ const NAV: { id: string; label: string; icon: LucideIcon }[] = [
 
 // Solid pill for the scrolled nav — opaque so it stays readable over content
 // (glassmorphism washed out against the page cards).
-const NAV_SOLID = "border border-border bg-card shadow-sm";
+const NAV_SOLID = "border border-border bg-card shadow-lg";
 
 function useActiveSection(ids: string[]) {
   const [active, setActive] = useState(ids[0]);
@@ -325,7 +333,7 @@ function ThemeToggle() {
       type="button"
       onClick={toggle}
       aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}
-      className="inline-flex h-9 w-9 items-center justify-center rounded-full text-foreground/70 outline-none transition-colors duration-200 hover:bg-foreground/[0.06] hover:text-foreground focus-visible:ring-2 focus-visible:ring-foreground/20"
+      className={`inline-flex h-9 w-9 items-center justify-center rounded-full text-foreground/80 outline-none transition-colors duration-300 hover:text-foreground focus-visible:ring-2 focus-visible:ring-foreground/20 ${NAV_SOLID}`}
     >
       {dark ? (
         <Sun className="h-[18px] w-[18px]" aria-hidden="true" />
@@ -359,6 +367,7 @@ function Header({
         ? "about"
         : "home";
   const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
     onScroll();
@@ -366,6 +375,7 @@ function Header({
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
   const go = (id: string) => {
+    setMenuOpen(false);
     if (id === "home") onHome();
     else if (id === "work") onWork();
     else onAbout();
@@ -377,23 +387,29 @@ function Header({
           <button
             type="button"
             onClick={onHome}
-            className="shrink-0"
             aria-label="Home"
+            aria-hidden={scrolled}
+            tabIndex={scrolled ? -1 : 0}
+            className={`shrink-0 overflow-hidden transition-all duration-500 ease-out ${
+              scrolled
+                ? "pointer-events-none w-0 -translate-x-1 scale-90 opacity-0"
+                : "w-8 translate-x-0 scale-100 opacity-100"
+            }`}
           >
             {avatar && avatarOk ? (
               <img
                 src={avatar}
                 alt="Priti Jani"
                 onError={() => setAvatarOk(false)}
-                className="h-8 w-8 rounded-full object-cover align-middle"
+                className="h-9 w-9 rounded-full object-cover align-middle shadow-lg ring-2 ring-card"
               />
             ) : (
               <span className="inline-block h-8 w-8 rounded-full bg-foreground align-middle" />
             )}
           </button>
           <div
-            className={`flex items-center gap-0.5 rounded-full p-1 transition-colors duration-300 sm:gap-1 ${
-              scrolled ? NAV_SOLID : "border border-transparent bg-foreground/[0.06]"
+            className={`hidden items-center gap-0.5 rounded-full p-1 transition-all duration-500 ease-out sm:flex sm:gap-1 ${NAV_SOLID} ${
+              scrolled ? "-ml-2 sm:-ml-4" : ""
             }`}
           >
             {NAV.map(({ id, label, icon: Icon }) => {
@@ -417,12 +433,20 @@ function Header({
             })}
           </div>
         </div>
-        <div className="flex items-center gap-1 sm:gap-2">
+        <div className="relative flex items-center gap-1 sm:gap-2">
           <ThemeToggle />
+          <a
+            href={links.cv}
+            target="_blank"
+            rel="noreferrer"
+            className={`hidden items-center gap-1.5 rounded-full px-3 py-2 text-sm font-medium text-foreground outline-none transition-colors duration-300 focus-visible:ring-2 focus-visible:ring-foreground/25 sm:inline-flex sm:px-3.5 ${NAV_SOLID}`}
+          >
+            <FileText className="h-4 w-4" aria-hidden="true" /> Resume
+          </a>
           {scrolled ? (
             <ContactButton
               align="right"
-              className="inline-flex items-center gap-1.5 rounded-full bg-primary px-3 py-2 text-sm font-medium text-primary-foreground shadow-sm outline-none transition-all duration-300 ease-out hover:opacity-90 active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-foreground/25 sm:px-3.5"
+              className="hidden items-center gap-1.5 rounded-full bg-primary px-3 py-2 text-sm font-medium text-primary-foreground shadow-sm outline-none transition-all duration-300 ease-out hover:opacity-90 active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-foreground/25 sm:inline-flex sm:px-3.5"
             >
               <Send className="h-4 w-4" aria-hidden="true" />{" "}
               <span className="hidden sm:inline">Contact</span>
@@ -431,10 +455,88 @@ function Header({
             <button
               type="button"
               onClick={onOpenAsk}
-              className="group inline-flex items-center gap-1.5 rounded-full border border-transparent px-3 py-2 text-sm text-foreground transition-colors duration-300 hover:opacity-70 sm:px-3.5"
+              className={`group hidden items-center gap-1.5 rounded-full px-3 py-2 text-sm text-foreground transition-colors duration-300 sm:inline-flex sm:px-3.5 ${NAV_SOLID}`}
             >
-              <Sparkle /> <span className="hidden sm:inline">Ask AI</span>
+              <span className="inline-flex items-center gap-1.5 font-medium text-foreground">
+                <Sparkle /> <span className="hidden sm:inline">Ask AI</span>
+              </span>
             </button>
+          )}
+
+          {/* Mobile menu button */}
+          <button
+            type="button"
+            onClick={() => setMenuOpen((v) => !v)}
+            aria-label={menuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={menuOpen}
+            className={`inline-flex h-9 w-9 items-center justify-center rounded-full text-foreground/80 outline-none transition-colors duration-300 focus-visible:ring-2 focus-visible:ring-foreground/20 sm:hidden ${NAV_SOLID}`}
+          >
+            {menuOpen ? (
+              <X className="h-5 w-5" aria-hidden="true" />
+            ) : (
+              <Menu className="h-5 w-5" aria-hidden="true" />
+            )}
+          </button>
+
+          {/* Mobile dropdown menu */}
+          {menuOpen && (
+            <>
+              <div
+                className="fixed inset-0 z-40 sm:hidden"
+                onClick={() => setMenuOpen(false)}
+                aria-hidden="true"
+              />
+              <div className="absolute right-0 top-full z-50 mt-2 w-60 origin-top-right rounded-2xl border border-border bg-card p-2 shadow-xl sm:hidden">
+                {NAV.map(({ id, label, icon: Icon }) => {
+                  const isActive = active === id;
+                  return (
+                    <button
+                      key={id}
+                      type="button"
+                      onClick={() => go(id)}
+                      aria-current={isActive ? "page" : undefined}
+                      className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-[15px] font-medium transition-colors ${
+                        isActive
+                          ? "bg-foreground/[0.06] text-foreground"
+                          : "text-foreground/70 hover:bg-foreground/[0.04]"
+                      }`}
+                    >
+                      <Icon className="h-[18px] w-[18px]" aria-hidden="true" />
+                      {label}
+                    </button>
+                  );
+                })}
+                <div className="my-1.5 h-px bg-border" />
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMenuOpen(false);
+                    onOpenAsk();
+                  }}
+                  className="flex w-full items-center rounded-xl px-3 py-2.5 text-left hover:bg-foreground/[0.04]"
+                >
+                  <span className="inline-flex items-center gap-3 text-[15px] font-semibold text-foreground">
+                    <Sparkle /> Ask AI
+                  </span>
+                </button>
+                <a
+                  href={links.cv}
+                  target="_blank"
+                  rel="noreferrer"
+                  onClick={() => setMenuOpen(false)}
+                  className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-[15px] font-medium text-foreground/80 hover:bg-foreground/[0.04]"
+                >
+                  <FileText className="h-[18px] w-[18px]" aria-hidden="true" /> Resume
+                </a>
+                <a
+                  href={links.email}
+                  onClick={() => setMenuOpen(false)}
+                  className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-[15px] font-medium text-foreground/80 hover:bg-foreground/[0.04]"
+                >
+                  <Send className="h-[18px] w-[18px]" aria-hidden="true" /> Contact
+                </a>
+              </div>
+            </>
           )}
         </div>
       </nav>
@@ -514,52 +616,154 @@ function SideNav({
 }
 
 function Hero() {
+  const current = experience[0];
+  const previous = experience.slice(1, 3);
+  const shortName = (c: string) =>
+    c.replace(/\s+(LLP|Inc\.?|America Inc|Technology|Pvt\.? Ltd\.?)$/i, "").trim();
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [tilt, setTilt] = useState({ rx: 0, ry: 0, on: false });
+  const onMove = (e: ReactMouseEvent<HTMLDivElement>) => {
+    const el = cardRef.current;
+    if (!el || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const r = el.getBoundingClientRect();
+    const px = (e.clientX - r.left) / r.width - 0.5;
+    const py = (e.clientY - r.top) / r.height - 0.5;
+    const MAX = 20;
+    setTilt({ rx: -py * MAX, ry: px * MAX, on: true });
+  };
+  const onLeave = () => setTilt({ rx: 0, ry: 0, on: false });
   return (
-    <section id="home" className="scroll-mt-24 pt-20 pb-8 sm:pt-28 sm:pb-10 xl:pt-36 xl:pb-12">
-      <p className="text-sm font-medium text-foreground">Priti Jani</p>
-      <div className="mb-6 mt-2">
-        <span className="inline-flex items-center gap-2 rounded-full bg-blue-100 px-3.5 py-1.5 text-[13px] font-medium text-blue-600 dark:bg-blue-500/15 dark:text-blue-400">
-          <span className="text-[11px]" aria-hidden="true">✦</span>
-          Product Designer · 4 years of experience · Open to work
-        </span>
-      </div>
-      <p className="text-[17px] leading-relaxed text-foreground/90 max-w-xl">
-        I design enterprise systems that reduce cognitive load, simplify
-        decision-making, and help teams move faster under pressure:{" "}
-        <span className="font-semibold text-foreground">
-          ↓ 50% task time, 3× faster onboarding
-        </span>
-      </p>
-      <p className="text-[17px] leading-relaxed text-foreground/90 max-w-xl mt-4">
-        I turn complex requirements into simple, usable solutions — obsessing over the
-        details people don't notice, but always feel.
-      </p>
-      <div className="mt-6 flex items-center gap-3">
-        <ContactButton
-          align="left"
-          className="inline-flex items-center gap-2 rounded-full bg-primary text-primary-foreground px-4 py-2 text-sm font-medium hover:opacity-90 transition-opacity"
+    <section id="home" className="scroll-mt-24 pt-8 pb-14 sm:pt-10">
+      <div className="mx-auto max-w-[52rem] px-4 sm:px-6 [perspective:850px]">
+        <div
+          ref={cardRef}
+          onMouseMove={onMove}
+          onMouseLeave={onLeave}
+          style={{
+            transform: `rotateX(${tilt.rx}deg) rotateY(${tilt.ry}deg) scale(${tilt.on ? 1.05 : 1})`,
+            transition: tilt.on
+              ? "transform 80ms ease-out, box-shadow 300ms ease-out"
+              : "transform 500ms ease-out, box-shadow 300ms ease-out",
+          }}
+          className="group relative overflow-hidden rounded-[28px] bg-[#11332a] px-7 py-9 shadow-lg will-change-transform [transform-style:preserve-3d] hover:shadow-2xl sm:px-12 sm:py-12 lg:px-14 lg:py-14"
         >
-          <Send className="h-4 w-4" aria-hidden="true" /> Contact
-        </ContactButton>
-        <a
-          href="#work"
-          className="inline-flex items-center gap-2 rounded-full bg-foreground/[0.06] px-4 py-2 text-sm text-foreground outline-none transition-all duration-200 ease-out hover:bg-foreground/[0.1] active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-foreground/20 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-        >
-          View work
-        </a>
+          {/* desktop: full composite with camera + journal stickers */}
+          <img
+            src="/hero-card.webp"
+            alt=""
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 hidden h-full w-full object-cover object-right lg:block"
+          />
+          {/* mobile: faint grid + journal peeking at the bottom-right */}
+          <div className="pointer-events-none absolute inset-0 lg:hidden" aria-hidden="true">
+            <div className="absolute inset-0 opacity-[0.05] [background-image:linear-gradient(to_right,#fff_1px,transparent_1px),linear-gradient(to_bottom,#fff_1px,transparent_1px)] [background-size:40px_40px]" />
+            <img
+              src="/hero-journal.webp"
+              alt=""
+              className="absolute -bottom-7 right-0 w-[50%] max-w-[210px] translate-x-20"
+            />
+          </div>
+          <div className="relative max-w-2xl lg:max-w-[34rem]">
+            <h1 className="text-3xl font-bold tracking-tight text-white sm:text-[2.75rem]">
+              Priti Jani
+            </h1>
+            <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-2">
+              <p className="text-[17px] font-medium text-[#E3A64A]">Product Designer</p>
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-400/10 px-2.5 py-1 text-xs font-medium text-emerald-300 ring-1 ring-emerald-400/20">
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" aria-hidden="true" />
+                Open to work
+              </span>
+            </div>
+            <p className="mt-6 text-[15px] leading-relaxed text-white/75 sm:text-[17px] sm:leading-[1.75]">
+              Product Designer with 4+ years designing enterprise and B2B SaaS
+              products at scale. I turn complex, data-heavy requirements into
+              simple, usable flows — obsessing over the details people
+              don&apos;t notice, but always feel.
+            </p>
+
+            <div className="mt-7 flex flex-wrap items-center gap-3">
+              <a
+                href="#work"
+                className="inline-flex items-center gap-2 rounded-full bg-[#E3A64A] px-5 py-2.5 text-sm font-semibold text-[#22453A] outline-none transition-all duration-200 ease-out hover:bg-[#efba63] active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-[#E3A64A]/50"
+              >
+                View work
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </a>
+              <ContactButton
+                align="left"
+                className="inline-flex items-center gap-2 rounded-full border border-white/20 px-5 py-2.5 text-sm font-medium text-white outline-none transition-colors duration-200 hover:bg-white/10 focus-visible:ring-2 focus-visible:ring-white/25"
+              >
+                <Send className="h-4 w-4" aria-hidden="true" /> Contact
+              </ContactButton>
+            </div>
+
+            <p className="mt-7 text-[15px] text-white/55">
+              Reach out via{" "}
+              <a
+                href={links.email}
+                className="group/mail inline-flex items-center font-medium text-[#E3A64A] underline underline-offset-4 transition-colors hover:text-[#efba63]"
+              >
+                mail
+                <Copy
+                  className="ml-0 h-0 w-0 opacity-0 transition-all duration-200 group-hover/mail:ml-1 group-hover/mail:h-3.5 group-hover/mail:w-3.5 group-hover/mail:opacity-100"
+                  aria-hidden="true"
+                />
+              </a>{" "}
+              or on{" "}
+              <a
+                href={links.linkedin}
+                target="_blank"
+                rel="noreferrer"
+                className="group/li inline-flex items-center font-medium text-[#E3A64A] underline underline-offset-4 transition-colors hover:text-[#efba63]"
+              >
+                LinkedIn
+                <ArrowUpRight
+                  className="ml-0 h-0 w-0 opacity-0 transition-all duration-200 group-hover/li:ml-1 group-hover/li:h-3.5 group-hover/li:w-3.5 group-hover/li:opacity-100"
+                  aria-hidden="true"
+                />
+              </a>
+            </p>
+
+            <div className="mt-7 flex flex-col gap-2.5">
+              <div className="flex items-center gap-2.5">
+                <span className="text-[13px] text-white/60">Currently at</span>
+                <span
+                  className={`grid h-6 w-6 shrink-0 place-items-center rounded-md text-[11px] font-semibold ${current.logo.className}`}
+                >
+                  {current.logo.text}
+                </span>
+                <span className="text-[13px] font-medium text-white/85">
+                  Netlink Software Group
+                </span>
+              </div>
+              <div className="flex items-center gap-2.5">
+                <span className="text-[13px] text-white/60">Previously</span>
+                {previous.map((job) => (
+                  <span key={job.company} className="flex items-center gap-1.5">
+                    <span
+                      className={`grid h-6 w-6 shrink-0 place-items-center rounded-md text-[11px] font-semibold ${job.logo.className}`}
+                    >
+                      {job.logo.text}
+                    </span>
+                    <span className="text-[13px] font-medium text-white/75">
+                      {shortName(job.company)}
+                    </span>
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );
 }
 
-const FOCUS_AREAS = [
-  { n: "01", title: "AI-Powered UX", text: "Intelligent interfaces that reduce cognitive load" },
-  { n: "02", title: "Data-Heavy Platforms", text: "BI, analytics, and insight delivery at scale" },
-  { n: "03", title: "Complex Workflows", text: "Turning multi-step processes into clear flows" },
-  { n: "04", title: "Decision-Centric Design", text: "Systems built around how people actually decide" },
-];
-
 const SPECIALTIES = [
+  "AI-Powered UX",
+  "Data-Heavy Platforms",
+  "Complex Workflows",
+  "Decision-Centric Design",
   "Design Systems",
   "Enterprise UX",
   "Design → Code",
@@ -573,37 +777,23 @@ const SPECIALTIES = [
 function FocusAreas() {
   const row = [...SPECIALTIES, ...SPECIALTIES];
   return (
-    <section className="mt-6">
-      <div className="border-t border-border px-6 pt-10 sm:px-10">
-        <div className="grid grid-cols-1 gap-x-8 gap-y-8 sm:grid-cols-2 lg:grid-cols-4">
-          {FOCUS_AREAS.map((f) => (
-            <div key={f.n} className="lg:border-l lg:border-border lg:pl-5">
-              <p className="flex items-start gap-2 text-[11px] font-semibold uppercase tracking-[0.14em]">
-                <span className="text-muted-foreground">{f.n}</span>
-                <span className="text-foreground">{f.title}</span>
-              </p>
-              <p className="mt-2 text-[14px] leading-relaxed text-muted-foreground">
-                {f.text}
-              </p>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Specialty marquee — full-bleed, footer styling */}
-      <div className="marquee-track mt-12 overflow-hidden border-y border-border py-4">
-        <div className="animate-marquee marquee-anim flex w-max items-center gap-6">
-          {row.map((s, i) => (
-            <span
-              key={i}
-              className="flex items-center gap-6 whitespace-nowrap text-[15px] italic text-foreground/55"
-            >
-              {s}
-              <span className="not-italic text-foreground/25" aria-hidden="true">
-                ✳
+    <section className="mt-6 overflow-hidden py-10">
+      {/* Band + text tilt together (width-extended so it bleeds past both edges) → text stays inside the band on every screen width, no scale so it stays crisp */}
+      <div className="-ml-[6%] w-[112%] -rotate-2">
+        <div className="marquee-track overflow-hidden border-y border-white/10 bg-[#11332a] py-4 shadow-lg">
+          <div className="animate-marquee marquee-anim flex w-max items-center gap-6 [backface-visibility:hidden] [will-change:transform]">
+            {row.map((s, i) => (
+              <span
+                key={i}
+                className="flex items-center gap-6 whitespace-nowrap text-[15px] font-medium text-white/85"
+              >
+                {s}
+                <span className="text-[#E3A64A]/75" aria-hidden="true">
+                  ✦
+                </span>
               </span>
-            </span>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </section>
@@ -758,31 +948,43 @@ function Work({
 
 function CreativeGridCard({
   creative,
+  onOpen,
 }: {
   creative: (typeof creatives)[number];
+  onOpen: (c: (typeof creatives)[number]) => void;
 }) {
   return (
-    <a
-      href={links.behance}
-      target="_blank"
-      rel="noreferrer"
-      className={`group relative block aspect-[4/3] overflow-hidden rounded-2xl bg-gradient-to-br ${creative.gradient} ring-1 ring-border transition-transform duration-300 hover:-translate-y-1`}
+    <button
+      type="button"
+      onClick={() => onOpen(creative)}
+      aria-label={`View ${creative.name}`}
+      className={`group relative block aspect-[4/3] w-full cursor-pointer overflow-hidden rounded-2xl bg-gradient-to-br ${creative.gradient} text-left ring-1 ring-border transition-transform duration-300 hover:-translate-y-1`}
     >
-      <span
-        aria-hidden="true"
-        className="pointer-events-none absolute -right-4 -top-10 select-none text-[160px] font-bold leading-none text-foreground/[0.06]"
-      >
-        {creative.name[0]}
-      </span>
+      {creative.image ? (
+        <img
+          src={creative.image}
+          alt={creative.name}
+          loading="lazy"
+          className="absolute inset-0 h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.04]"
+        />
+      ) : (
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute -right-4 -top-10 select-none text-[160px] font-bold leading-none text-foreground/[0.06]"
+        >
+          {creative.name[0]}
+        </span>
+      )}
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
       <ArrowUpRight
-        className="absolute right-5 top-5 h-4 w-4 text-foreground/40 opacity-0 transition-opacity duration-200 group-hover:opacity-100"
+        className="absolute right-5 top-5 h-4 w-4 text-white/80 opacity-0 transition-opacity duration-200 group-hover:opacity-100"
         aria-hidden="true"
       />
       <div className="absolute inset-x-0 bottom-0 flex flex-col p-6">
-        <p className="font-medium text-foreground">{creative.name}</p>
-        <p className="text-[13px] text-muted-foreground">{creative.category}</p>
+        <p className="font-medium text-white">{creative.name}</p>
+        <p className="text-[13px] text-white/70">{creative.category}</p>
       </div>
-    </a>
+    </button>
   );
 }
 
@@ -794,6 +996,9 @@ function ProjectsPage({
   onOpen: (id: string) => void;
 }) {
   const [tab, setTab] = useState<"case" | "creative">(initialTab);
+  const [creativeOpen, setCreativeOpen] = useState<
+    (typeof creatives)[number] | null
+  >(null);
   const TABS = [
     { id: "case", label: "Case Studies" },
     { id: "creative", label: "Creatives" },
@@ -832,11 +1037,21 @@ function ProjectsPage({
         ) : (
           <section className="grid grid-cols-1 gap-6 sm:grid-cols-2">
             {creatives.map((creative, i) => (
-              <CreativeGridCard key={i} creative={creative} />
+              <CreativeGridCard
+                key={i}
+                creative={creative}
+                onOpen={setCreativeOpen}
+              />
             ))}
           </section>
         )}
       </main>
+      {creativeOpen && (
+        <CreativeLightbox
+          item={creativeOpen}
+          onClose={() => setCreativeOpen(null)}
+        />
+      )}
     </>
   );
 }
@@ -1400,17 +1615,26 @@ function SkillsAndTools() {
   );
 }
 
-function AwardRow({ a, n }: { a: (typeof awards)[number]; n: number }) {
+function AwardRow({
+  a,
+  n,
+  onOpen,
+}: {
+  a: (typeof awards)[number];
+  n: number;
+  onOpen: (a: (typeof awards)[number]) => void;
+}) {
   const [imgOk, setImgOk] = useState(true);
   const hasImg = Boolean(a.certificate) && imgOk;
   return (
     <div className="group relative border-t border-border">
-      <a
-        href={a.certificate}
-        target={a.certificate ? "_blank" : undefined}
-        rel="noreferrer"
+      <button
+        type="button"
+        onClick={() => hasImg && onOpen(a)}
         aria-label={`View ${a.title} certificate`}
-        className="grid grid-cols-1 gap-x-8 gap-y-3 py-8 outline-none transition-colors focus-visible:bg-foreground/[0.02] sm:grid-cols-[1fr_1fr] sm:items-start"
+        className={`grid w-full grid-cols-1 gap-x-8 gap-y-3 py-8 text-left outline-none transition-colors focus-visible:bg-foreground/[0.02] sm:grid-cols-[1fr_1fr] sm:items-start ${
+          hasImg ? "cursor-pointer" : "cursor-default"
+        }`}
       >
         <div className="flex gap-4">
           <span className="pt-1 text-[13px] tabular-nums text-muted-foreground/70">
@@ -1434,7 +1658,7 @@ function AwardRow({ a, n }: { a: (typeof awards)[number]; n: number }) {
             <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
           </span>
         </div>
-      </a>
+      </button>
 
       {/* Certificate preview — floats in on hover (desktop) */}
       <div className="pointer-events-none absolute right-0 top-1/2 z-20 hidden w-[300px] -translate-y-1/2 translate-x-6 scale-95 overflow-hidden rounded-xl bg-card opacity-0 shadow-2xl ring-1 ring-border transition-all duration-200 ease-out group-hover:translate-x-2 group-hover:scale-100 group-hover:opacity-100 xl:block">
@@ -1445,7 +1669,7 @@ function AwardRow({ a, n }: { a: (typeof awards)[number]; n: number }) {
               alt={`${a.title} certificate`}
               onError={() => setImgOk(false)}
               loading="lazy"
-              className="h-full w-full object-cover"
+              className="h-full w-full object-cover object-top"
             />
           ) : (
             <div className={`flex h-full w-full items-center justify-center bg-gradient-to-br ${a.gradient}`}>
@@ -1458,20 +1682,83 @@ function AwardRow({ a, n }: { a: (typeof awards)[number]; n: number }) {
   );
 }
 
+function CertificateLightbox({
+  award,
+  onClose,
+}: {
+  award: (typeof awards)[number];
+  onClose: () => void;
+}) {
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    document.addEventListener("keydown", onKey);
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const lenis = (window as unknown as { __lenis?: { stop: () => void; start: () => void } }).__lenis;
+    lenis?.stop();
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prev;
+      lenis?.start();
+    };
+  }, [onClose]);
+  return (
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-label={`${award.title} certificate`}
+      onClick={onClose}
+      className="fixed inset-0 z-[100] flex flex-col items-center justify-center gap-4 bg-black/80 p-4 backdrop-blur-sm sm:p-8"
+    >
+      <button
+        type="button"
+        onClick={onClose}
+        aria-label="Close certificate"
+        className="absolute right-4 top-4 inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white outline-none transition-colors hover:bg-white/20 focus-visible:ring-2 focus-visible:ring-white/40"
+      >
+        <X className="h-5 w-5" aria-hidden="true" />
+      </button>
+      <img
+        src={award.certificate}
+        alt={`${award.title} certificate`}
+        onClick={(e) => e.stopPropagation()}
+        className="max-h-[85vh] max-w-[92vw] rounded-lg object-contain shadow-2xl"
+      />
+      <p className="text-center text-sm text-white/80">
+        <span className="font-semibold text-white">{award.title}</span>
+        <span className="mx-1.5 text-white/40">·</span>
+        {award.issuer} · {award.year}
+      </p>
+    </div>
+  );
+}
+
 function Awards() {
+  const [open, setOpen] = useState<(typeof awards)[number] | null>(null);
   return (
     <section id="awards" className="mt-24 scroll-mt-24">
       <SectionHeading eyebrow="Recognition" title="Awards & accolades" />
       <div className="mt-8 border-b border-border">
         {awards.map((a, i) => (
-          <AwardRow key={a.title} a={a} n={i + 1} />
+          <AwardRow key={a.title} a={a} n={i + 1} onOpen={setOpen} />
         ))}
       </div>
+      {open && (
+        <CertificateLightbox award={open} onClose={() => setOpen(null)} />
+      )}
     </section>
   );
 }
 
-function CreativeMarqueeRow({ reverse }: { reverse: boolean }) {
+function CreativeMarqueeRow({
+  reverse,
+  onOpen,
+}: {
+  reverse: boolean;
+  onOpen: (c: (typeof creatives)[number]) => void;
+}) {
   const items = reverse ? [...creatives].reverse() : creatives;
   const line = [...items, ...items];
   return (
@@ -1482,35 +1769,114 @@ function CreativeMarqueeRow({ reverse }: { reverse: boolean }) {
         }`}
       >
         {line.map((c, i) => (
-          <a
+          <button
             key={i}
-            href={links.behance}
-            target="_blank"
-            rel="noreferrer"
-            className={`group relative h-72 w-[26rem] shrink-0 overflow-hidden rounded-3xl bg-gradient-to-br ${c.gradient} ring-1 ring-border transition-transform duration-300 hover:-translate-y-1`}
+            type="button"
+            onClick={() => onOpen(c)}
+            aria-label={`View ${c.name}`}
+            className={`group relative block h-72 w-[26rem] shrink-0 cursor-pointer overflow-hidden rounded-3xl bg-gradient-to-br ${c.gradient} text-left ring-1 ring-border transition-transform duration-300 hover:-translate-y-1`}
           >
-            <span
-              aria-hidden="true"
-              className="pointer-events-none absolute -right-4 -top-10 select-none text-[160px] font-bold leading-none text-foreground/[0.06]"
-            >
-              {c.name[0]}
-            </span>
+            {c.image ? (
+              <img
+                src={c.image}
+                alt={c.name}
+                loading="lazy"
+                className="absolute inset-0 h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.04]"
+              />
+            ) : (
+              <span
+                aria-hidden="true"
+                className="pointer-events-none absolute -right-4 -top-10 select-none text-[160px] font-bold leading-none text-foreground/[0.06]"
+              >
+                {c.name[0]}
+              </span>
+            )}
+            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
             <ArrowUpRight
-              className="absolute right-5 top-5 h-5 w-5 text-foreground/40 opacity-0 transition-opacity duration-200 group-hover:opacity-100"
+              className="absolute right-5 top-5 h-5 w-5 text-white/80 opacity-0 transition-opacity duration-200 group-hover:opacity-100"
               aria-hidden="true"
             />
             <div className="absolute inset-x-0 bottom-0 flex flex-col p-6">
-              <p className="text-lg font-medium text-foreground">{c.name}</p>
-              <p className="text-[14px] text-muted-foreground">{c.category}</p>
+              <p className="text-lg font-medium text-white">{c.name}</p>
+              <p className="text-[14px] text-white/70">{c.category}</p>
             </div>
-          </a>
+          </button>
         ))}
       </div>
     </div>
   );
 }
 
+function CreativeLightbox({
+  item,
+  onClose,
+}: {
+  item: (typeof creatives)[number];
+  onClose: () => void;
+}) {
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    document.addEventListener("keydown", onKey);
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const lenis = (window as unknown as { __lenis?: { stop: () => void; start: () => void } }).__lenis;
+    lenis?.stop();
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prev;
+      lenis?.start();
+    };
+  }, [onClose]);
+  return (
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-label={`${item.name} preview`}
+      onClick={onClose}
+      className="fixed inset-0 z-[100] flex flex-col items-center justify-center gap-4 bg-black/80 p-4 backdrop-blur-sm sm:p-8"
+    >
+      <button
+        type="button"
+        onClick={onClose}
+        aria-label="Close preview"
+        className="absolute right-4 top-4 inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white outline-none transition-colors hover:bg-white/20 focus-visible:ring-2 focus-visible:ring-white/40"
+      >
+        <X className="h-5 w-5" aria-hidden="true" />
+      </button>
+      {item.image && (
+        <img
+          src={item.image}
+          alt={item.name}
+          onClick={(e) => e.stopPropagation()}
+          className="max-h-[82vh] max-w-[92vw] rounded-lg object-contain shadow-2xl"
+        />
+      )}
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-center text-sm text-white/80"
+      >
+        <span className="font-semibold text-white">{item.name}</span>
+        <span className="text-white/40">·</span>
+        <span>{item.category}</span>
+        <a
+          href={links.behance}
+          target="_blank"
+          rel="noreferrer"
+          onClick={(e) => e.stopPropagation()}
+          className="ml-2 inline-flex items-center gap-1 rounded-full bg-white/10 px-3 py-1 font-medium text-white transition-colors hover:bg-white/20"
+        >
+          View on Behance
+          <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
+        </a>
+      </div>
+    </div>
+  );
+}
+
 function Creatives({ onViewAll }: { onViewAll: () => void }) {
+  const [open, setOpen] = useState<(typeof creatives)[number] | null>(null);
   return (
     <section id="creatives" className="mt-24 scroll-mt-24">
       <div className="mx-auto max-w-[52rem] px-6">
@@ -1541,21 +1907,21 @@ function Creatives({ onViewAll }: { onViewAll: () => void }) {
       </div>
       {/* Full-bleed, two opposing rows of larger cards */}
       <div className="mt-10 space-y-6">
-        <CreativeMarqueeRow reverse={false} />
-        <CreativeMarqueeRow reverse={true} />
+        <CreativeMarqueeRow reverse={false} onOpen={setOpen} />
+        <CreativeMarqueeRow reverse={true} onOpen={setOpen} />
       </div>
+      {open && <CreativeLightbox item={open} onClose={() => setOpen(null)} />}
     </section>
   );
 }
 
-const SONG_TITLE = "Nothing's Gonna Change My Love for You";
-const SONG_ARTIST = "George Benson";
-const SONG_SRC =
-  "https://framerusercontent.com/assets/dbfXhxrq9gcV71LtkTp42qHE.mp4";
+const SONG_TITLE = "The Winner Takes It All";
+const SONG_ARTIST = "ABBA";
+const SONG_SRC = "/on-repeat.mp3";
 
 function OnRepeatCard() {
   const [playing, setPlaying] = useState(false);
-  const mediaRef = useRef<HTMLVideoElement | null>(null);
+  const mediaRef = useRef<HTMLAudioElement | null>(null);
 
   const toggle = () => {
     const m = mediaRef.current;
@@ -1577,12 +1943,11 @@ function OnRepeatCard() {
       className="w-full rounded-3xl border border-border p-6 text-center transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md sm:text-left"
       style={{ backgroundColor: "rgba(238, 241, 245, 0.3)" }}
     >
-      {/* Hidden video plays the mp4's audio reliably across browsers. */}
-      <video
+      {/* Hidden audio element plays the track when the vinyl is clicked. */}
+      <audio
         ref={mediaRef}
         src={SONG_SRC}
         loop
-        playsInline
         preload="metadata"
         onEnded={() => setPlaying(false)}
         onPause={() => setPlaying(false)}
@@ -1795,7 +2160,7 @@ function FloatingAsk({
   const visible = show && !hidden;
   return (
     <div
-      className={`fixed inset-x-0 bottom-6 z-40 flex justify-center px-6 transition-all duration-300 ease-out ${
+      className={`fixed inset-x-0 bottom-6 z-40 flex items-center justify-center gap-3 px-6 transition-all duration-300 ease-out ${
         visible
           ? "opacity-100 translate-y-0"
           : "pointer-events-none opacity-0 translate-y-4"
@@ -1804,33 +2169,21 @@ function FloatingAsk({
       <button
         type="button"
         onClick={onOpenAsk}
-        className="group inline-flex items-center gap-2 rounded-full bg-primary text-primary-foreground px-5 py-2.5 text-sm font-medium shadow-lg shadow-black/15 outline-none transition duration-200 ease-out hover:opacity-90 active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-foreground/25 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+        className="group inline-flex items-center gap-2 rounded-full bg-neutral-900 px-5 py-2.5 text-sm font-medium shadow-lg shadow-black/25 ring-1 ring-white/10 outline-none transition duration-200 ease-out hover:bg-neutral-800 active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-foreground/25 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
       >
-        <Sparkle /> Ask AI
+        <span className="inline-flex items-center gap-2 text-white">
+          <Sparkle /> Ask AI
+        </span>
+      </button>
+      <button
+        type="button"
+        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+        aria-label="Back to top"
+        className="flex h-11 w-11 items-center justify-center rounded-full border border-border bg-background shadow-lg outline-none transition-all duration-200 ease-out hover:bg-card active:scale-95 focus-visible:ring-2 focus-visible:ring-foreground/25"
+      >
+        <ArrowUp className="h-4 w-4" aria-hidden="true" />
       </button>
     </div>
-  );
-}
-
-function BackToTop() {
-  const [show, setShow] = useState(false);
-  useEffect(() => {
-    const onScroll = () => setShow(window.scrollY > window.innerHeight * 0.6);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-  return (
-    <button
-      type="button"
-      onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-      aria-label="Back to top"
-      className={`fixed bottom-6 right-6 z-40 flex h-11 w-11 items-center justify-center rounded-full border border-border bg-background shadow-lg outline-none transition-all duration-300 ease-out hover:bg-card active:scale-95 focus-visible:ring-2 focus-visible:ring-foreground/25 ${
-        show ? "opacity-100 translate-y-0" : "pointer-events-none opacity-0 translate-y-4"
-      }`}
-    >
-      <ArrowUp className="h-4 w-4" aria-hidden="true" />
-    </button>
   );
 }
 
@@ -1908,10 +2261,7 @@ function Footer() {
             Email
           </a>
           <a href={links.cv} className="hover:text-foreground">
-            CV
-          </a>
-          <a href={links.coverLetter} className="hover:text-foreground">
-            Cover Letter
+            Resume
           </a>
         </div>
       </div>
@@ -2006,8 +2356,12 @@ function AskPanel({ open, onClose }: { open: boolean; onClose: () => void }) {
     >
       <div className="flex shrink-0 items-center justify-between border-b border-border px-5 py-4">
         <div className="flex items-center gap-2">
-          <Sparkles className="h-4 w-4 text-foreground" aria-hidden="true" />
-          <span className="text-[15px] font-medium">Ask Priti</span>
+          <span className="inline-flex items-center text-foreground">
+            <Sparkle />
+          </span>
+          <span className="text-[15px] font-semibold text-foreground">
+            Ask AI
+          </span>
           <span className="group relative flex h-4 w-4 cursor-help items-center justify-center rounded-full bg-foreground/10 text-muted-foreground">
             <Info className="h-3 w-3" aria-hidden="true" />
             <span className="pointer-events-none absolute left-0 top-full z-10 mt-2 w-64 -translate-x-1/4 rounded-xl bg-foreground px-3.5 py-2.5 text-[13px] leading-relaxed text-background opacity-0 shadow-lg transition-opacity duration-150 group-hover:opacity-100">
@@ -2070,12 +2424,16 @@ function AskPanel({ open, onClose }: { open: boolean; onClose: () => void }) {
                 </div>
               ))}
               {typing && (
-                <div className="flex max-w-[85%] items-center gap-2 rounded-2xl bg-background px-4 py-3">
-                  <span className="text-[13px] text-muted-foreground">Priti AI is thinking</span>
-                  <span className="flex items-center gap-1" aria-hidden="true">
-                    <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-muted-foreground/60 [animation-delay:-0.3s]" />
-                    <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-muted-foreground/60 [animation-delay:-0.15s]" />
-                    <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-muted-foreground/60" />
+                <div className="flex max-w-[85%] items-center gap-2.5 rounded-2xl bg-background px-4 py-3">
+                  <span className="flex items-center gap-1.5" aria-hidden="true">
+                    <span className="h-2.5 w-2.5 animate-loader-pulse rounded-[3px] bg-gradient-to-br from-indigo-500 to-fuchsia-500" />
+                    <span className="h-2.5 w-2.5 animate-loader-pulse rounded-full bg-gradient-to-br from-fuchsia-500 to-pink-500 [animation-delay:0.16s]" />
+                    <span className="inline-flex rotate-45">
+                      <span className="block h-2.5 w-2.5 animate-loader-pulse rounded-[2px] bg-gradient-to-br from-pink-500 to-indigo-500 [animation-delay:0.32s]" />
+                    </span>
+                  </span>
+                  <span className="bg-gradient-to-r from-indigo-500 via-fuchsia-500 to-pink-500 bg-clip-text text-[13px] font-medium text-transparent">
+                    Generating response…
                   </span>
                 </div>
               )}
@@ -2195,8 +2553,75 @@ function AskPanel({ open, onClose }: { open: boolean; onClose: () => void }) {
   );
 }
 
+function CursorDots() {
+  const ref = useRef<HTMLDivElement>(null);
+  const target = useRef({ x: -500, y: -500 });
+  const pos = useRef({ x: -500, y: -500 });
+  const [on, setOn] = useState(false);
+  useEffect(() => {
+    if (
+      window.matchMedia("(pointer: coarse)").matches ||
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    )
+      return;
+    const move = (e: MouseEvent) => {
+      target.current = { x: e.clientX, y: e.clientY };
+      setOn(true);
+    };
+    const leave = () => setOn(false);
+    window.addEventListener("mousemove", move, { passive: true });
+    document.addEventListener("mouseleave", leave);
+    let raf = 0;
+    const tick = () => {
+      pos.current.x += (target.current.x - pos.current.x) * 0.08;
+      pos.current.y += (target.current.y - pos.current.y) * 0.08;
+      const el = ref.current;
+      if (el) {
+        el.style.setProperty("--mx", `${pos.current.x}px`);
+        el.style.setProperty("--my", `${pos.current.y}px`);
+      }
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => {
+      window.removeEventListener("mousemove", move);
+      document.removeEventListener("mouseleave", leave);
+      cancelAnimationFrame(raf);
+    };
+  }, []);
+  return (
+    <div ref={ref} aria-hidden="true" className={`cursor-dots ${on ? "is-on" : ""}`} />
+  );
+}
+
 export default function App() {
   useTapSound();
+  // Buttery smooth momentum scrolling (disabled for reduced-motion / touch)
+  useEffect(() => {
+    if (
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
+      window.matchMedia("(pointer: coarse)").matches
+    )
+      return;
+    const lenis = new Lenis({
+      duration: 1.15,
+      easing: (t: number) => 1 - Math.pow(1 - t, 3),
+      smoothWheel: true,
+      anchors: true,
+    });
+    (window as unknown as { __lenis?: Lenis }).__lenis = lenis;
+    let raf = 0;
+    const loop = (time: number) => {
+      lenis.raf(time);
+      raf = requestAnimationFrame(loop);
+    };
+    raf = requestAnimationFrame(loop);
+    return () => {
+      cancelAnimationFrame(raf);
+      lenis.destroy();
+      delete (window as unknown as { __lenis?: Lenis }).__lenis;
+    };
+  }, []);
   const [askOpen, setAskOpen] = useState(false);
   const [page, setPage] = useState<"home" | "projects" | "about" | "case">(
     "home",
@@ -2245,7 +2670,8 @@ export default function App() {
     };
   }, [page, caseId, scrollTarget]);
   return (
-    <div className="min-h-screen bg-background text-foreground antialiased">
+    <div className="isolate min-h-screen bg-background text-foreground antialiased">
+      <CursorDots />
       <div
         className={`transition-[padding] duration-300 ease-out ${
           askOpen ? "lg:pr-[28rem]" : ""
@@ -2262,9 +2688,7 @@ export default function App() {
           <>
             <SideNav />
             <main>
-              <div className="mx-auto max-w-[52rem] px-6">
-                <Hero />
-              </div>
+              <Hero />
               <FocusAreas />
               <div className="mx-auto max-w-[52rem] px-6">
                 <Work onViewAll={() => openProjects("case")} onOpen={openCase} />
@@ -2289,7 +2713,6 @@ export default function App() {
         <Footer />
       </div>
       <FloatingAsk onOpenAsk={() => setAskOpen(true)} hidden={askOpen} />
-      <BackToTop />
       <AskPanel open={askOpen} onClose={() => setAskOpen(false)} />
     </div>
   );

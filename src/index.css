@@ -2,6 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Lenis smooth scroll */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: clip;
+}
+
 @layer base {
   :root {
     /* Minimal light theme on a #FAFAFA ground */
@@ -120,26 +135,70 @@
     animation: eq 0.9s ease-in-out infinite;
   }
   @keyframes sparkle-twinkle {
-    0% {
+    0%,
+    100% {
       transform: rotate(0deg) scale(1);
     }
     50% {
-      transform: rotate(180deg) scale(1.4);
-    }
-    100% {
-      transform: rotate(360deg) scale(1);
+      transform: rotate(180deg) scale(1.15);
     }
   }
   .animate-sparkle {
-    animation: sparkle-twinkle 0.7s ease-in-out;
+    animation: sparkle-twinkle 2s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+  }
+  @keyframes loader-pulse {
+    0%,
+    100% {
+      transform: scale(0.55);
+      opacity: 0.35;
+    }
+    50% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+  .animate-loader-pulse {
+    animation: loader-pulse 1s ease-in-out infinite;
   }
   @media (prefers-reduced-motion: reduce) {
     .animate-marquee,
     .animate-marquee-rev,
     .animate-wave,
     .animate-sparkle,
+    .animate-loader-pulse,
     .animate-eq {
       animation: none;
+    }
+  }
+  /* Global cursor-following dot field — faint blue-grey dots revealed in a soft circle around the cursor */
+  .cursor-dots {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-image: radial-gradient(rgba(148, 163, 184, 0.6) 0.8px, transparent 1.2px);
+    background-size: 12px 12px;
+    -webkit-mask-image: radial-gradient(
+      220px circle at var(--mx, -500px) var(--my, -500px),
+      #000 0%,
+      rgba(0, 0, 0, 0.35) 45%,
+      transparent 72%
+    );
+    mask-image: radial-gradient(
+      220px circle at var(--mx, -500px) var(--my, -500px),
+      #000 0%,
+      rgba(0, 0, 0, 0.35) 45%,
+      transparent 72%
+    );
+    opacity: 0;
+    transition: opacity 450ms ease;
+  }
+  .cursor-dots.is-on {
+    opacity: 1;
+  }
+  @media (prefers-reduced-motion: reduce), (pointer: coarse) {
+    .cursor-dots {
+      display: none;
     }
   }
 }

@@ -628,12 +628,11 @@ export const writing: WritingEntry[] = [
 
 export const links = {
   cal: "https://cal.com/design-uiuxpriti-jim9zm/",
-  email: "mailto:design.uiuxpriti@gmail.com",
-  emailAddress: "design.uiuxpriti@gmail.com",
-  linkedin: "https://www.linkedin.com/in/uiuxpriti/",
+  email: "mailto:uiuxpriti@gmail.com",
+  emailAddress: "uiuxpriti@gmail.com",
+  linkedin: "https://www.linkedin.com/in/priti-jani14/",
   behance: "https://www.behance.net/pritijani",
-  cv: "#",
-  coverLetter: "#",
+  cv: "/Priti-Jani-CV.pdf",
 };
 
 export interface Experience {
@@ -764,18 +763,95 @@ export interface Creative {
   name: string;
   category: string;
   gradient: string;
+  /** Image under /public. Falls back to the gradient when missing. */
+  image?: string;
 }
 
-// Drop-in gradient placeholders for the Behance creative work.
 export const creatives: Creative[] = [
-  { name: "Nidavellir", category: "Brand Identity", gradient: "from-teal-400/30 to-indigo-500/30" },
-  { name: "Commenda", category: "Logo Design", gradient: "from-emerald-400/30 to-slate-500/30" },
-  { name: "Atz", category: "Logo Design", gradient: "from-sky-400/30 to-violet-500/30" },
-  { name: "Mr. Kirana", category: "Brand Identity", gradient: "from-emerald-500/30 to-teal-700/30" },
-  { name: "Business Icon Pack", category: "Icon Set", gradient: "from-indigo-400/30 to-purple-500/30" },
-  { name: "Neutron Star", category: "Concept", gradient: "from-violet-500/30 to-indigo-700/30" },
-  { name: "Chat Bubble AI", category: "Iconography", gradient: "from-cyan-400/30 to-blue-500/30" },
-  { name: "Butterfly Mark", category: "Logo Design", gradient: "from-fuchsia-400/30 to-rose-500/30" },
+  {
+    name: "MySaloonTime",
+    category: "App Marketing",
+    image: "/creatives/mysaloontime.webp",
+    gradient: "from-orange-400/30 to-amber-500/30",
+  },
+  {
+    name: "Neant Agency",
+    category: "Social Carousel",
+    image: "/creatives/neant-agency.webp",
+    gradient: "from-violet-500/30 to-purple-700/30",
+  },
+  {
+    name: "Correl App",
+    category: "App Icon",
+    image: "/creatives/correl-app.webp",
+    gradient: "from-blue-500/30 to-indigo-700/30",
+  },
+  {
+    name: "Career Crush",
+    category: "Logo Design",
+    image: "/creatives/career-crush-logo.webp",
+    gradient: "from-orange-400/30 to-rose-400/30",
+  },
+  {
+    name: "Career Crush — Concept",
+    category: "Brand Ideation",
+    image: "/creatives/career-crush-concept.webp",
+    gradient: "from-amber-300/30 to-orange-400/30",
+  },
+  {
+    name: "App Marketing Banners",
+    category: "Banner Design",
+    image: "/creatives/app-marketing-banners.webp",
+    gradient: "from-orange-400/30 to-rose-500/30",
+  },
+  {
+    name: "Grocery App Banners",
+    category: "Marketing Design",
+    image: "/creatives/grocery-app-banners.webp",
+    gradient: "from-emerald-400/30 to-lime-500/30",
+  },
+  {
+    name: "Data Correl",
+    category: "Brand Identity",
+    image: "/creatives/data-correl-logo.webp",
+    gradient: "from-blue-400/30 to-indigo-600/30",
+  },
+  {
+    name: "6G Connectivity",
+    category: "Social Carousel",
+    image: "/creatives/6g-connectivity.webp",
+    gradient: "from-violet-500/30 to-indigo-700/30",
+  },
+  {
+    name: "App Dev Trends 2024",
+    category: "Social Carousel",
+    image: "/creatives/app-dev-trends-2024.webp",
+    gradient: "from-indigo-400/30 to-purple-500/30",
+  },
+  {
+    name: "Software Development",
+    category: "Social Carousel",
+    image: "/creatives/software-dev-carousel.webp",
+    gradient: "from-rose-400/30 to-violet-500/30",
+  },
+  {
+    name: "Shanti Academy",
+    category: "Marketing Campaign",
+    image: "/creatives/shanti-academy-campaign.webp",
+    gradient: "from-sky-400/30 to-red-400/30",
+  },
+  {
+    name: "Open to Work",
+    category: "Social Carousel",
+    image: "/creatives/open-to-work-carousel.webp",
+    gradient: "from-lime-400/30 to-violet-600/30",
+  },
+  {
+    name: "Portfolio Promo",
+    category: "Personal Branding",
+    image: "/creatives/open-to-work-poster.webp",
+    gradient: "from-blue-500/30 to-indigo-600/30",
+  },
 ];
 
 export const aboutIntro =
@@ -851,30 +927,39 @@ export interface Award {
 
 export const awards: Award[] = [
   {
-    title: "National Excellence Award",
-    issuer: "Indore Voyage",
-    year: "2023",
+    title: "Best Performer of the Quarter",
+    issuer: "Lumenore",
+    year: "2026",
     description:
-      "Recognised nationally for outstanding magazine design: editorial layouts, typography, and visual storytelling for the Indore Voyage publication.",
-    certificate: "/awards/national-excellence.jpg",
-    gradient: "from-amber-200 via-orange-100 to-rose-100",
+      "Certificate of Achievement for Best Performer of the Quarter (Q1, Jan–Mar 2026) at Netlink | Lumenore — recognised for hard work and great efforts.",
+    certificate: "/awards/lumenore-best-performer.webp",
+    gradient: "from-emerald-200 via-teal-100 to-green-100",
   },
   {
-    title: "Pinnacle Award",
-    issuer: "Netlink Software Group",
+    title: "Emotional Well-Being with EaR",
+    issuer: "EHAC & SSISM",
+    year: "2021",
+    description:
+      "Certificate of Participation in an online training program on 'Emotional Well-Being with EaR' — 10 sessions, conducted by a BPS-licensed clinical psychologist.",
+    certificate: "/awards/emotional-wellbeing-ear.jpg",
+    gradient: "from-sky-200 via-cyan-100 to-teal-100",
+  },
+  {
+    title: "Digital Skills: User Experience",
+    issuer: "Accenture (FutureLearn)",
     year: "2022",
     description:
-      "Awarded for delivery excellence on the SiriusXM products — acknowledged for design quality, cross-team collaboration, and on-time execution.",
-    certificate: "/awards/pinnacle-award.jpg",
-    gradient: "from-indigo-200 via-blue-100 to-sky-100",
+      "Certificate of Achievement for completing 'Digital Skills: User Experience' — an introduction to UX and why it matters in an ever-evolving digital world.",
+    certificate: "/awards/accenture-ux.png",
+    gradient: "from-fuchsia-200 via-pink-100 to-rose-100",
   },
   {
-    title: "Best Performer",
-    issuer: "Lumenore",
-    year: "2023",
+    title: "User Experience Design Essentials – Adobe XD UI UX Design",
+    issuer: "Udemy",
+    year: "2022",
     description:
-      "Recognised as best performer for consistent delivery quality, design leadership, and impactful contributions across key product initiatives.",
-    certificate: "/awards/best-performer.jpg",
-    gradient: "from-emerald-200 via-teal-100 to-green-100",
+      "Certificate of Completion for 'User Experience Design Essentials – Adobe XD UI UX Design' (9.5 hours) by Daniel Walter Scott.",
+    certificate: "/awards/udemy-ux-adobe-xd.png",
+    gradient: "from-violet-200 via-indigo-100 to-blue-100",
   },
 ];
