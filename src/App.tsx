@@ -2094,7 +2094,7 @@ function IfNotDesign() {
   const [active, setActive] = useState(0);
   return (
     <section className="mt-24">
-      <div className="grid items-center gap-8 rounded-3xl border border-border bg-card p-8 sm:p-10 md:grid-cols-2">
+      <div className="grid items-stretch gap-8 rounded-3xl border border-border bg-card p-8 sm:p-10 md:grid-cols-2">
         <div>
           <h2 className="text-2xl font-semibold italic">If not design, then what?</h2>
           <div className="mt-6 space-y-4 text-[15px] leading-relaxed text-foreground/85">
@@ -2103,7 +2103,7 @@ function IfNotDesign() {
             ))}
           </div>
         </div>
-        <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-slate-200 ring-1 ring-border">
+        <div className="relative aspect-[4/3] min-h-[280px] overflow-hidden rounded-2xl bg-slate-200 ring-1 ring-border md:aspect-auto md:h-full">
           {/* Big preview — the selected photo, crossfading between choices */}
           {stack.map((src, i) => (
             <img
