@@ -13,6 +13,8 @@ import {
   ArrowLeft,
   ArrowUp,
   ChevronDown,
+  ChevronLeft,
+  ChevronRight,
   Inbox,
   CircleUserRound,
   Home,
@@ -261,6 +263,92 @@ function ContactButton({
   );
 }
 
+// Mobile "Get in touch" as a bottom sheet (the desktop popover is awkward on
+// small screens), with the same email-copy + LinkedIn actions.
+function ContactSheet({ open, onClose }: { open: boolean; onClose: () => void }) {
+  const [copied, setCopied] = useState(false);
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
+    if (open) document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [open, onClose]);
+  const copyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText(links.emailAddress);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 1600);
+    } catch {
+      /* clipboard unavailable */
+    }
+  };
+  return (
+    <div
+      className={`fixed inset-0 z-[80] sm:hidden ${open ? "" : "pointer-events-none"}`}
+      aria-hidden={!open}
+    >
+      <div
+        onClick={onClose}
+        className={`absolute inset-0 bg-black/50 transition-opacity duration-300 ${
+          open ? "opacity-100" : "opacity-0"
+        }`}
+      />
+      <div
+        role="dialog"
+        aria-label="Get in touch"
+        className={`absolute inset-x-0 bottom-0 rounded-t-3xl bg-neutral-900 p-6 pb-8 text-white shadow-2xl ring-1 ring-white/10 transition-transform duration-300 ease-out ${
+          open ? "translate-y-0" : "translate-y-full"
+        }`}
+      >
+        <div className="mx-auto mb-4 h-1.5 w-10 rounded-full bg-white/20" />
+        <div className="flex items-center justify-between">
+          <span className="text-[15px] font-medium text-white/60">Get in touch</span>
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Close"
+            className="text-white/50 transition-colors hover:text-white"
+          >
+            <X className="h-5 w-5" aria-hidden="true" />
+          </button>
+        </div>
+        <div className="mt-5 flex items-center justify-between gap-3">
+          <div className="min-w-0">
+            <p className="text-[13px] text-white/45">Email</p>
+            <p className="truncate text-[15px] font-semibold">{links.emailAddress}</p>
+          </div>
+          <button
+            type="button"
+            onClick={copyEmail}
+            aria-label={copied ? "Email copied" : "Copy email"}
+            className="shrink-0 rounded-lg p-2 text-white/60 transition-colors hover:bg-white/10 hover:text-white"
+          >
+            {copied ? (
+              <Check className="h-5 w-5 text-emerald-400" aria-hidden="true" />
+            ) : (
+              <Copy className="h-5 w-5" aria-hidden="true" />
+            )}
+          </button>
+        </div>
+        <div className="mt-5 flex items-center justify-between gap-3">
+          <div className="min-w-0">
+            <p className="text-[13px] text-white/45">LinkedIn</p>
+            <p className="truncate text-[15px] font-semibold">{LINKEDIN_HANDLE}</p>
+          </div>
+          <a
+            href={links.linkedin}
+            target="_blank"
+            rel="noreferrer"
+            aria-label="Open LinkedIn profile"
+            className="shrink-0 rounded-lg p-2 text-white/60 transition-colors hover:bg-white/10 hover:text-white"
+          >
+            <ExternalLink className="h-5 w-5" aria-hidden="true" />
+          </a>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 const NAV: { id: string; label: string; icon: LucideIcon }[] = [
   { id: "home", label: "Home", icon: Home },
   { id: "work", label: "Work", icon: Inbox },
@@ -368,6 +456,7 @@ function Header({
         : "home";
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [contactOpen, setContactOpen] = useState(false);
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
     onScroll();
@@ -388,12 +477,10 @@ function Header({
             type="button"
             onClick={onHome}
             aria-label="Home"
-            aria-hidden={scrolled}
-            tabIndex={scrolled ? -1 : 0}
-            className={`shrink-0 overflow-hidden transition-all duration-500 ease-out ${
+            className={`w-8 shrink-0 translate-x-0 scale-100 overflow-hidden opacity-100 transition-all duration-500 ease-out ${
               scrolled
-                ? "pointer-events-none w-0 -translate-x-1 scale-90 opacity-0"
-                : "w-8 translate-x-0 scale-100 opacity-100"
+                ? "sm:pointer-events-none sm:w-0 sm:-translate-x-1 sm:scale-90 sm:opacity-0"
+                : ""
             }`}
           >
             {avatar && avatarOk ? (
@@ -528,18 +615,22 @@ function Header({
                 >
                   <FileText className="h-[18px] w-[18px]" aria-hidden="true" /> Resume
                 </a>
-                <a
-                  href={links.email}
-                  onClick={() => setMenuOpen(false)}
-                  className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-[15px] font-medium text-foreground/80 hover:bg-foreground/[0.04]"
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMenuOpen(false);
+                    setContactOpen(true);
+                  }}
+                  className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-[15px] font-medium text-foreground/80 hover:bg-foreground/[0.04]"
                 >
                   <Send className="h-[18px] w-[18px]" aria-hidden="true" /> Contact
-                </a>
+                </button>
               </div>
             </>
           )}
         </div>
       </nav>
+      <ContactSheet open={contactOpen} onClose={() => setContactOpen(false)} />
     </header>
   );
 }
@@ -906,7 +997,7 @@ function Work({
   onOpen: (id: string) => void;
 }) {
   return (
-    <section id="work" className="mt-24 space-y-6">
+    <section id="work" className="mt-14 sm:mt-24 space-y-6">
       <div className="flex items-end justify-between gap-4">
         <div className="space-y-1">
           <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
@@ -980,9 +1071,11 @@ function CreativeGridCard({
 function ProjectsPage({
   initialTab,
   onOpen,
+  onBack,
 }: {
   initialTab: "case" | "creative";
   onOpen: (id: string) => void;
+  onBack: () => void;
 }) {
   const [tab, setTab] = useState<"case" | "creative">(initialTab);
   const [creativeOpen, setCreativeOpen] = useState<
@@ -997,6 +1090,13 @@ function ProjectsPage({
       {tab === "case" && <SideNav items={projects} watchId="case-studies" />}
       <main className="mx-auto max-w-[52rem] px-6 pb-32">
         <section className="pt-10 pb-8">
+          <button
+            type="button"
+            onClick={onBack}
+            className="mb-5 inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground sm:hidden"
+          >
+            <ArrowLeft className="h-4 w-4" aria-hidden="true" /> Back
+          </button>
           <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
             All Work
           </p>
@@ -1493,7 +1593,7 @@ function ExperienceList() {
 
 function Experience() {
   return (
-    <section id="experience" className="mt-24 scroll-mt-24">
+    <section id="experience" className="mt-14 sm:mt-24 scroll-mt-24">
       <SectionHeading eyebrow="Experience" title="where I have worked" />
       <div className="mt-10">
         <ExperienceList />
@@ -1567,7 +1667,7 @@ const SKILL_ICONS: Record<string, LucideIcon> = {
 
 function SkillsAndTools() {
   return (
-    <section id="skills-tools" className="mt-24 scroll-mt-24">
+    <section id="skills-tools" className="mt-14 sm:mt-24 scroll-mt-24">
       <SectionHeading eyebrow="Skills & Tools" title="what I work with" />
       <div className="mt-8">
         {skillCategories.map((cat) => (
@@ -1727,7 +1827,7 @@ function CertificateLightbox({
 function Awards() {
   const [open, setOpen] = useState<(typeof awards)[number] | null>(null);
   return (
-    <section id="awards" className="mt-24 scroll-mt-24">
+    <section id="awards" className="mt-14 sm:mt-24 scroll-mt-24">
       <SectionHeading eyebrow="Recognition" title="Awards & accolades" />
       <div className="mt-8 border-b border-border">
         {awards.map((a, i) => (
@@ -1753,7 +1853,7 @@ function CreativeMarqueeRow({
   return (
     <div className="marquee-track overflow-hidden">
       <div
-        className={`marquee-anim flex w-max gap-6 ${
+        className={`marquee-anim flex w-max gap-6 [--marquee-duration:68s] sm:[--marquee-duration:40s] ${
           reverse ? "animate-marquee-rev" : "animate-marquee"
         }`}
       >
@@ -1803,9 +1903,20 @@ function CreativeLightbox({
   item: (typeof creatives)[number];
   onClose: () => void;
 }) {
+  const startIdx = Math.max(
+    0,
+    creatives.findIndex((c) => c === item),
+  );
+  const [idx, setIdx] = useState(startIdx);
+  const go = (d: number) =>
+    setIdx((i) => (i + d + creatives.length) % creatives.length);
+  const current = creatives[idx];
+
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
+      else if (e.key === "ArrowLeft") go(-1);
+      else if (e.key === "ArrowRight") go(1);
     };
     document.addEventListener("keydown", onKey);
     const prev = document.body.style.overflow;
@@ -1818,11 +1929,12 @@ function CreativeLightbox({
       lenis?.start();
     };
   }, [onClose]);
+
   return (
     <div
       role="dialog"
       aria-modal="true"
-      aria-label={`${item.name} preview`}
+      aria-label={`${current.name} preview`}
       onClick={onClose}
       className="fixed inset-0 z-[100] flex flex-col items-center justify-center gap-4 bg-black/80 p-4 backdrop-blur-sm sm:p-8"
     >
@@ -1834,21 +1946,47 @@ function CreativeLightbox({
       >
         <X className="h-5 w-5" aria-hidden="true" />
       </button>
-      {item.image && (
+
+      {/* Prev / Next navigation across all creatives */}
+      <button
+        type="button"
+        onClick={(e) => {
+          e.stopPropagation();
+          go(-1);
+        }}
+        aria-label="Previous creative"
+        className="absolute left-3 top-1/2 z-10 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white outline-none transition-colors hover:bg-white/20 focus-visible:ring-2 focus-visible:ring-white/40 sm:left-6"
+      >
+        <ChevronLeft className="h-6 w-6" aria-hidden="true" />
+      </button>
+      <button
+        type="button"
+        onClick={(e) => {
+          e.stopPropagation();
+          go(1);
+        }}
+        aria-label="Next creative"
+        className="absolute right-3 top-1/2 z-10 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white outline-none transition-colors hover:bg-white/20 focus-visible:ring-2 focus-visible:ring-white/40 sm:right-6"
+      >
+        <ChevronRight className="h-6 w-6" aria-hidden="true" />
+      </button>
+
+      {current.image && (
         <img
-          src={item.image}
-          alt={item.name}
+          key={current.image}
+          src={current.image}
+          alt={current.name}
           onClick={(e) => e.stopPropagation()}
-          className="max-h-[82vh] max-w-[92vw] rounded-lg object-contain shadow-2xl"
+          className="max-h-[78vh] max-w-[86vw] rounded-lg object-contain shadow-2xl"
         />
       )}
       <div
         onClick={(e) => e.stopPropagation()}
         className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-center text-sm text-white/80"
       >
-        <span className="font-semibold text-white">{item.name}</span>
+        <span className="font-semibold text-white">{current.name}</span>
         <span className="text-white/40">·</span>
-        <span>{item.category}</span>
+        <span>{current.category}</span>
         <a
           href={links.behance}
           target="_blank"
@@ -1867,7 +2005,7 @@ function CreativeLightbox({
 function Creatives({ onViewAll }: { onViewAll: () => void }) {
   const [open, setOpen] = useState<(typeof creatives)[number] | null>(null);
   return (
-    <section id="creatives" className="mt-24 scroll-mt-24">
+    <section id="creatives" className="mt-14 sm:mt-24 scroll-mt-24">
       <div className="mx-auto max-w-[52rem] px-6">
         <div className="flex items-start justify-between gap-4">
           <SectionHeading
@@ -2044,7 +2182,7 @@ function AboutMeSection() {
 
 function WorkingWithMe() {
   return (
-    <section className="mt-24">
+    <section className="mt-14 sm:mt-24">
       <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">
         How it is to be working with me?
       </h2>
@@ -2077,7 +2215,7 @@ function IfNotDesign() {
   ];
   const [active, setActive] = useState(0);
   return (
-    <section className="mt-24">
+    <section className="mt-14 sm:mt-24">
       <div className="grid items-stretch gap-8 rounded-3xl border border-border bg-card p-8 sm:p-10 md:grid-cols-2">
         <div>
           <h2 className="text-2xl font-semibold italic">If not design, then what?</h2>
@@ -2131,10 +2269,17 @@ function IfNotDesign() {
   );
 }
 
-function AboutPage() {
+function AboutPage({ onBack }: { onBack: () => void }) {
   return (
     <>
       <main className="mx-auto max-w-[52rem] px-6 pb-32">
+        <button
+          type="button"
+          onClick={onBack}
+          className="mt-6 inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground sm:hidden"
+        >
+          <ArrowLeft className="h-4 w-4" aria-hidden="true" /> Back
+        </button>
         <AboutMeSection />
         <Experience />
         <WorkingWithMe />
@@ -2260,7 +2405,17 @@ function Footer() {
       </div>
       <div className="mx-auto flex max-w-[52rem] flex-col items-center gap-4 px-6 pt-10 pb-28 text-center text-sm text-muted-foreground sm:flex-row sm:items-start sm:justify-between sm:pb-10 sm:text-left">
         <div className="space-y-1">
-          <p className="whitespace-nowrap text-xs uppercase tracking-wider">© 2026 Priti Jani.</p>
+          <p className="whitespace-nowrap text-[13px]">
+            © 2026. Made by{" "}
+            <a
+              href={links.linkedin}
+              target="_blank"
+              rel="noreferrer"
+              className="font-medium text-primary hover:underline"
+            >
+              Priti Jani
+            </a>
+          </p>
           <p className="text-[13px]">Created with lots of Procrastination 🥲 &amp; Inspiration ☕️</p>
         </div>
         <div className="flex items-center gap-4 text-xs font-medium uppercase tracking-wider sm:gap-5">
@@ -2714,7 +2869,7 @@ export default function App() {
             <Creatives onViewAll={() => openProjects("creative")} />
           </>
         ) : page === "projects" ? (
-          <ProjectsPage initialTab={projectsTab} onOpen={openCase} />
+          <ProjectsPage initialTab={projectsTab} onOpen={openCase} onBack={goHome} />
         ) : page === "case" && caseId ? (
           <CaseStudyPage
             id={caseId}
@@ -2722,7 +2877,7 @@ export default function App() {
             onOpen={openCase}
           />
         ) : (
-          <AboutPage />
+          <AboutPage onBack={goHome} />
         )}
         <FooterCTA />
         <Footer />
