@@ -2091,6 +2091,7 @@ function IfNotDesign() {
     "about/travel-4.webp",
     "about/travel-5.webp",
   ];
+  const [active, setActive] = useState(0);
   return (
     <section className="mt-24">
       <div className="grid items-center gap-8 rounded-3xl border border-border bg-card p-8 sm:p-10 md:grid-cols-2">
@@ -2102,20 +2103,42 @@ function IfNotDesign() {
             ))}
           </div>
         </div>
-        <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-gradient-to-b from-sky-200 via-sky-100 to-slate-100 ring-1 ring-border">
-          <span className="absolute left-4 top-4 text-sm text-slate-500">
+        <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-slate-200 ring-1 ring-border">
+          {/* Big preview — the selected photo, crossfading between choices */}
+          {stack.map((src, i) => (
+            <img
+              key={i}
+              src={src}
+              alt=""
+              loading="lazy"
+              className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-500 ${
+                i === active ? "opacity-100" : "opacity-0"
+              }`}
+            />
+          ))}
+          {/* Gradients keep the label and thumbnails legible over any photo */}
+          <div className="pointer-events-none absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-black/45 to-transparent" />
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/55 to-transparent" />
+          <span className="absolute left-4 top-4 text-sm font-medium text-white drop-shadow">
             Somewhere in the mountains ⛰️
           </span>
-          <div className="absolute bottom-3 right-3 flex items-end">
+          {/* Thumbnails — click to swap into the big view */}
+          <div className="absolute inset-x-0 bottom-0 flex justify-center gap-2 p-3">
             {stack.map((src, i) => (
-              <img
+              <button
                 key={i}
-                src={src}
-                alt=""
-                loading="lazy"
-                className="h-14 w-14 rounded-lg object-cover shadow-sm ring-2 ring-background"
-                style={{ transform: `rotate(${(i - 2) * 6}deg)`, marginLeft: i ? "-10px" : 0 }}
-              />
+                type="button"
+                onClick={() => setActive(i)}
+                aria-label={`Show photo ${i + 1}`}
+                aria-pressed={i === active}
+                className={`h-11 w-11 shrink-0 overflow-hidden rounded-lg outline-none ring-2 transition-all duration-200 focus-visible:ring-white ${
+                  i === active
+                    ? "scale-105 ring-white"
+                    : "opacity-70 ring-white/40 hover:opacity-100"
+                }`}
+              >
+                <img src={src} alt="" className="h-full w-full object-cover" />
+              </button>
             ))}
           </div>
         </div>
