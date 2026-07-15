@@ -531,13 +531,15 @@ function Header({
             <FileText className="h-4 w-4" aria-hidden="true" /> Resume
           </a>
           {scrolled ? (
-            <ContactButton
-              align="right"
-              className="hidden items-center gap-1.5 rounded-full bg-primary px-3 py-2 text-sm font-medium text-primary-foreground shadow-sm outline-none transition-all duration-300 ease-out hover:opacity-90 active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-foreground/25 sm:inline-flex sm:px-3.5"
-            >
-              <Send className="h-4 w-4" aria-hidden="true" />{" "}
-              <span className="hidden sm:inline">Contact</span>
-            </ContactButton>
+            <div className="hidden sm:block">
+              <ContactButton
+                align="right"
+                className="inline-flex items-center gap-1.5 rounded-full bg-primary px-3 py-2 text-sm font-medium text-primary-foreground shadow-sm outline-none transition-all duration-300 ease-out hover:opacity-90 active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-foreground/25 sm:px-3.5"
+              >
+                <Send className="h-4 w-4" aria-hidden="true" />{" "}
+                <span className="hidden sm:inline">Contact</span>
+              </ContactButton>
+            </div>
           ) : (
             <button
               type="button"
@@ -710,6 +712,16 @@ function Hero() {
   const current = experience[0];
   const cardRef = useRef<HTMLDivElement>(null);
   const [tilt, setTilt] = useState({ rx: 0, ry: 0, on: false });
+  const [mailCopied, setMailCopied] = useState(false);
+  const copyMail = async () => {
+    try {
+      await navigator.clipboard.writeText(links.emailAddress);
+      setMailCopied(true);
+      window.setTimeout(() => setMailCopied(false), 1600);
+    } catch {
+      /* clipboard unavailable */
+    }
+  };
   const onMove = (e: ReactMouseEvent<HTMLDivElement>) => {
     const el = cardRef.current;
     if (!el || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -769,34 +781,27 @@ function Hero() {
               don&apos;t notice, but always feel.
             </p>
 
-            <div className="mt-7 flex flex-wrap items-center gap-3">
-              <a
-                href="#work"
-                className="inline-flex items-center gap-2 rounded-full bg-[#E3A64A] px-5 py-2.5 text-sm font-semibold text-[#22453A] outline-none transition-all duration-200 ease-out hover:bg-[#efba63] active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-[#E3A64A]/50"
-              >
-                View work
-                <ArrowRight className="h-4 w-4" aria-hidden="true" />
-              </a>
-              <ContactButton
-                align="left"
-                className="inline-flex items-center gap-2 rounded-full border border-white/20 px-5 py-2.5 text-sm font-medium text-white outline-none transition-colors duration-200 hover:bg-white/10 focus-visible:ring-2 focus-visible:ring-white/25"
-              >
-                <Send className="h-4 w-4" aria-hidden="true" /> Contact
-              </ContactButton>
-            </div>
-
             <p className="mt-7 text-[15px] text-white/55">
               Reach out via{" "}
-              <a
-                href={links.email}
+              <button
+                type="button"
+                onClick={copyMail}
+                aria-label={mailCopied ? "Email copied" : "Copy email address"}
                 className="group/mail inline-flex items-center font-medium text-[#E3A64A] underline underline-offset-4 transition-colors hover:text-[#efba63]"
               >
-                mail
-                <Copy
-                  className="ml-0 h-0 w-0 opacity-0 transition-all duration-200 group-hover/mail:ml-1 group-hover/mail:h-3.5 group-hover/mail:w-3.5 group-hover/mail:opacity-100"
-                  aria-hidden="true"
-                />
-              </a>{" "}
+                {mailCopied ? "copied" : "mail"}
+                {mailCopied ? (
+                  <Check
+                    className="ml-1 h-3.5 w-3.5 text-emerald-400"
+                    aria-hidden="true"
+                  />
+                ) : (
+                  <Copy
+                    className="ml-0 h-0 w-0 opacity-0 transition-all duration-200 group-hover/mail:ml-1 group-hover/mail:h-3.5 group-hover/mail:w-3.5 group-hover/mail:opacity-100"
+                    aria-hidden="true"
+                  />
+                )}
+              </button>{" "}
               or on{" "}
               <a
                 href={links.linkedin}
