@@ -2769,6 +2769,65 @@ function CursorDots() {
   );
 }
 
+// --- Real-URL routing -------------------------------------------------------
+// Each view has its own path (/, /work, /work/<slug>, /about) so search
+// engines can index case studies as individual pages. On a static host a deep
+// link 404s, so 404.html stashes the path in sessionStorage and bounces to the
+// app root; we restore it here AFTER the bundle (and its relative assets) load.
+if (typeof window !== "undefined") {
+  try {
+    const saved = sessionStorage.getItem("spaPath");
+    if (saved) {
+      sessionStorage.removeItem("spaPath");
+      window.history.replaceState(null, "", saved);
+    }
+  } catch {
+    /* sessionStorage unavailable */
+  }
+}
+
+// Served at "/" on the custom domain and "/Design-Work/" on GitHub Pages.
+const ROUTE_BASE =
+  typeof window !== "undefined" &&
+  window.location.pathname.startsWith("/Design-Work")
+    ? "/Design-Work/"
+    : "/";
+
+const slugForId = (id: string) => id.replace(/^project-/, "");
+const idForSlug = (slug: string) => `project-${slug}`;
+
+type Route =
+  | { page: "home" }
+  | { page: "projects"; projectsTab: "case" | "creative" }
+  | { page: "about" }
+  | { page: "case"; caseId: string };
+
+function pathForRoute(r: Route): string {
+  if (r.page === "about") return ROUTE_BASE + "about";
+  if (r.page === "projects")
+    return ROUTE_BASE + (r.projectsTab === "creative" ? "creatives" : "work");
+  if (r.page === "case") return ROUTE_BASE + "work/" + slugForId(r.caseId);
+  return ROUTE_BASE;
+}
+
+function routeFromPath(): Route {
+  if (typeof window === "undefined") return { page: "home" };
+  let p = window.location.pathname;
+  if (ROUTE_BASE !== "/" && p.startsWith(ROUTE_BASE))
+    p = "/" + p.slice(ROUTE_BASE.length);
+  const seg = p.replace(/^\/+|\/+$/g, "").split("/").filter(Boolean);
+  if (seg[0] === "work") {
+    if (seg[1]) {
+      const id = idForSlug(seg[1]);
+      if (projects.some((pr) => pr.id === id)) return { page: "case", caseId: id };
+    }
+    return { page: "projects", projectsTab: "case" };
+  }
+  if (seg[0] === "creatives") return { page: "projects", projectsTab: "creative" };
+  if (seg[0] === "about") return { page: "about" };
+  return { page: "home" };
+}
+
 export default function App() {
   useTapSound();
   // Buttery smooth momentum scrolling (disabled for reduced-motion / touch)
@@ -2798,20 +2857,33 @@ export default function App() {
     };
   }, []);
   const [askOpen, setAskOpen] = useState(false);
+  const [route0] = useState(routeFromPath);
   const [page, setPage] = useState<"home" | "projects" | "about" | "case">(
-    "home",
+    route0.page,
   );
-  const [projectsTab, setProjectsTab] = useState<"case" | "creative">("case");
-  const [caseId, setCaseId] = useState<string | null>(null);
+  const [projectsTab, setProjectsTab] = useState<"case" | "creative">(
+    route0.page === "projects" ? route0.projectsTab : "case",
+  );
+  const [caseId, setCaseId] = useState<string | null>(
+    route0.page === "case" ? route0.caseId : null,
+  );
+  // Push a new browser URL for a route (no-op if we're already there).
+  const pushRoute = (r: Route) => {
+    const path = pathForRoute(r);
+    if (window.location.pathname !== path)
+      window.history.pushState(null, "", path);
+  };
   // When navigating back to the home page, scroll to this section (else top).
   const [scrollTarget, setScrollTarget] = useState<string | null>(null);
   const openProjects = (tab: "case" | "creative") => {
     setProjectsTab(tab);
     setPage("projects");
+    pushRoute({ page: "projects", projectsTab: tab });
   };
   const openCase = (id: string) => {
     setCaseId(id);
     setPage("case");
+    pushRoute({ page: "case", caseId: id });
     // Track which case study was opened (visible in GA4 → Events).
     const title = projects.find((p) => p.id === id)?.title ?? id;
     (window as unknown as { gtag?: (...args: unknown[]) => void }).gtag?.(
@@ -2820,12 +2892,17 @@ export default function App() {
       { case_id: id, case_title: title },
     );
   };
+  const goAbout = () => {
+    setPage("about");
+    pushRoute({ page: "about" });
+  };
   const goHome = () => {
     if (page === "home") {
       window.scrollTo({ top: 0, behavior: "smooth" });
     } else {
       setScrollTarget(null);
       setPage("home");
+      pushRoute({ page: "home" });
     }
   };
   useEffect(() => {
@@ -2851,6 +2928,31 @@ export default function App() {
       cancelAnimationFrame(inner);
     };
   }, [page, caseId, scrollTarget]);
+  // Sync app state when the user uses the browser back/forward buttons.
+  useEffect(() => {
+    const onPop = () => {
+      const r = routeFromPath();
+      setScrollTarget(null);
+      setPage(r.page);
+      if (r.page === "projects") setProjectsTab(r.projectsTab);
+      if (r.page === "case") setCaseId(r.caseId);
+    };
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+  }, []);
+  // Keep the document title in step with the route (helps sharing + SEO).
+  useEffect(() => {
+    let t = "Priti Jani — Product & UX Designer";
+    if (page === "case" && caseId) {
+      const pr = projects.find((p) => p.id === caseId);
+      if (pr) t = `${pr.title} — Case Study · Priti Jani`;
+    } else if (page === "projects") {
+      t = "Work — Priti Jani";
+    } else if (page === "about") {
+      t = "About — Priti Jani";
+    }
+    document.title = t;
+  }, [page, caseId]);
   return (
     <div className="isolate min-h-screen bg-background text-foreground antialiased">
       <CursorDots />
@@ -2864,7 +2966,7 @@ export default function App() {
           onOpenAsk={() => setAskOpen(true)}
           onHome={goHome}
           onWork={() => openProjects("case")}
-          onAbout={() => setPage("about")}
+          onAbout={goAbout}
         />
         {page === "home" ? (
           <>

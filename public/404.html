@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Priti Jani</title>
+    <script>
+      // SPA deep-link fallback for static hosting: stash the requested path and
+      // bounce to the app root, which restores it once the bundle has loaded.
+      (function () {
+        var l = window.location;
+        var base = l.pathname.indexOf("/Design-Work/") === 0 ? "/Design-Work/" : "/";
+        try {
+          sessionStorage.setItem("spaPath", l.pathname + l.search + l.hash);
+        } catch (e) {}
+        l.replace(l.protocol + "//" + l.host + base);
+      })();
+    </script>
+  </head>
+  <body></body>
+</html>
