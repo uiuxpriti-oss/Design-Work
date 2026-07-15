@@ -823,7 +823,7 @@ function Hero() {
                   />
                 </span>
                 <span className="text-[13px] font-medium text-white/85">
-                  Netlink Software Group
+                  Netlink Software Group America Inc
                 </span>
               </div>
             </div>
