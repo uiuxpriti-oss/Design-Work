@@ -2085,11 +2085,11 @@ function WorkingWithMe() {
 
 function IfNotDesign() {
   const stack = [
-    "from-slate-300 to-slate-500",
-    "from-emerald-200 to-emerald-400",
-    "from-amber-200 to-orange-300",
-    "from-sky-200 to-indigo-300",
-    "from-rose-200 to-pink-300",
+    "about/travel-1.webp",
+    "about/travel-2.webp",
+    "about/travel-3.webp",
+    "about/travel-4.webp",
+    "about/travel-5.webp",
   ];
   return (
     <section className="mt-24">
@@ -2106,11 +2106,14 @@ function IfNotDesign() {
           <span className="absolute left-4 top-4 text-sm text-slate-500">
             Somewhere in the mountains ⛰️
           </span>
-          <div className="absolute bottom-3 right-3 flex">
-            {stack.map((g, i) => (
-              <div
+          <div className="absolute bottom-3 right-3 flex items-end">
+            {stack.map((src, i) => (
+              <img
                 key={i}
-                className={`h-12 w-12 rounded-lg bg-gradient-to-br ${g} ring-2 ring-background`}
+                src={src}
+                alt=""
+                loading="lazy"
+                className="h-14 w-14 rounded-lg object-cover shadow-sm ring-2 ring-background"
                 style={{ transform: `rotate(${(i - 2) * 6}deg)`, marginLeft: i ? "-10px" : 0 }}
               />
             ))}
