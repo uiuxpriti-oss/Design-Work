@@ -2812,6 +2812,13 @@ export default function App() {
   const openCase = (id: string) => {
     setCaseId(id);
     setPage("case");
+    // Track which case study was opened (visible in GA4 → Events).
+    const title = projects.find((p) => p.id === id)?.title ?? id;
+    (window as unknown as { gtag?: (...args: unknown[]) => void }).gtag?.(
+      "event",
+      "case_study_open",
+      { case_id: id, case_title: title },
+    );
   };
   const goHome = () => {
     if (page === "home") {
