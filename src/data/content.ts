@@ -855,12 +855,14 @@ export const creatives: Creative[] = [
 ];
 
 export const aboutIntro =
-  "Hi, I'm Priti — a Senior Product Designer at Tata 1mg, recovering chemical engineer, and lifelong tinkerer.";
+  "Hi, I'm Priti — a Senior Product Designer at Lumenore, recovering chemical engineer, and lifelong tinkerer.";
 
 export const learning: string[] = [
-  "Shipping AI products at Tata 1mg.",
+  "Shipping AI products at Lumenore.",
   "Prototyping with AI more than I expected.",
   "Training for the Kang Yatse II peak expedition.",
+  "Reading more books.",
+  "Learning development to build what I design.",
   "Trying to keep the promises I make to myself.",
 ];
 
