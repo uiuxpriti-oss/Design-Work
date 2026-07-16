@@ -149,6 +149,12 @@ export interface CaseStudy {
     before: { src: string; caption: string };
     after: { src: string; caption: string };
   };
+  /**
+   * Optional full designed case-study frames, shown as a long-form scroll.
+   * When present, the structured research/process/solution sections are
+   * replaced by these designed sections (click to view full size).
+   */
+  board?: { src: string; label: string }[];
   outcomes: { metrics: { value: string; label: string }[]; text: string };
 }
 
@@ -206,18 +212,6 @@ export const caseStudies: Record<string, CaseStudy> = {
       { step: "Opportunities", text: "Competitor analysis (ChatGPT, Julius AI, Formula Bot) and opportunity areas across entry points, trust, and UI." },
       { step: "Design", text: "Wireframes → a scalable design system → hi-fi solution and prototype, validated with A/B testing." },
     ],
-    beforeAfter: {
-      text:
-        "The original interface was cluttered, desktop-heavy, and offered no obvious way in. The redesign centralises every entry option into one guided starting action, adds dark mode, and strips the visual noise.",
-      before: {
-        src: "projects/askme-before.jpg",
-        caption: "Before — cluttered, tech-heavy, no clear entry point or way to bring your own data.",
-      },
-      after: {
-        src: "projects/askme-after.jpg",
-        caption: "After — one clear starting action with upload, connect, schema, and sample-data options.",
-      },
-    },
     solution: {
       text:
         "A guided, data-first workflow with a clean, minimal interface (and dark mode). The homepage leads with one clear action; a chat-first Ask Me turns natural-language questions into structured insights and recommended next steps; and a central Data Pool makes every file, schema, and analysis visible in one place. Designed to balance ease for beginners with control for data experts.",
@@ -227,11 +221,26 @@ export const caseStudies: Record<string, CaseStudy> = {
         { title: "Data Pool", text: "One transparent workspace for files, datasets, and schemas — matching users' ‘my data in one place' model." },
       ],
     },
-    screens: [
-      { src: "projects/askme-insights.jpg", caption: "Ask Me — natural-language questions become structured insights, charts, and next actions." },
-      { src: "projects/askme-datapool.jpg", caption: "Data Pool — files, schemas, and analyses organised in one transparent workspace." },
-      { src: "projects/askme-mobile.jpg", caption: "Mobile — a thumb-friendly, minimal AI interface with clear entry points." },
-      { src: "projects/askme-ab.jpg", caption: "A/B testing — Design 1 (generic) vs. Design 2 (guided, chat-first); Design 2 won." },
+    board: [
+      { src: "projects/askme-board-01.jpg", label: "Persona — Business User" },
+      { src: "projects/askme-board-02.jpg", label: "Persona — Data Expert" },
+      { src: "projects/askme-board-03.jpg", label: "Competitor Analysis" },
+      { src: "projects/askme-board-04.jpg", label: "Opportunity Areas" },
+      { src: "projects/askme-board-05.jpg", label: "Problem Statement" },
+      { src: "projects/askme-board-06.jpg", label: "User Flow" },
+      { src: "projects/askme-board-07.jpg", label: "Design System" },
+      { src: "projects/askme-board-08.jpg", label: "Wireframing" },
+      { src: "projects/askme-board-09.jpg", label: "Solution — Homepage (First-Time User)" },
+      { src: "projects/askme-board-10.jpg", label: "Solution — Dark Theme" },
+      { src: "projects/askme-board-11.jpg", label: "Solution — Homepage (Returning User)" },
+      { src: "projects/askme-board-12.jpg", label: "Solution — Processing & Transparency" },
+      { src: "projects/askme-board-13.jpg", label: "Solution — Response & Insights" },
+      { src: "projects/askme-board-14.jpg", label: "Solution — Data Pool (Before / After)" },
+      { src: "projects/askme-board-15.jpg", label: "Solution — Create Data Pool" },
+      { src: "projects/askme-board-16.jpg", label: "Solution — Mobile Design" },
+      { src: "projects/askme-board-17.jpg", label: "Solution — Manage Data Pool" },
+      { src: "projects/askme-board-18.jpg", label: "A/B Testing" },
+      { src: "projects/askme-board-19.jpg", label: "Conclusion" },
     ],
     outcomes: {
       metrics: [

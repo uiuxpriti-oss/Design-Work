@@ -1292,7 +1292,9 @@ function CaseStudyPage({
   const project = projects.find((p) => p.id === id);
   const cs = caseStudies[id];
   const [imgOk, setImgOk] = useState(true);
+  const [zoom, setZoom] = useState<string | null>(null);
   useEffect(() => setImgOk(true), [id]);
+  useEffect(() => setZoom(null), [id]);
   if (!project || !cs) return null;
   const idx = projects.findIndex((p) => p.id === id);
   const next = projects[(idx + 1) % projects.length];
@@ -1379,6 +1381,8 @@ function CaseStudyPage({
         )}
       </CaseSection>
 
+      {!cs.board && (
+      <>
       <CaseSection id="cs-research" eyebrow="Research" title="What I learned">
         <p className="max-w-2xl text-[15px] leading-relaxed text-foreground/85">
           {cs.research.text}
@@ -1500,6 +1504,64 @@ function CaseStudyPage({
           </div>
         )}
       </CaseSection>
+      </>
+      )}
+
+      {cs.board && (
+        <CaseSection id="cs-board" eyebrow="Case study" title="The full design">
+          <p className="max-w-2xl text-[15px] leading-relaxed text-foreground/85">
+            Every section from the original case study — research, personas, flows,
+            the design system, and final screens. Tap any section to view it full size.
+          </p>
+          <div className="mt-8 space-y-5">
+            {cs.board.map((frame) => (
+              <figure key={frame.src}>
+                <button
+                  type="button"
+                  onClick={() => setZoom(assetUrl(frame.src))}
+                  aria-label={`View ${frame.label} full size`}
+                  className="group block w-full overflow-hidden rounded-2xl bg-card ring-1 ring-border outline-none transition-shadow hover:shadow-lg focus-visible:ring-2 focus-visible:ring-foreground/30"
+                >
+                  <img
+                    src={assetUrl(frame.src)}
+                    alt={frame.label}
+                    loading="lazy"
+                    className="w-full"
+                  />
+                </button>
+                <figcaption className="mt-2 text-[12px] font-medium uppercase tracking-[0.12em] text-muted-foreground">
+                  {frame.label}
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        </CaseSection>
+      )}
+
+      {zoom && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-label="Case study section preview"
+          onClick={() => setZoom(null)}
+          className="fixed inset-0 z-[100] flex items-start justify-center overflow-auto bg-black/85 p-4 backdrop-blur-sm sm:p-8"
+        >
+          <button
+            type="button"
+            onClick={() => setZoom(null)}
+            aria-label="Close preview"
+            className="fixed right-4 top-4 inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white outline-none transition-colors hover:bg-white/20 focus-visible:ring-2 focus-visible:ring-white/40"
+          >
+            <X className="h-5 w-5" aria-hidden="true" />
+          </button>
+          <img
+            src={zoom}
+            alt=""
+            onClick={(e) => e.stopPropagation()}
+            className="h-auto w-full max-w-[1100px] rounded-lg shadow-2xl"
+          />
+        </div>
+      )}
 
       <CaseSection id="cs-impact" eyebrow="Impact" title="Outcomes">
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
