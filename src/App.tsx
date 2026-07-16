@@ -1413,6 +1413,45 @@ function CaseStudyPage({
         </ol>
       </CaseSection>
 
+      {cs.beforeAfter && (
+        <CaseSection id="cs-beforeafter" eyebrow="Before → After" title="What changed">
+          {cs.beforeAfter.text && (
+            <p className="max-w-2xl text-[15px] leading-relaxed text-foreground/85">
+              {cs.beforeAfter.text}
+            </p>
+          )}
+          <div className="mt-6 grid gap-4 sm:grid-cols-2">
+            {[
+              { ...cs.beforeAfter.before, tag: "Before", tone: "rose" as const },
+              { ...cs.beforeAfter.after, tag: "After", tone: "emerald" as const },
+            ].map((s) => (
+              <figure key={s.tag} className="overflow-hidden rounded-2xl ring-1 ring-border">
+                <div className="relative aspect-[16/10] w-full overflow-hidden bg-background/40">
+                  <img
+                    src={assetUrl(s.src)}
+                    alt={`${s.tag} — ${s.caption}`}
+                    loading="lazy"
+                    className="h-full w-full object-cover"
+                  />
+                  <span
+                    className={`absolute left-3 top-3 rounded-md px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wide ${
+                      s.tone === "rose"
+                        ? "bg-rose-100 text-rose-700 dark:bg-rose-500/20 dark:text-rose-200"
+                        : "bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-200"
+                    }`}
+                  >
+                    {s.tag}
+                  </span>
+                </div>
+                <figcaption className="bg-card px-4 py-2.5 text-[13px] text-muted-foreground">
+                  {s.caption}
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        </CaseSection>
+      )}
+
       <CaseSection id="cs-solution" eyebrow="Solution" title="The solution">
         <p className="max-w-2xl text-[15px] leading-relaxed text-foreground/85">
           {cs.solution.text}

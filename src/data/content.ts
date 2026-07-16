@@ -17,6 +17,17 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    id: "project-ask-me",
+    title: "Ask Me",
+    description:
+      "Rebuilding Lumenore's AI analytics tool into a guided, data-first experience.",
+    href: "https://uiuxpriti.com/projects/ask-me",
+    likes: 41,
+    image: "projects/askme.jpg",
+    gradient: "from-blue-300 via-indigo-200 to-slate-200",
+    measures: ["Guided AI-first flow", "Bring your own data", "2× faster insights"],
+  },
+  {
     id: "project-jobfy",
     title: "Jobfy",
     description: "An AI-matched job-search app for seekers and recruiters.",
@@ -132,10 +143,106 @@ export interface CaseStudy {
   solution: { text: string; highlights: { title: string; text: string }[] };
   /** Optional screen/mockup images shown in the solution section. */
   screens?: { src: string; caption: string }[];
+  /** Optional before → after comparison shown as its own section. */
+  beforeAfter?: {
+    text?: string;
+    before: { src: string; caption: string };
+    after: { src: string; caption: string };
+  };
   outcomes: { metrics: { value: string; label: string }[]; text: string };
 }
 
 export const caseStudies: Record<string, CaseStudy> = {
+  "project-ask-me": {
+    intro: [
+      "**Ask Me** is Lumenore's AI-powered analytics tool — you talk to your business data in natural language and get answers back. Powerful, but the experience was complex, cluttered, and hard to start.",
+      "People opened it and didn't know where to begin: no clear entry point, no way to bring their own data, and chat answers that felt disconnected from the data behind them. **89% of users struggled to use the product.**",
+      "I rebuilt the experience around a **guided, AI-first, data-first flow** — one clear starting action, multiple ways to bring your own data, a transparent Data Pool, and structured insights you can act on.",
+    ],
+    tags: {
+      role: ["Product Designer", "UX Research"],
+      status: ["Live project", "Hi-Fi + Prototype", "2025"],
+      type: ["AI Analytics", "B2B SaaS", "Web & Mobile"],
+      tools: ["Figma", "Inter", "Prototype"],
+    },
+    eyebrow: "Product Design · AI Analytics",
+    summary:
+      "Rebuilding Ask Me — Lumenore's conversational BI tool — into a guided, data-first AI experience: one clear starting point, bring-your-own-data, a transparent Data Pool, and structured, actionable insights.",
+    meta: {
+      role: "Product Designer (end to end)",
+      timeline: "Ongoing · 2025",
+      team: "PM, engineering, data team",
+      tools: "Figma · Prototype · Inter",
+    },
+    overview:
+      "Ask Me lets business users and data experts query data in plain language. The capability was strong, but the experience leaned on technical concepts (schemas, agents), offered no way to use your own data, and gave inconsistent, hard-to-trust answers. The goal: simplify complex data workflows, let people use their own data, and deliver a guided, AI-first experience that improves trust and decision-making.",
+    problem: {
+      stats: [
+        { value: "89%", label: "of users struggled to use the product" },
+        { value: "No", label: "way to upload or connect your own data" },
+        { value: "Unclear", label: "starting point for first-time users" },
+      ],
+      text:
+        "The old experience broke users' mental models: chat wasn't clearly tied to the data behind it, outputs were inconsistent, and the interface leaned on jargon like schemas and agents. Business users got stuck at the starting line; data experts hit walls of rigidity and low transparency.",
+      goals: [
+        "Give users one clear, guided way to start",
+        "Let people bring their own data — upload files or connect sources",
+        "Make the data behind every answer visible and trustworthy",
+        "Turn insights into clear, actionable next steps",
+      ],
+    },
+    research: {
+      text:
+        "I combined qualitative and evaluative methods — user interviews, focus groups, usability testing, heuristic evaluation, and think-aloud sessions — then mapped the journey for two very different users: Rohan, a business analyst who needs quick answers, and Priya, a data expert who needs control and transparency.",
+      findings: [
+        "89% of users struggled — with a heavy dependency on technical knowledge",
+        "Business users stalled at the starting point; data experts hit rigidity and low control",
+        "No data upload or external connections forced everyone into predefined schemas",
+      ],
+    },
+    process: [
+      { step: "Research & Discovery", text: "Interviews, focus groups, usability testing, heuristic evaluation, and journey mapping to surface gaps." },
+      { step: "Understand", text: "Built personas (Rohan, Priya), user stories, and end-to-end user flows." },
+      { step: "Opportunities", text: "Competitor analysis (ChatGPT, Julius AI, Formula Bot) and opportunity areas across entry points, trust, and UI." },
+      { step: "Design", text: "Wireframes → a scalable design system → hi-fi solution and prototype, validated with A/B testing." },
+    ],
+    beforeAfter: {
+      text:
+        "The original interface was cluttered, desktop-heavy, and offered no obvious way in. The redesign centralises every entry option into one guided starting action, adds dark mode, and strips the visual noise.",
+      before: {
+        src: "projects/askme-before.jpg",
+        caption: "Before — cluttered, tech-heavy, no clear entry point or way to bring your own data.",
+      },
+      after: {
+        src: "projects/askme-after.jpg",
+        caption: "After — one clear starting action with upload, connect, schema, and sample-data options.",
+      },
+    },
+    solution: {
+      text:
+        "A guided, data-first workflow with a clean, minimal interface (and dark mode). The homepage leads with one clear action; a chat-first Ask Me turns natural-language questions into structured insights and recommended next steps; and a central Data Pool makes every file, schema, and analysis visible in one place. Designed to balance ease for beginners with control for data experts.",
+      highlights: [
+        { title: "Conversational Ask Me", text: "Chat-first analysis: ask in natural language, get structured insights, charts, and recommended actions." },
+        { title: "Bring your own data", text: "Upload files or connect 50+ sources — no longer forced into predefined schemas." },
+        { title: "Data Pool", text: "One transparent workspace for files, datasets, and schemas — matching users' ‘my data in one place' model." },
+      ],
+    },
+    screens: [
+      { src: "projects/askme-insights.jpg", caption: "Ask Me — natural-language questions become structured insights, charts, and next actions." },
+      { src: "projects/askme-datapool.jpg", caption: "Data Pool — files, schemas, and analyses organised in one transparent workspace." },
+      { src: "projects/askme-mobile.jpg", caption: "Mobile — a thumb-friendly, minimal AI interface with clear entry points." },
+      { src: "projects/askme-ab.jpg", caption: "A/B testing — Design 1 (generic) vs. Design 2 (guided, chat-first); Design 2 won." },
+    ],
+    outcomes: {
+      metrics: [
+        { value: "90%", label: "Task completion (up from 65%)" },
+        { value: "18s", label: "Time to insight (down from 38s)" },
+        { value: "4.6/5", label: "User satisfaction (A/B winner)" },
+      ],
+      text:
+        "A/B testing validated the redesign: Design 2 lifted task completion from 65% to 90%, halved time-to-insight (38s → 18s), raised feature adoption by ~30%, and scored 4.6/5 satisfaction. The result turns a complex, tech-heavy tool into a guided, data-first AI experience aligned with how people actually think about their data. (Ongoing — future scope: AI recommendations, personalisation, and automation.)",
+    },
+  },
   "project-jobfy": {
     intro: [
       "Job hunting on a phone is mostly scrolling — endless listings, long application forms, and notifications for roles you'd never take. **Jobfy** set out to make it feel personal instead.",
