@@ -1328,7 +1328,7 @@ function CaseStudyPage({
       <div className="mt-8 aspect-[16/10] w-full overflow-hidden rounded-3xl bg-background/40 ring-1 ring-border">
         {project.image && imgOk ? (
           <img
-            src={project.image}
+            src={assetUrl(project.image)}
             alt={project.title}
             onError={() => setImgOk(false)}
             className="h-full w-full object-cover"
@@ -1433,19 +1433,39 @@ function CaseStudyPage({
             </div>
           ))}
         </div>
-        {/* Screen slots — drop more images into public/projects to fill these. */}
-        <div className="mt-4 grid gap-4 sm:grid-cols-2">
-          {[2, 3].map((n) => (
-            <div
-              key={n}
-              className={`flex aspect-[16/10] items-center justify-center rounded-2xl bg-gradient-to-br ${project.gradient} ring-1 ring-border`}
-            >
-              <span className="text-[12px] font-medium uppercase tracking-[0.14em] text-foreground/40">
-                Screen {n}
-              </span>
-            </div>
-          ))}
-        </div>
+        {/* Screen slots — real mockups when provided, else gradient placeholders. */}
+        {cs.screens && cs.screens.length > 0 ? (
+          <div className="mt-6 grid gap-4 sm:grid-cols-2">
+            {cs.screens.map((s) => (
+              <figure key={s.src} className="overflow-hidden rounded-2xl ring-1 ring-border">
+                <div className="aspect-[16/10] w-full overflow-hidden bg-background/40">
+                  <img
+                    src={assetUrl(s.src)}
+                    alt={s.caption}
+                    loading="lazy"
+                    className="h-full w-full object-cover"
+                  />
+                </div>
+                <figcaption className="bg-card px-4 py-2.5 text-[13px] text-muted-foreground">
+                  {s.caption}
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        ) : (
+          <div className="mt-4 grid gap-4 sm:grid-cols-2">
+            {[2, 3].map((n) => (
+              <div
+                key={n}
+                className={`flex aspect-[16/10] items-center justify-center rounded-2xl bg-gradient-to-br ${project.gradient} ring-1 ring-border`}
+              >
+                <span className="text-[12px] font-medium uppercase tracking-[0.14em] text-foreground/40">
+                  Screen {n}
+                </span>
+              </div>
+            ))}
+          </div>
+        )}
       </CaseSection>
 
       <CaseSection id="cs-impact" eyebrow="Impact" title="Outcomes">
@@ -2828,6 +2848,12 @@ const ROUTE_BASE =
 
 const slugForId = (id: string) => id.replace(/^project-/, "");
 const idForSlug = (slug: string) => `project-${slug}`;
+
+// Root-absolute asset URL. Relative paths (base "./") break on multi-segment
+// routes like /work/<slug>, where they'd resolve against /work/. Prefixing with
+// ROUTE_BASE keeps images correct on both the custom domain and GitHub Pages.
+const assetUrl = (p: string) =>
+  /^https?:\/\//.test(p) ? p : ROUTE_BASE + p.replace(/^\/+/, "");
 
 type Route =
   | { page: "home" }
