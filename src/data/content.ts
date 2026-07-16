@@ -209,7 +209,7 @@ export const caseStudies: Record<string, CaseStudy> = {
   },
   "project-punjab-land-records": {
     intro: ["Getting a land record in Punjab usually means a trip to an agent. I watched people **give up on the official portal** and pay someone to do it for them.","The services exist — Jamabandi, Mutation, Fard — but the digital flow buried them under department names and long forms that failed without saying why.","I redesigned the experience around **what people actually want to do**, so a first-time user can find, request, and track a document without a middleman."],
-    tags: {"role":["Lead Product Designer","UX Research"],"status":["In progress","Hi-Fi Prototype","2024"],"type":["GovTech","B2C","Web"],"tools":["Figma","Maze","Drupal"]},
+    tags: {"role":["Lead Product Designer","UX Research"],"status":["Hi-Fi Prototype","2024"],"type":["GovTech","B2C","Web"],"tools":["Figma","Maze","Drupal"]},
     eyebrow: "Product Design · GovTech",
     summary:
       "Redesigning a citizen-facing land records portal so people can find, request, and verify property documents without a middleman.",
@@ -267,7 +267,7 @@ export const caseStudies: Record<string, CaseStudy> = {
   },
   "project-avoda": {
     intro: ["Healthcare workers pick up shifts between long, exhausting days. The staffing apps they used **all looked the same** and asked for too much, too soon.","An employer needs to trust a candidate in seconds; a worker needs to sign up between rounds. The old flow front-loaded paperwork and hid what mattered.","I designed a profile that **leads with trust** — role, specialities, multi-source ratings — and an onboarding you can finish in under five minutes."],
-    tags: {"role":["Product Designer","UX Research"],"status":["In progress","Hi-Fi Prototype","2024"],"type":["Healthcare","Staffing","Mobile App"],"tools":["Figma","Protopie","Maze"]},
+    tags: {"role":["Product Designer","UX Research"],"status":["Hi-Fi Prototype","2024"],"type":["Healthcare","Staffing","Mobile App"],"tools":["Figma","Protopie","Maze"]},
     eyebrow: "Product Design · Healthcare Staffing",
     summary:
       "A mobile app that connects healthcare workers — nurses, aides, technicians — with shifts and employers who can trust their credentials.",
@@ -325,7 +325,7 @@ export const caseStudies: Record<string, CaseStudy> = {
   },
   "project-baladi-express": {
     intro: ["Ordering food, then groceries, then flowers usually means learning three different apps. Baladi wanted all of it in **one place** for the Qatar market.","The hard part isn't the catalogue — it's making one app feel coherent when the categories are this different, and keeping search from returning the wrong thing.","I built **one system** across every vertical: a scoped search, bright category tiles, and an identical cart and checkout on web and mobile."],
-    tags: {"role":["Product Designer"],"status":["In progress","Hi-Fi Prototype","2024"],"type":["Q-Commerce","B2C","Web & Mobile"],"tools":["Figma","Framer","Maze"]},
+    tags: {"role":["Product Designer"],"status":["Hi-Fi Prototype","2024"],"type":["Q-Commerce","B2C","Web & Mobile"],"tools":["Figma","Framer","Maze"]},
     eyebrow: "Product Design · Q-Commerce",
     summary:
       "A multi-category delivery experience — food, grocery, flowers, pharmacy — unified under one fast, friendly ordering flow.",
@@ -383,7 +383,7 @@ export const caseStudies: Record<string, CaseStudy> = {
   },
   "project-cakes-celebrations": {
     intro: ["Ordering a custom cake online is oddly stressful. Every site throws a **wall of options** at you and hides the part where you send it as a gift.","People shop for a moment — a birthday, an anniversary — not for a product grid. And gifting deserves its own obvious path.","I made customisation **playful and guided** — by occasion, shape, and design — with a built-in way to add a message and deliver it to someone you love."],
-    tags: {"role":["Product Designer","Visual Design"],"status":["In progress","Hi-Fi Prototype","2024"],"type":["E-commerce","B2C","Web & Mobile"],"tools":["Figma","Illustrator","Maze"]},
+    tags: {"role":["Product Designer","Visual Design"],"status":["Hi-Fi Prototype","2024"],"type":["E-commerce","B2C","Web & Mobile"],"tools":["Figma","Illustrator","Maze"]},
     eyebrow: "Product Design · E-commerce",
     summary:
       "A playful cake-ordering experience where people design custom cakes by occasion, shape, and style — and send them as gifts.",
@@ -441,7 +441,7 @@ export const caseStudies: Record<string, CaseStudy> = {
   },
   "project-tabnet-security": {
     intro: ["Most security tools either look like toys or bury you in jargon. Tabnet quantifies cyber risk in **money a board can act on** — and the brand had to feel that precise.","Buyers here don't want adjectives; they want proof — the methodology, the outcomes, the numbers behind the score.","I built a **dark, high-precision identity** and a problem-to-outcome story that speaks to security leaders and executives at once."],
-    tags: {"role":["Product Designer"],"status":["In progress","Hi-Fi Prototype","2024"],"type":["Cybersecurity","B2B","Web"],"tools":["Figma","Framer"]},
+    tags: {"role":["Product Designer"],"status":["Hi-Fi Prototype","2024"],"type":["Cybersecurity","B2B","Web"],"tools":["Figma","Framer"]},
     eyebrow: "Product Design · Cybersecurity",
     summary:
       "A marketing and product identity for an enterprise cyber-risk suite that turns vague risk scores into numbers a board can act on.",
@@ -499,7 +499,7 @@ export const caseStudies: Record<string, CaseStudy> = {
   },
   "project-academic-web": {
     intro: ["School admins run on spreadsheets. The numbers that matter — attendance, fees — were **buried**, and monthly reports took hours to rebuild by hand.","I shadowed administrators through their day to see which metrics they actually check, and which reports they recreate every cycle.","The result is a **daily-first dashboard** with fast record search and clear trends, turning manual reporting into a few clicks."],
-    tags: {"role":["Product Designer"],"status":["In progress","Hi-Fi Prototype","2024"],"type":["EdTech","B2B SaaS","Web"],"tools":["Figma","Maze"]},
+    tags: {"role":["Product Designer"],"status":["Hi-Fi Prototype","2024"],"type":["EdTech","B2B SaaS","Web"],"tools":["Figma","Maze"]},
     eyebrow: "Product Design · EdTech SaaS",
     summary:
       "A school-management platform that helps administrators track students, staff, fees, and attendance from one clear dashboard.",
@@ -557,7 +557,7 @@ export const caseStudies: Record<string, CaseStudy> = {
   },
   "project-leadsdemos": {
     intro: ["Sales teams rebuild the same demo over and over and **lose track of versions**. There was no single place to see, launch, or reuse what they'd already made.","Talking to sales engineers, the biggest unmet need was reuse — most demos were near-duplicates of an earlier one.","I designed a **visual My Sites hub** where every demo is a card with quick actions, plus a fast create-from-template path."],
-    tags: {"role":["Product Designer"],"status":["In progress","Hi-Fi Prototype","2024"],"type":["SaaS","B2B","Web"],"tools":["Figma","Maze"]},
+    tags: {"role":["Product Designer"],"status":["Hi-Fi Prototype","2024"],"type":["SaaS","B2B","Web"],"tools":["Figma","Maze"]},
     eyebrow: "Product Design · SaaS",
     summary:
       "A workspace for creating and managing interactive product demo sites, so sales teams can spin up tailored demos in minutes.",
@@ -615,7 +615,7 @@ export const caseStudies: Record<string, CaseStudy> = {
   },
   "project-audio-transcript-analysis": {
     intro: ["AI can transcribe a support call in seconds — and then hand you **a wall of text you can't trust**. Managers needed the outcome, not the transcript.","I tested how support leads read calls today, and which sentiment visualisations they actually understood at a glance.","The workspace makes a whole call graspable in seconds: transcript, side-by-side summaries, **emoji-anchored sentiment**, and clear AI states."],
-    tags: {"role":["Product Designer"],"status":["In progress","Hi-Fi Prototype","2024"],"type":["AI","Support Ops","Web"],"tools":["Figma","Framer","Maze"]},
+    tags: {"role":["Product Designer"],"status":["Hi-Fi Prototype","2024"],"type":["AI","Support Ops","Web"],"tools":["Figma","Framer","Maze"]},
     eyebrow: "Product Design · AI · Support Ops",
     summary:
       "An AI workspace that turns support call recordings into transcripts, summaries, sentiment, and upsell suggestions — in one view.",
@@ -1012,8 +1012,8 @@ export const principles: Principle[] = [
 
 export const ifNotDesign: string[] = [
   "My answer hasn't changed in years.",
-  "I'd travel the world, meet new people, and learn their kitchens. And one day, settle in a quiet mountain town and open a small cafe — a cozy spot for travellers and locals, with a menu stitched together from everywhere I've been. Somewhere people gather, share stories, and stay a while.",
-  "The dream is the same as the work, really: connect with people, explore new ground, and build places where everyone feels at home.",
+  "I'd travel, meet new people, and learn their kitchens — then settle in a quiet mountain town and open a small cafe. A cozy spot for travellers and locals, with a menu from everywhere I've been.",
+  "The dream is the same as the work: connect with people, explore new ground, and build places where everyone feels at home.",
 ];
 
 // Looping footer marquee phrases.

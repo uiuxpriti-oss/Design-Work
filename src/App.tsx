@@ -1308,15 +1308,9 @@ function CaseStudyPage({
       </button>
 
       <header className="mt-8">
-        <div className="flex flex-wrap items-center gap-3">
-          <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
-            {cs.eyebrow}
-          </p>
-          <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-300/50 bg-amber-100/60 px-2.5 py-1 text-[11px] font-medium text-amber-800 dark:border-amber-400/30 dark:bg-amber-400/10 dark:text-amber-300">
-            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-amber-500" />
-            In progress
-          </span>
-        </div>
+        <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
+          {cs.eyebrow}
+        </p>
         <h1 className="mt-3 text-3xl font-semibold tracking-tight sm:text-5xl">
           {project.title}
         </h1>
@@ -1998,39 +1992,40 @@ function CreativeLightbox({
         <X className="h-5 w-5" aria-hidden="true" />
       </button>
 
-      {/* Prev / Next navigation across all creatives */}
-      <button
-        type="button"
-        onClick={(e) => {
-          e.stopPropagation();
-          go(-1);
-        }}
-        aria-label="Previous creative"
-        className="absolute left-3 top-1/2 z-10 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white outline-none transition-colors hover:bg-white/20 focus-visible:ring-2 focus-visible:ring-white/40 sm:left-6"
-      >
-        <ChevronLeft className="h-6 w-6" aria-hidden="true" />
-      </button>
-      <button
-        type="button"
-        onClick={(e) => {
-          e.stopPropagation();
-          go(1);
-        }}
-        aria-label="Next creative"
-        className="absolute right-3 top-1/2 z-10 inline-flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white outline-none transition-colors hover:bg-white/20 focus-visible:ring-2 focus-visible:ring-white/40 sm:right-6"
-      >
-        <ChevronRight className="h-6 w-6" aria-hidden="true" />
-      </button>
-
-      {current.image && (
-        <img
-          key={current.image}
-          src={current.image}
-          alt={current.name}
-          onClick={(e) => e.stopPropagation()}
-          className="max-h-[78vh] max-w-[86vw] rounded-lg object-contain shadow-2xl"
-        />
-      )}
+      {/* Image with prev / next arrows hugging its edges (not the screen edges) */}
+      <div className="relative flex items-center justify-center">
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            go(-1);
+          }}
+          aria-label="Previous creative"
+          className="absolute left-2 top-1/2 z-10 inline-flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-black/35 text-white outline-none backdrop-blur-sm transition-colors hover:bg-black/55 focus-visible:ring-2 focus-visible:ring-white/40 sm:left-3 sm:h-11 sm:w-11"
+        >
+          <ChevronLeft className="h-6 w-6" aria-hidden="true" />
+        </button>
+        {current.image && (
+          <img
+            key={current.image}
+            src={current.image}
+            alt={current.name}
+            onClick={(e) => e.stopPropagation()}
+            className="max-h-[78vh] max-w-[86vw] rounded-lg object-contain shadow-2xl"
+          />
+        )}
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            go(1);
+          }}
+          aria-label="Next creative"
+          className="absolute right-2 top-1/2 z-10 inline-flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-black/35 text-white outline-none backdrop-blur-sm transition-colors hover:bg-black/55 focus-visible:ring-2 focus-visible:ring-white/40 sm:right-3 sm:h-11 sm:w-11"
+        >
+          <ChevronRight className="h-6 w-6" aria-hidden="true" />
+        </button>
+      </div>
       <div
         onClick={(e) => e.stopPropagation()}
         className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-center text-sm text-white/80"
@@ -2481,14 +2476,22 @@ function Footer() {
             href={links.linkedin}
             target="_blank"
             rel="noreferrer"
-            className="hover:text-foreground"
+            className="cursor-pointer underline-offset-4 transition-colors hover:text-foreground hover:underline"
           >
             LinkedIn
           </a>
-          <a href={links.email} className="hover:text-foreground">
+          <a
+            href={links.email}
+            className="cursor-pointer underline-offset-4 transition-colors hover:text-foreground hover:underline"
+          >
             Email
           </a>
-          <a href={links.cv} className="hover:text-foreground">
+          <a
+            href={links.cv}
+            target="_blank"
+            rel="noreferrer"
+            className="cursor-pointer underline-offset-4 transition-colors hover:text-foreground hover:underline"
+          >
             Resume
           </a>
         </div>
