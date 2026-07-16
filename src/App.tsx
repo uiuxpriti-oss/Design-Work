@@ -2230,7 +2230,14 @@ function WorkingWithMe() {
             </p>
           ))}
         </div>
-        <div className="aspect-[3/4] overflow-hidden rounded-2xl bg-gradient-to-br from-slate-200 to-slate-300 ring-1 ring-border" />
+        <div className="aspect-[3/4] w-full min-w-0 overflow-hidden rounded-2xl bg-gradient-to-br from-slate-200 to-slate-300 ring-1 ring-border">
+          <img
+            src="about/workspace.webp"
+            alt="My desk — a mood-board wall, a fairy-lit Ganesha idol, and a laptop open to work."
+            loading="lazy"
+            className="h-full w-full object-cover"
+          />
+        </div>
       </div>
     </section>
   );
