@@ -1093,7 +1093,7 @@ function ProjectsPage({
   return (
     <>
       {tab === "case" && <SideNav items={projects} watchId="case-studies" />}
-      <main className="mx-auto max-w-[52rem] px-6 pb-32">
+      <main className="mx-auto max-w-[52rem] px-6 pb-14 sm:pb-32">
         <section className="pt-10 pb-8">
           <button
             type="button"
@@ -1297,7 +1297,7 @@ function CaseStudyPage({
   const idx = projects.findIndex((p) => p.id === id);
   const next = projects[(idx + 1) % projects.length];
   return (
-    <main className="mx-auto max-w-[52rem] px-6 pb-32">
+    <main className="mx-auto max-w-[52rem] px-6 pb-14 sm:pb-32">
       <CaseStudyRail />
       <button
         type="button"
@@ -2230,7 +2230,7 @@ function IfNotDesign() {
             ))}
           </div>
         </div>
-        <div className="relative aspect-[4/3] min-h-[280px] overflow-hidden rounded-2xl bg-slate-200 ring-1 ring-border md:aspect-auto md:h-full">
+        <div className="relative h-72 w-full min-w-0 overflow-hidden rounded-2xl bg-slate-200 ring-1 ring-border md:h-full">
           {/* Big preview — the selected photo, crossfading between choices */}
           {stack.map((src, i) => (
             <img
@@ -2277,7 +2277,7 @@ function IfNotDesign() {
 function AboutPage({ onBack }: { onBack: () => void }) {
   return (
     <>
-      <main className="mx-auto max-w-[52rem] px-6 pb-32">
+      <main className="mx-auto max-w-[52rem] px-6 pb-14 sm:pb-32">
         <button
           type="button"
           onClick={onBack}
@@ -2354,7 +2354,7 @@ function FloatingAsk({
 
 function FooterCTA() {
   return (
-    <section className="relative mt-24 overflow-hidden">
+    <section className="relative mt-12 overflow-hidden sm:mt-24">
       <div
         className="pointer-events-none absolute inset-0 bg-gradient-to-r from-orange-100/70 via-background to-emerald-100/70 opacity-80 dark:from-orange-500/10 dark:via-background dark:to-emerald-500/10 dark:opacity-100"
         aria-hidden="true"
