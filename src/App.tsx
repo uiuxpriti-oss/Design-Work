@@ -1581,10 +1581,36 @@ function ExperienceList() {
                 {job.period}
               </p>
               {open && (
-                <div className="mt-4 space-y-2">
+                <div className="mt-4 space-y-4">
                   <p className="text-[15px] leading-relaxed text-foreground/85">
                     {job.description}
                   </p>
+                  {job.highlight && (
+                    <div className="rounded-xl border border-violet-200 bg-violet-50/70 p-3.5 dark:border-violet-500/25 dark:bg-violet-500/10">
+                      <span className="inline-block rounded-md border border-violet-200 bg-violet-100 px-2 py-0.5 text-[12px] font-medium text-violet-900 dark:border-violet-500/30 dark:bg-violet-500/20 dark:text-violet-200">
+                        Featured · {job.highlight.label}
+                      </span>
+                      <p className="mt-2 text-[15px] leading-relaxed text-foreground/85">
+                        {job.highlight.text}
+                      </p>
+                    </div>
+                  )}
+                  {job.bullets && job.bullets.length > 0 && (
+                    <ul className="space-y-2">
+                      {job.bullets.map((bullet, bi) => (
+                        <li
+                          key={bi}
+                          className="flex gap-2.5 text-[15px] leading-relaxed text-foreground/85"
+                        >
+                          <span
+                            className="mt-[9px] h-1 w-1 shrink-0 rounded-full bg-foreground/40"
+                            aria-hidden="true"
+                          />
+                          <span>{bullet}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                   <p className="text-sm text-muted-foreground">{job.location}</p>
                 </div>
               )}

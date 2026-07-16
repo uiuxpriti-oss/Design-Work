@@ -642,6 +642,10 @@ export interface Experience {
   company: string;
   location: string;
   present?: boolean;
+  /** Detailed responsibilities shown when the role is expanded. */
+  bullets?: string[];
+  /** Featured project called out above the bullets. */
+  highlight?: { label: string; text: string };
   /** Monogram fallback tile; drop the real logo at `src` (under /public) to use it. */
   logo: { text: string; className: string; src?: string };
 }
@@ -652,9 +656,21 @@ export const experience: Experience[] = [
     period: "June 2024 – Present",
     present: true,
     description:
-      "Working on end-to-end product design for B2B SaaS platforms, collaborating with cross-functional teams to improve workflows, usability, feature adoption, and overall user experience.",
+      "Working on end-to-end product design for B2B SaaS data platforms, collaborating with cross-functional teams to improve workflows, usability, feature adoption, and overall user experience.",
     company: "Netlink Software Group America Inc",
     location: "Bhopal, India",
+    highlight: {
+      label: "Ask Me",
+      text: "Led design for a chat-based data-analysis experience, running user interviews and usability testing to shape a natural, conversational way for people to explore and query their data.",
+    },
+    bullets: [
+      "Designed UX for B2B SaaS data products — ETL workflows, dashboards, enterprise data interfaces, and conversational data-analysis experiences.",
+      "Simplified complex workflows by improving information architecture, navigation patterns, and step-by-step task flows, helping users complete data operations more efficiently.",
+      "Conducted UX research end-to-end — user interviews, usability testing, A/B testing, journey mapping, focus groups, and ideation workshops (Crazy 8s) — to identify pain points and validate design decisions.",
+      "Built reusable UI components and micro design systems to improve consistency, scalability, and developer efficiency.",
+      "Collaborated closely with product managers and engineering teams on feature planning, design handoff, and iterative product improvements.",
+      "Delivered interactive prototypes and usability validations to ensure solutions met both user and business needs.",
+    ],
     logo: { text: "N", className: "bg-[#1e56a0] text-white", src: "logos/netlink.png" },
   },
   {
@@ -664,6 +680,13 @@ export const experience: Experience[] = [
       "Designed a SaaS product end-to-end in an agile team, built a scalable design system, and translated client ideas into intuitive, user-tested flows while strengthening brand identity.",
     company: "Shanti Infosoft LLP",
     location: "Indore, India",
+    bullets: [
+      "Designed user experiences for B2B and B2C platforms across cybersecurity, rental, and astrology domains.",
+      "Created responsive dashboards, product flows, and admin interfaces to support multi-role usage.",
+      "Improved onboarding, feature accessibility, and task discoverability through UX research and iterative design.",
+      "Delivered high-fidelity UIs, prototypes, and design specifications for engineering teams.",
+      "Contributed to product-level decisions by aligning UX requirements with business priorities.",
+    ],
     logo: { text: "S", className: "bg-[#e8502e] text-white", src: "logos/shanti.png" },
   },
   {
@@ -673,6 +696,13 @@ export const experience: Experience[] = [
       "Delivered UI designs across web, mobile, e-commerce, and pitch decks with a focus on usability and brand impact.",
     company: "Incscale Technology",
     location: "Ahmedabad",
+    bullets: [
+      "Designed end-to-end UX for B2C applications across e-commerce, grocery, and education.",
+      "Created pitch-deck designs that communicated product vision to clients and stakeholders.",
+      "Conducted UX audits to identify friction points and propose design improvements.",
+      "Built scalable UI kits and interaction components to unify mobile and web platforms.",
+      "Collaborated cross-functionally with stakeholders to align on product scope and feature priorities.",
+    ],
     logo: { text: "iS", className: "bg-white text-[#e8502e] ring-1 ring-border", src: "logos/incscale.png" },
   },
   {
