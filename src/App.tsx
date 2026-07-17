@@ -2219,40 +2219,38 @@ function CreativeLightbox({
         <X className="h-5 w-5" aria-hidden="true" />
       </button>
 
-      {/* Image with prev / next arrows hugging its edges (not the screen edges) */}
-      <div className="relative flex items-center justify-center">
-        <button
-          type="button"
-          onClick={(e) => {
-            e.stopPropagation();
-            go(-1);
-          }}
-          aria-label="Previous creative"
-          className="absolute left-2 top-1/2 z-10 inline-flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-black/35 text-white outline-none backdrop-blur-sm transition-colors hover:bg-black/55 focus-visible:ring-2 focus-visible:ring-white/40 sm:left-3 sm:h-11 sm:w-11"
-        >
-          <ChevronLeft className="h-6 w-6" aria-hidden="true" />
-        </button>
-        {current.image && (
-          <img
-            key={current.image}
-            src={current.image}
-            alt={current.name}
-            onClick={(e) => e.stopPropagation()}
-            className="max-h-[78vh] max-w-[86vw] rounded-lg object-contain shadow-2xl"
-          />
-        )}
-        <button
-          type="button"
-          onClick={(e) => {
-            e.stopPropagation();
-            go(1);
-          }}
-          aria-label="Next creative"
-          className="absolute right-2 top-1/2 z-10 inline-flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-black/35 text-white outline-none backdrop-blur-sm transition-colors hover:bg-black/55 focus-visible:ring-2 focus-visible:ring-white/40 sm:right-3 sm:h-11 sm:w-11"
-        >
-          <ChevronRight className="h-6 w-6" aria-hidden="true" />
-        </button>
-      </div>
+      {/* Prev / next arrows — fixed in the margin, outside the image */}
+      <button
+        type="button"
+        onClick={(e) => {
+          e.stopPropagation();
+          go(-1);
+        }}
+        aria-label="Previous creative"
+        className="absolute left-2 top-1/2 z-10 inline-flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white outline-none transition-colors hover:bg-white/20 focus-visible:ring-2 focus-visible:ring-white/40 sm:left-5 sm:h-11 sm:w-11"
+      >
+        <ChevronLeft className="h-6 w-6" aria-hidden="true" />
+      </button>
+      <button
+        type="button"
+        onClick={(e) => {
+          e.stopPropagation();
+          go(1);
+        }}
+        aria-label="Next creative"
+        className="absolute right-2 top-1/2 z-10 inline-flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/10 text-white outline-none transition-colors hover:bg-white/20 focus-visible:ring-2 focus-visible:ring-white/40 sm:right-5 sm:h-11 sm:w-11"
+      >
+        <ChevronRight className="h-6 w-6" aria-hidden="true" />
+      </button>
+      {current.image && (
+        <img
+          key={current.image}
+          src={current.image}
+          alt={current.name}
+          onClick={(e) => e.stopPropagation()}
+          className="max-h-[78vh] max-w-[calc(100vw-7rem)] rounded-lg object-contain shadow-2xl sm:max-w-[calc(100vw-9rem)]"
+        />
+      )}
       <div
         onClick={(e) => e.stopPropagation()}
         className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-center text-sm text-white/80"
