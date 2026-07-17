@@ -156,7 +156,11 @@ export interface CaseStudy {
   outcomes: { metrics: { value: string; label: string }[]; text: string };
 }
 
-/** A written case-study section. Text is authored; images are placeholders. */
+/**
+ * A written case-study section. Text is authored. `image`/`gallery.image`
+ * hold either a real image path (starts with "projects/") or, otherwise, a
+ * placeholder label to render as a labelled box.
+ */
 export interface StudyBlock {
   id: string;
   eyebrow?: string;
@@ -171,10 +175,21 @@ export interface StudyBlock {
   columns?: { heading: string; items: string[] }[];
   /** Big stat tiles. */
   stats?: { value: string; label: string }[];
-  /** A single labelled image placeholder for this section. */
+  /** Highlighted takeaway callout (the deck's "👉 …" notes). */
+  note?: string;
+  /** A single image (real path) or labelled placeholder for this section. */
   image?: string;
-  /** Multiple titled sub-screens, each with its own image placeholder. */
-  gallery?: { heading: string; text: string; image: string }[];
+  /** Multiple images (real paths) or placeholders, stacked full-width. */
+  images?: string[];
+  /** Titled sub-screens, each shown full-width with its own note/bullets. */
+  gallery?: {
+    heading: string;
+    text?: string;
+    bullets?: string[];
+    subgroups?: { heading: string; items: string[] }[];
+    note?: string;
+    image: string;
+  }[];
 }
 
 export const caseStudies: Record<string, CaseStudy> = {
@@ -254,14 +269,14 @@ export const caseStudies: Record<string, CaseStudy> = {
           "No data visibility — no preview of what data was in play.",
           "Desktop-heavy, complex workflows.",
         ],
-        image: "Current design screenshot (old UI)",
+        image: "projects/askme-current.jpg",
       },
       {
         id: "roadmap",
         eyebrow: "Approach",
         title: "UX Roadmap",
         lead: "I mapped the redesign end to end around four goals: simplify complex data workflows, let people use their own data, provide a guided AI-first experience, and improve trust, usability, and decision-making.",
-        image: "UX roadmap",
+        image: "projects/askme-roadmap.jpg",
       },
       {
         id: "research",
@@ -308,14 +323,14 @@ export const caseStudies: Record<string, CaseStudy> = {
             ],
           },
         ],
-        image: "Persona 1 & 2 + journey mapping",
+        images: ["projects/askme-persona1.jpg", "projects/askme-persona2.jpg"],
       },
       {
         id: "competitor",
         eyebrow: "Benchmark",
         title: "Competitor Analysis",
         lead: "I benchmarked Ask Me against ChatGPT, Julius AI, and Formula Bot across natural language, data connections, analysis depth, visualisations, context awareness, ease of use, and advanced controls — to find where Ask Me could win.",
-        image: "Competitor analysis",
+        image: "projects/askme-competitor.jpg",
       },
       {
         id: "opportunities",
@@ -331,7 +346,8 @@ export const caseStudies: Record<string, CaseStudy> = {
           "Actionable insights that flow into dashboards.",
           "AI-powered summarisation and a responsive layout.",
         ],
-        image: "Opportunity areas",
+        note: "👉 Users want a flexible, modern, and intelligent system that adapts to their data — not the other way around.",
+        image: "projects/askme-opportunities.jpg",
       },
       {
         id: "problem",
@@ -346,7 +362,7 @@ export const caseStudies: Record<string, CaseStudy> = {
           "High cognitive load and an unclear starting point.",
           "Disconnected data workflow with no data visibility.",
         ],
-        image: "Problem statement",
+        image: "projects/askme-problem.jpg",
       },
       {
         id: "user-stories",
@@ -363,7 +379,7 @@ export const caseStudies: Record<string, CaseStudy> = {
         eyebrow: "Flow",
         title: "🔄 User Flow",
         lead: "A clear, step-by-step path from setup to results: log in → open Ask Me → connect a source, upload files, or use sample data → give data consent → analyse with agents and connectors → auto-create a Data Pool → ask a question → get insights.",
-        image: "User flow",
+        image: "projects/askme-userflow.jpg",
       },
       {
         id: "design-system",
@@ -377,28 +393,108 @@ export const caseStudies: Record<string, CaseStudy> = {
           "Components — reusable cards, modals, loaders, and upload states.",
           "Interactions — clear feedback, guided flows, and context-aware actions.",
         ],
-        image: "Design system",
+        image: "projects/askme-designsystem.jpg",
       },
       {
         id: "wireframing",
         eyebrow: "Structure",
         title: "Wireframing",
         lead: "Low-fidelity flows to fix the unclear starting point and define a clear, guided structure before moving into visual design.",
-        image: "Wireframing",
+        image: "projects/askme-wireframing.jpg",
       },
       {
         id: "solution",
         eyebrow: "Solution",
         title: "Solution & Visual Design",
-        lead: "A guided, data-first workflow with a clean, minimal interface (and dark mode) — balancing ease for beginners with control for experts. Combining improved flows, a simplified UI, and clear visual hierarchy to make analysis faster, easier, and more actionable.",
+        lead: "A guided, data-first workflow with a clean, minimal interface (and dark mode) — combining improved flows, a simplified UI, and clear visual hierarchy to make analysis faster, easier, and more actionable.",
+        note: "👉 Designed to balance ease of use for beginners and flexibility for advanced users.",
         gallery: [
-          { heading: "Homepage", text: "Centralised input with every entry option, support for multiple data sources, and a minimal, distraction-free UI with dark mode — one clear starting action.", image: "Homepage (first-time & returning user, light + dark)" },
-          { heading: "Processing", text: "Step-by-step system visibility — upload → detection → schema → Data Pool — for a transparent, trustworthy process.", image: "Processing screen" },
-          { heading: "Response & Insights", text: "Structured insights with recommendations and clear next actions — turning answers into decisions.", image: "Response / insights screen" },
-          { heading: "Data Pool", text: "A centralised workspace for files, schemas, and analyses — matching users' ‘my data in one place' model. Shown before → after.", image: "Data Pool (before / after)" },
-          { heading: "Create Data Pool", text: "File upload and schema selection combined into one guided flow with real-time status and recovery.", image: "Create Data Pool" },
-          { heading: "Manage Data Pool", text: "Files and analyses unified in one view with search, sort, and quick actions.", image: "Manage Data Pool" },
-          { heading: "Mobile", text: "A mobile-first, minimal AI interface with clear entry points, quick CTAs, and a thumb-friendly bottom input bar.", image: "Mobile design (before / after)" },
+          {
+            heading: "Homepage — First-Time User",
+            text: "What changed:",
+            bullets: [
+              "Centralised input with every entry option.",
+              "Supports multiple data sources.",
+              "Minimal, distraction-free UI with dark mode.",
+            ],
+            note: "👉 Reduces confusion and gives users one clear starting action.",
+            image: "projects/askme-sol-home-first.jpg",
+          },
+          {
+            heading: "Homepage — Dark Theme",
+            text: "The same guided start in dark mode — reduced cognitive load and a strong visual hierarchy for focused, low-strain sessions.",
+            image: "projects/askme-sol-home-dark.jpg",
+          },
+          {
+            heading: "Homepage — Returning User",
+            text: "Personalised for people coming back — faster task resumption, less rework, and contextual suggestions from recent analysis.",
+            image: "projects/askme-sol-home-returning.jpg",
+          },
+          {
+            heading: "Processing",
+            text: "Step-by-step system visibility — upload → detection → schema → Data Pool.",
+            note: "👉 Improves system transparency and builds trust.",
+            image: "Processing screen (upload → detection → schema → Data Pool)",
+          },
+          {
+            heading: "Response & Insights",
+            text: "What changed:",
+            bullets: ["Structured insights with recommendations.", "Clear next actions."],
+            note: "👉 Converts insights into actionable decisions.",
+            image: "projects/askme-sol-response.jpg",
+          },
+          {
+            heading: "Data Pool",
+            text: "A centralised Data Pool for organised, transparent, efficient data management — shown before → after.",
+            note: "👉 Aligns with the user's mental model — ‘my data in one place'.",
+            image: "projects/askme-sol-datapool.jpg",
+          },
+          {
+            heading: "Create Data Pool",
+            text: "What changed:",
+            bullets: [
+              "Combined file upload and schema selection into one flow.",
+              "Real-time file status (upload, error, retry).",
+              "Guided creation with supporting info (formats, size, benefits).",
+            ],
+            note: "👉 Reduces friction and improves task completion rate.",
+            image: "projects/askme-sol-create.jpg",
+          },
+          {
+            heading: "Manage Data Pool",
+            text: "What changed:",
+            bullets: [
+              "Files and analyses unified in one view.",
+              "Clear status visibility (file type, size, readiness).",
+              "Added search, sort, and quick actions.",
+            ],
+            image: "projects/askme-sol-manage.jpg",
+          },
+          {
+            heading: "Mobile Design",
+            text: "A mobile-first, minimal AI interface that lets users start analysis quickly with clear entry points and reduced cognitive load.",
+            subgroups: [
+              {
+                heading: "🎯 Problems solved",
+                items: [
+                  "Desktop-heavy experience → not usable on mobile.",
+                  "Cluttered layout → hard to focus.",
+                  "No clear starting point for new users.",
+                ],
+              },
+              {
+                heading: "💡 UX improvements",
+                items: [
+                  "Simplified layout with a single primary focus (Ask AI).",
+                  "Quick CTAs (Upload, Sample Data) for fast onboarding.",
+                  "A thumb-friendly bottom input bar.",
+                  "Reduced visual noise with a minimalist approach.",
+                ],
+              },
+            ],
+            note: "👉 Makes the product accessible anywhere.",
+            image: "projects/askme-sol-mobile.jpg",
+          },
         ],
       },
       {
@@ -412,7 +508,7 @@ export const caseStudies: Record<string, CaseStudy> = {
           { value: "4.6/5", label: "User satisfaction" },
           { value: "+30%", label: "Feature adoption" },
         ],
-        image: "A/B testing (Design 1 vs Design 2 + results)",
+        image: "projects/askme-abtesting.jpg",
       },
       {
         id: "impact",

@@ -1197,8 +1197,33 @@ function CaseSection({
   );
 }
 
-// Labelled placeholder for an image that will be dropped in later.
-function StudyImage({ label, className = "" }: { label: string; className?: string }) {
+const isImagePath = (s: string) => /^projects\//.test(s) || /\.(jpg|jpeg|png|webp)$/i.test(s);
+
+// Renders a real image (click to zoom) when given a path, else a labelled
+// placeholder box.
+function StudyMedia({
+  value,
+  alt,
+  onZoom,
+  className = "",
+}: {
+  value: string;
+  alt: string;
+  onZoom: (src: string) => void;
+  className?: string;
+}) {
+  if (isImagePath(value)) {
+    return (
+      <button
+        type="button"
+        onClick={() => onZoom(assetUrl(value))}
+        aria-label={`View ${alt} full size`}
+        className={`group block w-full overflow-hidden rounded-2xl bg-card ring-1 ring-border outline-none transition-shadow hover:shadow-lg focus-visible:ring-2 focus-visible:ring-foreground/30 ${className}`}
+      >
+        <img src={assetUrl(value)} alt={alt} loading="lazy" className="w-full" />
+      </button>
+    );
+  }
   return (
     <div
       className={`flex min-h-[200px] w-full flex-col items-center justify-center gap-2.5 rounded-2xl border-2 border-dashed border-border bg-card/40 p-6 text-center ${className}`}
@@ -1207,13 +1232,41 @@ function StudyImage({ label, className = "" }: { label: string; className?: stri
       <span className="rounded-md bg-background px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground ring-1 ring-border">
         Image placeholder
       </span>
-      <span className="max-w-sm text-[13px] leading-snug text-muted-foreground">{label}</span>
+      <span className="max-w-sm text-[13px] leading-snug text-muted-foreground">{value}</span>
     </div>
   );
 }
 
-// A fully written case-study section with an optional image placeholder.
-function StudySectionBlock({ block }: { block: StudyBlock }) {
+// Highlighted takeaway callout (the deck's "👉 …" notes).
+function StudyNote({ text }: { text: string }) {
+  return (
+    <div className="mt-6 rounded-xl bg-sky-50 px-4 py-3 text-[14px] font-medium leading-relaxed text-sky-900 ring-1 ring-sky-100 dark:bg-sky-500/10 dark:text-sky-200 dark:ring-sky-500/20">
+      {text}
+    </div>
+  );
+}
+
+function StudyBullets({ items }: { items: string[] }) {
+  return (
+    <ul className="space-y-2.5">
+      {items.map((b, i) => (
+        <li key={i} className="flex gap-3 text-[15px] leading-relaxed text-foreground/85">
+          <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-foreground/40" />
+          {b}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+// A fully written case-study section.
+function StudySectionBlock({
+  block,
+  onZoom,
+}: {
+  block: StudyBlock;
+  onZoom: (src: string) => void;
+}) {
   return (
     <CaseSection id={`cs-${block.id}`} eyebrow={block.eyebrow ?? ""} title={block.title}>
       {block.lead && (
@@ -1226,16 +1279,7 @@ function StudySectionBlock({ block }: { block: StudyBlock }) {
           {renderRich(p)}
         </p>
       ))}
-      {block.bullets && (
-        <ul className="mt-5 space-y-2.5">
-          {block.bullets.map((b, i) => (
-            <li key={i} className="flex gap-3 text-[15px] leading-relaxed text-foreground/85">
-              <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-foreground/40" />
-              {b}
-            </li>
-          ))}
-        </ul>
-      )}
+      {block.bullets && <div className="mt-5">{<StudyBullets items={block.bullets} />}</div>}
       {block.columns && (
         <div
           className={`mt-6 grid gap-4 ${
@@ -1274,25 +1318,42 @@ function StudySectionBlock({ block }: { block: StudyBlock }) {
           ))}
         </div>
       )}
+      {block.note && <StudyNote text={block.note} />}
       {block.image && (
         <div className="mt-6">
-          <StudyImage label={block.image} />
+          <StudyMedia value={block.image} alt={block.title} onZoom={onZoom} />
+        </div>
+      )}
+      {block.images && (
+        <div className="mt-6 space-y-4">
+          {block.images.map((src, i) => (
+            <StudyMedia key={i} value={src} alt={block.title} onZoom={onZoom} />
+          ))}
         </div>
       )}
       {block.gallery && (
-        <div className="mt-6 space-y-4">
+        <div className="mt-8 space-y-10">
           {block.gallery.map((g, i) => (
-            <div
-              key={i}
-              className="grid gap-4 rounded-2xl border border-border bg-card p-4 sm:grid-cols-[1fr_1.3fr] sm:items-center"
-            >
-              <div className="px-1">
-                <p className="text-[15px] font-semibold text-foreground">{g.heading}</p>
-                <p className="mt-1.5 text-[14px] leading-relaxed text-muted-foreground">
+            <div key={i}>
+              <h3 className="text-lg font-semibold text-foreground">{g.heading}</h3>
+              {g.text && (
+                <p className="mt-2 max-w-2xl text-[15px] leading-relaxed text-foreground/85">
                   {g.text}
                 </p>
+              )}
+              {g.bullets && <div className="mt-4">{<StudyBullets items={g.bullets} />}</div>}
+              {g.subgroups?.map((sg, j) => (
+                <div key={j} className="mt-4">
+                  <p className="text-[14px] font-semibold text-foreground">{sg.heading}</p>
+                  <div className="mt-2">
+                    <StudyBullets items={sg.items} />
+                  </div>
+                </div>
+              ))}
+              {g.note && <StudyNote text={g.note} />}
+              <div className="mt-5">
+                <StudyMedia value={g.image} alt={g.heading} onZoom={onZoom} />
               </div>
-              <StudyImage label={g.image} className="min-h-[220px]" />
             </div>
           ))}
         </div>
@@ -1632,7 +1693,7 @@ function CaseStudyPage({
       )}
 
       {cs.sections && cs.sections.map((block) => (
-        <StudySectionBlock key={block.id} block={block} />
+        <StudySectionBlock key={block.id} block={block} onZoom={setZoom} />
       ))}
 
       {cs.board && !cs.sections && (
