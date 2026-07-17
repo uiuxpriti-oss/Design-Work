@@ -23,7 +23,6 @@ export const projects: Project[] = [
       "Rebuilding Lumenore's AI analytics tool into a guided, data-first experience.",
     href: "https://uiuxpriti.com/projects/ask-me",
     likes: 41,
-    image: "projects/askme.jpg",
     gradient: "from-blue-300 via-indigo-200 to-slate-200",
     measures: ["Guided AI-first flow", "Bring your own data", "2× faster insights"],
   },
@@ -147,7 +146,35 @@ export interface CaseStudy {
    * replaced by these designed sections (click to view full size).
    */
   board?: { src: string; label: string }[];
+  /**
+   * Optional fully written, structured case-study sections. When present,
+   * these replace the fixed research/process/solution/outcomes blocks and are
+   * rendered as proper headings + text, with labelled image placeholders where
+   * `image`/`gallery` is set (drop real images in later).
+   */
+  sections?: StudyBlock[];
   outcomes: { metrics: { value: string; label: string }[]; text: string };
+}
+
+/** A written case-study section. Text is authored; images are placeholders. */
+export interface StudyBlock {
+  id: string;
+  eyebrow?: string;
+  title: string;
+  /** Lead paragraph (supports **bold**). */
+  lead?: string;
+  /** Body paragraphs. */
+  body?: string[];
+  /** Bullet list. */
+  bullets?: string[];
+  /** Two/three-column cards (e.g. personas, method vs. findings). */
+  columns?: { heading: string; items: string[] }[];
+  /** Big stat tiles. */
+  stats?: { value: string; label: string }[];
+  /** A single labelled image placeholder for this section. */
+  image?: string;
+  /** Multiple titled sub-screens, each with its own image placeholder. */
+  gallery?: { heading: string; text: string; image: string }[];
 }
 
 export const caseStudies: Record<string, CaseStudy> = {
@@ -214,30 +241,211 @@ export const caseStudies: Record<string, CaseStudy> = {
         { title: "Data Pool", text: "One transparent workspace for files, datasets, and schemas — matching users' ‘my data in one place' model." },
       ],
     },
-    board: [
-      { src: "projects/askme-board-intro-a.jpg", label: "Overview & Current Design" },
-      { src: "projects/askme-board-intro-b.jpg", label: "UX Roadmap" },
-      { src: "projects/askme-board-intro-c.jpg", label: "Research & Discovery" },
-      { src: "projects/askme-board-01.jpg", label: "Persona — Business User" },
-      { src: "projects/askme-board-02.jpg", label: "Persona — Data Expert" },
-      { src: "projects/askme-board-03.jpg", label: "Competitor Analysis" },
-      { src: "projects/askme-board-04.jpg", label: "Opportunity Areas" },
-      { src: "projects/askme-board-05.jpg", label: "Problem Statement" },
-      { src: "projects/askme-board-userstories.jpg", label: "User Stories" },
-      { src: "projects/askme-board-06.jpg", label: "User Flow" },
-      { src: "projects/askme-board-07.jpg", label: "Design System" },
-      { src: "projects/askme-board-08.jpg", label: "Wireframing" },
-      { src: "projects/askme-board-09.jpg", label: "Solution — Homepage (First-Time User)" },
-      { src: "projects/askme-board-10.jpg", label: "Solution — Dark Theme" },
-      { src: "projects/askme-board-11.jpg", label: "Solution — Homepage (Returning User)" },
-      { src: "projects/askme-board-12.jpg", label: "Solution — Processing & Transparency" },
-      { src: "projects/askme-board-13.jpg", label: "Solution — Response & Insights" },
-      { src: "projects/askme-board-14.jpg", label: "Solution — Data Pool (Before / After)" },
-      { src: "projects/askme-board-15.jpg", label: "Solution — Create Data Pool" },
-      { src: "projects/askme-board-16.jpg", label: "Solution — Mobile Design" },
-      { src: "projects/askme-board-17.jpg", label: "Solution — Manage Data Pool" },
-      { src: "projects/askme-board-18.jpg", label: "A/B Testing" },
-      { src: "projects/askme-board-19.jpg", label: "Conclusion" },
+    sections: [
+      {
+        id: "intro",
+        eyebrow: "Introduction",
+        title: "What is Ask Me?",
+        lead: "Ask Me is Lumenore's AI-powered BI tool — ask questions about your business data in plain language and get answers back.",
+        bullets: [
+          "What it is — an AI-powered BI tool for talking to your data.",
+          "Who uses it — business users who need quick answers, and data experts who need depth and control.",
+          "The goal — faster, smarter decision-making.",
+        ],
+      },
+      {
+        id: "current-design",
+        eyebrow: "Before",
+        title: "Current Design",
+        lead: "The original Ask Me was powerful, but the experience was complex, confusing, and inaccessible for non-technical users.",
+        bullets: [
+          "Unclear starting point — no guidance on how to begin.",
+          "Visual clutter — too many options with no hierarchy.",
+          "Lack of guidance — users left to trial and error.",
+          "No data visibility — no preview of what data was in play.",
+          "Desktop-heavy, complex workflows.",
+        ],
+        image: "Current design screenshot (old UI)",
+      },
+      {
+        id: "roadmap",
+        eyebrow: "Approach",
+        title: "UX Roadmap",
+        lead: "I mapped the redesign end to end around four goals: simplify complex data workflows, let people use their own data, provide a guided AI-first experience, and improve trust, usability, and decision-making.",
+        image: "UX roadmap",
+      },
+      {
+        id: "research",
+        eyebrow: "Research",
+        title: "Research & Discovery",
+        lead: "To understand the gaps, I combined qualitative and evaluative methods to capture both user behaviour and usability issues.",
+        columns: [
+          {
+            heading: "Methods",
+            items: ["User interviews", "Focus groups (BBS students)", "Usability testing", "Heuristic evaluation", "Think-aloud sessions"],
+          },
+          {
+            heading: "Key findings",
+            items: [
+              "89% of users struggled to use the product",
+              "High dependency on technical knowledge",
+              "Business users stalled at the starting point",
+              "Data experts hit inefficiency and lack of control",
+            ],
+          },
+        ],
+        stats: [{ value: "89%", label: "of users struggled to use the product" }],
+      },
+      {
+        id: "personas",
+        eyebrow: "Users",
+        title: "Personas & Journey Mapping",
+        lead: "Two users with opposite needs. I mapped each one's journey through the old experience to pinpoint where they hit friction.",
+        columns: [
+          {
+            heading: "Rohan Sharma — Business Analyst",
+            items: [
+              "32 · 7+ yrs · medium tech comfort",
+              "Wants quick insights without deep technical effort",
+              "Pain: scattered data, rigid workflows, slow turnaround",
+            ],
+          },
+          {
+            heading: "Priya Verma — Data Analyst / Scientist",
+            items: [
+              "29 · 5+ yrs · high tech comfort",
+              "Wants deep analysis with control and precision",
+              "Pain: limited control, low transparency, tool switching",
+            ],
+          },
+        ],
+        image: "Persona 1 & 2 + journey mapping",
+      },
+      {
+        id: "competitor",
+        eyebrow: "Benchmark",
+        title: "Competitor Analysis",
+        lead: "I benchmarked Ask Me against ChatGPT, Julius AI, and Formula Bot across natural language, data connections, analysis depth, visualisations, context awareness, ease of use, and advanced controls — to find where Ask Me could win.",
+        image: "Competitor analysis",
+      },
+      {
+        id: "opportunities",
+        eyebrow: "Opportunities",
+        title: "Opportunity Areas",
+        lead: "Where the redesign could create the most value:",
+        bullets: [
+          "Multiple data entry points — upload files, connect sources, use a schema or sample data.",
+          "A central Data Pool as a single workspace.",
+          "Data consent & privacy controls before analysis.",
+          "Trust & transparency — step-by-step processing and explainable insights.",
+          "A minimal, modern UI with dark mode.",
+          "Actionable insights that flow into dashboards.",
+          "AI-powered summarisation and a responsive layout.",
+        ],
+        image: "Opportunity areas",
+      },
+      {
+        id: "problem",
+        eyebrow: "The problem",
+        title: "⚠️ Problem Statement",
+        lead: "Users struggle to efficiently analyse data due to unclear workflows, lack of guidance, and the inability to use their own data.",
+        bullets: [
+          "No support for user data — people are forced into predefined schemas.",
+          "Broken mental model — chat isn't clearly tied to the data behind it.",
+          "Non-deterministic, inconsistent outputs reduce trust.",
+          "Tech-heavy experience and excessive jargon (schemas, agents).",
+          "High cognitive load and an unclear starting point.",
+          "Disconnected data workflow with no data visibility.",
+        ],
+        image: "Problem statement",
+      },
+      {
+        id: "user-stories",
+        eyebrow: "User stories",
+        title: "What users need",
+        bullets: [
+          "As a business user, I want a clear, guided way to start my analysis, so I don't feel confused about what to do first.",
+          "As a data expert, I want to use and manage my own data (upload or connect), so I can perform accurate, relevant analysis.",
+          "As a business user, I want simple, easy-to-understand insights, so I can make quick decisions without technical effort.",
+        ],
+      },
+      {
+        id: "user-flow",
+        eyebrow: "Flow",
+        title: "🔄 User Flow",
+        lead: "A clear, step-by-step path from setup to results: log in → open Ask Me → connect a source, upload files, or use sample data → give data consent → analyse with agents and connectors → auto-create a Data Pool → ask a question → get insights.",
+        image: "User flow",
+      },
+      {
+        id: "design-system",
+        eyebrow: "Foundations",
+        title: "Design System",
+        lead: "A scalable design system built for consistency, clarity, and efficiency across data-heavy, AI-driven workflows.",
+        bullets: [
+          "Typography — Inter, for clean readability and strong hierarchy.",
+          "Colours — primary blue for actions, a gradient for AI, and semantic colours for states (error, success, info).",
+          "Icons — minimal, consistent, and action-focused.",
+          "Components — reusable cards, modals, loaders, and upload states.",
+          "Interactions — clear feedback, guided flows, and context-aware actions.",
+        ],
+        image: "Design system",
+      },
+      {
+        id: "wireframing",
+        eyebrow: "Structure",
+        title: "Wireframing",
+        lead: "Low-fidelity flows to fix the unclear starting point and define a clear, guided structure before moving into visual design.",
+        image: "Wireframing",
+      },
+      {
+        id: "solution",
+        eyebrow: "Solution",
+        title: "Solution & Visual Design",
+        lead: "A guided, data-first workflow with a clean, minimal interface (and dark mode) — balancing ease for beginners with control for experts. Combining improved flows, a simplified UI, and clear visual hierarchy to make analysis faster, easier, and more actionable.",
+        gallery: [
+          { heading: "Homepage", text: "Centralised input with every entry option, support for multiple data sources, and a minimal, distraction-free UI with dark mode — one clear starting action.", image: "Homepage (first-time & returning user, light + dark)" },
+          { heading: "Processing", text: "Step-by-step system visibility — upload → detection → schema → Data Pool — for a transparent, trustworthy process.", image: "Processing screen" },
+          { heading: "Response & Insights", text: "Structured insights with recommendations and clear next actions — turning answers into decisions.", image: "Response / insights screen" },
+          { heading: "Data Pool", text: "A centralised workspace for files, schemas, and analyses — matching users' ‘my data in one place' model. Shown before → after.", image: "Data Pool (before / after)" },
+          { heading: "Create Data Pool", text: "File upload and schema selection combined into one guided flow with real-time status and recovery.", image: "Create Data Pool" },
+          { heading: "Manage Data Pool", text: "Files and analyses unified in one view with search, sort, and quick actions.", image: "Manage Data Pool" },
+          { heading: "Mobile", text: "A mobile-first, minimal AI interface with clear entry points, quick CTAs, and a thumb-friendly bottom input bar.", image: "Mobile design (before / after)" },
+        ],
+      },
+      {
+        id: "ab-testing",
+        eyebrow: "Validation",
+        title: "🧪 A/B Testing",
+        lead: "Two designs, measured head to head on task completion, time to insight, and satisfaction. Design 2 — the guided, chat-first approach — won on every metric and was selected for implementation.",
+        stats: [
+          { value: "90%", label: "Task completion (from 65%)" },
+          { value: "18s", label: "Time to insight (from 38s)" },
+          { value: "4.6/5", label: "User satisfaction" },
+          { value: "+30%", label: "Feature adoption" },
+        ],
+        image: "A/B testing (Design 1 vs Design 2 + results)",
+      },
+      {
+        id: "impact",
+        eyebrow: "Impact",
+        title: "What changed",
+        bullets: ["Faster onboarding", "Increased engagement", "Reduced drop-offs", "Improved usability"],
+      },
+      {
+        id: "future-scope",
+        eyebrow: "What's next",
+        title: "Future Scope",
+        bullets: ["AI recommendations", "Personalisation", "Automation", "Advanced analytics"],
+      },
+      {
+        id: "conclusion",
+        eyebrow: "Conclusion",
+        title: "The transformation",
+        body: [
+          "This redesign transformed a complex, tech-heavy analytics tool into a guided, data-first AI experience.",
+          "By aligning the system with users' mental models, simplifying workflows, and improving transparency, the solution significantly enhanced usability, efficiency, and user confidence.",
+        ],
+      },
     ],
     outcomes: {
       metrics: [

@@ -74,6 +74,7 @@ import {
   Sun,
   Moon,
   Award,
+  Image as ImageIcon,
   type LucideIcon,
 } from "lucide-react";
 import {
@@ -90,6 +91,7 @@ import {
   principles,
   ifNotDesign,
 } from "./data/content";
+import type { StudyBlock } from "./data/content";
 
 // Number of case studies shown on the home page; the rest live on /all-projects.
 const HOME_PROJECT_COUNT = 5;
@@ -1195,6 +1197,110 @@ function CaseSection({
   );
 }
 
+// Labelled placeholder for an image that will be dropped in later.
+function StudyImage({ label, className = "" }: { label: string; className?: string }) {
+  return (
+    <div
+      className={`flex min-h-[200px] w-full flex-col items-center justify-center gap-2.5 rounded-2xl border-2 border-dashed border-border bg-card/40 p-6 text-center ${className}`}
+    >
+      <ImageIcon className="h-6 w-6 text-muted-foreground/60" aria-hidden="true" />
+      <span className="rounded-md bg-background px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground ring-1 ring-border">
+        Image placeholder
+      </span>
+      <span className="max-w-sm text-[13px] leading-snug text-muted-foreground">{label}</span>
+    </div>
+  );
+}
+
+// A fully written case-study section with an optional image placeholder.
+function StudySectionBlock({ block }: { block: StudyBlock }) {
+  return (
+    <CaseSection id={`cs-${block.id}`} eyebrow={block.eyebrow ?? ""} title={block.title}>
+      {block.lead && (
+        <p className="max-w-2xl text-[15px] leading-relaxed text-foreground/85">
+          {renderRich(block.lead)}
+        </p>
+      )}
+      {block.body?.map((p, i) => (
+        <p key={i} className="mt-4 max-w-2xl text-[15px] leading-relaxed text-foreground/85">
+          {renderRich(p)}
+        </p>
+      ))}
+      {block.bullets && (
+        <ul className="mt-5 space-y-2.5">
+          {block.bullets.map((b, i) => (
+            <li key={i} className="flex gap-3 text-[15px] leading-relaxed text-foreground/85">
+              <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-foreground/40" />
+              {b}
+            </li>
+          ))}
+        </ul>
+      )}
+      {block.columns && (
+        <div
+          className={`mt-6 grid gap-4 ${
+            block.columns.length >= 3 ? "sm:grid-cols-3" : "sm:grid-cols-2"
+          }`}
+        >
+          {block.columns.map((c, i) => (
+            <div key={i} className="rounded-2xl border border-border bg-card p-5">
+              <p className="text-[15px] font-semibold text-foreground">{c.heading}</p>
+              <ul className="mt-3 space-y-2">
+                {c.items.map((it, j) => (
+                  <li
+                    key={j}
+                    className="flex gap-2.5 text-[14px] leading-relaxed text-muted-foreground"
+                  >
+                    <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-foreground/40" />
+                    {it}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      )}
+      {block.stats && (
+        <div className="mt-8 flex flex-wrap gap-x-12 gap-y-6 border-t border-border pt-8">
+          {block.stats.map((st) => (
+            <div key={st.label}>
+              <p className="text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">
+                {st.value}
+              </p>
+              <p className="mt-2 max-w-[18ch] text-[14px] leading-snug text-muted-foreground">
+                {st.label}
+              </p>
+            </div>
+          ))}
+        </div>
+      )}
+      {block.image && (
+        <div className="mt-6">
+          <StudyImage label={block.image} />
+        </div>
+      )}
+      {block.gallery && (
+        <div className="mt-6 space-y-4">
+          {block.gallery.map((g, i) => (
+            <div
+              key={i}
+              className="grid gap-4 rounded-2xl border border-border bg-card p-4 sm:grid-cols-[1fr_1.3fr] sm:items-center"
+            >
+              <div className="px-1">
+                <p className="text-[15px] font-semibold text-foreground">{g.heading}</p>
+                <p className="mt-1.5 text-[14px] leading-relaxed text-muted-foreground">
+                  {g.text}
+                </p>
+              </div>
+              <StudyImage label={g.image} className="min-h-[220px]" />
+            </div>
+          ))}
+        </div>
+      )}
+    </CaseSection>
+  );
+}
+
 // Renders **…** spans in bold; everything else as plain text.
 function renderRich(text: string) {
   return text.split("**").map((seg, i) =>
@@ -1337,6 +1443,14 @@ function CaseStudyPage({
             onError={() => setImgOk(false)}
             className="h-full w-full object-cover"
           />
+        ) : cs.sections ? (
+          <div className="flex h-full w-full flex-col items-center justify-center gap-2.5 bg-card/40">
+            <ImageIcon className="h-7 w-7 text-muted-foreground/60" aria-hidden="true" />
+            <span className="rounded-md bg-background px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground ring-1 ring-border">
+              Image placeholder
+            </span>
+            <span className="text-[13px] text-muted-foreground">Cover / hero image</span>
+          </div>
         ) : (
           <div className={`h-full w-full bg-gradient-to-br ${project.gradient}`} />
         )}
@@ -1361,6 +1475,7 @@ function CaseStudyPage({
         </aside>
       </section>
 
+      {!cs.sections && (
       <CaseSection id="cs-problem" eyebrow="The problem" title="The challenge">
         <p className="max-w-2xl text-[15px] leading-relaxed text-foreground/85">
           {cs.problem.text}
@@ -1388,8 +1503,9 @@ function CaseStudyPage({
           </div>
         )}
       </CaseSection>
+      )}
 
-      {!cs.board && (
+      {!cs.board && !cs.sections && (
       <>
       <CaseSection id="cs-research" eyebrow="Research" title="What I learned">
         <p className="max-w-2xl text-[15px] leading-relaxed text-foreground/85">
@@ -1515,7 +1631,11 @@ function CaseStudyPage({
       </>
       )}
 
-      {cs.board && (
+      {cs.sections && cs.sections.map((block) => (
+        <StudySectionBlock key={block.id} block={block} />
+      ))}
+
+      {cs.board && !cs.sections && (
         <CaseSection id="cs-board" eyebrow="Case study" title="The full design">
           <p className="max-w-2xl text-[15px] leading-relaxed text-foreground/85">
             Every section from the original case study — research, personas, flows,
@@ -1567,6 +1687,7 @@ function CaseStudyPage({
         </div>
       )}
 
+      {!cs.sections && (
       <CaseSection id="cs-impact" eyebrow="Impact" title="Outcomes">
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
           {cs.outcomes.metrics.map((m) => (
@@ -1582,6 +1703,7 @@ function CaseStudyPage({
           {cs.outcomes.text}
         </p>
       </CaseSection>
+      )}
 
       <button
         type="button"
