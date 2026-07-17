@@ -243,17 +243,6 @@ export const caseStudies: Record<string, CaseStudy> = {
     },
     sections: [
       {
-        id: "intro",
-        eyebrow: "Introduction",
-        title: "What is Ask Me?",
-        lead: "Ask Me is Lumenore's AI-powered BI tool — ask questions about your business data in plain language and get answers back.",
-        bullets: [
-          "What it is — an AI-powered BI tool for talking to your data.",
-          "Who uses it — business users who need quick answers, and data experts who need depth and control.",
-          "The goal — faster, smarter decision-making.",
-        ],
-      },
-      {
         id: "current-design",
         eyebrow: "Before",
         title: "Current Design",
