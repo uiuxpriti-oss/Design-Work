@@ -23,6 +23,7 @@ export const projects: Project[] = [
       "Rebuilding Lumenore's AI analytics tool into a guided, data-first experience.",
     href: "https://uiuxpriti.com/projects/ask-me",
     likes: 41,
+    image: "projects/askme.jpg",
     gradient: "from-blue-300 via-indigo-200 to-slate-200",
     measures: ["Guided AI-first flow", "Bring your own data", "2× faster insights"],
   },
