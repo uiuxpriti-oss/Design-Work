@@ -1310,9 +1310,17 @@ function CaseStudyPage({
       </button>
 
       <header className="mt-8">
-        <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
-          {cs.eyebrow}
-        </p>
+        <div className="flex flex-wrap items-center gap-3">
+          <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
+            {cs.eyebrow}
+          </p>
+          {cs.inProgress && (
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-300/50 bg-amber-100/60 px-2.5 py-1 text-[11px] font-medium text-amber-800 dark:border-amber-400/30 dark:bg-amber-400/10 dark:text-amber-300">
+              <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-amber-500" />
+              In progress
+            </span>
+          )}
+        </div>
         <h1 className="mt-3 text-3xl font-semibold tracking-tight sm:text-5xl">
           {project.title}
         </h1>

@@ -127,6 +127,8 @@ export const projects: Project[] = [
 export interface CaseStudy {
   eyebrow: string;
   summary: string;
+  /** Shows an "In progress" badge in the case study header when true. */
+  inProgress?: boolean;
   /** Narrative intro paragraphs; wrap phrases in **…** to bold them. */
   intro: string[];
   /** Chip groups shown beside the intro. */
@@ -165,20 +167,21 @@ export const caseStudies: Record<string, CaseStudy> = {
       "People opened it and didn't know where to begin: no clear entry point, no way to bring their own data, and chat answers that felt disconnected from the data behind them. **89% of users struggled to use the product.**",
       "I rebuilt the experience around a **guided, AI-first, data-first flow** — one clear starting action, multiple ways to bring your own data, a transparent Data Pool, and structured insights you can act on.",
     ],
+    inProgress: true,
     tags: {
       role: ["Product Designer", "UX Research"],
-      status: ["Live project", "Hi-Fi + Prototype", "2025"],
+      status: ["Live project", "Hi-Fi + Prototype", "2026"],
       type: ["AI Analytics", "B2B SaaS", "Web & Mobile"],
-      tools: ["Figma", "Inter", "Prototype"],
+      tools: ["Figma"],
     },
     eyebrow: "Product Design · AI Analytics",
     summary:
       "Rebuilding Ask Me — Lumenore's conversational BI tool — into a guided, data-first AI experience: one clear starting point, bring-your-own-data, a transparent Data Pool, and structured, actionable insights.",
     meta: {
       role: "Product Designer (end to end)",
-      timeline: "Ongoing · 2025",
+      timeline: "Ongoing · 2026",
       team: "PM, engineering, data team",
-      tools: "Figma · Prototype · Inter",
+      tools: "Figma",
     },
     overview:
       "Ask Me lets business users and data experts query data in plain language. The capability was strong, but the experience leaned on technical concepts (schemas, agents), offered no way to use your own data, and gave inconsistent, hard-to-trust answers. The goal: simplify complex data workflows, let people use their own data, and deliver a guided, AI-first experience that improves trust and decision-making.",
