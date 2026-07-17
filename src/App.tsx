@@ -1523,24 +1523,20 @@ function CaseStudyPage({
           </p>
           <div className="mt-8 space-y-5">
             {cs.board.map((frame) => (
-              <figure key={frame.src}>
-                <button
-                  type="button"
-                  onClick={() => setZoom(assetUrl(frame.src))}
-                  aria-label={`View ${frame.label} full size`}
-                  className="group block w-full overflow-hidden rounded-2xl bg-card ring-1 ring-border outline-none transition-shadow hover:shadow-lg focus-visible:ring-2 focus-visible:ring-foreground/30"
-                >
-                  <img
-                    src={assetUrl(frame.src)}
-                    alt={frame.label}
-                    loading="lazy"
-                    className="w-full"
-                  />
-                </button>
-                <figcaption className="mt-2 text-[12px] font-medium uppercase tracking-[0.12em] text-muted-foreground">
-                  {frame.label}
-                </figcaption>
-              </figure>
+              <button
+                key={frame.src}
+                type="button"
+                onClick={() => setZoom(assetUrl(frame.src))}
+                aria-label={`View ${frame.label} full size`}
+                className="group block w-full overflow-hidden rounded-2xl bg-card ring-1 ring-border outline-none transition-shadow hover:shadow-lg focus-visible:ring-2 focus-visible:ring-foreground/30"
+              >
+                <img
+                  src={assetUrl(frame.src)}
+                  alt={frame.label}
+                  loading="lazy"
+                  className="w-full"
+                />
+              </button>
             ))}
           </div>
         </CaseSection>
