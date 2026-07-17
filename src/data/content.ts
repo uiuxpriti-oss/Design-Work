@@ -28,16 +28,6 @@ export const projects: Project[] = [
     measures: ["Guided AI-first flow", "Bring your own data", "2× faster insights"],
   },
   {
-    id: "project-jobfy",
-    title: "Jobfy",
-    description: "An AI-matched job-search app for seekers and recruiters.",
-    href: "https://uiuxpriti.com/projects/jobfy",
-    likes: 34,
-    image: "projects/jobfy.jpg",
-    gradient: "from-blue-300 via-indigo-200 to-sky-100",
-    measures: ["Apply in a few taps", "AI skill-based matching", "Multilingual onboarding"],
-  },
-  {
     id: "project-punjab-land-records",
     title: "Punjab Land Records",
     description: "Redesigning the digital land records experience.",
@@ -257,77 +247,6 @@ export const caseStudies: Record<string, CaseStudy> = {
       ],
       text:
         "A/B testing validated the redesign: Design 2 lifted task completion from 65% to 90%, halved time-to-insight (38s → 18s), raised feature adoption by ~30%, and scored 4.6/5 satisfaction. The result turns a complex, tech-heavy tool into a guided, data-first AI experience aligned with how people actually think about their data. (Ongoing — future scope: AI recommendations, personalisation, and automation.)",
-    },
-  },
-  "project-jobfy": {
-    intro: [
-      "Job hunting on a phone is mostly scrolling — endless listings, long application forms, and notifications for roles you'd never take. **Jobfy** set out to make it feel personal instead.",
-      "Two people meet in the same app with opposite needs: a seeker wants a role that fits their skills in a few taps, and a recruiter wants the right candidate without wading through hundreds of applications.",
-      "I designed the experience end to end — **multilingual onboarding, location-aware jobs, a fast apply flow, and AI matching** that ranks roles by how well they actually fit you.",
-    ],
-    tags: {
-      role: ["Product Designer", "UX Research"],
-      status: ["Concept", "Hi-Fi Prototype", "2024"],
-      type: ["Job Marketplace", "B2C", "Mobile App"],
-      tools: ["Figma", "Montserrat", "Prototype"],
-    },
-    eyebrow: "Product Design · Job Marketplace",
-    summary:
-      "A job-search app that helps seekers find the right role and recruiters find the right people — with AI skill matching, an apply-in-a-few-taps flow, and clean, multilingual onboarding.",
-    meta: {
-      role: "Product Designer (end to end)",
-      timeline: "Concept project",
-      team: "Solo — research to hi-fi",
-      tools: "Figma · Prototype",
-    },
-    overview:
-      "Jobfy is a mobile job application built to make searching and hiring easy for both sides of the market. Seekers get AI-assisted matches based on their skills, a quick apply flow, and real-time updates; recruiters get a simpler way to reach the right candidates. The design had to serve two very different users inside one clean, friendly interface.",
-    problem: {
-      text:
-        "Most job apps optimise for volume, not fit. Seekers scroll through irrelevant roles, drop out of lengthy application forms, and get buried in notifications; recruiters drown in mismatched applications. I framed the work around the pain points that showed up for both personas.",
-      goals: [
-        "Match people to roles by skills, not just keywords",
-        "Cut applying down to a few confident taps",
-        "Make onboarding fast, multilingual, and location-aware",
-        "Serve both seekers and recruiters without the app feeling split in two",
-      ],
-    },
-    research: {
-      text:
-        "In the R&D phase I studied both sides of the market — analysing job seekers and recruiters, benchmarking existing job apps, and running user interviews — then distilled it into two personas: Priya, a marketing executive job-hunting between work, and Rajesh, an HR manager hiring for a tech team.",
-      findings: [
-        "Seekers wanted skill-based recommendations, not endless keyword search",
-        "Lengthy, complicated application forms were the top reason people gave up",
-        "Too many irrelevant job notifications eroded trust in the app",
-      ],
-    },
-    process: [
-      { step: "R&D", text: "Job-seeker and recruiter analysis, market research, and user interviews." },
-      { step: "Ideate", text: "Brainstormed key jobs-to-be-done and built the Priya and Rajesh personas." },
-      { step: "Wireframe", text: "Sketched the flows — splash, onboarding, home, search, apply, AI match." },
-      { step: "Design", text: "Turned wireframes into a hi-fi system in Montserrat and a blue-led palette, then prototyped." },
-    ],
-    solution: {
-      text:
-        "A clean, friendly home that leads with fit: search with filters, a profile-completion nudge, and job categories up top, then AI-matched roles with a match score on every card. Onboarding is quick and multilingual — choose a language, pick your state, sign in — so the first run feels effortless.",
-      highlights: [
-        { title: "AI skill matching", text: "Roles ranked by how well they fit your skills, with a match score per card." },
-        { title: "Few-tap apply", text: "A short, guided apply flow that respects a busy schedule." },
-        { title: "Multilingual onboarding", text: "Language and state selection make the first run local and quick." },
-      ],
-    },
-    screens: [
-      { src: "projects/jobfy-onboarding.jpg", caption: "Onboarding — choose a language, sign in, and pick your state." },
-      { src: "projects/jobfy-home.jpg", caption: "Home — profile nudge, job categories, and AI-matched roles." },
-    ],
-    outcomes: {
-      metrics: [
-        { value: "AI match", label: "Roles ranked by skill fit" },
-        { value: "Few taps", label: "From open to applied" },
-        { value: "2 sides", label: "Seekers & recruiters, one app" },
-      ],
-      text:
-        "As a concept, Jobfy shows how a job app can lead with fit instead of volume — pairing AI matching with fast, multilingual onboarding so both seekers and recruiters get to the right outcome sooner.",
     },
   },
   "project-punjab-land-records": {
