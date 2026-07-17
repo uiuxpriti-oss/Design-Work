@@ -435,7 +435,7 @@ export const caseStudies: Record<string, CaseStudy> = {
             heading: "Processing",
             text: "Step-by-step system visibility — upload → detection → schema → Data Pool.",
             note: "👉 Improves system transparency and builds trust.",
-            image: "Processing screen (upload → detection → schema → Data Pool)",
+            image: "projects/askme-sol-processing.jpg",
           },
           {
             heading: "Response & Insights",
@@ -531,6 +531,7 @@ export const caseStudies: Record<string, CaseStudy> = {
           "This redesign transformed a complex, tech-heavy analytics tool into a guided, data-first AI experience.",
           "By aligning the system with users' mental models, simplifying workflows, and improving transparency, the solution significantly enhanced usability, efficiency, and user confidence.",
         ],
+        image: "projects/askme-conclusion.jpg",
       },
     ],
     outcomes: {
