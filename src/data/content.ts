@@ -1347,6 +1347,16 @@ export const principles: Principle[] = [
   },
 ];
 
+// Numbered "How I work" principles shown on the About page.
+export const howIWork: string[] = [
+  "I take ownership beyond my role.",
+  "I build systems, not one-off solutions.",
+  "I believe design succeeds through collaboration.",
+  "I simplify complexity before adding features.",
+  "I measure success through business and user outcomes.",
+  "I continuously learn whatever the problem requires.",
+];
+
 export const ifNotDesign: string[] = [
   "My answer hasn't changed in years.",
   "I'd travel, meet new people, and learn their kitchens — then settle in a quiet mountain town and open a small cafe. A cozy spot for travellers and locals, with a menu from everywhere I've been.",

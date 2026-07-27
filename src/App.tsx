@@ -89,6 +89,7 @@ import {
   learning,
   onRepeat,
   principles,
+  howIWork,
   ifNotDesign,
 } from "./data/content";
 import type { StudyBlock } from "./data/content";
@@ -2544,6 +2545,32 @@ function WorkingWithMe() {
   );
 }
 
+function HowIWork() {
+  return (
+    <section className="mt-14 sm:mt-24">
+      <div className="flex items-center gap-4">
+        <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-muted-foreground">
+          How I work
+        </p>
+        <span className="h-px flex-1 bg-border" aria-hidden="true" />
+      </div>
+      <ul className="mt-8 grid gap-x-12 sm:grid-cols-2">
+        {howIWork.map((item, i) => (
+          <li
+            key={i}
+            className="flex items-baseline gap-4 border-b border-border py-5 text-[15px] leading-relaxed text-foreground/90 sm:text-base"
+          >
+            <span className="font-mono text-[13px] text-muted-foreground/70">
+              {String(i + 1).padStart(2, "0")}
+            </span>
+            <span>{item}</span>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
 function IfNotDesign() {
   const stack = [
     "about/travel-1.webp",
@@ -2622,6 +2649,7 @@ function AboutPage({ onBack }: { onBack: () => void }) {
         <AboutMeSection />
         <Experience />
         <WorkingWithMe />
+        <HowIWork />
         <IfNotDesign />
         <div className="mt-16">
           <ContactBadge />
@@ -2694,15 +2722,16 @@ function FooterCTA() {
         aria-hidden="true"
       />
       <div className="relative mx-auto max-w-[52rem] px-6 py-20 text-center sm:py-24">
-        <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">
-          Let&apos;s build something together{" "}
-          <span className="text-foreground/50" aria-hidden="true">
-            ✦
+        <h2 className="text-3xl font-semibold tracking-tight sm:text-5xl">
+          If it&apos;s missing,{" "}
+          <span className="italic text-orange-500 dark:text-orange-400">
+            I&apos;ll build it.
           </span>
         </h2>
-        <p className="mx-auto mt-4 max-w-lg text-[15px] leading-relaxed text-muted-foreground">
-          Whether you have a product that needs a refresh, a new idea that needs
-          shaping, or just want to talk design — I&apos;d love to hear from you.
+        <p className="mx-auto mt-4 max-w-xl text-[15px] leading-relaxed text-muted-foreground">
+          I&apos;m open to Senior, Lead, and Staff product design roles, and
+          selective consulting — BI, AI-assisted UX, complex enterprise tools, and
+          teams that need more than screens.
         </p>
         <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
           <a
