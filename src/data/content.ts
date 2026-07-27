@@ -166,6 +166,8 @@ export interface CaseStudy {
   solution: { text: string; highlights: { title: string; text: string }[] };
   /** Optional screen/mockup images shown in the solution section. */
   screens?: { src: string; caption: string }[];
+  /** Optional full-width, click-to-zoom screen flow shown as its own section. */
+  gallery?: { title?: string; text?: string; shots: { src: string; caption: string }[] };
   /** Optional before → after comparison shown as its own section. */
   beforeAfter?: {
     text?: string;
@@ -644,6 +646,15 @@ export const caseStudies: Record<string, CaseStudy> = {
         { title: "Intent-first home", text: "Services grouped by task, with search and recent activity up top." },
         { title: "Guided requests", text: "One question-set at a time, validated inline, saved as you go." },
         { title: "Trackable status", text: "Every request shows progress and delivery channel." },
+      ],
+    },
+    gallery: {
+      title: "The request flow",
+      text: "Requesting a Digital Fard end to end — a plain-language form, a clear fee summary before payment, and instant confirmation with a downloadable document. Tap any screen to view it full size.",
+      shots: [
+        { src: "projects/punjab-fard-1.jpg", caption: "Guided request form — plain-language fields, inline validation, and a choice of WhatsApp, email or direct download." },
+        { src: "projects/punjab-fard-2.jpg", caption: "Review & payment — applicant details and a transparent fee breakdown before the citizen pays." },
+        { src: "projects/punjab-fard-3.jpg", caption: "Instant confirmation — the Digital Fard is generated with a transaction number and one-tap download." },
       ],
     },
     outcomes: {
@@ -1272,6 +1283,18 @@ export interface Creative {
 }
 
 export const creatives: Creative[] = [
+  {
+    name: "Néant — Logo",
+    category: "Brand Identity",
+    image: "creatives/neant-logo.webp",
+    gradient: "from-violet-500/30 to-indigo-800/30",
+  },
+  {
+    name: "Néant — Monogram",
+    category: "Logo Design",
+    image: "creatives/neant-monogram.webp",
+    gradient: "from-purple-500/30 to-indigo-800/30",
+  },
   {
     name: "MySaloonTime",
     category: "App Marketing",

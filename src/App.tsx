@@ -1673,7 +1673,7 @@ function CaseStudyPage({
               </figure>
             ))}
           </div>
-        ) : (
+        ) : !cs.gallery ? (
           <div className="mt-4 grid gap-4 sm:grid-cols-2">
             {[2, 3].map((n) => (
               <div
@@ -1686,9 +1686,45 @@ function CaseStudyPage({
               </div>
             ))}
           </div>
-        )}
+        ) : null}
       </CaseSection>
       </>
+      )}
+
+      {cs.gallery && !cs.sections && (
+        <CaseSection
+          id="cs-screens"
+          eyebrow="Screens"
+          title={cs.gallery.title ?? "The flow"}
+        >
+          {cs.gallery.text && (
+            <p className="max-w-2xl text-[15px] leading-relaxed text-foreground/85">
+              {cs.gallery.text}
+            </p>
+          )}
+          <div className="mt-6 space-y-6">
+            {cs.gallery.shots.map((shot) => (
+              <figure key={shot.src}>
+                <button
+                  type="button"
+                  onClick={() => setZoom(assetUrl(shot.src))}
+                  aria-label={`View ${shot.caption} full size`}
+                  className="group block w-full overflow-hidden rounded-2xl bg-background/40 ring-1 ring-border outline-none transition-shadow hover:shadow-lg focus-visible:ring-2 focus-visible:ring-foreground/30"
+                >
+                  <img
+                    src={assetUrl(shot.src)}
+                    alt={shot.caption}
+                    loading="lazy"
+                    className="w-full transition-transform duration-500 group-hover:scale-[1.01]"
+                  />
+                </button>
+                <figcaption className="mt-2.5 text-[13px] leading-relaxed text-muted-foreground">
+                  {shot.caption}
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        </CaseSection>
       )}
 
       {cs.sections && cs.sections.map((block) => (
