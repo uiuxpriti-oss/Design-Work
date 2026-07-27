@@ -7,7 +7,6 @@ import {
 } from "react";
 import Lenis from "lenis";
 import {
-  Heart,
   ArrowUpRight,
   ArrowRight,
   ArrowLeft,
@@ -75,8 +74,19 @@ import {
   Moon,
   Award,
   Image as ImageIcon,
+  Linkedin,
+  Mail,
   type LucideIcon,
 } from "lucide-react";
+
+// lucide has no Behance glyph — small inline mark.
+function BehanceIcon({ className = "" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className={className}>
+      <path d="M8.2 6.8c.8 0 1.5.07 2.13.22.63.14 1.16.37 1.6.68.44.31.78.72 1.02 1.24.24.51.36 1.15.36 1.9 0 .82-.19 1.5-.56 2.05-.37.54-.93.99-1.66 1.33.99.28 1.73.78 2.22 1.48.49.71.73 1.56.73 2.55 0 .8-.16 1.5-.47 2.08-.31.59-.73 1.07-1.26 1.44-.53.37-1.14.64-1.83.82-.68.17-1.39.26-2.11.26H1V6.8h7.2zM7.8 12.02c.66 0 1.2-.16 1.63-.47.42-.31.63-.82.63-1.53 0-.39-.07-.72-.21-.97-.14-.25-.33-.44-.57-.58-.24-.14-.51-.23-.82-.28-.31-.05-.63-.08-.96-.08H4.2v3.9h3.6zm.2 6.48c.37 0 .71-.04 1.04-.11.33-.07.62-.19.87-.36.25-.16.45-.39.6-.68.15-.29.22-.66.22-1.1 0-.87-.25-1.49-.74-1.86-.49-.37-1.15-.56-1.96-.56H4.2v4.67h3.8zM17.1 18.36c.44.43 1.08.65 1.9.65.6 0 1.11-.15 1.54-.45.43-.3.69-.62.79-.95h2.35c-.38 1.17-.95 2-1.72 2.51-.77.5-1.71.76-2.8.76-.76 0-1.45-.12-2.06-.37-.61-.24-1.13-.59-1.55-1.04-.42-.45-.75-.99-.97-1.61-.22-.62-.34-1.31-.34-2.05 0-.72.11-1.39.34-2.01.23-.63.55-1.17.97-1.63.42-.46.93-.82 1.51-1.08.59-.26 1.24-.39 1.95-.39.79 0 1.49.15 2.09.46.6.31 1.09.72 1.47 1.24.38.52.65 1.11.81 1.78.16.67.22 1.37.17 2.1h-6.87c0 .75.24 1.35.68 1.78zM20.8 13.6c-.35-.38-.92-.59-1.63-.59-.46 0-.85.08-1.15.24-.31.16-.55.35-.73.58-.18.23-.31.47-.38.72-.07.25-.11.47-.12.66h4.24c-.06-.68-.28-1.23-.63-1.61zM15.1 8.2h5.3v1.29h-5.3V8.2z" />
+    </svg>
+  );
+}
 import {
   projects,
   caseStudies,
@@ -883,29 +893,6 @@ function FocusAreas() {
   );
 }
 
-function useLike(id: string, base: number) {
-  const key = `like:${id}`;
-  const [liked, setLiked] = useState(false);
-  useEffect(() => {
-    try {
-      setLiked(localStorage.getItem(key) === "1");
-    } catch {
-      /* localStorage unavailable */
-    }
-  }, [key]);
-  const toggle = () =>
-    setLiked((prev) => {
-      const next = !prev;
-      try {
-        localStorage.setItem(key, next ? "1" : "0");
-      } catch {
-        /* ignore */
-      }
-      return next;
-    });
-  return { liked, count: base + (liked ? 1 : 0), toggle };
-}
-
 function ProjectCard({
   project,
   onOpen,
@@ -913,27 +900,23 @@ function ProjectCard({
   project: (typeof projects)[number];
   onOpen: (id: string) => void;
 }) {
-  const { liked, count, toggle } = useLike(project.id, project.likes);
   const [imgOk, setImgOk] = useState(true);
   return (
-    <article
-      id={project.id}
-      className="rounded-3xl bg-card p-4 sm:p-6 transition-colors hover:bg-card/80 scroll-mt-24"
-    >
+    <article id={project.id} className="scroll-mt-24">
       <button
         type="button"
         onClick={() => onOpen(project.id)}
         aria-label={`Open ${project.title} case study`}
-        className="block w-full rounded-2xl outline-none focus-visible:ring-2 focus-visible:ring-foreground/25 focus-visible:ring-offset-2 focus-visible:ring-offset-card"
+        className="group relative block w-full overflow-hidden rounded-3xl bg-foreground/[0.035] p-3 text-left outline-none ring-1 ring-border/70 transition-colors hover:bg-foreground/[0.06] focus-visible:ring-2 focus-visible:ring-foreground/25 dark:bg-white/[0.04]"
       >
-        <div className="aspect-[16/10] w-full overflow-hidden rounded-2xl bg-background/40">
+        <div className="aspect-[4/3] w-full overflow-hidden rounded-2xl bg-background/40">
           {project.image && imgOk ? (
             <img
               src={project.image}
               alt={project.title}
               loading="lazy"
               onError={() => setImgOk(false)}
-              className="h-full w-full object-cover transition-transform duration-500 hover:scale-[1.02]"
+              className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
             />
           ) : (
             <div
@@ -942,56 +925,20 @@ function ProjectCard({
             />
           )}
         </div>
+        {/* View pill — rises in on hover */}
+        <span className="pointer-events-none absolute bottom-8 left-1/2 -translate-x-1/2 translate-y-2 rounded-full bg-foreground px-5 py-2 text-sm font-medium text-background opacity-0 shadow-lg transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+          View
+        </span>
+        {/* Corner arrow */}
+        <span className="absolute bottom-5 right-5 inline-flex h-9 w-9 items-center justify-center rounded-full bg-background text-foreground shadow-sm ring-1 ring-border transition-transform duration-300 group-hover:scale-110">
+          <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+        </span>
       </button>
-      <div className="mt-4 flex items-start justify-between gap-6 px-1">
-        <button
-          type="button"
-          onClick={toggle}
-          aria-pressed={liked}
-          aria-label={liked ? `Unlike ${project.title}` : `Like ${project.title}`}
-          className="group/like flex items-center gap-2 rounded-full text-sm text-muted-foreground outline-none transition-colors hover:text-foreground active:scale-95 focus-visible:ring-2 focus-visible:ring-foreground/20"
-        >
-          <Heart
-            className={`h-4 w-4 transition-all duration-200 ease-out ${
-              liked
-                ? "scale-110 fill-red-500 text-red-500"
-                : "group-hover/like:text-foreground"
-            }`}
-            aria-hidden="true"
-          />
-          <span className={liked ? "text-foreground" : undefined}>{count}</span>
-        </button>
-        <button
-          type="button"
-          onClick={() => onOpen(project.id)}
-          className="group inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors"
-        >
-          View project
-          <ArrowUpRight
-            className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-            aria-hidden="true"
-          />
-        </button>
-      </div>
-      <div className="mt-2 px-1">
-        <button
-          type="button"
-          onClick={() => onOpen(project.id)}
-          className="text-left text-[15px] font-medium text-foreground hover:opacity-80 transition-opacity"
-        >
-          {project.title}
-          <span className="text-muted-foreground font-normal"> — {project.description}</span>
-        </button>
-        {project.measures && project.measures.length > 0 && (
-          <p className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1 text-[13px] text-muted-foreground">
-            {project.measures.map((m, i) => (
-              <span key={m} className="inline-flex items-center gap-2">
-                {i > 0 && <span className="text-foreground/25" aria-hidden="true">•</span>}
-                {m}
-              </span>
-            ))}
-          </p>
-        )}
+      <div className="mt-4 px-1">
+        <h3 className="text-lg font-semibold text-foreground">{project.title}</h3>
+        <p className="mt-1.5 text-[15px] leading-relaxed text-muted-foreground">
+          {project.description}
+        </p>
       </div>
     </article>
   );
@@ -1027,9 +974,11 @@ function Work({
           />
         </button>
       </div>
-      {HOME_PROJECTS.map((project) => (
-        <ProjectCard key={project.id} project={project} onOpen={onOpen} />
-      ))}
+      <div className="grid gap-x-6 gap-y-10 sm:grid-cols-2">
+        {HOME_PROJECTS.map((project) => (
+          <ProjectCard key={project.id} project={project} onOpen={onOpen} />
+        ))}
+      </div>
     </section>
   );
 }
@@ -1126,7 +1075,7 @@ function ProjectsPage({
           </div>
         </section>
         {tab === "case" ? (
-          <section id="case-studies" className="space-y-6">
+          <section id="case-studies" className="grid gap-x-6 gap-y-10 sm:grid-cols-2">
             {projects.map((project) => (
               <ProjectCard key={project.id} project={project} onOpen={onOpen} />
             ))}
@@ -1928,7 +1877,14 @@ function ExperienceList() {
 function Experience() {
   return (
     <section id="experience" className="mt-14 sm:mt-24 scroll-mt-24">
-      <SectionHeading eyebrow="Experience" title="where I have worked" />
+      <h2 className="text-3xl font-semibold italic tracking-tight sm:text-4xl">
+        So Far, So Good
+      </h2>
+      <span className="mt-3 block h-px w-40 bg-border" aria-hidden="true" />
+      <p className="mt-4 text-[15px] text-muted-foreground">
+        4+ years experience in design <span className="text-foreground/30">|</span> 3+
+        years working with startups
+      </p>
       <div className="mt-10">
         <ExperienceList />
       </div>
@@ -2545,6 +2501,46 @@ function WorkingWithMe() {
   );
 }
 
+function DesignPhilosophy() {
+  return (
+    <section className="mt-14 sm:mt-24">
+      <h2 className="text-3xl font-semibold italic tracking-tight sm:text-4xl">
+        my design philosophy
+      </h2>
+      <p className="mt-6 max-w-3xl text-lg leading-relaxed text-muted-foreground sm:text-[22px] sm:leading-relaxed">
+        i see design as a powerful strategic tool to solve complex business
+        challenges and create lasting value. i believe designers carry a
+        responsibility not just towards their work, but also towards society and the
+        people they design for. i consider it a privilege to design aka create for a
+        living, and my goal is to reflect that belief through the quality of my work.
+      </p>
+    </section>
+  );
+}
+
+function BeyondPixels() {
+  return (
+    <section className="mt-14 sm:mt-24">
+      <div className="grid gap-6 md:grid-cols-[14rem_1fr] md:gap-16">
+        <h2 className="text-3xl font-semibold leading-[1.05] tracking-tight text-blue-600 dark:text-blue-400 sm:text-4xl">
+          Beyond
+          <br />
+          Pixels.
+        </h2>
+        <p className="text-lg leading-relaxed text-foreground sm:text-xl">
+          I believe design is the bridge between complex technology and human
+          emotion. I don&apos;t just make things look good; I make them work
+          seamlessly.{" "}
+          <span className="italic text-muted-foreground">
+            My process is deeply rooted in research, rapid iteration with AI, and a
+            slight obsession with micro-interactions.
+          </span>
+        </p>
+      </div>
+    </section>
+  );
+}
+
 function HowIWork() {
   return (
     <section className="mt-14 sm:mt-24">
@@ -2647,6 +2643,8 @@ function AboutPage({ onBack }: { onBack: () => void }) {
           <ArrowLeft className="h-4 w-4" aria-hidden="true" /> Back
         </button>
         <AboutMeSection />
+        <DesignPhilosophy />
+        <BeyondPixels />
         <Experience />
         <WorkingWithMe />
         <HowIWork />
@@ -2715,39 +2713,64 @@ function FloatingAsk({
 }
 
 function FooterCTA() {
+  const socials = [
+    { href: links.cv, label: "Resume", Icon: FileText },
+    { href: links.linkedin, label: "LinkedIn", Icon: Linkedin },
+    { href: links.behance, label: "Behance", Icon: BehanceIcon },
+  ];
   return (
-    <section className="relative mt-12 overflow-hidden sm:mt-24">
-      <div
-        className="pointer-events-none absolute inset-0 bg-gradient-to-r from-orange-100/70 via-background to-emerald-100/70 opacity-80 dark:from-orange-500/10 dark:via-background dark:to-emerald-500/10 dark:opacity-100"
-        aria-hidden="true"
-      />
-      <div className="relative mx-auto max-w-[52rem] px-6 py-20 text-center sm:py-24">
-        <h2 className="text-3xl font-semibold tracking-tight sm:text-5xl">
-          If it&apos;s missing,{" "}
-          <span className="italic text-orange-500 dark:text-orange-400">
-            I&apos;ll build it.
-          </span>
-        </h2>
-        <p className="mx-auto mt-4 max-w-xl text-[15px] leading-relaxed text-muted-foreground">
-          I&apos;m open to Senior, Lead, and Staff product design roles, and
-          selective consulting — BI, AI-assisted UX, complex enterprise tools, and
-          teams that need more than screens.
+    <section id="contact" className="mt-16 scroll-mt-24 border-t border-border sm:mt-24">
+      <div className="mx-auto max-w-[52rem] px-6 py-16 sm:py-24">
+        <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-muted-foreground">
+          Contact
         </p>
-        <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-          <a
-            href={links.cal}
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-orange-400 to-rose-400 px-6 py-3 text-sm font-medium text-white shadow-sm outline-none transition-all duration-200 ease-out hover:opacity-90 active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-foreground/25"
-          >
-            Book a call
-          </a>
-          <a
-            href={links.email}
-            className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-6 py-3 text-sm font-medium text-foreground outline-none transition-colors duration-200 hover:bg-card focus-visible:ring-2 focus-visible:ring-foreground/25"
-          >
-            Send an email
-          </a>
+        <div className="mt-6 grid gap-10 md:grid-cols-[1fr_16rem] md:items-start">
+          <div>
+            <h2 className="max-w-md text-3xl font-semibold tracking-tight sm:text-5xl">
+              If it&apos;s missing,{" "}
+              <span className="italic text-orange-500 dark:text-orange-400">
+                I&apos;ll build it.
+              </span>
+            </h2>
+            <p className="mt-5 max-w-md text-[15px] leading-relaxed text-muted-foreground">
+              I&apos;m open to Senior, Lead, and Staff product design roles, and
+              selective consulting — BI, AI-assisted UX, complex enterprise tools,
+              and teams that need more than screens.
+            </p>
+            <a
+              href={links.email}
+              className="group mt-8 inline-flex items-center gap-2.5 text-lg font-medium text-foreground outline-none focus-visible:ring-2 focus-visible:ring-foreground/25"
+            >
+              <Mail className="h-5 w-5 text-muted-foreground" aria-hidden="true" />
+              {links.emailAddress}
+              <ArrowUpRight
+                className="h-4 w-4 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                aria-hidden="true"
+              />
+            </a>
+          </div>
+          <div className="md:pt-1">
+            {socials.map(({ href, label, Icon }, i) => (
+              <a
+                key={label}
+                href={href}
+                target="_blank"
+                rel="noreferrer"
+                className={`group flex items-center justify-between gap-4 border-b border-border py-4 text-[15px] font-medium text-foreground outline-none transition-colors hover:text-foreground/70 focus-visible:text-foreground/70 ${
+                  i === 0 ? "border-t" : ""
+                }`}
+              >
+                <span className="flex items-center gap-3">
+                  <Icon className="h-[18px] w-[18px] text-muted-foreground" aria-hidden="true" />
+                  {label}
+                </span>
+                <ArrowUpRight
+                  className="h-4 w-4 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                  aria-hidden="true"
+                />
+              </a>
+            ))}
+          </div>
         </div>
       </div>
     </section>
@@ -2784,31 +2807,26 @@ function Footer() {
               Priti Jani
             </a>
           </p>
-          <p className="text-[13px]">Created with lots of Procrastination 🥲 &amp; Inspiration ☕️</p>
+          <p className="text-[13px]">Designed, built &amp; deployed end to end — by me. 🛠️</p>
         </div>
-        <div className="flex items-center gap-4 text-xs font-medium uppercase tracking-wider sm:gap-5">
-          <a
-            href={links.linkedin}
-            target="_blank"
-            rel="noreferrer"
-            className="cursor-pointer underline-offset-4 transition-colors hover:text-foreground hover:underline"
-          >
-            LinkedIn
-          </a>
-          <a
-            href={links.email}
-            className="cursor-pointer underline-offset-4 transition-colors hover:text-foreground hover:underline"
-          >
-            Email
-          </a>
-          <a
-            href={links.cv}
-            target="_blank"
-            rel="noreferrer"
-            className="cursor-pointer underline-offset-4 transition-colors hover:text-foreground hover:underline"
-          >
-            Resume
-          </a>
+        <div className="flex items-center gap-2.5">
+          {[
+            { href: links.linkedin, label: "LinkedIn", ext: true, Icon: Linkedin },
+            { href: links.behance, label: "Behance", ext: true, Icon: BehanceIcon },
+            { href: links.email, label: "Email", ext: false, Icon: Mail },
+            { href: links.cv, label: "Resume", ext: true, Icon: FileText },
+          ].map(({ href, label, ext, Icon }) => (
+            <a
+              key={label}
+              href={href}
+              aria-label={label}
+              title={label}
+              {...(ext ? { target: "_blank", rel: "noreferrer" } : {})}
+              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border text-muted-foreground outline-none transition-colors hover:border-foreground/30 hover:bg-card hover:text-foreground focus-visible:ring-2 focus-visible:ring-foreground/25"
+            >
+              <Icon className="h-[18px] w-[18px]" />
+            </a>
+          ))}
         </div>
       </div>
     </footer>
