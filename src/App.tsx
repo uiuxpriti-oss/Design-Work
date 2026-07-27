@@ -1933,7 +1933,7 @@ function ExperienceList() {
 function Experience() {
   return (
     <section id="experience" className="mt-14 sm:mt-24 scroll-mt-24">
-      <h2 className="text-2xl font-semibold italic tracking-tight text-blue-600 dark:text-blue-400 sm:text-3xl">
+      <h2 className="text-2xl font-semibold italic tracking-tight sm:text-3xl">
         So Far, So Good
       </h2>
       <span className="mt-3 block h-px w-40 bg-border" aria-hidden="true" />
@@ -2575,7 +2575,7 @@ function WorkingWithMe() {
 function DesignPhilosophy() {
   return (
     <section className="mt-14 sm:mt-24">
-      <h2 className="text-2xl font-semibold italic tracking-tight text-blue-600 dark:text-blue-400 sm:text-3xl">
+      <h2 className="text-2xl font-semibold italic tracking-tight sm:text-3xl">
         my design philosophy
       </h2>
       <p className="mt-5 max-w-3xl text-base leading-relaxed text-muted-foreground sm:text-lg">
@@ -2593,7 +2593,7 @@ function BeyondPixels() {
   return (
     <section className="mt-14 sm:mt-24">
       <div className="grid gap-6 md:grid-cols-[14rem_1fr] md:gap-16">
-        <h2 className="text-2xl font-semibold leading-[1.1] tracking-tight text-blue-600 dark:text-blue-400 sm:text-3xl">
+        <h2 className="text-2xl font-semibold leading-[1.1] tracking-tight sm:text-3xl">
           Beyond
           <br />
           Pixels.
