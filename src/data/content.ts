@@ -1030,6 +1030,14 @@ export const caseStudies: Record<string, CaseStudy> = {
         { title: "Board-ready framing", text: "Outcomes and FAQs aimed at decision-makers." },
       ],
     },
+    gallery: {
+      title: "Inside the product",
+      text: "The same dark, precise language carried into the platform itself — security data that reads at a glance. Tap any screen to view it full size.",
+      shots: [
+        { src: "projects/tabnet-attack-surface.jpg", caption: "Attack Surface — monitored domains, a live subdomain network map, and critical findings ranked by severity." },
+        { src: "projects/tabnet-risk-calculator.jpg", caption: "Risk Calculator — risk score, likelihood and impact with a radar breakdown, plus prioritised preventive measures." },
+      ],
+    },
     outcomes: {
       metrics: [
         { value: "+2.4×", label: "Demo requests" },

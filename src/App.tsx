@@ -461,8 +461,8 @@ function Header({
   onWork: () => void;
   onAbout: () => void;
 }) {
-  // Drop a photo at /public/avatar.jpg to show it here; falls back to the dot.
-  const avatar = "avatar.jpg";
+  // Transparent logo mark; falls back to the dot.
+  const avatar = "logo.png";
   const [avatarOk, setAvatarOk] = useState(true);
   const active =
     page === "projects" || page === "case"

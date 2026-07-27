@@ -19,14 +19,14 @@ html.lenis body {
 
 @layer base {
   :root {
-    /* Minimal light theme on a #FAFAFA ground */
-    --background: 0 0% 98%;
+    /* Minimal light theme on a pure white ground with neutral greys */
+    --background: 0 0% 100%;
     --foreground: 24 10% 10%;
-    --card: 40 6% 95%;
+    --card: 0 0% 94%; /* #F0F0F0 */
     --primary: 163 44% 11%; /* brand green #0F2720 */
     --primary-foreground: 0 0% 100%;
-    --muted-foreground: 30 6% 44%;
-    --border: 40 8% 90%;
+    --muted-foreground: 0 0% 44%;
+    --border: 0 0% 90%; /* #E6E6E6 */
     color-scheme: light;
   }
 
