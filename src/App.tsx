@@ -30,6 +30,9 @@ import {
   RotateCcw,
   Play,
   Pause,
+  SkipBack,
+  SkipForward,
+  AudioLines,
   Target,
   Network,
   Search,
@@ -907,39 +910,58 @@ function ProjectCard({
         type="button"
         onClick={() => onOpen(project.id)}
         aria-label={`Open ${project.title} case study`}
-        className="group relative block w-full overflow-hidden rounded-3xl bg-foreground/[0.035] p-3 text-left outline-none ring-1 ring-border/70 transition-colors hover:bg-foreground/[0.06] focus-visible:ring-2 focus-visible:ring-foreground/25 dark:bg-white/[0.04]"
+        className="group grid w-full gap-3 text-left outline-none focus-visible:ring-2 focus-visible:ring-foreground/25 focus-visible:ring-offset-4 focus-visible:ring-offset-background md:grid-cols-2"
       >
-        <div className="aspect-[4/3] w-full overflow-hidden rounded-2xl bg-background/40">
-          {project.image && imgOk ? (
-            <img
-              src={project.image}
-              alt={project.title}
-              loading="lazy"
-              onError={() => setImgOk(false)}
-              className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+        {/* Left panel — headline, description and tag */}
+        <div className="flex flex-col justify-between gap-8 rounded-[28px] bg-foreground/[0.035] p-6 ring-1 ring-border/70 transition-colors group-hover:bg-foreground/[0.06] sm:p-8 dark:bg-white/[0.04]">
+          <div>
+            <h3 className="text-xl font-semibold leading-snug tracking-tight text-foreground sm:text-[26px] sm:leading-[1.2]">
+              {project.headline ?? project.description}
+            </h3>
+            {project.headline && (
+              <p className="mt-4 text-[15px] leading-relaxed text-muted-foreground">
+                {project.description}
+              </p>
+            )}
+          </div>
+          <span className="inline-flex w-fit items-center gap-1.5 rounded-full bg-foreground px-4 py-2 text-sm font-medium text-background">
+            {project.tag ?? "Case study"}
+            <ArrowUpRight
+              className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+              aria-hidden="true"
             />
-          ) : (
-            <div
-              className={`h-full w-full bg-gradient-to-br ${project.gradient}`}
-              aria-label={project.title}
-            />
-          )}
+          </span>
         </div>
-        {/* View pill — rises in on hover */}
-        <span className="pointer-events-none absolute bottom-8 left-1/2 -translate-x-1/2 translate-y-2 rounded-full bg-foreground px-5 py-2 text-sm font-medium text-background opacity-0 shadow-lg transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
-          View
-        </span>
-        {/* Corner arrow */}
-        <span className="absolute bottom-5 right-5 inline-flex h-9 w-9 items-center justify-center rounded-full bg-background text-foreground shadow-sm ring-1 ring-border transition-transform duration-300 group-hover:scale-110">
-          <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
-        </span>
+        {/* Right panel — titled visual */}
+        <div className="flex flex-col rounded-[28px] bg-foreground/[0.035] p-3 ring-1 ring-border/70 transition-colors group-hover:bg-foreground/[0.06] dark:bg-white/[0.04]">
+          <div className="flex items-center justify-between px-3 py-2">
+            <span className="text-sm font-semibold text-foreground">
+              {project.title}
+            </span>
+            <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-background text-foreground shadow-sm ring-1 ring-border transition-transform duration-300 group-hover:scale-110">
+              <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
+            </span>
+          </div>
+          <div className="relative flex-1 overflow-hidden rounded-2xl bg-background/50">
+            <div className="aspect-[16/11] w-full md:aspect-auto md:h-full">
+              {project.image && imgOk ? (
+                <img
+                  src={project.image}
+                  alt={project.title}
+                  loading="lazy"
+                  onError={() => setImgOk(false)}
+                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+                />
+              ) : (
+                <div
+                  className={`h-full w-full bg-gradient-to-br ${project.gradient}`}
+                  aria-label={project.title}
+                />
+              )}
+            </div>
+          </div>
+        </div>
       </button>
-      <div className="mt-4 px-1">
-        <h3 className="text-lg font-semibold text-foreground">{project.title}</h3>
-        <p className="mt-1.5 text-[15px] leading-relaxed text-muted-foreground">
-          {project.description}
-        </p>
-      </div>
     </article>
   );
 }
@@ -974,7 +996,7 @@ function Work({
           />
         </button>
       </div>
-      <div className="grid gap-x-6 gap-y-10 sm:grid-cols-2">
+      <div className="grid gap-6">
         {HOME_PROJECTS.map((project) => (
           <ProjectCard key={project.id} project={project} onOpen={onOpen} />
         ))}
@@ -1088,7 +1110,7 @@ function ProjectsPage({
           </div>
         </section>
         {tab === "case" ? (
-          <section id="case-studies" className="grid gap-x-6 gap-y-10 sm:grid-cols-2">
+          <section id="case-studies" className="grid gap-6">
             {projects.map((project) => (
               <ProjectCard key={project.id} project={project} onOpen={onOpen} />
             ))}
@@ -1911,7 +1933,7 @@ function ExperienceList() {
 function Experience() {
   return (
     <section id="experience" className="mt-14 sm:mt-24 scroll-mt-24">
-      <h2 className="text-3xl font-semibold italic tracking-tight sm:text-4xl">
+      <h2 className="text-2xl font-semibold italic tracking-tight text-blue-600 dark:text-blue-400 sm:text-3xl">
         So Far, So Good
       </h2>
       <span className="mt-3 block h-px w-40 bg-border" aria-hidden="true" />
@@ -2386,14 +2408,20 @@ function OnRepeatCard() {
       .catch(() => setPlaying(false));
   };
 
+  const restart = () => {
+    const m = mediaRef.current;
+    if (!m) return;
+    m.currentTime = 0;
+    m.play()
+      .then(() => setPlaying(true))
+      .catch(() => setPlaying(false));
+  };
+
   useEffect(() => () => mediaRef.current?.pause(), []);
 
   return (
-    <div
-      className="w-full rounded-3xl border border-border p-6 text-center transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md sm:text-left"
-      style={{ backgroundColor: "rgba(238, 241, 245, 0.3)" }}
-    >
-      {/* Hidden audio element plays the track when the vinyl is clicked. */}
+    <div className="w-full">
+      {/* Hidden audio element plays the track when the play button is clicked. */}
       <audio
         ref={mediaRef}
         src={SONG_SRC}
@@ -2405,72 +2433,81 @@ function OnRepeatCard() {
         className="pointer-events-none absolute h-px w-px opacity-0"
         aria-hidden="true"
       />
-      {/* The vinyl is the control: click it to drop the tonearm and play. */}
-      <button
-        type="button"
-        onClick={toggle}
-        aria-pressed={playing}
-        aria-label={`${playing ? "Pause" : "Play"} ${SONG_TITLE} by ${SONG_ARTIST}`}
-        className="group relative mx-auto block h-24 w-24 rounded-full outline-none focus-visible:ring-2 focus-visible:ring-foreground/25 focus-visible:ring-offset-4 focus-visible:ring-offset-card sm:mx-0"
-      >
-        {/* Warm glow while playing */}
-        <span
-          className={`pointer-events-none absolute -inset-1.5 rounded-full bg-rose-500/25 blur-md transition-opacity duration-500 ${
-            playing ? "animate-pulse opacity-100" : "opacity-0"
-          }`}
-          aria-hidden="true"
-        />
-        <div
-          className={`relative h-full w-full rounded-full transition-transform duration-500 group-hover:scale-105 group-hover:rotate-3 group-active:scale-95 ${
-            playing ? "animate-record" : ""
-          }`}
-          style={{
-            background:
-              "radial-gradient(circle at center, #e11d48 0 9%, #0a0a0a 9% 13%, #1c1c1c 13% 100%)",
-          }}
-        >
-          <span className="absolute left-1/2 top-[16%] h-1.5 w-1.5 -translate-x-1/2 rounded-full bg-white/25" />
+      <p className="mb-3 text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
+        On repeat
+      </p>
+      {/* Physical music-player card: a white tile, tilted, that straightens on hover. */}
+      <div className="group/card mx-auto max-w-[240px] -rotate-3 rounded-[28px] bg-white p-4 shadow-[0_20px_45px_-15px_rgba(0,0,0,0.35)] ring-1 ring-black/5 transition-transform duration-500 ease-out hover:rotate-0 sm:mx-0">
+        {/* Vinyl "fan" — top half of a record fanning down from the card's top edge. */}
+        <div className="relative h-28 overflow-hidden rounded-[20px] bg-neutral-950">
+          <div
+            className={`absolute left-1/2 top-[-150px] h-[220px] w-[220px] -translate-x-1/2 rounded-full ${
+              playing ? "animate-record" : ""
+            }`}
+            style={{
+              background:
+                "repeating-radial-gradient(circle at center, rgba(255,255,255,0.07) 0 1px, transparent 1px 5px), radial-gradient(circle at center, #17171b 0%, #0a0a0c 100%)",
+            }}
+          >
+            {/* Purple-to-black light wash over the grooves */}
+            <span
+              className="pointer-events-none absolute inset-0 rounded-full"
+              style={{
+                background:
+                  "linear-gradient(135deg, rgba(168,85,247,0.85) 0%, rgba(124,58,237,0.35) 35%, transparent 62%)",
+              }}
+            />
+            {/* Cream record label */}
+            <span className="absolute left-1/2 top-1/2 h-9 w-9 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#efe3c8] ring-1 ring-black/10">
+              <span className="absolute left-1/2 top-1/2 h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-neutral-900" />
+            </span>
+          </div>
         </div>
-        <span
-          className="pointer-events-none absolute inset-2 rounded-full"
-          style={{
-            background:
-              "repeating-radial-gradient(circle at center, rgba(255,255,255,0.05) 0 1px, transparent 1px 4px)",
-          }}
-        />
-        <span className="pointer-events-none absolute left-1/2 top-1/2 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-red-600 ring-2 ring-black/50" />
-        {/* Play/pause hint that pops in on hover */}
-        <span className="pointer-events-none absolute left-1/2 top-1/2 flex h-8 w-8 -translate-x-1/2 -translate-y-1/2 scale-0 items-center justify-center rounded-full bg-black/55 text-white opacity-0 backdrop-blur-sm transition-all duration-200 group-hover:scale-100 group-hover:opacity-100">
-          {playing ? (
-            <Pause className="h-4 w-4" aria-hidden="true" />
-          ) : (
-            <Play className="h-4 w-4 translate-x-[1px]" aria-hidden="true" />
-          )}
-        </span>
-        {/* White tonearm — swings onto the record while the song plays. */}
-        <span
-          className={`pointer-events-none absolute -right-1.5 h-16 w-1.5 origin-top rounded-full bg-neutral-300 shadow-sm transition-all duration-500 ease-out ${
-            playing ? "-top-2 rotate-[26deg]" : "-top-4 rotate-[-8deg]"
-          }`}
-        >
-          <span className="absolute -top-1 left-1/2 h-2.5 w-2.5 -translate-x-1/2 rounded-full bg-neutral-400" />
-        </span>
-      </button>
-      <div className="mt-5 flex items-center justify-center gap-2 sm:justify-start">
-        <h3 className="text-lg font-semibold">On repeat</h3>
-        {playing && (
-          <span className="flex h-3.5 items-end gap-[3px]" aria-hidden="true">
-            {[0, 1, 2, 3].map((i) => (
-              <span
-                key={i}
-                className="w-[3px] rounded-full bg-foreground/70 animate-eq"
-                style={{ animationDelay: `${i * 0.15}s` }}
-              />
-            ))}
-          </span>
-        )}
+        {/* Waveform + title */}
+        <div className="px-1 pt-4 text-center">
+          <AudioLines
+            className={`mx-auto h-5 w-5 text-neutral-400 ${playing ? "animate-pulse text-neutral-500" : ""}`}
+            aria-hidden="true"
+          />
+          <h3 className="mt-2 text-[15px] font-bold text-neutral-900">
+            {SONG_TITLE}
+          </h3>
+          <p className="text-[12px] text-neutral-500">{SONG_ARTIST}</p>
+        </div>
+        {/* Playback controls: prev · play/pause · next */}
+        <div className="mt-4 flex items-center justify-center gap-6">
+          <button
+            type="button"
+            onClick={restart}
+            aria-label="Restart"
+            className="text-neutral-400 transition-colors hover:text-neutral-900"
+          >
+            <SkipBack className="h-4 w-4 fill-current" aria-hidden="true" />
+          </button>
+          <button
+            type="button"
+            onClick={toggle}
+            aria-pressed={playing}
+            aria-label={`${playing ? "Pause" : "Play"} ${SONG_TITLE} by ${SONG_ARTIST}`}
+            className="flex h-11 w-11 items-center justify-center rounded-full bg-neutral-900 text-white shadow-md outline-none transition-transform hover:scale-105 active:scale-95 focus-visible:ring-2 focus-visible:ring-neutral-400 focus-visible:ring-offset-2"
+          >
+            {playing ? (
+              <Pause className="h-5 w-5 fill-current" aria-hidden="true" />
+            ) : (
+              <Play className="h-5 w-5 translate-x-[1px] fill-current" aria-hidden="true" />
+            )}
+          </button>
+          <button
+            type="button"
+            onClick={restart}
+            aria-label="Next"
+            className="text-neutral-400 transition-colors hover:text-neutral-900"
+          >
+            <SkipForward className="h-4 w-4 fill-current" aria-hidden="true" />
+          </button>
+        </div>
       </div>
-      <p className="mt-2 text-[14px] leading-relaxed text-muted-foreground">
+      <p className="mt-4 text-center text-[13px] leading-relaxed text-muted-foreground sm:text-left">
         {onRepeat}
       </p>
     </div>
@@ -2538,10 +2575,10 @@ function WorkingWithMe() {
 function DesignPhilosophy() {
   return (
     <section className="mt-14 sm:mt-24">
-      <h2 className="text-3xl font-semibold italic tracking-tight sm:text-4xl">
+      <h2 className="text-2xl font-semibold italic tracking-tight text-blue-600 dark:text-blue-400 sm:text-3xl">
         my design philosophy
       </h2>
-      <p className="mt-6 max-w-3xl text-lg leading-relaxed text-muted-foreground sm:text-[22px] sm:leading-relaxed">
+      <p className="mt-5 max-w-3xl text-base leading-relaxed text-muted-foreground sm:text-lg">
         i see design as a powerful strategic tool to solve complex business
         challenges and create lasting value. i believe designers carry a
         responsibility not just towards their work, but also towards society and the
@@ -2556,12 +2593,12 @@ function BeyondPixels() {
   return (
     <section className="mt-14 sm:mt-24">
       <div className="grid gap-6 md:grid-cols-[14rem_1fr] md:gap-16">
-        <h2 className="text-3xl font-semibold leading-[1.05] tracking-tight text-blue-600 dark:text-blue-400 sm:text-4xl">
+        <h2 className="text-2xl font-semibold leading-[1.1] tracking-tight text-blue-600 dark:text-blue-400 sm:text-3xl">
           Beyond
           <br />
           Pixels.
         </h2>
-        <p className="text-lg leading-relaxed text-foreground sm:text-xl">
+        <p className="text-base leading-relaxed text-foreground sm:text-lg">
           I believe design is the bridge between complex technology and human
           emotion. I don&apos;t just make things look good; I make them work
           seamlessly.{" "}

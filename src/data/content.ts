@@ -13,6 +13,10 @@ export interface Project {
   gradient: string;
   /** Short outcome phrases shown as a dot-separated row on the card. */
   measures?: string[];
+  /** Big, bold impact statement shown on the case-study card. */
+  headline?: string;
+  /** Short label shown as a pill on the card (e.g. "Feature Redesign"). */
+  tag?: string;
 }
 
 export const projects: Project[] = [
@@ -26,6 +30,9 @@ export const projects: Project[] = [
     image: "projects/askme.jpg",
     gradient: "from-blue-300 via-indigo-200 to-slate-200",
     measures: ["Guided AI-first flow", "Bring your own data", "2× faster insights"],
+    headline:
+      "Rebuilding Lumenore's AI analytics into a guided, data-first flow that reaches insight 2× faster.",
+    tag: "AI · In progress",
   },
   {
     id: "project-punjab-land-records",
@@ -36,6 +43,9 @@ export const projects: Project[] = [
     image: "projects/punjab-land-records.jpg",
     gradient: "from-emerald-200 via-teal-100 to-slate-200",
     measures: ["Fewer agents needed", "Self-serve completions up", "Support load down"],
+    headline:
+      "Redesigning citizen land records so people self-serve instead of standing in agent queues.",
+    tag: "GovTech Redesign",
   },
   {
     id: "project-avoda",
@@ -46,6 +56,9 @@ export const projects: Project[] = [
     image: "projects/avoda.jpg",
     gradient: "from-indigo-300 via-blue-200 to-sky-100",
     measures: ["Faster onboarding", "More complete profiles", "More employer contacts"],
+    headline:
+      "A collaborative hiring journey that speeds onboarding and builds profiles that actually get seen.",
+    tag: "0→1 Product",
   },
   {
     id: "project-baladi-express",
@@ -56,6 +69,9 @@ export const projects: Project[] = [
     image: "projects/baladi.jpg",
     gradient: "from-orange-200 via-amber-100 to-rose-100",
     measures: ["Cross-category orders up", "Search that works", "One system, all verticals"],
+    headline:
+      "One delivery app for food, grocery and more — with search that finally works across every category.",
+    tag: "Q-Commerce",
   },
   {
     id: "project-cakes-celebrations",
@@ -66,6 +82,9 @@ export const projects: Project[] = [
     image: "projects/cakes.jpg",
     gradient: "from-pink-200 via-rose-100 to-fuchsia-100",
     measures: ["Guided customisation", "Gifting made easy", "Lower drop-off"],
+    headline:
+      "A playful, guided cake-customisation flow that makes gifting easy and cuts checkout drop-off.",
+    tag: "E-commerce",
   },
   {
     id: "project-tabnet-security",
@@ -76,6 +95,9 @@ export const projects: Project[] = [
     image: "projects/tabnet-security.jpg",
     gradient: "from-slate-700 via-cyan-800 to-slate-900",
     measures: ["More demo requests", "Board-ready framing", "Trust, quantified"],
+    headline:
+      "A trustworthy identity for a modern security product — framing that turns visits into demo requests.",
+    tag: "Brand & Web",
   },
   {
     id: "project-academic-web",
@@ -86,6 +108,9 @@ export const projects: Project[] = [
     image: "projects/academic-web.jpg",
     gradient: "from-amber-100 via-stone-100 to-neutral-200",
     measures: ["Reports in a few clicks", "Daily-first dashboard", "Higher admin adoption"],
+    headline:
+      "A daily-first dashboard that turns hours of manual reporting into a few clicks for school admins.",
+    tag: "EdTech SaaS",
   },
   {
     id: "project-leadsdemos",
@@ -96,6 +121,9 @@ export const projects: Project[] = [
     image: "projects/leadsdemos.jpg",
     gradient: "from-violet-300 via-purple-200 to-fuchsia-100",
     measures: ["Faster demo setup", "More reuse", "One clear hub"],
+    headline:
+      "Collapsing scattered CRM workflows into one clear surface that makes demo setup fast and reusable.",
+    tag: "SaaS Redesign",
   },
   {
     id: "project-audio-transcript-analysis",
@@ -106,6 +134,9 @@ export const projects: Project[] = [
     image: "projects/audio-transcript-analysis.jpg",
     gradient: "from-rose-200 via-orange-100 to-amber-100",
     measures: ["Faster call reviews", "Readable sentiment", "More upsell actions"],
+    headline:
+      "Turning raw call transcripts into readable sentiment and next-best actions, at a glance.",
+    tag: "AI Analytics",
   },
 ];
 
