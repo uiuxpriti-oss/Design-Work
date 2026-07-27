@@ -501,7 +501,7 @@ function Header({
           >
             {avatar && avatarOk ? (
               <img
-                src={avatar}
+                src={assetUrl(avatar)}
                 alt="Priti Jani"
                 onError={() => setAvatarOk(false)}
                 className="h-9 w-9 rounded-full object-cover align-middle shadow-lg ring-2 ring-card"

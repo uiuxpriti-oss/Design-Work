@@ -35,17 +35,17 @@ export const projects: Project[] = [
     tag: "AI · In progress",
   },
   {
-    id: "project-punjab-land-records",
-    title: "Punjab Land Records",
-    description: "Redesigning the digital land records experience.",
-    href: "https://uiuxpriti.com/projects/punjab-land-records",
-    likes: 32,
-    image: "projects/punjab-land-records.jpg",
-    gradient: "from-emerald-200 via-teal-100 to-slate-200",
-    measures: ["Fewer agents needed", "Self-serve completions up", "Support load down"],
+    id: "project-tabnet-security",
+    title: "Tabnet Security",
+    description: "A trustworthy identity for a modern security product.",
+    href: "https://uiuxpriti.com/projects/tabnet-security",
+    likes: 21,
+    image: "projects/tabnet-security.jpg",
+    gradient: "from-slate-700 via-cyan-800 to-slate-900",
+    measures: ["More demo requests", "Board-ready framing", "Trust, quantified"],
     headline:
-      "Redesigning citizen land records so people self-serve instead of standing in agent queues.",
-    tag: "GovTech Redesign",
+      "A trustworthy identity for a modern security product — framing that turns visits into demo requests.",
+    tag: "Brand & Web",
   },
   {
     id: "project-avoda",
@@ -74,6 +74,19 @@ export const projects: Project[] = [
     tag: "Q-Commerce",
   },
   {
+    id: "project-leadsdemos",
+    title: "LeadsDemos",
+    description: "Streamlining CRM workflows into a single, clear surface.",
+    href: "https://uiuxpriti.com/projects/leadsdemos",
+    likes: 17,
+    image: "projects/leadsdemos.jpg",
+    gradient: "from-violet-300 via-purple-200 to-fuchsia-100",
+    measures: ["Faster demo setup", "More reuse", "One clear hub"],
+    headline:
+      "Collapsing scattered CRM workflows into one clear surface that makes demo setup fast and reusable.",
+    tag: "SaaS Redesign",
+  },
+  {
     id: "project-cakes-celebrations",
     title: "Cakes & Celebrations",
     description: "A playful e-commerce experience for custom cakes and gifting.",
@@ -85,19 +98,6 @@ export const projects: Project[] = [
     headline:
       "A playful, guided cake-customisation flow that makes gifting easy and cuts checkout drop-off.",
     tag: "E-commerce",
-  },
-  {
-    id: "project-tabnet-security",
-    title: "Tabnet Security",
-    description: "A trustworthy identity for a modern security product.",
-    href: "https://uiuxpriti.com/projects/tabnet-security",
-    likes: 21,
-    image: "projects/tabnet-security.jpg",
-    gradient: "from-slate-700 via-cyan-800 to-slate-900",
-    measures: ["More demo requests", "Board-ready framing", "Trust, quantified"],
-    headline:
-      "A trustworthy identity for a modern security product — framing that turns visits into demo requests.",
-    tag: "Brand & Web",
   },
   {
     id: "project-academic-web",
@@ -113,19 +113,6 @@ export const projects: Project[] = [
     tag: "EdTech SaaS",
   },
   {
-    id: "project-leadsdemos",
-    title: "LeadsDemos",
-    description: "Streamlining CRM workflows into a single, clear surface.",
-    href: "https://uiuxpriti.com/projects/leadsdemos",
-    likes: 17,
-    image: "projects/leadsdemos.jpg",
-    gradient: "from-violet-300 via-purple-200 to-fuchsia-100",
-    measures: ["Faster demo setup", "More reuse", "One clear hub"],
-    headline:
-      "Collapsing scattered CRM workflows into one clear surface that makes demo setup fast and reusable.",
-    tag: "SaaS Redesign",
-  },
-  {
     id: "project-audio-transcript-analysis",
     title: "Audio Transcript Analysis",
     description: "Turning raw transcripts into insight, at a glance.",
@@ -137,6 +124,19 @@ export const projects: Project[] = [
     headline:
       "Turning raw call transcripts into readable sentiment and next-best actions, at a glance.",
     tag: "AI Analytics",
+  },
+  {
+    id: "project-punjab-land-records",
+    title: "Punjab Land Records",
+    description: "Redesigning the digital land records experience.",
+    href: "https://uiuxpriti.com/projects/punjab-land-records",
+    likes: 32,
+    image: "projects/punjab-land-records.jpg",
+    gradient: "from-emerald-200 via-teal-100 to-slate-200",
+    measures: ["Fewer agents needed", "Self-serve completions up", "Support load down"],
+    headline:
+      "Redesigning citizen land records so people self-serve instead of standing in agent queues.",
+    tag: "GovTech Redesign",
   },
 ];
 
