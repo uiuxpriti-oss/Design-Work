@@ -1036,8 +1036,11 @@ export const caseStudies: Record<string, CaseStudy> = {
       shots: [
         { src: "projects/tabnet-dashboard.jpg", caption: "Security Posture Dashboard — overall risk score, findings, compliance and integration status, with product summaries and misconfiguration analysis in one view." },
         { src: "projects/tabnet-attack-surface.jpg", caption: "Attack Surface — monitored domains, a live subdomain network map, and critical findings ranked by severity." },
+        { src: "projects/tabnet-domain-overview.jpg", caption: "Domain Overview — per-domain drilldown: risk score trend, vulnerability distribution, tech stack, and recent findings." },
         { src: "projects/tabnet-risk-calculator.jpg", caption: "Risk Calculator — risk score, likelihood and impact with a radar breakdown, plus prioritised preventive measures." },
         { src: "projects/tabnet-insights.jpg", caption: "FAIRCAM Controls Insights — the constellation view: every control mapped in orbit, click any node for detail and affected findings." },
+        { src: "projects/tabnet-ai-search.jpg", caption: "Ask anything — an AI entry point with suggested security questions, from cyber risk score to ransomware exposure." },
+        { src: "projects/tabnet-visuals.jpg", caption: "Visual language — the shield, radar, and integration motifs that carry the cosmic security identity through the product." },
       ],
     },
     outcomes: {
