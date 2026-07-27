@@ -874,20 +874,22 @@ function FocusAreas() {
   const row = [...SPECIALTIES, ...SPECIALTIES];
   return (
     <section className="mt-6 overflow-hidden py-10">
-      {/* Quiet full-bleed strip — uppercase specialties separated by "+" */}
-      <div className="marquee-track overflow-hidden border-y border-border bg-card/60 py-4">
-        <div className="animate-marquee marquee-anim flex w-max items-center gap-10 [backface-visibility:hidden] [will-change:transform]">
-          {row.map((s, i) => (
-            <span
-              key={i}
-              className="flex items-center gap-10 whitespace-nowrap text-[13px] font-medium uppercase tracking-[0.18em] text-muted-foreground"
-            >
-              {s}
-              <span className="text-muted-foreground/50" aria-hidden="true">
-                +
+      {/* Band + text tilt together (width-extended so it bleeds past both edges) → text stays inside the band on every screen width, no scale so it stays crisp */}
+      <div className="-ml-[6%] w-[112%] -rotate-2">
+        <div className="marquee-track overflow-hidden border-y border-white/10 bg-[#0F2720] py-4 shadow-lg">
+          <div className="animate-marquee marquee-anim flex w-max items-center gap-6 [backface-visibility:hidden] [will-change:transform]">
+            {row.map((s, i) => (
+              <span
+                key={i}
+                className="flex items-center gap-6 whitespace-nowrap text-[15px] font-medium text-white/85"
+              >
+                {s}
+                <span className="text-[#E3A64A]/75" aria-hidden="true">
+                  ✦
+                </span>
               </span>
-            </span>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </section>
