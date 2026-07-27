@@ -925,7 +925,7 @@ function ProjectCard({
               </p>
             )}
           </div>
-          <span className="inline-flex w-fit items-center rounded-full bg-neutral-900 px-5 py-2.5 text-sm font-medium text-white dark:bg-foreground dark:text-background">
+          <span className="inline-flex w-fit items-center rounded-full bg-[#0F2720] px-5 py-2.5 text-sm font-medium text-white dark:bg-foreground dark:text-background">
             {project.tag ?? "Case study"}
           </span>
         </div>
@@ -1144,7 +1144,7 @@ function CaseSection({
   return (
     <section id={id} className="mt-14 scroll-mt-24 border-t border-border pt-10">
       {eyebrow && (
-        <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-orange-500 dark:text-orange-400">
+        <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#0F2720] dark:text-[#A9C6BA]">
           {eyebrow}
         </p>
       )}
@@ -1201,7 +1201,7 @@ function StudyMedia({
 // Highlighted takeaway callout (the deck's "👉 …" notes).
 function StudyNote({ text }: { text: string }) {
   return (
-    <div className="mt-6 rounded-xl bg-sky-50 px-4 py-3 text-[14px] font-medium leading-relaxed text-sky-900 ring-1 ring-sky-100 dark:bg-sky-500/10 dark:text-sky-200 dark:ring-sky-500/20">
+    <div className="mt-6 rounded-xl bg-[#0F2720]/[0.05] px-4 py-3 text-[14px] font-medium leading-relaxed text-[#0F2720] ring-1 ring-[#0F2720]/10 dark:bg-[#A9C6BA]/10 dark:text-[#A9C6BA] dark:ring-[#A9C6BA]/20">
       {text}
     </div>
   );
@@ -1472,12 +1472,12 @@ function CaseStudyPage({
 
       <header className="mt-8">
         <div className="flex flex-wrap items-center gap-3">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-orange-500 dark:text-orange-400">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#0F2720] dark:text-[#A9C6BA]">
             {cs.eyebrow}
           </p>
           {cs.inProgress && (
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-300/50 bg-amber-100/60 px-2.5 py-1 text-[11px] font-medium text-amber-800 dark:border-amber-400/30 dark:bg-amber-400/10 dark:text-amber-300">
-              <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-amber-500" />
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-[#0F2720]/20 bg-[#0F2720]/[0.06] px-2.5 py-1 text-[11px] font-medium text-[#0F2720] dark:border-[#A9C6BA]/30 dark:bg-[#A9C6BA]/10 dark:text-[#A9C6BA]">
+              <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#2E6B54]" />
               In progress
             </span>
           )}
@@ -1513,7 +1513,7 @@ function CaseStudyPage({
 
       <section id="cs-intro" className="mt-12 grid scroll-mt-24 gap-10 border-t border-border pt-10 md:grid-cols-[1fr_240px]">
         <div>
-          <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-orange-500 dark:text-orange-400">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#0F2720] dark:text-[#A9C6BA]">
             Intro
           </p>
           <div className="mt-5 space-y-5 text-[16px] leading-relaxed text-foreground/85">
@@ -2513,7 +2513,7 @@ function OnRepeatCard() {
             onClick={toggle}
             aria-pressed={playing}
             aria-label={`${playing ? "Pause" : "Play"} ${SONG_TITLE} by ${SONG_ARTIST}`}
-            className="flex h-11 w-11 items-center justify-center rounded-full bg-neutral-900 text-white shadow-md outline-none transition-transform hover:scale-105 active:scale-95 focus-visible:ring-2 focus-visible:ring-neutral-400 focus-visible:ring-offset-2"
+            className="flex h-11 w-11 items-center justify-center rounded-full bg-[#0F2720] text-white shadow-md outline-none transition-transform hover:scale-105 active:scale-95 focus-visible:ring-2 focus-visible:ring-neutral-400 focus-visible:ring-offset-2"
           >
             {playing ? (
               <Pause className="h-5 w-5 fill-current" aria-hidden="true" />
@@ -2789,7 +2789,7 @@ function FloatingAsk({
       <button
         type="button"
         onClick={onOpenAsk}
-        className="group inline-flex items-center gap-2 rounded-full bg-neutral-900 px-5 py-2.5 text-sm font-medium shadow-lg shadow-black/25 ring-1 ring-white/10 outline-none transition duration-200 ease-out hover:bg-neutral-800 active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-foreground/25 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+        className="group inline-flex items-center gap-2 rounded-full bg-[#0F2720] px-5 py-2.5 text-sm font-medium shadow-lg shadow-black/25 ring-1 ring-white/10 outline-none transition duration-200 ease-out hover:bg-[#16382E] active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-foreground/25 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
       >
         <span className="inline-flex items-center gap-2 text-white">
           <Sparkle /> Ask AI
@@ -2823,7 +2823,7 @@ function FooterCTA() {
           <div>
             <h2 className="max-w-md text-3xl font-semibold tracking-tight sm:text-5xl">
               If it&apos;s missing,{" "}
-              <span className="italic text-orange-500 dark:text-orange-400">
+              <span className="italic text-[#0F2720] dark:text-[#A9C6BA]">
                 I&apos;ll build it.
               </span>
             </h2>
