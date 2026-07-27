@@ -1133,10 +1133,12 @@ function CaseSection({
   children: ReactNode;
 }) {
   return (
-    <section id={id} className="mt-16 scroll-mt-24">
-      <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
-        {eyebrow}
-      </p>
+    <section id={id} className="mt-14 scroll-mt-24 border-t border-border pt-10">
+      {eyebrow && (
+        <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-orange-500 dark:text-orange-400">
+          {eyebrow}
+        </p>
+      )}
       {title && (
         <h2 className="mt-2 text-2xl font-semibold tracking-tight sm:text-3xl">
           {title}
@@ -1428,7 +1430,7 @@ function CaseStudyPage({
 
       <header className="mt-8">
         <div className="flex flex-wrap items-center gap-3">
-          <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-orange-500 dark:text-orange-400">
             {cs.eyebrow}
           </p>
           {cs.inProgress && (
@@ -1469,7 +1471,7 @@ function CaseStudyPage({
 
       <section id="cs-intro" className="mt-12 grid scroll-mt-24 gap-10 border-t border-border pt-10 md:grid-cols-[1fr_240px]">
         <div>
-          <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-orange-500 dark:text-orange-400">
             Intro
           </p>
           <div className="mt-5 space-y-5 text-[16px] leading-relaxed text-foreground/85">
