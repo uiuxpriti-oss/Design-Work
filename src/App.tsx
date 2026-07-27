@@ -979,6 +979,19 @@ function Work({
           <ProjectCard key={project.id} project={project} onOpen={onOpen} />
         ))}
       </div>
+      <div className="flex justify-center pt-4">
+        <button
+          type="button"
+          onClick={onViewAll}
+          className="group inline-flex items-center gap-2 rounded-full border border-border bg-background px-6 py-3 text-sm font-medium text-foreground outline-none transition-all duration-200 ease-out hover:bg-card active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-foreground/20 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+        >
+          View all work
+          <ArrowRight
+            className="h-4 w-4 transition-transform group-hover:translate-x-0.5"
+            aria-hidden="true"
+          />
+        </button>
+      </div>
     </section>
   );
 }
