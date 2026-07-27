@@ -174,6 +174,8 @@ export interface StudyBlock {
   bullets?: string[];
   /** Two/three-column cards (e.g. personas, method vs. findings). */
   columns?: { heading: string; items: string[] }[];
+  /** Titled cards with a paragraph each, shown in a 2-column grid. */
+  cards?: { heading: string; text: string }[];
   /** Big stat tiles. */
   stats?: { value: string; label: string }[];
   /** Highlighted takeaway callout (the deck's "👉 …" notes). */
@@ -520,8 +522,29 @@ export const caseStudies: Record<string, CaseStudy> = {
       {
         id: "future-scope",
         eyebrow: "What's next",
-        title: "Future Scope",
-        bullets: ["AI recommendations", "Personalisation", "Automation", "Advanced analytics"],
+        title: "What I'd do next",
+        lead: "The redesign proved the direction; the next cycles are about depth. If I had another sprint, I'd:",
+        cards: [
+          {
+            heading: "AI recommendations",
+            text: "Proactively surface insights and the next best question from a user's data — before they even ask.",
+          },
+          {
+            heading: "Personalisation",
+            text: "Tailor the homepage, prompt suggestions, and data views to each user's role, history, and goals.",
+          },
+          {
+            heading: "Automation",
+            text: "Let users schedule recurring analyses and auto-generate reports and summaries on a cadence.",
+          },
+          {
+            heading: "Advanced analytics",
+            text: "Deeper statistical analysis, forecasting, and what-if modelling for the data experts who need more control.",
+          },
+        ],
+        body: [
+          "The deeper lesson: adoption rarely fails because a tool lacks capability — it fails when the path to the outcome doesn't match how people think. This redesign didn't add power; it removed the translation step between user intent and the system.",
+        ],
       },
       {
         id: "conclusion",

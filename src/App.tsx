@@ -1226,11 +1226,12 @@ function StudySectionBlock({
           {renderRich(block.lead)}
         </p>
       )}
-      {block.body?.map((p, i) => (
-        <p key={i} className="mt-4 max-w-2xl text-[15px] leading-relaxed text-foreground/85">
-          {renderRich(p)}
-        </p>
-      ))}
+      {!block.cards &&
+        block.body?.map((p, i) => (
+          <p key={i} className="mt-4 max-w-2xl text-[15px] leading-relaxed text-foreground/85">
+            {renderRich(p)}
+          </p>
+        ))}
       {block.bullets && <div className="mt-5">{<StudyBullets items={block.bullets} />}</div>}
       {block.columns && (
         <div
@@ -1256,6 +1257,24 @@ function StudySectionBlock({
           ))}
         </div>
       )}
+      {block.cards && (
+        <div className="mt-6 grid gap-4 sm:grid-cols-2">
+          {block.cards.map((c, i) => (
+            <div key={i} className="rounded-2xl border border-border bg-card p-5">
+              <p className="text-[15px] font-semibold text-foreground">{c.heading}</p>
+              <p className="mt-2 text-[14px] leading-relaxed text-muted-foreground">
+                {c.text}
+              </p>
+            </div>
+          ))}
+        </div>
+      )}
+      {block.cards &&
+        block.body?.map((p, i) => (
+          <p key={i} className="mt-6 max-w-2xl text-[15px] leading-relaxed text-foreground/85">
+            {renderRich(p)}
+          </p>
+        ))}
       {block.stats && (
         <div className="mt-8 flex flex-wrap gap-x-12 gap-y-6 border-t border-border pt-8">
           {block.stats.map((st) => (
