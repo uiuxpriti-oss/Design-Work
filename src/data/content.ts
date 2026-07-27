@@ -87,6 +87,19 @@ export const projects: Project[] = [
     tag: "SaaS Redesign",
   },
   {
+    id: "project-capitalfi",
+    title: "CapitalFi",
+    description: "A trust-first marketing website for a gold-backed stablecoin.",
+    href: "https://uiuxpriti.com/projects/capitalfi",
+    likes: 18,
+    image: "projects/capitalfi.jpg",
+    gradient: "from-sky-200 via-blue-100 to-amber-100",
+    measures: ["6 pages, one story", "Transparency-led IA", "Trust before token"],
+    headline:
+      "A website that makes a gold-backed stablecoin feel as solid as the gold behind it.",
+    tag: "Website Design",
+  },
+  {
     id: "project-cakes-celebrations",
     title: "Cakes & Celebrations",
     description: "A playful e-commerce experience for custom cakes and gifting.",
@@ -922,6 +935,124 @@ export const caseStudies: Record<string, CaseStudy> = {
       ],
       text:
         "Unifying the categories under one system lifted cross-category ordering and made search feel dependable.",
+    },
+  },
+  "project-capitalfi": {
+    intro: [
+      "**CapitalFi (CFI)** is a stablecoin backed by physical gold — a digital asset that pairs the enduring value of gold with the flexibility of blockchain.",
+      "Crypto asks for trust; gold buyers give it slowly. The website had to convince a **conservative, gold-minded audience** that a token is as solid as the bars behind it.",
+      "I designed the full 6-page marketing site around one idea: **show the proof before the pitch** — transparency as a first-class page, not a footnote.",
+    ],
+    tags: {
+      role: ["Web Designer", "Visual Design"],
+      status: ["Shipped", "2023"],
+      type: ["Fintech", "Web3", "Marketing Site"],
+      tools: ["Figma"],
+    },
+    eyebrow: "Web Design · Fintech",
+    summary:
+      "A trust-first marketing website for a gold-backed stablecoin — six pages that lead with physical gold, transparent custody, and one clear action.",
+    meta: {
+      role: "Web Designer",
+      timeline: "4 weeks",
+      team: "Client + developer",
+      tools: "Figma",
+    },
+    overview:
+      "CapitalFi needed a site that could explain a gold-backed stablecoin to people who distrust crypto. The answer was to lead every page with the physical asset — real gold, real custody, real audits — and keep a single CTA throughout.",
+    problem: {
+      text:
+        "Crypto landing pages tend to look like crypto — neon gradients and jargon. That aesthetic is exactly what this audience distrusts.",
+      goals: [
+        "Make the gold backing feel tangible on every page",
+        "Give transparency its own place in the IA",
+        "Keep one consistent action across the whole site",
+      ],
+    },
+    research: {
+      text:
+        "I audited stablecoin and gold-investment sites to find the trust cues each audience expects, then structured the IA around them.",
+      findings: [
+        "Physical imagery outperforms abstract crypto art for trust",
+        "Custody, storage, and audits are the questions people actually ask",
+        "A visible roadmap signals a serious, long-term project",
+      ],
+    },
+    process: [
+      { step: "IA", text: "Six pages: Home, About, Transparency, Blog, Resources, Contact." },
+      { step: "System", text: "Blue for action, gold for the asset, generous white space." },
+      { step: "Design", text: "Hi-fi pages in Figma with a shared component set." },
+      { step: "Handoff", text: "Specs and assets for the development team." },
+    ],
+    solution: {
+      text:
+        "A clean, banking-adjacent visual language: real gold photography, a calm blue action colour, and proof sections — storage, auditing, roadmap — ahead of any token talk.",
+      highlights: [
+        { title: "Proof first", text: "Transparency is a top-level page, not a footer link." },
+        { title: "One action", text: "A single 'Get Started' CTA repeats across all six pages." },
+        { title: "Tangible gold", text: "Photography of the physical asset anchors every hero." },
+      ],
+    },
+    sections: [
+      {
+        id: "brief",
+        eyebrow: "The brief",
+        title: "A stablecoin that had to earn trust",
+        lead: "**CapitalFi (CFI)** is pegged to physical gold. The audience it courts — gold buyers, cautious investors — is exactly the audience most sceptical of crypto.",
+        body: [
+          "So the site borrows its manners from banking, not from Web3: real photography of the asset, plain-language answers about custody and audits, and one calm, repeated call to action.",
+        ],
+        bullets: [
+          "Lead with the physical gold, not the token",
+          "Transparency as a first-class page in the navigation",
+          "One consistent 'Get Started' action across all six pages",
+        ],
+      },
+      {
+        id: "home",
+        eyebrow: "Pages",
+        title: "Home — one scroll, the whole trust story",
+        lead: "The hero opens on real gold bars — **\"We are backed by physical gold\"** — then the page walks stability, security and transparency, the roadmap, how it works, FAQs, and community, ending on a single CTA.",
+        image: "projects/capitalfi-home.jpg",
+      },
+      {
+        id: "transparency",
+        eyebrow: "Pages",
+        title: "Transparency — proof before promises",
+        lead: "The page most sites bury is the second stop here: **what CFI is**, how the gold is stored, and how it's audited — answered in plain language with the same calm visual system.",
+        image: "projects/capitalfi-transparency.jpg",
+      },
+      {
+        id: "about",
+        eyebrow: "Pages",
+        title: "About — the people behind the peg",
+        lead: "Mission, values, and the team — because for this audience, **who** holds the gold matters as much as the gold itself.",
+        image: "projects/capitalfi-about.jpg",
+      },
+      {
+        id: "community",
+        eyebrow: "Pages",
+        title: "Blog, community & resources",
+        lead: "A blog for ongoing signals of life, a community invitation, and a resources menu that surfaces the white paper — the document serious investors actually look for.",
+        images: ["projects/capitalfi-blog.jpg", "projects/capitalfi-resources.jpg"],
+      },
+      {
+        id: "contact",
+        eyebrow: "Pages",
+        title: "Contact — short form, human details",
+        lead: "A deliberately short form next to real contact details — email, phone, and a physical address, one more small trust signal.",
+        image: "projects/capitalfi-contact.jpg",
+        note: "Every page ends the same way: one action, repeated calmly — no urgency tricks, because urgency is what this audience distrusts.",
+      },
+    ],
+    outcomes: {
+      metrics: [
+        { value: "6", label: "Pages designed" },
+        { value: "1", label: "Shared visual system" },
+        { value: "4 wks", label: "Design to handoff" },
+      ],
+      text:
+        "A trust-first site that lets the gold do the convincing — shipped from IA to handoff in four weeks.",
     },
   },
   "project-cakes-celebrations": {
