@@ -1105,8 +1105,10 @@ export const caseStudies: Record<string, CaseStudy> = {
       title: "The admin workspace",
       text: "The daily surfaces of the school-admin product — attendance, fees, and exams, each a few clicks from the dashboard. Tap any screen to view it full size.",
       shots: [
+        { src: "projects/academic-overview.jpg", caption: "The system at a glance — daily-first dashboard, salary slips, exam timetables, and fee tracking, all behind one simple login." },
         { src: "projects/academic-attendance-dashboard.jpg", caption: "Attendance dashboard — comparison and daily charts up top, with a per-department report ready to export." },
         { src: "projects/academic-attendance-register.jpg", caption: "Attendance register — the month at a glance per teacher, with present/absent/holiday states readable in a scan." },
+        { src: "projects/academic-student-profile.jpg", caption: "Student profile — personal, contact, and account details collected into one clean, private record." },
         { src: "projects/academic-fees.jpg", caption: "Student fee payments — totals summarised, then every student's paid/remaining status with filters and export." },
         { src: "projects/academic-exams.jpg", caption: "Exam timetable — a confirmed, printable half-yearly schedule generated per class." },
       ],
