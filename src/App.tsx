@@ -2601,34 +2601,38 @@ function WorkingWithMe() {
 function DesignPhilosophy() {
   return (
     <section className="mt-14 sm:mt-24">
-      <h2 className="text-2xl font-semibold italic tracking-tight sm:text-3xl">
-        my design philosophy
-      </h2>
-      <p className="mt-5 max-w-3xl text-base leading-relaxed text-muted-foreground sm:text-lg">
-        i see design as a powerful strategic tool to solve complex business
-        challenges and create lasting value. i believe designers carry a
-        responsibility not just towards their work, but also towards society and the
-        people they design for. i consider it a privilege to design aka create for a
-        living, and my goal is to reflect that belief through the quality of my work.
-      </p>
-    </section>
-  );
-}
-
-function BeyondPixels() {
-  return (
-    <section className="mt-14 sm:mt-24">
-      <div className="grid gap-6 md:grid-cols-[14rem_1fr] md:gap-16">
-        <h2 className="text-2xl font-semibold leading-[1.1] tracking-tight sm:text-3xl">
-          Beyond
-          <br />
-          Pixels.
+      {/* Philosophy statement card — dark brand green, mirroring the hero card */}
+      <div className="relative overflow-hidden rounded-3xl bg-[#0F2720] p-7 sm:p-12">
+        {/* Faint oversized quote mark */}
+        <span
+          className="pointer-events-none absolute -top-8 right-4 select-none text-[16rem] font-semibold leading-none text-white/[0.05] sm:right-10"
+          aria-hidden="true"
+        >
+          &rdquo;
+        </span>
+        <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-[#A9C6BA]">
+          My design philosophy
+        </p>
+        <h2 className="mt-4 text-3xl font-semibold leading-[1.08] tracking-tight text-white sm:text-5xl">
+          Beyond <span className="italic text-[#A9C6BA]">pixels.</span>
         </h2>
-        <p className="text-base leading-relaxed text-foreground sm:text-lg">
-          I believe design is the bridge between complex technology and human
-          emotion. I don&apos;t just make things look good; I make them work
-          seamlessly.{" "}
-          <span className="italic text-muted-foreground">
+        <p className="relative mt-6 max-w-2xl text-base leading-relaxed text-white/85 sm:text-lg">
+          i see design as a{" "}
+          <span className="text-[#E3A64A]">powerful strategic tool</span> to solve
+          complex business challenges and create lasting value. i believe designers
+          carry a responsibility not just towards their work, but also towards
+          society and the people they design for. i consider it a{" "}
+          <span className="text-[#E3A64A]">privilege to design</span> aka create for
+          a living, and my goal is to reflect that belief through the quality of my
+          work.
+        </p>
+        <span className="mt-8 block h-px w-24 bg-white/15" aria-hidden="true" />
+        <p className="relative mt-8 max-w-2xl text-base leading-relaxed text-white/70 sm:text-lg">
+          Design is the bridge between{" "}
+          <span className="text-white">complex technology</span> and{" "}
+          <span className="text-white">human emotion</span>. I don&apos;t just make
+          things look good; I make them work seamlessly.{" "}
+          <span className="italic text-[#A9C6BA]">
             My process is deeply rooted in research, rapid iteration with AI, and a
             slight obsession with micro-interactions.
           </span>
@@ -2741,7 +2745,6 @@ function AboutPage({ onBack }: { onBack: () => void }) {
         </button>
         <AboutMeSection />
         <DesignPhilosophy />
-        <BeyondPixels />
         <Experience />
         <WorkingWithMe />
         <HowIWork />
