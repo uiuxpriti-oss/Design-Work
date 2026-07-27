@@ -1034,8 +1034,10 @@ export const caseStudies: Record<string, CaseStudy> = {
       title: "Inside the product",
       text: "The same dark, precise language carried into the platform itself — security data that reads at a glance. Tap any screen to view it full size.",
       shots: [
+        { src: "projects/tabnet-dashboard.jpg", caption: "Security Posture Dashboard — overall risk score, findings, compliance and integration status, with product summaries and misconfiguration analysis in one view." },
         { src: "projects/tabnet-attack-surface.jpg", caption: "Attack Surface — monitored domains, a live subdomain network map, and critical findings ranked by severity." },
         { src: "projects/tabnet-risk-calculator.jpg", caption: "Risk Calculator — risk score, likelihood and impact with a radar breakdown, plus prioritised preventive measures." },
+        { src: "projects/tabnet-insights.jpg", caption: "FAIRCAM Controls Insights — the constellation view: every control mapped in orbit, click any node for detail and affected findings." },
       ],
     },
     outcomes: {
