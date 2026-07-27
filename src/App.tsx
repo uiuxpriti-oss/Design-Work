@@ -910,10 +910,13 @@ function ProjectCard({
         aria-label={`Open ${project.title} case study`}
         className="group grid w-full gap-2.5 rounded-[32px] bg-foreground/[0.05] p-2.5 text-left outline-none transition-colors focus-visible:ring-2 focus-visible:ring-foreground/25 focus-visible:ring-offset-4 focus-visible:ring-offset-background md:grid-cols-2 dark:bg-white/[0.05]"
       >
-        {/* Left panel — headline, description and tag */}
+        {/* Left panel — title, headline, description and tag */}
         <div className="flex flex-col justify-between gap-8 rounded-[24px] bg-white p-7 sm:p-9 dark:bg-card">
           <div>
-            <h3 className="text-[22px] font-semibold leading-[1.28] tracking-tight text-neutral-900 sm:text-[26px] dark:text-foreground">
+            <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-neutral-400 dark:text-muted-foreground">
+              {project.title}
+            </p>
+            <h3 className="mt-3 text-[22px] font-semibold leading-[1.28] tracking-tight text-neutral-900 sm:text-[26px] dark:text-foreground">
               {project.headline ?? project.description}
             </h3>
             {project.headline && (
@@ -926,30 +929,23 @@ function ProjectCard({
             {project.tag ?? "Case study"}
           </span>
         </div>
-        {/* Right panel — centered title lockup + visual */}
-        <div className="flex flex-col rounded-[24px] bg-white p-5 dark:bg-card">
-          <div className="pb-4 pt-1 text-center">
-            <span className="text-[17px] font-semibold tracking-tight text-neutral-900 dark:text-foreground">
-              {project.title}
-            </span>
-          </div>
-          <div className="relative flex-1 overflow-hidden rounded-2xl bg-neutral-50 dark:bg-background/50">
-            <div className="aspect-[16/11] w-full md:aspect-auto md:h-full">
-              {project.image && imgOk ? (
-                <img
-                  src={project.image}
-                  alt={project.title}
-                  loading="lazy"
-                  onError={() => setImgOk(false)}
-                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
-                />
-              ) : (
-                <div
-                  className={`h-full w-full bg-gradient-to-br ${project.gradient}`}
-                  aria-label={project.title}
-                />
-              )}
-            </div>
+        {/* Right panel — image fills the whole card, zooms on hover */}
+        <div className="group/img relative overflow-hidden rounded-[24px] bg-white dark:bg-card">
+          <div className="aspect-[16/11] w-full md:aspect-auto md:h-full">
+            {project.image && imgOk ? (
+              <img
+                src={project.image}
+                alt={project.title}
+                loading="lazy"
+                onError={() => setImgOk(false)}
+                className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover/img:scale-105"
+              />
+            ) : (
+              <div
+                className={`h-full w-full bg-gradient-to-br ${project.gradient} transition-transform duration-500 ease-out group-hover/img:scale-105`}
+                aria-label={project.title}
+              />
+            )}
           </div>
         </div>
       </button>
@@ -966,26 +962,13 @@ function Work({
 }) {
   return (
     <section id="work" className="mt-14 sm:mt-24 space-y-6">
-      <div className="flex items-end justify-between gap-4">
-        <div className="space-y-1">
-          <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
-            Selected Work
-          </p>
-          <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">
-            Case studies
-          </h2>
-        </div>
-        <button
-          type="button"
-          onClick={onViewAll}
-          className="group inline-flex shrink-0 items-center gap-2 rounded-full bg-foreground/[0.06] px-4 py-2 text-sm font-medium text-foreground outline-none transition-all duration-200 ease-out hover:bg-foreground/[0.1] active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-foreground/20 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-        >
-          View all
-          <ArrowRight
-            className="h-4 w-4 transition-transform group-hover:translate-x-0.5"
-            aria-hidden="true"
-          />
-        </button>
+      <div className="space-y-1">
+        <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
+          Selected Work
+        </p>
+        <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">
+          Case studies
+        </h2>
       </div>
       <div className="grid gap-6">
         {HOME_PROJECTS.map((project) => (
