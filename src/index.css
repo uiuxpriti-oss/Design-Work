@@ -170,34 +170,26 @@ html.lenis body {
       animation: none;
     }
   }
-  /* Global cursor-following dot field — faint blue-grey dots revealed in a soft circle around the cursor */
-  .cursor-dots {
+  /* Single dot that smoothly follows the cursor. */
+  .cursor-dot {
     position: fixed;
-    inset: 0;
-    z-index: -1;
+    top: 0;
+    left: 0;
+    z-index: 60;
+    height: 10px;
+    width: 10px;
+    border-radius: 9999px;
+    background: hsl(var(--foreground));
     pointer-events: none;
-    background-image: radial-gradient(rgba(148, 163, 184, 0.6) 0.8px, transparent 1.2px);
-    background-size: 12px 12px;
-    -webkit-mask-image: radial-gradient(
-      220px circle at var(--mx, -500px) var(--my, -500px),
-      #000 0%,
-      rgba(0, 0, 0, 0.35) 45%,
-      transparent 72%
-    );
-    mask-image: radial-gradient(
-      220px circle at var(--mx, -500px) var(--my, -500px),
-      #000 0%,
-      rgba(0, 0, 0, 0.35) 45%,
-      transparent 72%
-    );
+    transform: translate(var(--mx, -50px), var(--my, -50px)) translate(-50%, -50%);
     opacity: 0;
-    transition: opacity 450ms ease;
+    transition: opacity 300ms ease;
   }
-  .cursor-dots.is-on {
+  .cursor-dot.is-on {
     opacity: 1;
   }
   @media (prefers-reduced-motion: reduce), (pointer: coarse) {
-    .cursor-dots {
+    .cursor-dot {
       display: none;
     }
   }

@@ -1364,7 +1364,6 @@ export const aboutIntro =
 export const learning: string[] = [
   "Shipping AI products at Lumenore.",
   "Prototyping with AI more than I expected.",
-  "Training for the Kang Yatse II peak expedition.",
   "Reading more books.",
   "Learning development to build what I design.",
   "Trying to keep the promises I make to myself.",

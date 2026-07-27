@@ -913,36 +913,29 @@ function ProjectCard({
         className="group grid w-full gap-3 text-left outline-none focus-visible:ring-2 focus-visible:ring-foreground/25 focus-visible:ring-offset-4 focus-visible:ring-offset-background md:grid-cols-2"
       >
         {/* Left panel — headline, description and tag */}
-        <div className="flex flex-col justify-between gap-8 rounded-[28px] bg-foreground/[0.035] p-6 ring-1 ring-border/70 transition-colors group-hover:bg-foreground/[0.06] sm:p-8 dark:bg-white/[0.04]">
+        <div className="flex flex-col justify-between gap-8 rounded-[28px] bg-white p-7 shadow-[0_14px_34px_-18px_rgba(0,0,0,0.22)] ring-1 ring-black/[0.05] transition-all duration-300 group-hover:shadow-[0_20px_44px_-18px_rgba(0,0,0,0.3)] sm:p-9 dark:bg-white/[0.04] dark:shadow-none dark:ring-white/10">
           <div>
-            <h3 className="text-xl font-semibold leading-snug tracking-tight text-foreground sm:text-[26px] sm:leading-[1.2]">
+            <h3 className="text-[22px] font-semibold leading-[1.28] tracking-tight text-neutral-900 sm:text-[28px] dark:text-foreground">
               {project.headline ?? project.description}
             </h3>
             {project.headline && (
-              <p className="mt-4 text-[15px] leading-relaxed text-muted-foreground">
+              <p className="mt-5 text-[15px] leading-relaxed text-neutral-500 dark:text-muted-foreground">
                 {project.description}
               </p>
             )}
           </div>
-          <span className="inline-flex w-fit items-center gap-1.5 rounded-full bg-foreground px-4 py-2 text-sm font-medium text-background">
+          <span className="inline-flex w-fit items-center rounded-full bg-neutral-900 px-5 py-2.5 text-sm font-medium text-white dark:bg-foreground dark:text-background">
             {project.tag ?? "Case study"}
-            <ArrowUpRight
-              className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-              aria-hidden="true"
-            />
           </span>
         </div>
         {/* Right panel — titled visual */}
-        <div className="flex flex-col rounded-[28px] bg-foreground/[0.035] p-3 ring-1 ring-border/70 transition-colors group-hover:bg-foreground/[0.06] dark:bg-white/[0.04]">
-          <div className="flex items-center justify-between px-3 py-2">
-            <span className="text-sm font-semibold text-foreground">
+        <div className="flex flex-col rounded-[28px] bg-white p-5 shadow-[0_14px_34px_-18px_rgba(0,0,0,0.22)] ring-1 ring-black/[0.05] transition-all duration-300 group-hover:shadow-[0_20px_44px_-18px_rgba(0,0,0,0.3)] dark:bg-white/[0.04] dark:shadow-none dark:ring-white/10">
+          <div className="px-1 pb-4 pt-1">
+            <span className="text-[15px] font-semibold text-neutral-900 dark:text-foreground">
               {project.title}
             </span>
-            <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-background text-foreground shadow-sm ring-1 ring-border transition-transform duration-300 group-hover:scale-110">
-              <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
-            </span>
           </div>
-          <div className="relative flex-1 overflow-hidden rounded-2xl bg-background/50">
+          <div className="relative flex-1 overflow-hidden rounded-2xl bg-neutral-50 dark:bg-background/50">
             <div className="aspect-[16/11] w-full md:aspect-auto md:h-full">
               {project.image && imgOk ? (
                 <img
@@ -3208,8 +3201,8 @@ function CursorDots() {
     document.addEventListener("mouseleave", leave);
     let raf = 0;
     const tick = () => {
-      pos.current.x += (target.current.x - pos.current.x) * 0.08;
-      pos.current.y += (target.current.y - pos.current.y) * 0.08;
+      pos.current.x += (target.current.x - pos.current.x) * 0.2;
+      pos.current.y += (target.current.y - pos.current.y) * 0.2;
       const el = ref.current;
       if (el) {
         el.style.setProperty("--mx", `${pos.current.x}px`);
@@ -3225,7 +3218,7 @@ function CursorDots() {
     };
   }, []);
   return (
-    <div ref={ref} aria-hidden="true" className={`cursor-dots ${on ? "is-on" : ""}`} />
+    <div ref={ref} aria-hidden="true" className={`cursor-dot ${on ? "is-on" : ""}`} />
   );
 }
 
