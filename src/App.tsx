@@ -1242,6 +1242,20 @@ function StudySectionBlock({
           </p>
         ))}
       {block.bullets && <div className="mt-5">{<StudyBullets items={block.bullets} />}</div>}
+      {block.video && (
+        <div className="mt-6 overflow-hidden rounded-2xl bg-background/40 ring-1 ring-border">
+          <video
+            src={assetUrl(block.video)}
+            controls
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            className="w-full"
+            aria-label={block.title}
+          />
+        </div>
+      )}
       {block.columns && (
         <div
           className={`mt-6 grid gap-4 ${
