@@ -822,6 +822,7 @@ export const caseStudies: Record<string, CaseStudy> = {
           "Real-time delivery updates users can trust",
           "Room for the business to expand into new verticals",
         ],
+        image: "projects/baladi-hero.jpg",
       },
       {
         id: "process",
