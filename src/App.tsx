@@ -910,12 +910,12 @@ function ProjectCard({
         type="button"
         onClick={() => onOpen(project.id)}
         aria-label={`Open ${project.title} case study`}
-        className="group grid w-full gap-3 text-left outline-none focus-visible:ring-2 focus-visible:ring-foreground/25 focus-visible:ring-offset-4 focus-visible:ring-offset-background md:grid-cols-2"
+        className="group grid w-full gap-2.5 rounded-[32px] bg-foreground/[0.05] p-2.5 text-left outline-none transition-colors focus-visible:ring-2 focus-visible:ring-foreground/25 focus-visible:ring-offset-4 focus-visible:ring-offset-background md:grid-cols-2 dark:bg-white/[0.05]"
       >
         {/* Left panel — headline, description and tag */}
-        <div className="flex flex-col justify-between gap-8 rounded-[28px] bg-white p-7 shadow-[0_14px_34px_-18px_rgba(0,0,0,0.22)] ring-1 ring-black/[0.05] transition-all duration-300 group-hover:shadow-[0_20px_44px_-18px_rgba(0,0,0,0.3)] sm:p-9 dark:bg-white/[0.04] dark:shadow-none dark:ring-white/10">
+        <div className="flex flex-col justify-between gap-8 rounded-[24px] bg-white p-7 sm:p-9 dark:bg-card">
           <div>
-            <h3 className="text-[22px] font-semibold leading-[1.28] tracking-tight text-neutral-900 sm:text-[28px] dark:text-foreground">
+            <h3 className="text-[22px] font-semibold leading-[1.28] tracking-tight text-neutral-900 sm:text-[26px] dark:text-foreground">
               {project.headline ?? project.description}
             </h3>
             {project.headline && (
@@ -928,10 +928,10 @@ function ProjectCard({
             {project.tag ?? "Case study"}
           </span>
         </div>
-        {/* Right panel — titled visual */}
-        <div className="flex flex-col rounded-[28px] bg-white p-5 shadow-[0_14px_34px_-18px_rgba(0,0,0,0.22)] ring-1 ring-black/[0.05] transition-all duration-300 group-hover:shadow-[0_20px_44px_-18px_rgba(0,0,0,0.3)] dark:bg-white/[0.04] dark:shadow-none dark:ring-white/10">
-          <div className="px-1 pb-4 pt-1">
-            <span className="text-[15px] font-semibold text-neutral-900 dark:text-foreground">
+        {/* Right panel — centered title lockup + visual */}
+        <div className="flex flex-col rounded-[24px] bg-white p-5 dark:bg-card">
+          <div className="pb-4 pt-1 text-center">
+            <span className="text-[17px] font-semibold tracking-tight text-neutral-900 dark:text-foreground">
               {project.title}
             </span>
           </div>
