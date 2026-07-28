@@ -1265,20 +1265,21 @@ function StudySectionBlock({
               </div>
             )}
             {block.note && <StudyNote text={block.note} />}
-            {block.image && (
-              <div className="mt-6">
-                <StudyMedia value={block.image} alt={block.title || block.eyebrow || ""} onZoom={onZoom} />
-              </div>
-            )}
-            {block.images && (
-              <div className="mt-6 space-y-4">
-                {block.images.map((src, i) => (
-                  <StudyMedia key={i} value={src} alt={block.title || block.eyebrow || ""} onZoom={onZoom} />
-                ))}
-              </div>
-            )}
           </div>
         </div>
+        {/* Images break out of the text column — ~86vw, centered on the page */}
+        {block.image && (
+          <div className="relative left-1/2 mt-6 w-[min(max(86vw,100%),80rem)] -translate-x-1/2">
+            <StudyMedia value={block.image} alt={block.title || block.eyebrow || ""} onZoom={onZoom} />
+          </div>
+        )}
+        {block.images && (
+          <div className="relative left-1/2 mt-6 w-[min(max(86vw,100%),80rem)] -translate-x-1/2 space-y-6">
+            {block.images.map((src, i) => (
+              <StudyMedia key={i} value={src} alt={block.title || block.eyebrow || ""} onZoom={onZoom} />
+            ))}
+          </div>
+        )}
       </section>
     );
   }
