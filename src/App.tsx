@@ -1231,6 +1231,57 @@ function StudySectionBlock({
   block: StudyBlock;
   onZoom: (src: string) => void;
 }) {
+  // Editorial two-column row: small label left, content right (neat & clean).
+  if (block.side) {
+    return (
+      <section
+        id={`cs-${block.id}`}
+        className={`scroll-mt-24 ${block.title ? "mt-16 border-t border-border pt-10" : "mt-12"}`}
+      >
+        <div className="grid gap-3 sm:grid-cols-[180px_1fr] sm:gap-12">
+          <p className="text-[14px] font-semibold text-foreground">{block.title}</p>
+          <div>
+            {block.eyebrow && (
+              <p className="mb-3 text-[15px] font-medium text-[#0F2720]/50 dark:text-[#A9C6BA]/70">
+                {block.eyebrow}
+              </p>
+            )}
+            {block.lead && (
+              <p className="max-w-2xl text-[15px] leading-relaxed text-foreground/85">
+                {renderRich(block.lead)}
+              </p>
+            )}
+            {block.body?.map((p, i) => (
+              <p
+                key={i}
+                className="mt-4 max-w-2xl text-[15px] leading-relaxed text-foreground/85"
+              >
+                {renderRich(p)}
+              </p>
+            ))}
+            {block.bullets && (
+              <div className="mt-4">
+                <StudyBullets items={block.bullets} />
+              </div>
+            )}
+            {block.note && <StudyNote text={block.note} />}
+            {block.image && (
+              <div className="mt-6">
+                <StudyMedia value={block.image} alt={block.title || block.eyebrow || ""} onZoom={onZoom} />
+              </div>
+            )}
+            {block.images && (
+              <div className="mt-6 space-y-4">
+                {block.images.map((src, i) => (
+                  <StudyMedia key={i} value={src} alt={block.title || block.eyebrow || ""} onZoom={onZoom} />
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
+    );
+  }
   return (
     <CaseSection id={`cs-${block.id}`} eyebrow={block.eyebrow ?? ""} title={block.title}>
       {block.lead && (

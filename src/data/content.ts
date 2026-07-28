@@ -212,6 +212,8 @@ export interface StudyBlock {
   id: string;
   eyebrow?: string;
   title: string;
+  /** Editorial two-column row: small label (title) on the left, content on the right. */
+  side?: boolean;
   /** Lead paragraph (supports **bold**). */
   lead?: string;
   /** Body paragraphs. */
@@ -995,53 +997,65 @@ export const caseStudies: Record<string, CaseStudy> = {
     },
     sections: [
       {
-        id: "brief",
-        eyebrow: "The brief",
-        title: "A stablecoin that had to earn trust",
-        lead: "**CapitalFi (CFI)** is pegged to physical gold. The audience it courts — gold buyers, cautious investors — is exactly the audience most sceptical of crypto.",
+        id: "overview",
+        side: true,
+        title: "Overview",
+        lead: "**CapitalFi (CFI)** is a stablecoin backed by physical gold — a digital asset pairing the enduring value of gold with the flexibility of blockchain. I designed the full 6-page marketing site: Home, About, Transparency, Blog, Resources, and Contact.",
+      },
+      {
+        id: "challenge",
+        side: true,
+        title: "Challenge",
+        lead: "Crypto asks for trust; gold buyers give it slowly. The audience this site courts — cautious, gold-minded investors — is exactly the audience most sceptical of crypto, and most allergic to neon-gradient Web3 aesthetics.",
         body: [
-          "So the site borrows its manners from banking, not from Web3: real photography of the asset, plain-language answers about custody and audits, and one calm, repeated call to action.",
-        ],
-        bullets: [
-          "Lead with the physical gold, not the token",
-          "Transparency as a first-class page in the navigation",
-          "One consistent 'Get Started' action across all six pages",
+          "So the site borrows its manners from banking, not Web3: real photography of the asset, plain-language answers about custody and audits, and one calm, repeated call to action.",
         ],
       },
       {
-        id: "home",
-        eyebrow: "Pages",
-        title: "Home — one scroll, the whole trust story",
+        id: "solution-home",
+        side: true,
+        title: "Solution",
+        eyebrow: "Home — one scroll, the whole trust story",
         lead: "The hero opens on real gold bars — **\"We are backed by physical gold\"** — then the page walks stability, security and transparency, the roadmap, how it works, FAQs, and community, ending on a single CTA.",
         image: "projects/capitalfi-home.jpg",
       },
       {
-        id: "transparency",
-        eyebrow: "Pages",
-        title: "Transparency — proof before promises",
+        id: "solution-transparency",
+        side: true,
+        title: "",
+        eyebrow: "Transparency — proof before promises",
         lead: "The page most sites bury is the second stop here: **what CFI is**, how the gold is stored, and how it's audited — answered in plain language with the same calm visual system.",
         image: "projects/capitalfi-transparency.jpg",
       },
       {
-        id: "about",
-        eyebrow: "Pages",
-        title: "About — the people behind the peg",
+        id: "solution-about",
+        side: true,
+        title: "",
+        eyebrow: "About — the people behind the peg",
         lead: "Mission, values, and the team — because for this audience, **who** holds the gold matters as much as the gold itself.",
         image: "projects/capitalfi-about.jpg",
       },
       {
-        id: "community",
-        eyebrow: "Pages",
-        title: "Blog, community & resources",
+        id: "solution-community",
+        side: true,
+        title: "",
+        eyebrow: "Blog, community & resources",
         lead: "A blog for ongoing signals of life, a community invitation, and a resources menu that surfaces the white paper — the document serious investors actually look for.",
         images: ["projects/capitalfi-blog.jpg", "projects/capitalfi-resources.jpg"],
       },
       {
-        id: "contact",
-        eyebrow: "Pages",
-        title: "Contact — short form, human details",
+        id: "solution-contact",
+        side: true,
+        title: "",
+        eyebrow: "Contact — short form, human details",
         lead: "A deliberately short form next to real contact details — email, phone, and a physical address, one more small trust signal.",
         image: "projects/capitalfi-contact.jpg",
+      },
+      {
+        id: "outcome",
+        side: true,
+        title: "Outcome",
+        lead: "A trust-first site that lets the gold do the convincing — six pages, one shared visual system, shipped from IA to handoff in four weeks.",
         note: "Every page ends the same way: one action, repeated calmly — no urgency tricks, because urgency is what this audience distrusts.",
       },
     ],
