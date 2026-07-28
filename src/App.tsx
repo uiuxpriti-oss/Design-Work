@@ -30,6 +30,7 @@ import {
   RotateCcw,
   Play,
   Pause,
+  Presentation,
   SkipBack,
   SkipForward,
   AudioLines,
@@ -2004,6 +2005,7 @@ const SKILL_ICONS: Record<string, LucideIcon> = {
   // UI & Visual Design
   "Visual Design": Palette,
   Typography: Type,
+  "Pitch Deck Design": Presentation,
   Layout: LayoutGrid,
   Branding: Palette,
   "Responsive Design": Smartphone,

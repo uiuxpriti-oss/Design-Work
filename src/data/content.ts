@@ -1536,6 +1536,7 @@ export const skillCategories: SkillCategory[] = [
       "Typography",
       "Layout",
       "Branding",
+      "Pitch Deck Design",
       "Responsive Design",
       "Accessibility",
       "WCAG",
