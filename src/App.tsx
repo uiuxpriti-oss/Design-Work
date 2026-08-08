@@ -1298,7 +1298,7 @@ function StudySectionBlock({
         </div>
         {/* Images break out of the text column — ~86vw, centered on the page */}
         {block.image && block.scroller && (
-          <figure className="relative left-1/2 mt-6 w-[min(max(86vw,100%),80rem)] -translate-x-1/2">
+          <figure className="relative left-1/2 mt-6 w-[min(max(72vw,100%),68rem)] -translate-x-1/2">
             <div className="overflow-hidden rounded-2xl bg-card shadow-xl ring-1 ring-border">
               {/* Browser chrome */}
               <div className="flex items-center gap-2 border-b border-border bg-background/60 px-4 py-3">
@@ -1327,12 +1327,12 @@ function StudySectionBlock({
           </figure>
         )}
         {block.image && !block.scroller && (
-          <div className="relative left-1/2 mt-6 w-[min(max(86vw,100%),80rem)] -translate-x-1/2">
+          <div className="relative left-1/2 mt-6 w-[min(max(72vw,100%),68rem)] -translate-x-1/2">
             <StudyMedia value={block.image} alt={block.title || block.eyebrow || ""} onZoom={onZoom} />
           </div>
         )}
         {block.images && (
-          <div className="relative left-1/2 mt-6 w-[min(max(86vw,100%),80rem)] -translate-x-1/2 space-y-6">
+          <div className="relative left-1/2 mt-6 w-[min(max(72vw,100%),68rem)] -translate-x-1/2 space-y-6">
             {block.images.map((src, i) => (
               <StudyMedia key={i} value={src} alt={block.title || block.eyebrow || ""} onZoom={onZoom} />
             ))}
