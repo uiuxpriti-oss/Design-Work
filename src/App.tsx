@@ -1308,10 +1308,32 @@ function StudySectionBlock({
               </div>
             )}
             {block.note && <StudyNote text={block.note} />}
+            {/* Narrow: the image stays inside the text column */}
+            {block.narrow && block.image && (
+              <div className="mt-5">
+                <StudyMedia
+                  value={block.image}
+                  alt={block.title || block.eyebrow || ""}
+                  onZoom={onZoom}
+                />
+              </div>
+            )}
+            {block.narrow && block.images && (
+              <div className="mt-5 space-y-4">
+                {block.images.map((src, i) => (
+                  <StudyMedia
+                    key={i}
+                    value={src}
+                    alt={block.title || block.eyebrow || ""}
+                    onZoom={onZoom}
+                  />
+                ))}
+              </div>
+            )}
           </div>
         </div>
         {/* Images break out of the text column — ~72vw, centered on the page */}
-        {block.image && block.scroller && (
+        {block.image && block.scroller && !block.narrow && (
           <figure className="relative left-1/2 mt-6 w-[min(max(72vw,100%),68rem)] -translate-x-1/2">
             <div className="overflow-hidden rounded-2xl bg-card shadow-xl ring-1 ring-border">
               {/* Browser chrome */}
@@ -1340,12 +1362,12 @@ function StudySectionBlock({
             </figcaption>
           </figure>
         )}
-        {block.image && !block.scroller && (
+        {block.image && !block.scroller && !block.narrow && (
           <div className="relative left-1/2 mt-6 w-[min(max(72vw,100%),68rem)] -translate-x-1/2">
             <StudyMedia value={block.image} alt={block.title || block.eyebrow || ""} onZoom={onZoom} />
           </div>
         )}
-        {block.images && (
+        {block.images && !block.narrow && (
           <div className="relative left-1/2 mt-6 w-[min(max(72vw,100%),68rem)] -translate-x-1/2 space-y-6">
             {block.images.map((src, i) => (
               <StudyMedia key={i} value={src} alt={block.title || block.eyebrow || ""} onZoom={onZoom} />

@@ -214,6 +214,8 @@ export interface StudyBlock {
   title: string;
   /** Editorial two-column row: small label (title) on the left, content on the right. */
   side?: boolean;
+  /** With `side`: keep the image inside the text column instead of breaking out wide. */
+  narrow?: boolean;
   /** Lead paragraph (supports **bold**). */
   lead?: string;
   /** Body paragraphs. */
@@ -1488,25 +1490,25 @@ export const caseStudies: Record<string, CaseStudy> = {
       {
         id: "colors",
         side: true,
-        title: "Ideate",
-        eyebrow: "Colors",
-        lead: "A palette of **Royal Blue, Portage and Selago**. Royal Blue carries trust, Portage adds refinement, and Selago keeps the background calm — with a Royal-Blue-to-Portage gradient for depth on hero and CTA moments.",
+        narrow: true,
+        title: "Colors",
+        lead: "A palette of **Royal Blue, Portage and Selago**. Royal Blue carries trust, Portage adds a hint of refinement, and Selago keeps the background calm — with a Royal-Blue-to-Portage gradient adding depth on hero and CTA moments.",
         image: "projects/leads-colors.jpg",
       },
       {
         id: "type",
         side: true,
-        title: "",
-        eyebrow: "Visual and typography hierarchy",
-        lead: "**Qanelas** across four weights, mapped deliberately: Bold for prices, SemiBold for plan names, Medium for section labels, Regular for body — so a dense pricing card is readable in one pass.",
+        narrow: true,
+        title: "Visual and typography hierarchy",
+        lead: "**Qanelas** across four weights, mapped deliberately: Bold for prices, SemiBold for plan names, Medium for section labels, Regular for body — so a dense pricing card stays readable in one pass.",
         image: "projects/leads-type.jpg",
       },
       {
         id: "icons",
         side: true,
-        title: "",
-        eyebrow: "Minimalistic iconography",
-        lead: "Simple, instantly recognisable icons that prioritise clarity — visual cues that carry people through navigation without a second thought.",
+        narrow: true,
+        title: "Minimalistic iconography",
+        lead: "UX principles first, clarity prioritised: minimalist icons that are easily identifiable and lead users through navigation with ease across every part of the product.",
         image: "projects/leads-icons.jpg",
       },
       {
