@@ -1268,7 +1268,36 @@ function StudySectionBlock({
           </div>
         </div>
         {/* Images break out of the text column — ~86vw, centered on the page */}
-        {block.image && (
+        {block.image && block.scroller && (
+          <figure className="relative left-1/2 mt-6 w-[min(max(86vw,100%),80rem)] -translate-x-1/2">
+            <div className="overflow-hidden rounded-2xl bg-card shadow-xl ring-1 ring-border">
+              {/* Browser chrome */}
+              <div className="flex items-center gap-2 border-b border-border bg-background/60 px-4 py-3">
+                <span className="flex gap-1.5" aria-hidden="true">
+                  <span className="h-3 w-3 rounded-full bg-[#ff5f56]" />
+                  <span className="h-3 w-3 rounded-full bg-[#ffbd2e]" />
+                  <span className="h-3 w-3 rounded-full bg-[#27c93f]" />
+                </span>
+                <span className="mx-auto rounded-full bg-foreground/[0.06] px-4 py-1 text-[12px] text-muted-foreground">
+                  {block.scroller.label ?? "capitalfi.com"}
+                </span>
+              </div>
+              {/* The full page — scrolls inside the frame */}
+              <div className="max-h-[75vh] overflow-y-auto overscroll-contain">
+                <img
+                  src={assetUrl(block.image)}
+                  alt={block.title || block.eyebrow || ""}
+                  loading="lazy"
+                  className="w-full align-top"
+                />
+              </div>
+            </div>
+            <figcaption className="mt-2.5 text-[13px] text-muted-foreground">
+              Scroll inside the frame to walk the full page.
+            </figcaption>
+          </figure>
+        )}
+        {block.image && !block.scroller && (
           <div className="relative left-1/2 mt-6 w-[min(max(86vw,100%),80rem)] -translate-x-1/2">
             <StudyMedia value={block.image} alt={block.title || block.eyebrow || ""} onZoom={onZoom} />
           </div>

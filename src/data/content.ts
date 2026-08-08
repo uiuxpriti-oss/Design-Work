@@ -48,19 +48,6 @@ export const projects: Project[] = [
     tag: "Brand & Web",
   },
   {
-    id: "project-avoda",
-    title: "Avoda",
-    description: "A collaborative product journey from idea to launch.",
-    href: "https://uiuxpriti.com/projects/avoda",
-    likes: 28,
-    image: "projects/avoda.jpg",
-    gradient: "from-indigo-300 via-blue-200 to-sky-100",
-    measures: ["Faster onboarding", "More complete profiles", "More employer contacts"],
-    headline:
-      "A collaborative hiring journey that speeds onboarding and builds profiles that actually get seen.",
-    tag: "0→1 Product",
-  },
-  {
     id: "project-baladi-express",
     title: "Baladi Express",
     description: "A fast multi-category delivery experience — food, grocery & more.",
@@ -232,6 +219,8 @@ export interface StudyBlock {
   image?: string;
   /** A video under /public, shown full-width with controls. */
   video?: string;
+  /** Render `image` inside a scrollable browser frame (for full page scrolls). */
+  scroller?: { label?: string };
   /** Multiple images (real paths) or placeholders, stacked full-width. */
   images?: string[];
   /** Titled sub-screens, each shown full-width with its own note/bullets. */
@@ -1017,15 +1006,16 @@ export const caseStudies: Record<string, CaseStudy> = {
         title: "Solution",
         eyebrow: "Home — one scroll, the whole trust story",
         lead: "The hero opens on real gold bars — **\"We are backed by physical gold\"** — then the page walks stability, security and transparency, the roadmap, how it works, FAQs, and community, ending on a single CTA.",
-        image: "projects/capitalfi-home.jpg",
+        image: "projects/capitalfi-home-full.jpg",
+        scroller: { label: "capitalfi.com" },
       },
       {
         id: "solution-transparency",
         side: true,
         title: "",
         eyebrow: "Transparency — proof before promises",
-        lead: "The page most sites bury is the second stop here: **what CFI is**, how the gold is stored, and how it's audited — answered in plain language with the same calm visual system.",
-        image: "projects/capitalfi-transparency.jpg",
+        lead: "The page most sites bury is the second stop here: **how the gold is stored**, how it's audited, and how the chain and contracts work — each answered as its own card, in plain language.",
+        image: "projects/capitalfi-proof.jpg",
       },
       {
         id: "solution-about",
