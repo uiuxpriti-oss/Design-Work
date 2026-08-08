@@ -35,19 +35,6 @@ export const projects: Project[] = [
     tag: "AI · In progress",
   },
   {
-    id: "project-brevio",
-    title: "Brevio",
-    description: "A launch landing page for a short-film platform — designed and shipped in 24 hours.",
-    href: "https://uiuxpriti.com/projects/brevio",
-    likes: 24,
-    image: "projects/brevio.jpg",
-    gradient: "from-violet-600 via-indigo-500 to-lime-300",
-    measures: ["24-hour turnaround", "Two hero directions", "Signups before launch"],
-    headline:
-      "Designing a launch page for a short-film platform in 24 hours — and making the wait feel like the event.",
-    tag: "Event Landing · 24h",
-  },
-  {
     id: "project-tabnet-security",
     title: "Tabnet Security",
     description: "A trustworthy identity for a modern security product.",
@@ -59,6 +46,19 @@ export const projects: Project[] = [
     headline:
       "A trustworthy identity for a modern security product — framing that turns visits into demo requests.",
     tag: "Brand & Web",
+  },
+  {
+    id: "project-brevio",
+    title: "Brevio",
+    description: "A launch landing page for a short-film platform — designed and shipped in 24 hours.",
+    href: "https://uiuxpriti.com/projects/brevio",
+    likes: 24,
+    image: "projects/brevio.jpg",
+    gradient: "from-violet-600 via-indigo-500 to-lime-300",
+    measures: ["24-hour turnaround", "Two hero directions", "Signups before launch"],
+    headline:
+      "Designing a launch page for a short-film platform in 24 hours — and making the wait feel like the event.",
+    tag: "Event Landing · 24h",
   },
   {
     id: "project-baladi-express",
