@@ -1293,10 +1293,24 @@ function StudySectionBlock({
                 <StudyBullets items={block.bullets} />
               </div>
             )}
+            {block.stats && (
+              <div className="mt-6 flex flex-wrap gap-x-10 gap-y-5">
+                {block.stats.map((st) => (
+                  <div key={st.label}>
+                    <p className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
+                      {st.value}
+                    </p>
+                    <p className="mt-1.5 max-w-[18ch] text-[13px] leading-snug text-muted-foreground">
+                      {st.label}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            )}
             {block.note && <StudyNote text={block.note} />}
           </div>
         </div>
-        {/* Images break out of the text column — ~86vw, centered on the page */}
+        {/* Images break out of the text column — ~72vw, centered on the page */}
         {block.image && block.scroller && (
           <figure className="relative left-1/2 mt-6 w-[min(max(72vw,100%),68rem)] -translate-x-1/2">
             <div className="overflow-hidden rounded-2xl bg-card shadow-xl ring-1 ring-border">

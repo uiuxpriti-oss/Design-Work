@@ -74,6 +74,19 @@ export const projects: Project[] = [
     tag: "SaaS Redesign",
   },
   {
+    id: "project-brevio",
+    title: "Brevio",
+    description: "A launch landing page for a short-film platform — designed and shipped in 24 hours.",
+    href: "https://uiuxpriti.com/projects/brevio",
+    likes: 24,
+    image: "projects/brevio.jpg",
+    gradient: "from-violet-600 via-indigo-500 to-lime-300",
+    measures: ["24-hour turnaround", "Two hero directions", "Signups before launch"],
+    headline:
+      "Designing a launch page for a short-film platform in 24 hours — and making the wait feel like the event.",
+    tag: "Event Landing · 24h",
+  },
+  {
     id: "project-capitalfi",
     title: "CapitalFi",
     description: "A trust-first marketing website for a gold-backed stablecoin.",
@@ -926,6 +939,145 @@ export const caseStudies: Record<string, CaseStudy> = {
       ],
       text:
         "Unifying the categories under one system lifted cross-category ordering and made search feel dependable.",
+    },
+  },
+  "project-brevio": {
+    intro: [
+      "**Brevio** is a new home for short films — a platform where Spanish-speaking filmmakers, students and creators upload their work, get paid for it, and build an audience without waiting for permission.",
+      "The ask was a **launch event landing page**, and the deadline was **24 hours**: a countdown to opening day, a contest for the first 100 uploads, and enough personality to make people sign up before the product even existed.",
+      "I explored **two hero directions**, picked the one that sold the moment hardest, and shipped the full page — hero to footer — inside the day.",
+    ],
+    tags: {
+      role: ["Product Designer", "Visual Design"],
+      status: ["Shipped", "2025"],
+      type: ["Entertainment", "Launch Campaign", "Web"],
+      tools: ["Figma"],
+    },
+    eyebrow: "Web Design · Launch Campaign",
+    summary:
+      "A launch landing page for Brevio, a short-film platform — countdown, contest, and a personality-first pitch, designed and shipped in 24 hours.",
+    meta: {
+      role: "Product & Visual Designer",
+      timeline: "24 hours",
+      team: "Founder + developer",
+      tools: "Figma",
+    },
+    overview:
+      "Brevio needed a pre-launch page that could collect signups and contest entries before the platform opened. With a single day to design it, the work was as much about decisiveness as craft: set a visual direction fast, write copy that sounds like the brand, and hand off something a developer can build immediately.",
+    problem: {
+      text:
+        "A pre-launch page has nothing to demo — no product screenshots, no social proof. It has to sell a promise, and it has to do it fast enough that people hand over their email.",
+      goals: [
+        "Make an unlaunched product feel like an event worth joining",
+        "Give the contest — €200 to the first 100 uploads — a clear, urgent home",
+        "Set a full visual direction inside one working day",
+      ],
+    },
+    research: {
+      text:
+        "No time for a study. I looked at how launch pages for creator platforms build urgency — countdowns, waitlists, contest mechanics — and borrowed the patterns that convert without feeling like a scam.",
+      findings: [
+        "A live countdown does more for urgency than any amount of copy",
+        "Creator audiences respond to attitude, not corporate polish",
+        "The signup form has to sit above the fold, not after the pitch",
+      ],
+    },
+    process: [
+      { step: "Direction", text: "Two hero explorations in the first hours — bento vs. cinematic." },
+      { step: "Decide", text: "Picked the direction that put the countdown and form first." },
+      { step: "Build", text: "Designed the full page — hero to footer — in one pass." },
+      { step: "Handoff", text: "Specs and assets to the developer the same day." },
+    ],
+    solution: {
+      text:
+        "An electric purple-and-lime identity with a serif display voice: a live countdown, a signup form above the fold, an attitude-led manifesto section, and a plain-spoken feature set — all in Spanish, all sounding like a filmmaker wrote it.",
+      highlights: [
+        { title: "The countdown leads", text: "Days, hours, minutes — the launch is the headline." },
+        { title: "Attitude as brand", text: "‘Hollywood no te va a llamar. Y qué.’ does the persuading." },
+        { title: "Contest, front and centre", text: "€200 to the first 100 uploads, impossible to miss." },
+      ],
+    },
+    sections: [
+      {
+        id: "overview",
+        side: true,
+        title: "Overview",
+        lead: "**Brevio** is a new home for short films — a platform where Spanish-speaking filmmakers upload work, get paid, and build an audience. I designed its **launch event landing page** in **24 hours**: countdown, contest, manifesto, and feature set, hero to footer.",
+      },
+      {
+        id: "challenge",
+        side: true,
+        title: "Challenge",
+        lead: "A pre-launch page has nothing to demo — no product shots, no reviews, no numbers. It has to sell a promise fast enough that a filmmaker hands over their email, and it had to exist by tomorrow.",
+        body: [
+          "That ruled out research rounds and long explorations. The plan: two hero directions in the first hours, one decision, then a single confident pass through the whole page.",
+        ],
+      },
+      {
+        id: "ideation",
+        side: true,
+        title: "Ideation",
+        eyebrow: "Two directions for the hero",
+        lead: "**Direction A — the bento hero.** A bright purple board that packs everything into one view: headline, contest dates, an awards tile, the €200 prize, and a big register button. Busy on purpose — it treats the launch like a festival poster.",
+        body: [
+          "**Direction B — the cinematic hero.** Near-black, centred serif headline, and a fanned row of film stills underneath. Quieter, more premium, and it makes the films the hero instead of the offer.",
+          "I shipped **B**: with no product to show, the emotional pitch — **this is where your film lives** — converts better than a wall of offers, and the countdown gives it all the urgency the bento layout was trying to manufacture.",
+        ],
+        image: "Two hero directions — bento vs. cinematic",
+      },
+      {
+        id: "solution-hero",
+        side: true,
+        title: "Solution",
+        eyebrow: "The hero — countdown first",
+        lead: "A live countdown to **15/10/2025** sits above the headline, the signup form sits directly under it, and floating **#Quehistoria:)** stickers scatter across the page like set decoration. Nothing stands between arriving and signing up.",
+        image: "Hero — countdown, headline, signup form",
+      },
+      {
+        id: "solution-manifesto",
+        side: true,
+        title: "",
+        eyebrow: "The manifesto — attitude as the pitch",
+        lead: "**\"Hollywood no te va a llamar. Y qué.\"** — the section that does the real persuading. No waiting for a man in a suit to give permission; make the thing. Cut-out portraits on a lime field keep it human and a little irreverent.",
+        image: "Manifesto section — Hollywood no te va a llamar",
+      },
+      {
+        id: "solution-features",
+        side: true,
+        title: "",
+        eyebrow: "What's coming — the plain-spoken feature set",
+        lead: "Four cards with no jargon: upload your work, get paid via Stripe (**you keep 80%**), track it all in a dashboard, and teach or learn from real creators. Then **Formatos para cada historia** — vertical for quick hooks, horizontal for real cinema.",
+        image: "Lo que viene — features and formats",
+      },
+      {
+        id: "solution-close",
+        side: true,
+        title: "",
+        eyebrow: "The close — app download and one last push",
+        lead: "Store links so creators can start uploading before launch day, then a closing line that earns the signup: **\"Si esperas a tener el equipo perfecto, alguien más hará ruido por ti.\"**",
+        image: "Closing sections — app download and final CTA",
+        note: "Every section ends in the same place: the countdown, or the form. On a pre-launch page, momentum is the whole design.",
+      },
+      {
+        id: "outcome",
+        side: true,
+        title: "Outcome",
+        lead: "A complete launch identity and landing page — hero to footer, in Spanish, with a live countdown and contest mechanics — designed, decided, and handed off inside **24 hours**.",
+        stats: [
+          { value: "24 hrs", label: "concept to handoff" },
+          { value: "2", label: "hero directions explored" },
+          { value: "1", label: "page, full brand direction set" },
+        ],
+      },
+    ],
+    outcomes: {
+      metrics: [
+        { value: "24 hrs", label: "Concept to handoff" },
+        { value: "2", label: "Hero directions" },
+        { value: "1 day", label: "Full brand direction" },
+      ],
+      text:
+        "A launch page that made an unreleased product feel like an event — designed and shipped in a single day.",
     },
   },
   "project-capitalfi": {
