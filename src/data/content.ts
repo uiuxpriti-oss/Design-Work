@@ -1364,6 +1364,13 @@ export const caseStudies: Record<string, CaseStudy> = {
         { title: "Honest AI states", text: "Clear ‘generating…’ and copy affordances build trust." },
       ],
     },
+    gallery: {
+      title: "The workspace",
+      text: "Everything about a call in one screen — a scrubbable recording up top, the transcript beside customer and agent summaries, sentiment as an emoji-anchored trend, and the ticket summary with upsell suggestions below.",
+      shots: [
+        { src: "projects/ata-dashboard.jpg", caption: "The call workspace — recording, transcript, dual summaries, sentiment trends, ticket details, and upsell prompts in a single view." },
+      ],
+    },
     outcomes: {
       metrics: [
         { value: "-55%", label: "Call review time" },

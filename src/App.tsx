@@ -147,12 +147,41 @@ const BRAND_LOGOS: Record<string, BrandLogo> = {
 
 function useTapSound() {
   useEffect(() => {
+    // Touch: a scroll also starts with pointerdown, so wait for pointerup and
+    // only play when the finger stayed put (a real tap, not a swipe).
+    const MOVE_TOLERANCE = 10; // px
+    const TAP_MAX_MS = 700;
+    let start: { x: number; y: number; t: number } | null = null;
+
     const onPointerDown = (e: PointerEvent) => {
       if (e.button !== 0) return; // primary button / touch only
-      playTap();
+      if (e.pointerType === "mouse") {
+        playTap();
+        return;
+      }
+      start = { x: e.clientX, y: e.clientY, t: e.timeStamp };
     };
+    const onPointerUp = (e: PointerEvent) => {
+      if (!start) return;
+      const moved = Math.hypot(e.clientX - start.x, e.clientY - start.y);
+      const elapsed = e.timeStamp - start.t;
+      start = null;
+      if (moved <= MOVE_TOLERANCE && elapsed <= TAP_MAX_MS) playTap();
+    };
+    const onCancel = () => {
+      start = null; // the browser took over for scrolling
+    };
+
     document.addEventListener("pointerdown", onPointerDown);
-    return () => document.removeEventListener("pointerdown", onPointerDown);
+    document.addEventListener("pointerup", onPointerUp);
+    document.addEventListener("pointercancel", onCancel);
+    document.addEventListener("scroll", onCancel, { passive: true, capture: true });
+    return () => {
+      document.removeEventListener("pointerdown", onPointerDown);
+      document.removeEventListener("pointerup", onPointerUp);
+      document.removeEventListener("pointercancel", onCancel);
+      document.removeEventListener("scroll", onCancel, { capture: true });
+    };
   }, []);
 }
 
