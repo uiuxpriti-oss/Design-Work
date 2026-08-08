@@ -1590,6 +1590,35 @@ function CaseStudyRail() {
   );
 }
 
+// Floating "All work" button — slides in once the header scrolls away.
+function FloatingBack({ onBack }: { onBack: () => void }) {
+  const [show, setShow] = useState(false);
+  useEffect(() => {
+    const onScroll = () => setShow(window.scrollY > 260);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+  return (
+    <button
+      type="button"
+      onClick={onBack}
+      aria-label="Back to all work"
+      className={`group fixed left-4 top-20 z-40 inline-flex items-center gap-2 rounded-full border border-border bg-background/90 px-4 py-2.5 text-sm font-medium text-foreground shadow-lg backdrop-blur-sm outline-none transition-all duration-300 ease-out hover:bg-card active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-foreground/25 sm:left-6 ${
+        show
+          ? "translate-x-0 opacity-100"
+          : "pointer-events-none -translate-x-3 opacity-0"
+      }`}
+    >
+      <ArrowLeft
+        className="h-4 w-4 transition-transform group-hover:-translate-x-0.5"
+        aria-hidden="true"
+      />
+      All work
+    </button>
+  );
+}
+
 function CaseStudyPage({
   id,
   onBack,
@@ -1611,6 +1640,7 @@ function CaseStudyPage({
   return (
     <main className="mx-auto max-w-[52rem] px-6 pb-14 sm:pb-32">
       <CaseStudyRail />
+      <FloatingBack onBack={onBack} />
       <button
         type="button"
         onClick={onBack}
