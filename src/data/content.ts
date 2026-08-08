@@ -1023,7 +1023,7 @@ export const caseStudies: Record<string, CaseStudy> = {
           "**Direction B — the cinematic hero.** Near-black, centred serif headline, and a fanned row of film stills underneath. Quieter, more premium, and it makes the films the hero instead of the offer.",
           "I shipped **B**: with no product to show, the emotional pitch — **this is where your film lives** — converts better than a wall of offers, and the countdown gives it all the urgency the bento layout was trying to manufacture.",
         ],
-        image: "Two hero directions — bento vs. cinematic",
+        image: "projects/brevio-ideations.jpg",
       },
       {
         id: "solution-hero",
@@ -1031,7 +1031,7 @@ export const caseStudies: Record<string, CaseStudy> = {
         title: "Solution",
         eyebrow: "The hero — countdown first",
         lead: "A live countdown to **15/10/2025** sits above the headline, the signup form sits directly under it, and floating **#Quehistoria:)** stickers scatter across the page like set decoration. Nothing stands between arriving and signing up.",
-        image: "Hero — countdown, headline, signup form",
+        image: "projects/brevio-hero.jpg",
       },
       {
         id: "solution-manifesto",
@@ -1039,7 +1039,7 @@ export const caseStudies: Record<string, CaseStudy> = {
         title: "",
         eyebrow: "The manifesto — attitude as the pitch",
         lead: "**\"Hollywood no te va a llamar. Y qué.\"** — the section that does the real persuading. No waiting for a man in a suit to give permission; make the thing. Cut-out portraits on a lime field keep it human and a little irreverent.",
-        image: "Manifesto section — Hollywood no te va a llamar",
+        image: "projects/brevio-manifesto.jpg",
       },
       {
         id: "solution-features",
@@ -1047,7 +1047,7 @@ export const caseStudies: Record<string, CaseStudy> = {
         title: "",
         eyebrow: "What's coming — the plain-spoken feature set",
         lead: "Four cards with no jargon: upload your work, get paid via Stripe (**you keep 80%**), track it all in a dashboard, and teach or learn from real creators. Then **Formatos para cada historia** — vertical for quick hooks, horizontal for real cinema.",
-        image: "Lo que viene — features and formats",
+        image: "projects/brevio-features.jpg",
       },
       {
         id: "solution-close",
@@ -1055,7 +1055,7 @@ export const caseStudies: Record<string, CaseStudy> = {
         title: "",
         eyebrow: "The close — app download and one last push",
         lead: "Store links so creators can start uploading before launch day, then a closing line that earns the signup: **\"Si esperas a tener el equipo perfecto, alguien más hará ruido por ti.\"**",
-        image: "Closing sections — app download and final CTA",
+        image: "projects/brevio-close.jpg",
         note: "Every section ends in the same place: the countdown, or the form. On a pre-launch page, momentum is the whole design.",
       },
       {
