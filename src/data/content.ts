@@ -216,6 +216,8 @@ export interface StudyBlock {
   side?: boolean;
   /** With `side`: keep the image inside the text column instead of breaking out wide. */
   narrow?: boolean;
+  /** Second image revealed on hover/tap over `image` (e.g. wireframe → visual design). */
+  hoverImage?: string;
   /** Lead paragraph (supports **bold**). */
   lead?: string;
   /** Body paragraphs. */
@@ -1533,7 +1535,18 @@ export const caseStudies: Record<string, CaseStudy> = {
         title: "",
         eyebrow: "UI elements — the working parts",
         lead: "Landing-page performance at a glance (impressions, leads, conversion rate), audience syncing to Mailchimp, Active Campaign or Constant Contact, plus payment summary and scheduling — the unglamorous screens that decide whether a tool gets used.",
-        images: ["projects/leads-components.jpg", "projects/leads-screens.jpg"],
+        image: "projects/leads-components.jpg",
+      },
+      {
+        id: "wireframes",
+        side: true,
+        title: "Wireframes → visual design",
+        lead: "Every screen was structured in **greyscale first** — hierarchy, density and flow settled before a single colour decision. Only once the layout held up did the palette, type and icons go on top.",
+        body: [
+          "Hover the screens below to fade the wireframes into the finished visual design — same layouts, same spacing, just the system applied.",
+        ],
+        image: "projects/leads-wireframe.jpg",
+        hoverImage: "projects/leads-wireframe-color.jpg",
       },
       {
         id: "solution-pricing",

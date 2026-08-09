@@ -1252,6 +1252,56 @@ function StudyBullets({ items }: { items: string[] }) {
   );
 }
 
+// Wireframe → visual design: the second image fades in on hover (tap on touch).
+function HoverRevealMedia({
+  base,
+  reveal,
+  alt,
+  onZoom,
+}: {
+  base: string;
+  reveal: string;
+  alt: string;
+  onZoom: (src: string) => void;
+}) {
+  const [shown, setShown] = useState(false);
+  return (
+    <figure>
+      <div
+        className="group relative overflow-hidden rounded-2xl bg-card ring-1 ring-border"
+        onMouseEnter={() => setShown(true)}
+        onMouseLeave={() => setShown(false)}
+      >
+        <img src={assetUrl(base)} alt={alt} loading="lazy" className="w-full" />
+        <img
+          src={assetUrl(reveal)}
+          alt=""
+          aria-hidden="true"
+          loading="lazy"
+          className={`absolute inset-0 h-full w-full transition-opacity duration-500 ease-out ${
+            shown ? "opacity-100" : "opacity-0"
+          }`}
+        />
+        {/* Tap target for touch devices + zoom on click */}
+        <button
+          type="button"
+          onClick={() => onZoom(assetUrl(shown ? reveal : base))}
+          onTouchStart={() => setShown((v) => !v)}
+          aria-label={`View ${alt} full size`}
+          className="absolute inset-0 h-full w-full cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-foreground/30"
+        />
+        <span
+          className={`pointer-events-none absolute bottom-4 left-1/2 -translate-x-1/2 rounded-full bg-foreground/85 px-4 py-1.5 text-[12px] font-medium text-background shadow-lg backdrop-blur-sm transition-opacity duration-300 ${
+            shown ? "opacity-0" : "opacity-100"
+          }`}
+        >
+          Hover to see the visual design
+        </span>
+      </div>
+    </figure>
+  );
+}
+
 // A fully written case-study section.
 function StudySectionBlock({
   block,
@@ -1332,8 +1382,19 @@ function StudySectionBlock({
             )}
           </div>
         </div>
+        {/* Wireframe → colour reveal, full breakout width */}
+        {block.image && block.hoverImage && !block.narrow && (
+          <div className="relative left-1/2 mt-6 w-[min(max(72vw,100%),68rem)] -translate-x-1/2">
+            <HoverRevealMedia
+              base={block.image}
+              reveal={block.hoverImage}
+              alt={block.title || block.eyebrow || ""}
+              onZoom={onZoom}
+            />
+          </div>
+        )}
         {/* Images break out of the text column — ~72vw, centered on the page */}
-        {block.image && block.scroller && !block.narrow && (
+        {block.image && block.scroller && !block.narrow && !block.hoverImage && (
           <figure className="relative left-1/2 mt-6 w-[min(max(72vw,100%),68rem)] -translate-x-1/2">
             <div className="overflow-hidden rounded-2xl bg-card shadow-xl ring-1 ring-border">
               {/* Browser chrome */}
@@ -1362,7 +1423,7 @@ function StudySectionBlock({
             </figcaption>
           </figure>
         )}
-        {block.image && !block.scroller && !block.narrow && (
+        {block.image && !block.scroller && !block.narrow && !block.hoverImage && (
           <div className="relative left-1/2 mt-6 w-[min(max(72vw,100%),68rem)] -translate-x-1/2">
             <StudyMedia value={block.image} alt={block.title || block.eyebrow || ""} onZoom={onZoom} />
           </div>
