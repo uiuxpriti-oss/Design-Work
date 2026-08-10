@@ -33,7 +33,6 @@ import {
   Presentation,
   SkipBack,
   SkipForward,
-  AudioLines,
   Target,
   Network,
   Search,
@@ -523,7 +522,7 @@ function Header({
             type="button"
             onClick={onHome}
             aria-label="Home"
-            className={`w-8 shrink-0 translate-x-0 scale-100 overflow-hidden opacity-100 transition-all duration-500 ease-out ${
+            className={`w-9 shrink-0 translate-x-0 scale-100 overflow-hidden opacity-100 transition-all duration-500 ease-out ${
               scrolled
                 ? "sm:pointer-events-none sm:w-0 sm:-translate-x-1 sm:scale-90 sm:opacity-0"
                 : ""
@@ -534,7 +533,7 @@ function Header({
                 src={assetUrl(avatar)}
                 alt="Priti Jani"
                 onError={() => setAvatarOk(false)}
-                className="h-9 w-9 rounded-full object-cover align-middle shadow-lg ring-2 ring-card"
+                className="block aspect-square h-9 w-9 shrink-0 rounded-full object-cover shadow-lg ring-2 ring-card"
               />
             ) : (
               <span className="inline-block h-8 w-8 rounded-full bg-foreground align-middle" />
@@ -543,6 +542,12 @@ function Header({
           <div
             className={`hidden items-center gap-0.5 rounded-full p-1 transition-all duration-500 ease-out sm:flex sm:gap-1 ${NAV_SOLID} ${
               scrolled ? "-ml-2 sm:-ml-4" : ""
+            } ${
+              // On a case study, the floating "All work" button replaces the tabs
+              // once you start reading, so the header stays out of the way.
+              page === "case" && scrolled
+                ? "pointer-events-none -translate-y-1 opacity-0"
+                : ""
             }`}
           >
             {NAV.map(({ id, label, icon: Icon }) => {
@@ -1665,7 +1670,7 @@ function FloatingBack({ onBack }: { onBack: () => void }) {
       type="button"
       onClick={onBack}
       aria-label="Back to all work"
-      className={`group fixed left-4 top-20 z-40 inline-flex items-center gap-2 rounded-full border border-border bg-background/90 px-4 py-2.5 text-sm font-medium text-foreground shadow-lg backdrop-blur-sm outline-none transition-all duration-300 ease-out hover:bg-card active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-foreground/25 sm:left-6 ${
+      className={`group fixed left-4 top-20 z-50 inline-flex sm:left-6 sm:top-[1.15rem] items-center gap-2 rounded-full border border-border bg-background/90 px-4 py-2.5 text-sm font-medium text-foreground shadow-lg backdrop-blur-sm outline-none transition-all duration-300 ease-out hover:bg-card active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-foreground/25 sm:left-6 ${
         show
           ? "translate-x-0 opacity-100"
           : "pointer-events-none -translate-x-3 opacity-0"
@@ -2685,7 +2690,7 @@ function OnRepeatCard() {
   useEffect(() => () => mediaRef.current?.pause(), []);
 
   return (
-    <div className="w-full">
+    <div className="group/player w-full max-w-[21.5rem]">
       {/* Hidden audio element plays the track when the play button is clicked. */}
       <audio
         ref={mediaRef}
@@ -2698,81 +2703,84 @@ function OnRepeatCard() {
         className="pointer-events-none absolute h-px w-px opacity-0"
         aria-hidden="true"
       />
-      <p className="mb-3 text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
-        On repeat
-      </p>
-      {/* Physical music-player card: a white tile, tilted, that straightens on hover. */}
-      <div className="group/card mx-auto max-w-[240px] -rotate-3 rounded-[28px] bg-white p-4 shadow-[0_20px_45px_-15px_rgba(0,0,0,0.35)] ring-1 ring-black/5 transition-transform duration-500 ease-out hover:rotate-0 sm:mx-0">
-        {/* Vinyl "fan" — top half of a record fanning down from the card's top edge. */}
-        <div className="relative h-28 overflow-hidden rounded-[20px] bg-neutral-950">
-          <div
-            className={`absolute left-1/2 top-[-150px] h-[220px] w-[220px] -translate-x-1/2 rounded-full ${
-              playing ? "animate-record" : ""
-            }`}
+      <div className="flex -rotate-2 items-center gap-3.5 rounded-[22px] bg-white/70 p-3 shadow-[0_18px_40px_-18px_rgba(12,40,70,0.5)] ring-1 ring-white/60 backdrop-blur-md transition-transform duration-500 ease-out hover:rotate-0 dark:bg-white/10 dark:ring-white/15">
+        {/* Spinning vinyl */}
+        <button
+          type="button"
+          onClick={toggle}
+          aria-label={`${playing ? "Pause" : "Play"} ${SONG_TITLE} by ${SONG_ARTIST}`}
+          className="relative h-14 w-14 shrink-0 rounded-full outline-none focus-visible:ring-2 focus-visible:ring-white/70"
+        >
+          <span
+            className={`absolute inset-0 rounded-full shadow-inner ${playing ? "animate-record" : ""}`}
             style={{
               background:
-                "repeating-radial-gradient(circle at center, rgba(255,255,255,0.07) 0 1px, transparent 1px 5px), radial-gradient(circle at center, #17171b 0%, #0a0a0c 100%)",
+                "repeating-radial-gradient(circle at center, rgba(255,255,255,0.08) 0 1px, transparent 1px 4px), radial-gradient(circle at center, #241f3a 0%, #0a0a0c 100%)",
             }}
           >
-            {/* Purple-to-black light wash over the grooves */}
-            <span
-              className="pointer-events-none absolute inset-0 rounded-full"
-              style={{
-                background:
-                  "linear-gradient(135deg, rgba(168,85,247,0.85) 0%, rgba(124,58,237,0.35) 35%, transparent 62%)",
-              }}
-            />
-            {/* Cream record label */}
-            <span className="absolute left-1/2 top-1/2 h-9 w-9 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#efe3c8] ring-1 ring-black/10">
-              <span className="absolute left-1/2 top-1/2 h-1.5 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-neutral-900" />
+            <span className="absolute left-1/2 top-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#efe3c8] ring-1 ring-black/20">
+              <span className="absolute left-1/2 top-1/2 h-1 w-1 -translate-x-1/2 -translate-y-1/2 rounded-full bg-neutral-900" />
             </span>
+          </span>
+          {/* Play/pause veil */}
+          <span
+            className={`absolute inset-0 flex items-center justify-center rounded-full bg-black/35 text-white backdrop-blur-[1px] transition-opacity duration-200 ${
+              playing ? "opacity-0 group-hover/player:opacity-100" : "opacity-100"
+            }`}
+          >
+            {playing ? (
+              <Pause className="h-4 w-4 fill-current" aria-hidden="true" />
+            ) : (
+              <Play className="h-4 w-4 translate-x-[1px] fill-current" aria-hidden="true" />
+            )}
+          </span>
+        </button>
+        {/* Track info */}
+        <div className="min-w-0 flex-1">
+          <div className="flex items-center gap-2">
+            <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-sky-900/60 dark:text-sky-100/60">
+              On repeat
+            </p>
+            {playing && (
+              <span className="flex h-3 items-end gap-[2px]" aria-hidden="true">
+                {[0, 1, 2].map((i) => (
+                  <span
+                    key={i}
+                    className="animate-eq w-[2px] rounded-full bg-sky-900/60 dark:bg-sky-100/70"
+                    style={{ animationDelay: `${i * 0.15}s` }}
+                  />
+                ))}
+              </span>
+            )}
           </div>
-        </div>
-        {/* Waveform + title */}
-        <div className="px-1 pt-4 text-center">
-          <AudioLines
-            className={`mx-auto h-5 w-5 text-neutral-400 ${playing ? "animate-pulse text-neutral-500" : ""}`}
-            aria-hidden="true"
-          />
-          <h3 className="mt-2 text-[15px] font-bold text-neutral-900">
+          <p className="mt-0.5 truncate text-[14px] font-bold text-sky-950 dark:text-white">
             {SONG_TITLE}
-          </h3>
-          <p className="text-[12px] text-neutral-500">{SONG_ARTIST}</p>
+          </p>
+          <p className="truncate text-[12px] text-sky-900/60 dark:text-sky-100/60">
+            {SONG_ARTIST}
+          </p>
         </div>
-        {/* Playback controls: prev · play/pause · next */}
-        <div className="mt-4 flex items-center justify-center gap-6">
+        {/* Skip controls */}
+        <div className="flex shrink-0 items-center gap-1.5 pr-1">
           <button
             type="button"
             onClick={restart}
             aria-label="Restart"
-            className="text-neutral-400 transition-colors hover:text-neutral-900"
+            className="text-sky-900/45 transition-colors hover:text-sky-950 dark:text-sky-100/50 dark:hover:text-white"
           >
-            <SkipBack className="h-4 w-4 fill-current" aria-hidden="true" />
-          </button>
-          <button
-            type="button"
-            onClick={toggle}
-            aria-pressed={playing}
-            aria-label={`${playing ? "Pause" : "Play"} ${SONG_TITLE} by ${SONG_ARTIST}`}
-            className="flex h-11 w-11 items-center justify-center rounded-full bg-[#0F2720] text-white shadow-md outline-none transition-transform hover:scale-105 active:scale-95 focus-visible:ring-2 focus-visible:ring-neutral-400 focus-visible:ring-offset-2"
-          >
-            {playing ? (
-              <Pause className="h-5 w-5 fill-current" aria-hidden="true" />
-            ) : (
-              <Play className="h-5 w-5 translate-x-[1px] fill-current" aria-hidden="true" />
-            )}
+            <SkipBack className="h-3.5 w-3.5 fill-current" aria-hidden="true" />
           </button>
           <button
             type="button"
             onClick={restart}
             aria-label="Next"
-            className="text-neutral-400 transition-colors hover:text-neutral-900"
+            className="text-sky-900/45 transition-colors hover:text-sky-950 dark:text-sky-100/50 dark:hover:text-white"
           >
-            <SkipForward className="h-4 w-4 fill-current" aria-hidden="true" />
+            <SkipForward className="h-3.5 w-3.5 fill-current" aria-hidden="true" />
           </button>
         </div>
       </div>
-      <p className="mt-4 text-center text-[13px] leading-relaxed text-muted-foreground sm:text-left">
+      <p className="mt-3.5 px-1 text-center text-[12px] leading-relaxed text-sky-900/60 dark:text-sky-100/60">
         {onRepeat}
       </p>
     </div>
@@ -2781,7 +2789,7 @@ function OnRepeatCard() {
 
 function AboutMeSection() {
   return (
-    <section className="grid items-start gap-10 pt-16 md:grid-cols-[1fr_260px]">
+    <section className="pt-16">
       <div>
         <p className="mb-8 text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
           About
@@ -2800,7 +2808,6 @@ function AboutMeSection() {
           </ul>
         </div>
       </div>
-      <OnRepeatCard />
     </section>
   );
 }
@@ -3030,6 +3037,9 @@ function AboutAvatar() {
             Designer by trade, builder by habit — currently shipping AI products
             at Lumenore.
           </p>
+          <div className="mt-8 flex w-full justify-center">
+            <OnRepeatCard />
+          </div>
         </div>
       </div>
     </section>
