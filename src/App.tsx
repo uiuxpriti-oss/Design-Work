@@ -3010,7 +3010,7 @@ function AboutAvatar() {
                 src={assetUrl("avatar-3d.png")}
                 alt="Priti Jani"
                 onError={() => setOk(false)}
-                className="h-44 w-44 object-contain drop-shadow-2xl sm:h-56 sm:w-56"
+                className="h-44 w-44 rounded-full object-cover shadow-2xl ring-[6px] ring-white/70 transition-transform duration-500 hover:scale-[1.04] sm:h-56 sm:w-56 dark:ring-white/15"
               />
             ) : (
               <span className="flex h-44 w-44 items-center justify-center rounded-full bg-gradient-to-br from-white/80 to-white/40 text-4xl font-semibold text-sky-900 shadow-xl ring-1 ring-white/60 sm:h-56 sm:w-56">
