@@ -113,6 +113,39 @@ html.lenis body {
     transform-origin: 70% 70%;
     animation: wave 2.6s ease-in-out infinite;
   }
+  /* Gentle bob for the About avatar and its floating stickers. */
+  @keyframes float-bob {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-14px);
+    }
+  }
+  .animate-float {
+    animation: float-bob 5s ease-in-out infinite;
+  }
+  @keyframes float-shadow {
+    0%,
+    100% {
+      transform: scaleX(1);
+      opacity: 0.32;
+    }
+    50% {
+      transform: scaleX(0.86);
+      opacity: 0.2;
+    }
+  }
+  .animate-float-shadow {
+    animation: float-shadow 5s ease-in-out infinite;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .animate-float,
+    .animate-float-shadow {
+      animation: none;
+    }
+  }
   @keyframes record-spin {
     to {
       transform: rotate(360deg);

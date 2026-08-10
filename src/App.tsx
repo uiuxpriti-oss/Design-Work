@@ -2971,6 +2971,71 @@ function IfNotDesign() {
   );
 }
 
+// About hero — the 3D avatar floating in a sky card with sticker chips.
+function AboutAvatar() {
+  const [ok, setOk] = useState(true);
+  const stickers = [
+    { emoji: "⭐", cls: "left-[6%] top-[18%]", delay: "0s", rotate: "-8deg" },
+    { emoji: "💗", cls: "right-[8%] top-[12%]", delay: "0.8s", rotate: "10deg" },
+    { emoji: "🌸", cls: "left-[10%] bottom-[16%]", delay: "1.6s", rotate: "6deg" },
+    { emoji: "✦", cls: "right-[7%] bottom-[20%]", delay: "2.2s", rotate: "-12deg" },
+  ];
+  return (
+    <section className="pt-10">
+      <div className="relative overflow-hidden rounded-[2rem] bg-gradient-to-b from-sky-300 via-sky-200 to-sky-50 px-6 py-12 sm:py-16 dark:from-sky-900 dark:via-sky-950 dark:to-background">
+        {/* Soft clouds */}
+        <span
+          className="pointer-events-none absolute -left-10 top-10 h-24 w-56 rounded-full bg-white/70 blur-2xl dark:bg-white/10"
+          aria-hidden="true"
+        />
+        <span
+          className="pointer-events-none absolute -right-8 bottom-12 h-28 w-64 rounded-full bg-white/60 blur-2xl dark:bg-white/[0.07]"
+          aria-hidden="true"
+        />
+        {/* Floating sticker chips echoing the artwork */}
+        {stickers.map((s) => (
+          <span
+            key={s.emoji}
+            aria-hidden="true"
+            style={{ animationDelay: s.delay, rotate: s.rotate }}
+            className={`animate-float pointer-events-none absolute ${s.cls} hidden h-10 w-10 items-center justify-center rounded-2xl bg-white/90 text-lg shadow-lg ring-1 ring-black/5 sm:flex dark:bg-white/10 dark:ring-white/10`}
+          >
+            {s.emoji}
+          </span>
+        ))}
+        <div className="relative mx-auto flex max-w-sm flex-col items-center">
+          <div className="animate-float">
+            {ok ? (
+              <img
+                src={assetUrl("avatar-3d.png")}
+                alt="Priti Jani"
+                onError={() => setOk(false)}
+                className="h-44 w-44 object-contain drop-shadow-2xl sm:h-56 sm:w-56"
+              />
+            ) : (
+              <span className="flex h-44 w-44 items-center justify-center rounded-full bg-gradient-to-br from-white/80 to-white/40 text-4xl font-semibold text-sky-900 shadow-xl ring-1 ring-white/60 sm:h-56 sm:w-56">
+                PJ
+              </span>
+            )}
+          </div>
+          {/* Ground shadow that breathes with the bob */}
+          <span
+            aria-hidden="true"
+            className="animate-float-shadow mt-1 h-3 w-28 rounded-[50%] bg-sky-950/30 blur-md sm:w-36 dark:bg-black/50"
+          />
+          <p className="mt-7 text-center text-[15px] font-medium text-sky-950 dark:text-sky-100">
+            Hi, I&apos;m Priti 👋
+          </p>
+          <p className="mt-1.5 text-center text-[14px] leading-relaxed text-sky-900/70 dark:text-sky-200/70">
+            Designer by trade, builder by habit — currently shipping AI products
+            at Lumenore.
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function AboutPage({ onBack }: { onBack: () => void }) {
   return (
     <>
@@ -2982,6 +3047,7 @@ function AboutPage({ onBack }: { onBack: () => void }) {
         >
           <ArrowLeft className="h-4 w-4" aria-hidden="true" /> Back
         </button>
+        <AboutAvatar />
         <AboutMeSection />
         <DesignPhilosophy />
         <Experience />
