@@ -3017,7 +3017,7 @@ function AboutAvatar() {
                 src={assetUrl("avatar-3d.png")}
                 alt="Priti Jani"
                 onError={() => setOk(false)}
-                className="h-44 w-44 rounded-full object-cover shadow-2xl ring-[6px] ring-white/70 transition-transform duration-500 hover:scale-[1.04] sm:h-56 sm:w-56 dark:ring-white/15"
+                className="h-52 w-auto object-contain drop-shadow-[0_22px_28px_rgba(12,40,70,0.32)] transition-transform duration-500 hover:scale-[1.04] sm:h-64"
               />
             ) : (
               <span className="flex h-44 w-44 items-center justify-center rounded-full bg-gradient-to-br from-white/80 to-white/40 text-4xl font-semibold text-sky-900 shadow-xl ring-1 ring-white/60 sm:h-56 sm:w-56">
@@ -3028,7 +3028,7 @@ function AboutAvatar() {
           {/* Ground shadow that breathes with the bob */}
           <span
             aria-hidden="true"
-            className="animate-float-shadow mt-1 h-3 w-28 rounded-[50%] bg-sky-950/30 blur-md sm:w-36 dark:bg-black/50"
+            className="animate-float-shadow -mt-1 h-3 w-32 rounded-[50%] bg-sky-950/25 blur-md sm:w-40 dark:bg-black/50"
           />
           <p className="mt-7 text-center text-[15px] font-medium text-sky-950 dark:text-sky-100">
             Hi, I&apos;m Priti 👋
