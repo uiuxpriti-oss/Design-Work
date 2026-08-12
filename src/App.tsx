@@ -3046,6 +3046,52 @@ function AboutAvatar() {
   );
 }
 
+// A peel-off sticker sheet — the mountain-town alter ego from "If not design".
+function StickerSheet() {
+  const stickers = [
+    { src: "about/stickers/ready.png", label: "Ready for the next brief", rotate: "-6deg" },
+    { src: "about/stickers/thinking.png", label: "Mid-problem, don't talk to me", rotate: "4deg" },
+    { src: "about/stickers/chai.png", label: "Powered by chai", rotate: "-3deg" },
+    { src: "about/stickers/shipping.png", label: "Just shipped something", rotate: "7deg" },
+  ];
+  return (
+    <section className="mt-14 sm:mt-24">
+      <div className="rounded-3xl border-2 border-dashed border-border bg-card/50 p-7 sm:p-10">
+        <div className="flex flex-wrap items-end justify-between gap-3">
+          <div>
+            <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-muted-foreground">
+              Sticker sheet
+            </p>
+            <h2 className="mt-2 text-2xl font-semibold italic tracking-tight sm:text-3xl">
+              Mountain mode
+            </h2>
+          </div>
+          <p className="max-w-sm text-[14px] leading-relaxed text-muted-foreground">
+            The version of me that already moved to the hills. Hover one — they
+            peel.
+          </p>
+        </div>
+        <ul className="mt-8 grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-4 sm:gap-x-6">
+          {stickers.map((s) => (
+            <li key={s.src} className="group/sticker flex flex-col items-center">
+              <img
+                src={assetUrl(s.src)}
+                alt={s.label}
+                loading="lazy"
+                style={{ rotate: s.rotate }}
+                className="w-full max-w-[9.5rem] drop-shadow-[0_10px_14px_rgba(0,0,0,0.18)] transition-all duration-300 ease-out group-hover/sticker:-translate-y-2 group-hover/sticker:rotate-0 group-hover/sticker:scale-[1.06] group-hover/sticker:drop-shadow-[0_22px_26px_rgba(0,0,0,0.28)]"
+              />
+              <span className="mt-3 text-center text-[12.5px] leading-snug text-muted-foreground transition-colors duration-300 group-hover/sticker:text-foreground">
+                {s.label}
+              </span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  );
+}
+
 function AboutPage({ onBack }: { onBack: () => void }) {
   return (
     <>
@@ -3064,6 +3110,7 @@ function AboutPage({ onBack }: { onBack: () => void }) {
         <WorkingWithMe />
         <HowIWork />
         <IfNotDesign />
+        <StickerSheet />
         <div className="mt-16">
           <ContactBadge />
         </div>
