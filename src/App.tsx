@@ -516,7 +516,7 @@ function Header({
   };
   return (
     <header className="sticky top-0 z-30">
-      <nav className="mx-auto flex max-w-[52rem] items-center justify-between px-4 py-4 sm:px-6 sm:py-5">
+      <nav className="mx-auto flex max-w-[72rem] items-center justify-between px-4 py-4 sm:px-6 sm:py-5">
         <div className="flex items-center gap-2 sm:gap-4">
           <button
             type="button"
@@ -785,7 +785,7 @@ function Hero() {
   const onLeave = () => setTilt({ rx: 0, ry: 0, on: false });
   return (
     <section id="home" className="scroll-mt-24 pt-8 pb-14 sm:pt-10">
-      <div className="mx-auto max-w-[52rem] px-4 sm:px-6 [perspective:850px]">
+      <div className="mx-auto max-w-[72rem] px-4 sm:px-6 [perspective:850px]">
         <div
           ref={cardRef}
           onMouseMove={onMove}
@@ -1091,7 +1091,7 @@ function ProjectsPage({
   return (
     <>
       {tab === "case" && <SideNav items={projects} watchId="case-studies" />}
-      <main className="mx-auto max-w-[52rem] px-6 pb-14 sm:pb-32">
+      <main className="mx-auto max-w-[72rem] px-6 pb-14 sm:pb-32">
         <section className="pt-10 pb-8">
           <button
             type="button"
@@ -1666,22 +1666,26 @@ function FloatingBack({ onBack }: { onBack: () => void }) {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
   return (
-    <button
-      type="button"
-      onClick={onBack}
-      aria-label="Back to all work"
-      className={`group fixed left-4 top-20 z-50 inline-flex sm:left-6 sm:top-[1.15rem] items-center gap-2 rounded-full border border-border bg-background/90 px-4 py-2.5 text-sm font-medium text-foreground shadow-lg backdrop-blur-sm outline-none transition-all duration-300 ease-out hover:bg-card active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-foreground/25 sm:left-6 ${
-        show
-          ? "translate-x-0 opacity-100"
-          : "pointer-events-none -translate-x-3 opacity-0"
-      }`}
-    >
-      <ArrowLeft
-        className="h-4 w-4 transition-transform group-hover:-translate-x-0.5"
-        aria-hidden="true"
-      />
-      All work
-    </button>
+    <div className="pointer-events-none fixed inset-x-0 top-20 z-50 sm:top-[1.15rem]">
+      <div className="mx-auto max-w-[72rem] px-4 sm:px-6">
+        <button
+          type="button"
+          onClick={onBack}
+          aria-label="Back to all work"
+          className={`group pointer-events-auto inline-flex items-center gap-2 rounded-full border border-border bg-background/90 px-4 py-2.5 text-sm font-medium text-foreground shadow-lg backdrop-blur-sm outline-none transition-all duration-300 ease-out hover:bg-card active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-foreground/25 ${
+            show
+              ? "translate-x-0 opacity-100"
+              : "pointer-events-none -translate-x-3 opacity-0"
+          }`}
+        >
+          <ArrowLeft
+            className="h-4 w-4 transition-transform group-hover:-translate-x-0.5"
+            aria-hidden="true"
+          />
+          Back
+        </button>
+      </div>
+    </div>
   );
 }
 
@@ -1704,7 +1708,7 @@ function CaseStudyPage({
   const idx = projects.findIndex((p) => p.id === id);
   const next = projects[(idx + 1) % projects.length];
   return (
-    <main className="mx-auto max-w-[52rem] px-6 pb-14 sm:pb-32">
+    <main className="mx-auto max-w-[72rem] px-6 pb-14 sm:pb-32">
       <CaseStudyRail />
       <FloatingBack onBack={onBack} />
       <button
@@ -2621,7 +2625,7 @@ function Creatives({ onViewAll }: { onViewAll: () => void }) {
   const [open, setOpen] = useState<(typeof creatives)[number] | null>(null);
   return (
     <section id="creatives" className="mt-14 sm:mt-24 scroll-mt-24">
-      <div className="mx-auto max-w-[52rem] px-6">
+      <div className="mx-auto max-w-[72rem] px-6">
         <div className="flex items-start justify-between gap-4">
           <SectionHeading
             eyebrow="Creative"
@@ -3095,7 +3099,7 @@ function StickerSheet() {
 function AboutPage({ onBack }: { onBack: () => void }) {
   return (
     <>
-      <main className="mx-auto max-w-[52rem] px-6 pb-14 sm:pb-32">
+      <main className="mx-auto max-w-[72rem] px-6 pb-14 sm:pb-32">
         <button
           type="button"
           onClick={onBack}
@@ -3182,7 +3186,7 @@ function FooterCTA() {
   ];
   return (
     <section id="contact" className="mt-16 scroll-mt-24 border-t border-border sm:mt-24">
-      <div className="mx-auto max-w-[52rem] px-6 py-16 sm:py-24">
+      <div className="mx-auto max-w-[72rem] px-6 py-16 sm:py-24">
         <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-muted-foreground">
           Contact
         </p>
@@ -3256,7 +3260,7 @@ function Footer() {
           ))}
         </div>
       </div>
-      <div className="mx-auto flex max-w-[52rem] flex-col items-center gap-4 px-6 pt-10 pb-28 text-center text-sm text-muted-foreground sm:flex-row sm:items-start sm:justify-between sm:pb-10 sm:text-left">
+      <div className="mx-auto flex max-w-[72rem] flex-col items-center gap-4 px-6 pt-10 pb-28 text-center text-sm text-muted-foreground sm:flex-row sm:items-start sm:justify-between sm:pb-10 sm:text-left">
         <div className="space-y-1">
           <p className="whitespace-nowrap text-[13px]">
             © 2026. Made by{" "}
@@ -3831,7 +3835,7 @@ export default function App() {
             <main>
               <Hero />
               <FocusAreas />
-              <div className="mx-auto max-w-[52rem] px-6">
+              <div className="mx-auto max-w-[72rem] px-6">
                 <Work onViewAll={() => openProjects("case")} onOpen={openCase} />
                 <SkillsAndTools />
                 <Awards />
