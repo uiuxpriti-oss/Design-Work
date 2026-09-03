@@ -2021,12 +2021,6 @@ export const howIWork: string[] = [
   "I continuously learn whatever the problem requires.",
 ];
 
-export const ifNotDesign: string[] = [
-  "My answer hasn't changed in years.",
-  "I'd travel, meet new people, and learn their kitchens — then settle in a quiet mountain town and open a small cafe. A cozy spot for travellers and locals, with a menu from everywhere I've been.",
-  "The dream is the same as the work: connect with people, explore new ground, and build places where everyone feels at home.",
-];
-
 // Looping footer marquee phrases.
 export const quotes: string[] = [
   "Grace under pressure",

@@ -103,7 +103,6 @@ import {
   onRepeat,
   principles,
   howIWork,
-  ifNotDesign,
 } from "./data/content";
 import type { StudyBlock } from "./data/content";
 
@@ -2918,70 +2917,6 @@ function HowIWork() {
   );
 }
 
-function IfNotDesign() {
-  const stack = [
-    "about/travel-1.webp",
-    "about/travel-2.webp",
-    "about/travel-3.webp",
-    "about/travel-4.webp",
-    "about/travel-5.webp",
-  ];
-  const [active, setActive] = useState(0);
-  return (
-    <section className="mt-14 sm:mt-24">
-      <div className="grid items-stretch gap-8 rounded-3xl border border-border bg-card p-8 sm:p-10 md:grid-cols-2">
-        <div>
-          <h2 className="text-2xl font-semibold italic">If not design, then what?</h2>
-          <div className="mt-6 space-y-4 text-[15px] leading-relaxed text-foreground/85">
-            {ifNotDesign.map((p, i) => (
-              <p key={i}>{p}</p>
-            ))}
-          </div>
-        </div>
-        <div className="relative h-72 w-full min-w-0 overflow-hidden rounded-2xl bg-slate-200 ring-1 ring-border md:h-full">
-          {/* Big preview — the selected photo, crossfading between choices */}
-          {stack.map((src, i) => (
-            <img
-              key={i}
-              src={src}
-              alt=""
-              loading="lazy"
-              className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-500 ${
-                i === active ? "opacity-100" : "opacity-0"
-              }`}
-            />
-          ))}
-          {/* Gradients keep the label and thumbnails legible over any photo */}
-          <div className="pointer-events-none absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-black/45 to-transparent" />
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/55 to-transparent" />
-          <span className="absolute left-4 top-4 text-sm font-medium text-white drop-shadow">
-            Somewhere in the mountains ⛰️
-          </span>
-          {/* Thumbnails — click to swap into the big view */}
-          <div className="absolute inset-x-0 bottom-0 flex justify-center gap-2 p-3">
-            {stack.map((src, i) => (
-              <button
-                key={i}
-                type="button"
-                onClick={() => setActive(i)}
-                aria-label={`Show photo ${i + 1}`}
-                aria-pressed={i === active}
-                className={`h-11 w-11 shrink-0 overflow-hidden rounded-lg outline-none ring-2 transition-all duration-200 focus-visible:ring-white ${
-                  i === active
-                    ? "scale-105 ring-white"
-                    : "opacity-70 ring-white/40 hover:opacity-100"
-                }`}
-              >
-                <img src={src} alt="" className="h-full w-full object-cover" />
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
 // About hero — the 3D avatar floating in a sky card with sticker chips.
 function AboutAvatar() {
   const [ok, setOk] = useState(true);
@@ -3050,52 +2985,6 @@ function AboutAvatar() {
   );
 }
 
-// A peel-off sticker sheet — the mountain-town alter ego from "If not design".
-function StickerSheet() {
-  const stickers = [
-    { src: "about/stickers/ready.png", label: "Ready for the next brief", rotate: "-6deg" },
-    { src: "about/stickers/thinking.png", label: "Mid-problem, don't talk to me", rotate: "4deg" },
-    { src: "about/stickers/chai.png", label: "Powered by chai", rotate: "-3deg" },
-    { src: "about/stickers/shipping.png", label: "Just shipped something", rotate: "7deg" },
-  ];
-  return (
-    <section className="mt-14 sm:mt-24">
-      <div className="rounded-3xl border-2 border-dashed border-border bg-card/50 p-7 sm:p-10">
-        <div className="flex flex-wrap items-end justify-between gap-3">
-          <div>
-            <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-muted-foreground">
-              Sticker sheet
-            </p>
-            <h2 className="mt-2 text-2xl font-semibold italic tracking-tight sm:text-3xl">
-              Mountain mode
-            </h2>
-          </div>
-          <p className="max-w-sm text-[14px] leading-relaxed text-muted-foreground">
-            The version of me that already moved to the hills. Hover one — they
-            peel.
-          </p>
-        </div>
-        <ul className="mt-8 grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-4 sm:gap-x-6">
-          {stickers.map((s) => (
-            <li key={s.src} className="group/sticker flex flex-col items-center">
-              <img
-                src={assetUrl(s.src)}
-                alt={s.label}
-                loading="lazy"
-                style={{ rotate: s.rotate }}
-                className="w-full max-w-[9.5rem] drop-shadow-[0_10px_14px_rgba(0,0,0,0.18)] transition-all duration-300 ease-out group-hover/sticker:-translate-y-2 group-hover/sticker:rotate-0 group-hover/sticker:scale-[1.06] group-hover/sticker:drop-shadow-[0_22px_26px_rgba(0,0,0,0.28)]"
-              />
-              <span className="mt-3 text-center text-[12.5px] leading-snug text-muted-foreground transition-colors duration-300 group-hover/sticker:text-foreground">
-                {s.label}
-              </span>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </section>
-  );
-}
-
 function AboutPage({ onBack }: { onBack: () => void }) {
   return (
     <>
@@ -3113,8 +3002,6 @@ function AboutPage({ onBack }: { onBack: () => void }) {
         <Experience />
         <WorkingWithMe />
         <HowIWork />
-        <IfNotDesign />
-        <StickerSheet />
         <div className="mt-16">
           <ContactBadge />
         </div>
