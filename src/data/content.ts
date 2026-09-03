@@ -21,6 +21,20 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    id: "project-studycrux",
+    title: "StudyCrux",
+    description:
+      "A super-admin console for a multi-module ed-tech platform — students, teachers, coordinators, and speakers in one system.",
+    href: "https://uiuxpriti.com/projects/studycrux",
+    likes: 16,
+    image: "projects/studycrux-cover.jpg",
+    gradient: "from-slate-800 via-teal-700 to-emerald-900",
+    measures: ["6 modules, one system", "One shared health language", "RBAC that surfaces risk"],
+    headline:
+      "Six sprawling admin tools collapsed into one super-admin console — with a shared health language across every module.",
+    tag: "Admin Console",
+  },
+  {
     id: "project-ask-me",
     title: "Ask Me",
     description:
@@ -252,6 +266,88 @@ export interface StudyBlock {
 }
 
 export const caseStudies: Record<string, CaseStudy> = {
+  "project-studycrux": {
+    intro: [
+      "**StudyCrux** is the operations backbone for a competitive-exam coaching business — the super-admin platform that runs students, teachers, coordinators, and guest speakers across dozens of live batches. I designed the entire console: **six operationally distinct modules**, each with its own data model, folded into one coherent system.",
+      "Admin tools like this usually sprawl into six tabs that don't talk to each other — open Students to see who's at risk, Teachers to catch a payout deadline, Roles to catch a security gap, with **nothing rolling up** to tell an admin what actually needs a decision today.",
+      "I built a **shared 'module health' language** — every module reports through the same four numbers, one trend meter, and a status pill — so a Dashboard can roll all six up into one screen, while each module still goes as deep as its own domain needs underneath.",
+    ],
+    tags: {
+      role: ["Product Designer"],
+      status: ["Prototype", "2026"],
+      type: ["EdTech", "Admin Platform", "B2B SaaS"],
+      tools: ["Figma", "Claude Code"],
+    },
+    eyebrow: "Product Design · Admin Platform",
+    summary:
+      "A super-admin console for StudyCrux, a multi-module ed-tech platform — unifying students, teachers, coordinators, speakers, course allocation, and access control into one operational system.",
+    meta: {
+      role: "Product Designer",
+      timeline: "Self-directed",
+      team: "Solo",
+      tools: "Figma · Claude Code",
+    },
+    overview:
+      "StudyCrux runs a competitive-exam coaching operation — students juggling mock tests, live batches, and recorded courses at once; teachers and coordinators running the batches; guest speakers running webinars. I designed the super-admin console that Ops and academic leadership use to run all of it: six modules, one system, one consistent way to read what's healthy and what needs a decision.",
+    problem: {
+      stats: [
+        { value: "6", label: "modules, one super-admin persona" },
+        { value: "3", label: "concurrent entitlement types per student" },
+        { value: "8", label: "roles across 221 users to secure" },
+      ],
+      text: "Most internal admin tools grow module-by-module until they're six unrelated apps wearing the same sidebar — nothing surfaces urgency across them. StudyCrux's commercial model made the underlying data harder than usual too: **there's no subscription** — students hold several concurrent entitlements (mock-test tiers, live batches, recorded passes) at once, each with its own price, validity, and batch rules.",
+      goals: [
+        "Give one super-admin persona a single screen that rolls up all six modules' health",
+        "Model multi-entitlement students honestly, without forcing one purchase per row",
+        "Make Roles & Access an active risk surface, not a static permissions list",
+        "Design every module's non-happy-path states, not just the ideal-data screen",
+      ],
+    },
+    research: {
+      text: "Rather than reach for one generic table pattern, I mapped each module's actual operational questions first — what a coordinator's manager needs to decide in the next five minutes vs. what a finance lead checks once a month — before designing any screen.",
+      findings: [
+        "Every module answers the same three questions underneath: what's healthy, what needs a decision, what changed",
+        "Students needed entitlement-level detail, not just account-level status",
+        "Access control gets treated as a settings page everywhere — never as something to actively monitor",
+        "Coordinators needed a way to flag overload before it became attrition, not after",
+      ],
+    },
+    process: [
+      { step: "Map", text: "Broke down what Students, Teachers, Coordinators, Speakers, Course Allocation, and Roles & Access each actually need to expose." },
+      { step: "Unify", text: "Designed one shared 'module health' card anatomy — four numbers, one trend meter, one status pill — reused across all six." },
+      { step: "Go deep", text: "Let each module's tables and detail views handle its own domain complexity underneath the shared shell." },
+      { step: "Stress-test", text: "Designed loading, empty, error, no-permission, and partial-access states for the more data-heavy modules." },
+    ],
+    solution: {
+      text: "The result is a Dashboard that acts as a control tower — six module-health cards plus one prioritized, cross-module action queue — sitting above six modules that each solve their own domain's hardest problem: multi-entitlement students, faculty payouts and live-class ops, a coordinator workload score, a speaker application funnel, and an access-control surface built around risk instead of a role list.",
+      highlights: [
+        { title: "One health language, six modules", text: "Every module reports through the same four-number, one-meter, one-status card — scannable in seconds from the Dashboard." },
+        { title: "Entitlement-first student records", text: "Expandable rows show every concurrent mock/live/recorded entitlement a student holds, each with its own plan and status." },
+        { title: "A workload score with a conscience", text: "Coordinator health rolls up staffing, attendance, operations, and student support — labelled 'not a sole measure of performance.'" },
+        { title: "Access control that watches itself", text: "Roles & Access surfaces its own risks — disabled 2FA, dormant accounts, over-broad grants — with a live audit trail, not just a role table." },
+      ],
+    },
+    gallery: {
+      title: "Inside the console",
+      text: "Six modules built on one shared design language — navy sidebar, teal accents, the same card anatomy everywhere. Tap any screen to view it full size.",
+      shots: [
+        { src: "projects/studycrux-dashboard.jpg", caption: "Platform Overview — every module's health rolled into one screen, plus a single prioritized action queue across all six." },
+        { src: "projects/studycrux-students.jpg", caption: "All Students — expandable rows reveal every concurrent entitlement (mock, live, recorded) a student holds, each with its own plan and status." },
+        { src: "projects/studycrux-teachers.jpg", caption: "Teacher Dashboard — faculty capacity, live-class schedule, and payout health for 128 teachers at a glance." },
+        { src: "projects/studycrux-coordinators.jpg", caption: "Coordinator Management — a weighted operations-health score (staffing, attendance, workload) plus a live status board, updated every 60 seconds." },
+        { src: "projects/studycrux-speakers.jpg", caption: "Speaker Dashboard — application funnel from invited to active, event health, and payouts for 128 guest speakers." },
+        { src: "projects/studycrux-roles-access.jpg", caption: "Access Control — 2FA gaps, dormant accounts, and over-broad grants surfaced as risks, with a full audit trail of every permission change." },
+      ],
+    },
+    outcomes: {
+      metrics: [
+        { value: "6", label: "modules unified" },
+        { value: "8", label: "roles · 221 users secured" },
+        { value: "5", label: "UI states designed, not just happy path" },
+      ],
+      text: "A super-admin console where six operationally different modules feel like one system — fast to scan for health, deep enough to act on, and honest about the states that aren't the happy path.",
+    },
+  },
   "project-ask-me": {
     intro: [
       "**Ask Me** is Lumenore's AI-powered analytics tool — you talk to your business data in natural language and get answers back. Powerful, but the experience was complex, cluttered, and hard to start.",
