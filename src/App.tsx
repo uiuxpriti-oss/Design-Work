@@ -102,7 +102,6 @@ import {
   learning,
   onRepeat,
   principles,
-  howIWork,
 } from "./data/content";
 import type { StudyBlock } from "./data/content";
 
@@ -2891,32 +2890,6 @@ function DesignPhilosophy() {
   );
 }
 
-function HowIWork() {
-  return (
-    <section className="mt-14 sm:mt-24">
-      <div className="flex items-center gap-4">
-        <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-muted-foreground">
-          How I work
-        </p>
-        <span className="h-px flex-1 bg-border" aria-hidden="true" />
-      </div>
-      <ul className="mt-8 grid gap-x-12 sm:grid-cols-2">
-        {howIWork.map((item, i) => (
-          <li
-            key={i}
-            className="flex items-baseline gap-4 border-b border-border py-5 text-[15px] leading-relaxed text-foreground/90 sm:text-base"
-          >
-            <span className="font-mono text-[13px] text-muted-foreground/70">
-              {String(i + 1).padStart(2, "0")}
-            </span>
-            <span>{item}</span>
-          </li>
-        ))}
-      </ul>
-    </section>
-  );
-}
-
 // About hero — the 3D avatar floating in a sky card with sticker chips.
 function AboutAvatar() {
   const [ok, setOk] = useState(true);
@@ -3001,7 +2974,6 @@ function AboutPage({ onBack }: { onBack: () => void }) {
         <DesignPhilosophy />
         <Experience />
         <WorkingWithMe />
-        <HowIWork />
         <div className="mt-16">
           <ContactBadge />
         </div>

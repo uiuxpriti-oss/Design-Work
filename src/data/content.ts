@@ -2105,16 +2105,16 @@ export const principles: Principle[] = [
     tagClass: "border-amber-200 bg-amber-100 text-amber-900",
     text: "I use AI to prototype faster, explore wider, and skip the busywork — but the judgment, taste, and craft stay human. That's where the bar gets raised.",
   },
-];
-
-// Numbered "How I work" principles shown on the About page.
-export const howIWork: string[] = [
-  "I take ownership beyond my role.",
-  "I build systems, not one-off solutions.",
-  "I believe design succeeds through collaboration.",
-  "I simplify complexity before adding features.",
-  "I measure success through business and user outcomes.",
-  "I continuously learn whatever the problem requires.",
+  {
+    tag: "Systems, not one-offs",
+    tagClass: "border-rose-200 bg-rose-100 text-rose-900",
+    text: "I build for the ten screens that come after this one — reusable patterns and components, not a single well-polished exception.",
+  },
+  {
+    tag: "Outcomes over output",
+    tagClass: "border-teal-200 bg-teal-100 text-teal-900",
+    text: "Shipping a screen isn't the finish line. I track the business and user metric it was meant to move, and stay on it until it does.",
+  },
 ];
 
 // Looping footer marquee phrases.
