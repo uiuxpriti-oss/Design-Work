@@ -1,0 +1,1245 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;font-family:'Inter',system-ui,sans-serif;-webkit-font-smoothing:antialiased;background:#FAF9F5}
+  a{color:#0B7A6E;text-decoration:none}
+  a:hover{color:#08594F}
+  ::-webkit-scrollbar{width:10px;height:10px}
+  ::-webkit-scrollbar-thumb{background:#DDD9CF;border-radius:6px;border:3px solid transparent;background-clip:content-box}
+  ::-webkit-scrollbar-track{background:transparent}
+  @keyframes pulseDot{0%,100%{opacity:1}50%{opacity:.35}}
+</style>
+</helmet>
+
+<div style="display:flex;min-height:100vh;background:#FAF9F5;color:#0F2A47">
+
+  <aside style="width:250px;flex:none;background:#0B1F3E;display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow-y:auto">
+    <div style="padding:22px 20px 18px;border-bottom:1px solid #1B3358">
+      <div style="display:flex;align-items:center;gap:12px">
+        <div style="width:40px;height:40px;flex:none;border-radius:11px;background:#fff;display:grid;place-items:center">
+          <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#0B1F3E" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h6v16H4z" /><path d="M14 4h6v7h-6z" /><path d="M14 15.5l2 2 4-4" /></svg>
+        </div>
+        <div>
+          <div style="font-size:19px;font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1">StudyCrux</div>
+          <div style="font-size:10.5px;font-weight:600;color:#7E96B8;letter-spacing:.14em;margin-top:3px">DESIGN SYSTEM</div>
+        </div>
+      </div>
+    </div>
+    <nav style="flex:1;padding:16px 14px;display:flex;flex-direction:column;gap:2px">
+      <sc-for list="{{ toc }}" as="t" hint-placeholder-count="12">
+        <a href="{{ t.href }}" style="display:flex;align-items:center;gap:11px;padding:9px 12px;border-radius:9px;color:#C7D3E3;font-size:13px;font-weight:500;text-decoration:none" style-hover="background:#122C50;color:#fff">
+          <span style="width:20px;font-size:10.5px;font-weight:700;color:#5F7CA0;flex:none">{{ t.n }}</span>
+          <span style="flex:1;min-width:0">{{ t.label }}</span>
+        </a>
+      </sc-for>
+    </nav>
+    <div style="padding:16px 20px;border-top:1px solid #1B3358">
+      <div style="font-size:11px;color:#7E96B8;line-height:1.6;text-wrap:pretty">Six modules · one shared vocabulary. Every value below is taken from shipped screens, not invented for the doc.</div>
+    </div>
+  </aside>
+
+  <main style="flex:1;min-width:0;padding:34px 40px 64px;max-width:1180px">
+
+    <header style="margin-bottom:34px">
+      <div style="display:inline-flex;align-items:center;gap:8px;padding:5px 13px;border-radius:999px;background:#E6F4F1;margin-bottom:14px">
+        <span style="width:6px;height:6px;border-radius:50%;background:#0E9384;animation:pulseDot 1.8s infinite"></span>
+        <span style="font-size:11.5px;font-weight:700;color:#0B7A6E;letter-spacing:.04em">LIVE IN PRODUCTION · 6 MODULES</span>
+      </div>
+      <h1 style="margin:0;font-size:34px;font-weight:800;letter-spacing:-.03em;color:#0F2A47;line-height:1.15">StudyCrux Admin Design System</h1>
+      <p style="margin:12px 0 0;font-size:15px;color:#6B7C93;line-height:1.65;max-width:720px;text-wrap:pretty">The working vocabulary behind Student, Teacher, Coordinator, Speaker, Roles &amp; Access and the platform Dashboard. Colour, type, spacing and the component set that keeps twenty-odd 360° views feeling like one product.</p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:20px">
+        <sc-for list="{{ heroStats }}" as="h" hint-placeholder-count="4">
+          <div style="border:1px solid #ECEAE2;border-radius:12px;background:#fff;padding:13px 18px;min-width:132px">
+            <div style="font-size:23px;font-weight:800;letter-spacing:-.03em;color:#0F2A47">{{ h.n }}</div>
+            <div style="font-size:11.5px;color:#98A2B3;margin-top:3px">{{ h.label }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </header>
+
+    <section id="principles" style="margin-bottom:40px">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+        <span style="width:3px;height:14px;border-radius:2px;background:#0E9384"></span>
+        <span style="font-size:11px;font-weight:700;letter-spacing:.09em;color:#475467">01 — PRINCIPLES</span>
+        <span style="flex:1;height:1px;background:#F0EEE7"></span>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px">
+        <sc-for list="{{ principles }}" as="p" hint-placeholder-count="4">
+          <div style="border:1px solid #ECEAE2;border-radius:14px;background:#fff;padding:20px 22px">
+            <div style="width:34px;height:34px;border-radius:10px;background:{{ p.ibg }};display:grid;place-items:center;margin-bottom:13px">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="{{ p.ifg }}" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="{{ p.path }}" /></svg>
+            </div>
+            <div style="font-size:14.5px;font-weight:700;color:#0F2A47">{{ p.title }}</div>
+            <div style="font-size:12.5px;color:#7A8699;line-height:1.65;margin-top:7px;text-wrap:pretty">{{ p.body }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <section id="colour" style="margin-bottom:40px">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+        <span style="width:3px;height:14px;border-radius:2px;background:#0E9384"></span>
+        <span style="font-size:11px;font-weight:700;letter-spacing:.09em;color:#475467">02 — COLOUR</span>
+        <span style="flex:1;height:1px;background:#F0EEE7"></span>
+        <span style="font-size:11.5px;color:#98A2B3">warm neutrals · one teal accent</span>
+      </div>
+
+      <div style="border:1px solid #ECEAE2;border-radius:14px;background:#fff;overflow:hidden;margin-bottom:16px">
+        <div style="padding:16px 20px;border-bottom:1px solid #F2F0EA">
+          <div style="font-size:14.5px;font-weight:700;color:#0F2A47">Core palette</div>
+          <div style="font-size:12px;color:#6B7C93;margin-top:2px">Surfaces, ink and the single accent that carries every primary action</div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(168px,1fr));gap:1px;background:#F2F0EA">
+          <sc-for list="{{ coreColors }}" as="c" hint-placeholder-count="10">
+            <div style="background:#fff;padding:14px 16px">
+              <div style="height:54px;border-radius:9px;background:{{ c.hex }};border:1px solid {{ c.border }};margin-bottom:11px"></div>
+              <div style="font-size:12.5px;font-weight:700;color:#0F2A47">{{ c.name }}</div>
+              <div style="font-size:11px;color:#98A2B3;margin-top:3px;font-family:ui-monospace,monospace">{{ c.hex }}</div>
+              <div style="font-size:11px;color:#7A8699;margin-top:5px;line-height:1.5;text-wrap:pretty">{{ c.use }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="border:1px solid #ECEAE2;border-radius:14px;background:#fff;overflow:hidden">
+        <div style="padding:16px 20px;border-bottom:1px solid #F2F0EA">
+          <div style="font-size:14.5px;font-weight:700;color:#0F2A47">Status palette — <span style="font-family:ui-monospace,monospace;font-size:13px;color:#0B7A6E">BDG</span></div>
+          <div style="font-size:12px;color:#6B7C93;margin-top:2px">Every pill, dot and chip in the product resolves to one of these eight pairs. Background first, foreground second.</div>
+        </div>
+        <div style="padding:18px 20px;display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px">
+          <sc-for list="{{ badgeColors }}" as="b" hint-placeholder-count="8">
+            <div style="border:1px solid #F0EEE7;border-radius:11px;padding:13px 15px">
+              <div style="display:flex;align-items:center;gap:9px;margin-bottom:10px">
+                <span style="font-size:11px;font-weight:700;padding:4px 11px;border-radius:999px;background:{{ b.bg }};color:{{ b.fg }}">{{ b.sample }}</span>
+                <span style="width:8px;height:8px;border-radius:50%;background:{{ b.fg }}"></span>
+                <span style="flex:1"></span>
+                <span style="font-size:11.5px;font-weight:700;color:#0F2A47;font-family:ui-monospace,monospace">{{ b.key }}</span>
+              </div>
+              <div style="font-size:10.5px;color:#98A2B3;font-family:ui-monospace,monospace">{{ b.bg }} · {{ b.fg }}</div>
+              <div style="font-size:11.5px;color:#7A8699;margin-top:5px;line-height:1.5;text-wrap:pretty">{{ b.use }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </section>
+
+    <section id="type" style="margin-bottom:40px">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+        <span style="width:3px;height:14px;border-radius:2px;background:#0E9384"></span>
+        <span style="font-size:11px;font-weight:700;letter-spacing:.09em;color:#475467">03 — TYPOGRAPHY</span>
+        <span style="flex:1;height:1px;background:#F0EEE7"></span>
+        <span style="font-size:11.5px;color:#98A2B3">Inter · base 14px · scale 1.125</span>
+      </div>
+      <div style="border:1px solid #ECEAE2;border-radius:14px;background:#fff;overflow:hidden">
+        <sc-for list="{{ typeScale }}" as="t" hint-placeholder-count="9">
+          <div style="display:grid;grid-template-columns:minmax(0,1fr) 210px 92px;gap:18px;align-items:baseline;padding:15px 22px;border-bottom:1px solid #F5F3EE;background:{{ t.rowBg }}">
+            <div style="font-size:{{ t.size }};font-weight:{{ t.weight }};letter-spacing:{{ t.tracking }};color:{{ t.color }};min-width:0;text-wrap:pretty">{{ t.sample }}</div>
+            <div style="font-size:11.5px;color:#7A8699;text-wrap:pretty;font-family:ui-monospace,monospace">{{ t.role }}</div>
+            <div style="font-size:11px;color:#98A2B3;font-family:ui-monospace,monospace;text-align:right">{{ t.spec }}</div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="border:1px solid #ECEAE2;border-radius:14px;background:#fff;overflow:hidden;margin-top:16px">
+        <div style="padding:16px 20px;border-bottom:1px solid #F2F0EA">
+          <div style="font-size:14.5px;font-weight:700;color:#0F2A47">Where each step is used</div>
+          <div style="font-size:12px;color:#6B7C93;margin-top:2px">Base 14px, ratio 1.125. Negative tracking scales with size — tighter as type grows.</div>
+        </div>
+        <div style="overflow-x:auto">
+          <table style="width:100%;min-width:640px;border-collapse:collapse">
+            <thead>
+              <tr style="background:#FCFBF7">
+                <th style="padding:10px 20px;text-align:left;font-size:10px;font-weight:700;letter-spacing:.05em;color:#7A8699;border-bottom:1px solid #F0EEE7">TOKEN</th>
+                <th style="padding:10px 13px;text-align:left;font-size:10px;font-weight:700;letter-spacing:.05em;color:#7A8699;border-bottom:1px solid #F0EEE7;white-space:nowrap">SIZE</th>
+                <th style="padding:10px 13px;text-align:left;font-size:10px;font-weight:700;letter-spacing:.05em;color:#7A8699;border-bottom:1px solid #F0EEE7;white-space:nowrap">WEIGHT</th>
+                <th style="padding:10px 20px 10px 13px;text-align:left;font-size:10px;font-weight:700;letter-spacing:.05em;color:#7A8699;border-bottom:1px solid #F0EEE7">APPLIED TO</th>
+              </tr>
+            </thead>
+            <tbody>
+              <sc-for list="{{ typeUsage }}" as="u" hint-placeholder-count="10">
+                <tr style="background:{{ u.rowBg }}">
+                  <td style="padding:10px 20px;border-bottom:1px solid #F5F3EE;font-size:12.5px;font-weight:600;color:#0F2A47;white-space:nowrap">{{ u.token }}</td>
+                  <td style="padding:10px 13px;border-bottom:1px solid #F5F3EE;font-size:11.5px;color:#0B7A6E;white-space:nowrap;font-family:ui-monospace,monospace">{{ u.size }}</td>
+                  <td style="padding:10px 13px;border-bottom:1px solid #F5F3EE;font-size:11.5px;color:#475467;white-space:nowrap;font-family:ui-monospace,monospace">{{ u.weight }}</td>
+                  <td style="padding:10px 20px 10px 13px;border-bottom:1px solid #F5F3EE;font-size:12px;color:#7A8699;text-wrap:pretty">{{ u.use }}</td>
+                </tr>
+              </sc-for>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="spacing" style="margin-bottom:40px">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+        <span style="width:3px;height:14px;border-radius:2px;background:#0E9384"></span>
+        <span style="font-size:11px;font-weight:700;letter-spacing:.09em;color:#475467">04 — SPACING, RADII &amp; ELEVATION</span>
+        <span style="flex:1;height:1px;background:#F0EEE7"></span>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px">
+
+        <div style="border:1px solid #ECEAE2;border-radius:14px;background:#fff;padding:20px 22px">
+          <div style="font-size:14.5px;font-weight:700;color:#0F2A47;margin-bottom:4px">Spacing</div>
+          <div style="font-size:12px;color:#6B7C93;margin-bottom:16px">Gaps between siblings always use flex/grid <span style="font-family:ui-monospace,monospace">gap</span>, never margins on children.</div>
+          <div style="display:flex;flex-direction:column;gap:11px">
+            <sc-for list="{{ spacing }}" as="s" hint-placeholder-count="7">
+              <div style="display:flex;align-items:center;gap:13px">
+                <span style="font-size:11.5px;font-weight:700;color:#0F2A47;width:40px;flex:none;font-family:ui-monospace,monospace">{{ s.px }}</span>
+                <div style="height:9px;border-radius:3px;background:#0E9384;width:{{ s.px }};flex:none"></div>
+                <span style="font-size:11.5px;color:#7A8699;min-width:0;text-wrap:pretty">{{ s.use }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="border:1px solid #ECEAE2;border-radius:14px;background:#fff;padding:20px 22px">
+          <div style="font-size:14.5px;font-weight:700;color:#0F2A47;margin-bottom:4px">Corner radius</div>
+          <div style="font-size:12px;color:#6B7C93;margin-bottom:16px">Radius scales with the size of the surface it wraps.</div>
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <sc-for list="{{ radii }}" as="r" hint-placeholder-count="6">
+              <div style="display:flex;align-items:center;gap:13px">
+                <div style="width:46px;height:34px;flex:none;background:#EEF6F5;border:1.5px solid #0E9384;border-radius:{{ r.px }}"></div>
+                <span style="font-size:11.5px;font-weight:700;color:#0F2A47;width:44px;flex:none;font-family:ui-monospace,monospace">{{ r.px }}</span>
+                <span style="font-size:11.5px;color:#7A8699;min-width:0;text-wrap:pretty">{{ r.use }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="border:1px solid #ECEAE2;border-radius:14px;background:#fff;padding:20px 22px">
+          <div style="font-size:14.5px;font-weight:700;color:#0F2A47;margin-bottom:4px">Elevation</div>
+          <div style="font-size:12px;color:#6B7C93;margin-bottom:18px">Shadows are navy-tinted, never neutral grey.</div>
+          <div style="display:flex;flex-direction:column;gap:18px">
+            <sc-for list="{{ shadows }}" as="sh" hint-placeholder-count="3">
+              <div>
+                <div style="height:44px;border-radius:11px;background:#fff;border:1px solid #F0EEE7;box-shadow:{{ sh.css }};margin-bottom:9px"></div>
+                <div style="font-size:12.5px;font-weight:700;color:#0F2A47">{{ sh.name }}</div>
+                <div style="font-size:10.5px;color:#98A2B3;margin-top:3px;font-family:ui-monospace,monospace;text-wrap:pretty">{{ sh.css }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="layout" style="margin-bottom:40px">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+        <span style="width:3px;height:14px;border-radius:2px;background:#0E9384"></span>
+        <span style="font-size:11px;font-weight:700;letter-spacing:.09em;color:#475467">05 — PAGE SHELL</span>
+        <span style="flex:1;height:1px;background:#F0EEE7"></span>
+      </div>
+      <div style="border:1px solid #ECEAE2;border-radius:14px;background:#fff;padding:22px;margin-bottom:16px">
+        <div style="display:flex;gap:14px;height:210px">
+          <div style="width:112px;flex:none;background:#0B1F3E;border-radius:10px;padding:12px 11px;display:flex;flex-direction:column;gap:6px">
+            <div style="height:26px;border-radius:7px;background:#14335C"></div>
+            <div style="height:9px;border-radius:4px;background:#1B3358;margin-top:4px"></div>
+            <div style="height:9px;border-radius:4px;background:#14335C"></div>
+            <div style="height:9px;border-radius:4px;background:#1B3358"></div>
+            <div style="height:9px;border-radius:4px;background:#1B3358"></div>
+            <div style="flex:1"></div>
+            <div style="height:28px;border-radius:8px;background:#14335C"></div>
+          </div>
+          <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:10px">
+            <div style="height:42px;border-radius:9px;background:#FCFBF7;border:1px solid #F0EEE7;display:flex;align-items:center;padding:0 13px;gap:9px">
+              <div style="width:96px;height:11px;border-radius:4px;background:#E5E3DC"></div>
+              <div style="flex:1"></div>
+              <div style="width:70px;height:22px;border-radius:7px;background:#EEF6F5;border:1px solid #BFE3DC"></div>
+              <div style="width:62px;height:22px;border-radius:7px;background:#0E9384"></div>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:9px">
+              <div style="height:52px;border-radius:9px;background:#fff;border:1px solid #ECEAE2"></div>
+              <div style="height:52px;border-radius:9px;background:#fff;border:1px solid #ECEAE2"></div>
+              <div style="height:52px;border-radius:9px;background:#fff;border:1px solid #ECEAE2"></div>
+              <div style="height:52px;border-radius:9px;background:#fff;border:1px solid #ECEAE2"></div>
+            </div>
+            <div style="flex:1;border-radius:9px;background:#fff;border:1px solid #ECEAE2"></div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:20px;padding-top:18px;border-top:1px solid #F5F3EE">
+          <sc-for list="{{ shellSpecs }}" as="sp" hint-placeholder-count="5">
+            <div>
+              <div style="font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#98A2B3">{{ sp.label }}</div>
+              <div style="font-size:13px;font-weight:700;color:#0F2A47;margin-top:4px;font-family:ui-monospace,monospace">{{ sp.v }}</div>
+              <div style="font-size:11px;color:#7A8699;margin-top:3px;line-height:1.5;text-wrap:pretty">{{ sp.note }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </section>
+
+    <section id="responsive" style="margin-bottom:40px">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+        <span style="width:3px;height:14px;border-radius:2px;background:#0E9384"></span>
+        <span style="font-size:11px;font-weight:700;letter-spacing:.09em;color:#475467">06 — BREAKPOINTS &amp; RESPONSIVE RULES</span>
+        <span style="flex:1;height:1px;background:#F0EEE7"></span>
+        <span style="font-size:11.5px;color:#98A2B3">auto-fit over media queries</span>
+      </div>
+
+      <div style="border:1px solid #ECEAE2;border-radius:14px;background:#fff;overflow:hidden;margin-bottom:16px">
+        <div style="padding:16px 20px;border-bottom:1px solid #F2F0EA">
+          <div style="font-size:14.5px;font-weight:700;color:#0F2A47">Breakpoints</div>
+          <div style="font-size:12px;color:#6B7C93;margin-top:2px">The product is desktop-first. Layouts reflow with <span style="font-family:ui-monospace,monospace">auto-fit</span> and <span style="font-family:ui-monospace,monospace">minmax()</span> rather than hard media queries, so these are behaviour thresholds, not CSS breakpoints.</div>
+        </div>
+        <div style="overflow-x:auto">
+          <table style="width:100%;min-width:720px;border-collapse:collapse">
+            <thead>
+              <tr style="background:#FCFBF7">
+                <th style="padding:11px 20px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#7A8699;border-bottom:1px solid #F0EEE7">RANGE</th>
+                <th style="padding:11px 13px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#7A8699;border-bottom:1px solid #F0EEE7;white-space:nowrap">NAME</th>
+                <th style="padding:11px 13px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#7A8699;border-bottom:1px solid #F0EEE7;white-space:nowrap">KPI COLUMNS</th>
+                <th style="padding:11px 20px 11px 13px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#7A8699;border-bottom:1px solid #F0EEE7">WHAT CHANGES</th>
+              </tr>
+            </thead>
+            <tbody>
+              <sc-for list="{{ breakpoints }}" as="b" hint-placeholder-count="5">
+                <tr style="background:{{ b.rowBg }}">
+                  <td style="padding:11px 20px;border-bottom:1px solid #F5F3EE;font-size:12.5px;font-weight:700;color:#0F2A47;white-space:nowrap;font-family:ui-monospace,monospace">{{ b.range }}</td>
+                  <td style="padding:11px 13px;border-bottom:1px solid #F5F3EE"><span style="font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;background:{{ b.tBg }};color:{{ b.tFg }};white-space:nowrap">{{ b.name }}</span></td>
+                  <td style="padding:11px 13px;border-bottom:1px solid #F5F3EE;font-size:12.5px;font-weight:700;color:#0B7A6E;white-space:nowrap">{{ b.cols }}</td>
+                  <td style="padding:11px 20px 11px 13px;border-bottom:1px solid #F5F3EE;font-size:12.5px;color:#475467;text-wrap:pretty">{{ b.note }}</td>
+                </tr>
+              </sc-for>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:14px">
+        <sc-for list="{{ responsiveRules }}" as="r" hint-placeholder-count="6">
+          <div style="border:1px solid #ECEAE2;border-radius:14px;background:#fff;padding:18px 20px">
+            <div style="display:flex;align-items:center;gap:9px;margin-bottom:8px">
+              <span style="width:26px;height:26px;flex:none;border-radius:8px;background:{{ r.ibg }};color:{{ r.ifg }};display:grid;place-items:center;font-size:12px;font-weight:800">{{ r.icon }}</span>
+              <span style="font-size:13.5px;font-weight:700;color:#0F2A47;min-width:0;text-wrap:pretty">{{ r.title }}</span>
+            </div>
+            <div style="font-size:12.5px;color:#7A8699;line-height:1.6;text-wrap:pretty">{{ r.body }}</div>
+            <div style="font-size:11px;color:#0B7A6E;margin-top:9px;font-family:ui-monospace,monospace;background:#F7FBFA;border-radius:7px;padding:8px 10px;text-wrap:pretty">{{ r.code }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <section id="specs" style="margin-bottom:40px">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+        <span style="width:3px;height:14px;border-radius:2px;background:#0E9384"></span>
+        <span style="font-size:11px;font-weight:700;letter-spacing:.09em;color:#475467">07 — COMPONENT SPECS</span>
+        <span style="flex:1;height:1px;background:#F0EEE7"></span>
+        <span style="font-size:11.5px;color:#98A2B3">exact dimensions</span>
+      </div>
+
+      <div style="border:1px solid #ECEAE2;border-radius:14px;background:#fff;overflow:hidden;margin-bottom:14px">
+        <div style="padding:15px 20px;border-bottom:1px solid #F2F0EA;display:flex;align-items:center;gap:10px">
+          <span style="font-size:13.5px;font-weight:700;color:#0F2A47">Buttons</span>
+          <span style="flex:1"></span>
+          <span style="font-size:11px;color:#98A2B3">height fixed per context · width content-driven</span>
+        </div>
+        <div style="display:grid;grid-template-columns:200px minmax(0,1fr);gap:20px;align-items:center;padding:16px 20px;border-bottom:1px solid #F5F3EE">
+          <div style="display:flex;align-items:center;min-height:44px"><button onClick="{{ demo }}" style="height:38px;padding:0 18px;border-radius:10px;border:0;background:#0E9384;font-size:14px;font-weight:700;color:#fff;cursor:pointer;font-family:inherit;white-space:nowrap">Primary</button></div>
+          <div style="min-width:0">
+            <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:9px">
+              <span style="font-size:13px;font-weight:700;color:#0F2A47">Primary</span>
+              <span style="font-size:11.5px;color:#98A2B3;min-width:0;text-wrap:pretty">Page header CTA, modal submit</span>
+            </div>
+            <div style="display:flex;gap:22px;flex-wrap:wrap">
+              <div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">HEIGHT</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">38px</div></div><div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">PADDING</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">0 18px</div></div><div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">RADIUS</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">10px</div></div><div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">TYPE</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">14 / 700</div></div>
+            </div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:200px minmax(0,1fr);gap:20px;align-items:center;padding:16px 20px;border-bottom:1px solid #F5F3EE">
+          <div style="display:flex;align-items:center;min-height:44px"><button onClick="{{ demo }}" style="height:38px;padding:0 16px;border-radius:10px;border:1px solid #E5E3DC;background:#fff;font-size:14px;font-weight:600;color:#344054;cursor:pointer;font-family:inherit;white-space:nowrap">Secondary</button></div>
+          <div style="min-width:0">
+            <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:9px">
+              <span style="font-size:13px;font-weight:700;color:#0F2A47">Secondary</span>
+              <span style="font-size:11.5px;color:#98A2B3;min-width:0;text-wrap:pretty">Export, Reset, Cancel</span>
+            </div>
+            <div style="display:flex;gap:22px;flex-wrap:wrap">
+              <div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">HEIGHT</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">38px</div></div><div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">PADDING</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">0 16px</div></div><div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">RADIUS</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">10px</div></div><div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">TYPE</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">14 / 600</div></div>
+            </div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:200px minmax(0,1fr);gap:20px;align-items:center;padding:16px 20px;border-bottom:1px solid #F5F3EE">
+          <div style="display:flex;align-items:center;min-height:44px"><button onClick="{{ demo }}" style="height:38px;padding:0 16px;border-radius:10px;border:1px solid #BFE3DC;background:#EEF6F5;font-size:14px;font-weight:700;color:#0B7A6E;cursor:pointer;font-family:inherit;white-space:nowrap">Accent ghost</button></div>
+          <div style="min-width:0">
+            <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:9px">
+              <span style="font-size:13px;font-weight:700;color:#0F2A47">Accent ghost</span>
+              <span style="font-size:11.5px;color:#98A2B3;min-width:0;text-wrap:pretty">View Course, Open module</span>
+            </div>
+            <div style="display:flex;gap:22px;flex-wrap:wrap">
+              <div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">HEIGHT</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">38px</div></div><div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">PADDING</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">0 16px</div></div><div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">RADIUS</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">10px</div></div><div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">TYPE</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">14 / 700</div></div>
+            </div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:200px minmax(0,1fr);gap:20px;align-items:center;padding:16px 20px;border-bottom:1px solid #F5F3EE">
+          <div style="display:flex;align-items:center;min-height:44px"><button onClick="{{ demo }}" style="height:38px;padding:0 16px;border-radius:10px;border:1px solid #F0D2CF;background:#fff;font-size:14px;font-weight:600;color:#B42318;cursor:pointer;font-family:inherit;white-space:nowrap">Destructive</button></div>
+          <div style="min-width:0">
+            <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:9px">
+              <span style="font-size:13px;font-weight:700;color:#0F2A47">Destructive</span>
+              <span style="font-size:11.5px;color:#98A2B3;min-width:0;text-wrap:pretty">Revoke, Suspend, Delete</span>
+            </div>
+            <div style="display:flex;gap:22px;flex-wrap:wrap">
+              <div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">HEIGHT</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">38px</div></div><div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">PADDING</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">0 16px</div></div><div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">RADIUS</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">10px</div></div><div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">TYPE</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">14 / 600</div></div>
+            </div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:200px minmax(0,1fr);gap:20px;align-items:center;padding:16px 20px;border-bottom:1px solid #F5F3EE">
+          <div style="display:flex;align-items:center;min-height:44px"><button onClick="{{ demo }}" style="height:30px;padding:0 12px;border-radius:8px;border:1px solid #E5E3DC;background:#fff;font-size:12px;font-weight:600;color:#344054;cursor:pointer;font-family:inherit;white-space:nowrap">Open</button></div>
+          <div style="min-width:0">
+            <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:9px">
+              <span style="font-size:13px;font-weight:700;color:#0F2A47">Table action</span>
+              <span style="font-size:11.5px;color:#98A2B3;min-width:0;text-wrap:pretty">Row-level Open, Extend, Manage</span>
+            </div>
+            <div style="display:flex;gap:22px;flex-wrap:wrap">
+              <div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">HEIGHT</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">30px</div></div><div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">PADDING</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">0 12–13px</div></div><div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">RADIUS</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">8px</div></div><div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">TYPE</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">12 / 600</div></div>
+            </div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:200px minmax(0,1fr);gap:20px;align-items:center;padding:16px 20px;border-bottom:1px solid #F5F3EE">
+          <div style="display:flex;align-items:center;min-height:44px"><button onClick="{{ demo }}" style="width:32px;height:32px;border-radius:9px;border:1px solid #E5E3DC;background:#fff;display:grid;place-items:center;cursor:pointer;color:#7A8699;font-family:inherit"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12" /></svg></button></div>
+          <div style="min-width:0">
+            <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:9px">
+              <span style="font-size:13px;font-weight:700;color:#0F2A47">Icon only</span>
+              <span style="font-size:11.5px;color:#98A2B3;min-width:0;text-wrap:pretty">Close, prev / next, overflow menu</span>
+            </div>
+            <div style="display:flex;gap:22px;flex-wrap:wrap">
+              <div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">HEIGHT</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">32px</div></div><div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">PADDING</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">—</div></div><div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">RADIUS</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">9px</div></div><div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">TYPE</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">—</div></div>
+            </div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:200px minmax(0,1fr);gap:20px;align-items:center;padding:16px 20px;border-bottom:1px solid #F5F3EE">
+          <div style="display:flex;align-items:center;min-height:44px"><button onClick="{{ demo }}" style="width:28px;height:28px;border-radius:8px;border:1px solid #E5E3DC;background:#fff;display:grid;place-items:center;cursor:pointer;color:#475467;font-family:inherit"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M9 6l6 6-6 6" /></svg></button></div>
+          <div style="min-width:0">
+            <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:9px">
+              <span style="font-size:13px;font-weight:700;color:#0F2A47">Compact icon</span>
+              <span style="font-size:11.5px;color:#98A2B3;min-width:0;text-wrap:pretty">Calendar nav, inline toggles</span>
+            </div>
+            <div style="display:flex;gap:22px;flex-wrap:wrap">
+              <div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">HEIGHT</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">28px</div></div><div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">PADDING</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">—</div></div><div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">RADIUS</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">8px</div></div><div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">TYPE</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">—</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="border:1px solid #ECEAE2;border-radius:14px;background:#fff;overflow:hidden;margin-bottom:14px">
+        <div style="padding:15px 20px;border-bottom:1px solid #F2F0EA;display:flex;align-items:center;gap:10px">
+          <span style="font-size:13.5px;font-weight:700;color:#0F2A47">Inputs &amp; selects</span>
+          <span style="flex:1"></span>
+          <span style="font-size:11px;color:#98A2B3">1px border unless in edit state</span>
+        </div>
+        <div style="display:grid;grid-template-columns:200px minmax(0,1fr);gap:20px;align-items:center;padding:16px 20px;border-bottom:1px solid #F5F3EE">
+          <div style="display:flex;align-items:center;min-height:44px"><input value="{{ demoText }}" onChange="{{ setDemoText }}" style="width:100%;height:40px;padding:0 13px;border:1px solid #E5E3DC;border-radius:9px;font-size:13.5px;background:#fff;color:#0F2A47;outline:0;font-family:inherit;box-sizing:border-box" /></div>
+          <div style="min-width:0">
+            <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:9px">
+              <span style="font-size:13px;font-weight:700;color:#0F2A47">Text input</span>
+              <span style="font-size:11.5px;color:#98A2B3;min-width:0;text-wrap:pretty">Modal and form fields</span>
+            </div>
+            <div style="display:flex;gap:22px;flex-wrap:wrap">
+              <div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">HEIGHT</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">40px</div></div><div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">PADDING</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">0 13px</div></div><div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">RADIUS</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">9px</div></div><div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">TYPE</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">13.5 / 400</div></div>
+            </div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:200px minmax(0,1fr);gap:20px;align-items:center;padding:16px 20px;border-bottom:1px solid #F5F3EE">
+          <div style="display:flex;align-items:center;min-height:44px"><select value="{{ demoSelect }}" onChange="{{ setDemoSelect }}" style="width:100%;height:40px;padding:0 12px;border:1px solid #E5E3DC;border-radius:9px;font-size:13.5px;background:#fff;color:#0F2A47;outline:0;font-family:inherit"><sc-for list="{{ demoSelectOpts }}" as="o" hint-placeholder-count="4"><option>{{ o.o }}</option></sc-for></select></div>
+          <div style="min-width:0">
+            <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:9px">
+              <span style="font-size:13px;font-weight:700;color:#0F2A47">Select</span>
+              <span style="font-size:11.5px;color:#98A2B3;min-width:0;text-wrap:pretty">Form dropdowns</span>
+            </div>
+            <div style="display:flex;gap:22px;flex-wrap:wrap">
+              <div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">HEIGHT</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">40px</div></div><div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">PADDING</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">0 12px</div></div><div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">RADIUS</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">9px</div></div><div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">TYPE</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">13.5 / 400</div></div>
+            </div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:200px minmax(0,1fr);gap:20px;align-items:center;padding:16px 20px;border-bottom:1px solid #F5F3EE">
+          <div style="display:flex;align-items:center;min-height:44px"><select value="{{ demoSelect }}" onChange="{{ setDemoSelect }}" style="width:100%;height:34px;padding:0 9px;border:1px solid #E5E3DC;border-radius:8px;font-size:12px;background:#fff;color:#0F2A47;outline:0;font-family:inherit"><sc-for list="{{ demoSelectOpts }}" as="o" hint-placeholder-count="4"><option>{{ o.o }}</option></sc-for></select></div>
+          <div style="min-width:0">
+            <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:9px">
+              <span style="font-size:13px;font-weight:700;color:#0F2A47">Filter select</span>
+              <span style="font-size:11.5px;color:#98A2B3;min-width:0;text-wrap:pretty">Filter-bar dropdowns</span>
+            </div>
+            <div style="display:flex;gap:22px;flex-wrap:wrap">
+              <div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">HEIGHT</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">34–36px</div></div><div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">PADDING</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">0 8–10px</div></div><div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">RADIUS</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">8px</div></div><div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">TYPE</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">12–12.5 / 400</div></div>
+            </div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:200px minmax(0,1fr);gap:20px;align-items:center;padding:16px 20px;border-bottom:1px solid #F5F3EE">
+          <div style="display:flex;align-items:center;min-height:44px"><div style="display:flex;align-items:center;gap:9px;width:100%;height:38px;padding:0 15px;border:1px solid #E5E3DC;background:#fff;border-radius:999px"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#98A2B3" stroke-width="2.2" stroke-linecap="round" style="flex:none"><circle cx="11" cy="11" r="7" /><path d="m20 20-3.2-3.2" /></svg><span style="font-size:13px;color:#98A2B3">Search…</span></div></div>
+          <div style="min-width:0">
+            <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:9px">
+              <span style="font-size:13px;font-weight:700;color:#0F2A47">Search field</span>
+              <span style="font-size:11.5px;color:#98A2B3;min-width:0;text-wrap:pretty">Header global search</span>
+            </div>
+            <div style="display:flex;gap:22px;flex-wrap:wrap">
+              <div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">HEIGHT</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">38px</div></div><div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">PADDING</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">0 15px · 0 34px with icon</div></div><div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">RADIUS</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">999px</div></div><div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">TYPE</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">13 / 400</div></div>
+            </div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:200px minmax(0,1fr);gap:20px;align-items:center;padding:16px 20px;border-bottom:1px solid #F5F3EE">
+          <div style="display:flex;align-items:center;min-height:44px"><input value="{{ demoEdit }}" onChange="{{ setDemoEdit }}" style="width:100%;height:40px;padding:0 13px;border:1.5px solid #0E9384;border-radius:9px;font-size:13.5px;background:#fff;color:#0F2A47;outline:0;font-family:inherit;box-sizing:border-box" /></div>
+          <div style="min-width:0">
+            <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:9px">
+              <span style="font-size:13px;font-weight:700;color:#0F2A47">Edit state</span>
+              <span style="font-size:11.5px;color:#98A2B3;min-width:0;text-wrap:pretty">1.5px #0E9384 marks an unlocked field</span>
+            </div>
+            <div style="display:flex;gap:22px;flex-wrap:wrap">
+              <div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">HEIGHT</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">40px</div></div><div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">PADDING</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">0 13px</div></div><div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">RADIUS</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">9px</div></div><div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">TYPE</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">13.5 / 500</div></div>
+            </div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:200px minmax(0,1fr);gap:20px;align-items:center;padding:16px 20px;border-bottom:1px solid #F5F3EE">
+          <div style="display:flex;align-items:center;min-height:44px"><div style="width:100%;min-height:40px;display:flex;align-items:center;padding:0 13px;border:1px solid #F0EEE7;border-radius:9px;background:#FCFBF7;font-size:13.5px;color:#0F2A47">TCH-2001</div></div>
+          <div style="min-width:0">
+            <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:9px">
+              <span style="font-size:13px;font-weight:700;color:#0F2A47">Read-only value</span>
+              <span style="font-size:11.5px;color:#98A2B3;min-width:0;text-wrap:pretty">Locked field inside a profile group</span>
+            </div>
+            <div style="display:flex;gap:22px;flex-wrap:wrap">
+              <div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">HEIGHT</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">40px min</div></div><div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">PADDING</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">0 13px</div></div><div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">RADIUS</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">9px</div></div><div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">TYPE</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">13.5 / 400</div></div>
+            </div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:200px minmax(0,1fr);gap:20px;align-items:center;padding:16px 20px;border-bottom:1px solid #F5F3EE">
+          <div style="display:flex;align-items:center;min-height:44px"><textarea style="width:100%;height:76px;padding:11px 13px;border:1px solid #E5E3DC;border-radius:9px;font-size:13.5px;background:#fff;color:#0F2A47;outline:0;font-family:inherit;resize:none;box-sizing:border-box">Reason recorded in the audit trail</textarea></div>
+          <div style="min-width:0">
+            <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:9px">
+              <span style="font-size:13px;font-weight:700;color:#0F2A47">Textarea</span>
+              <span style="font-size:11.5px;color:#98A2B3;min-width:0;text-wrap:pretty">Reasons, answers, notes</span>
+            </div>
+            <div style="display:flex;gap:22px;flex-wrap:wrap">
+              <div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">HEIGHT</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">96–110px min</div></div><div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">PADDING</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">11px 13px</div></div><div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">RADIUS</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">9px</div></div><div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">TYPE</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">13.5 / 400</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="border:1px solid #ECEAE2;border-radius:14px;background:#fff;overflow:hidden;margin-bottom:14px">
+        <div style="padding:15px 20px;border-bottom:1px solid #F2F0EA;display:flex;align-items:center;gap:10px">
+          <span style="font-size:13.5px;font-weight:700;color:#0F2A47">Pills, chips &amp; badges</span>
+          <span style="flex:1"></span>
+          <span style="font-size:11px;color:#98A2B3">radius is always 999px</span>
+        </div>
+        <div style="display:grid;grid-template-columns:200px minmax(0,1fr);gap:20px;align-items:center;padding:16px 20px;border-bottom:1px solid #F5F3EE">
+          <div style="display:flex;align-items:center;min-height:44px"><span style="font-size:11px;font-weight:700;padding:4px 11px;border-radius:999px;background:#E7F7EE;color:#15803D;white-space:nowrap">Active</span></div>
+          <div style="min-width:0">
+            <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:9px">
+              <span style="font-size:13px;font-weight:700;color:#0F2A47">Status pill</span>
+              <span style="font-size:11.5px;color:#98A2B3;min-width:0;text-wrap:pretty">Table and card status</span>
+            </div>
+            <div style="display:flex;gap:22px;flex-wrap:wrap"><div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">PADDING</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">3–4px 9–11px</div></div><div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">RADIUS</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">999px</div></div><div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">TYPE</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">11 / 700</div></div></div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:200px minmax(0,1fr);gap:20px;align-items:center;padding:16px 20px;border-bottom:1px solid #F5F3EE">
+          <div style="display:flex;align-items:center;min-height:44px"><span style="font-size:9.5px;font-weight:700;padding:2px 8px;border-radius:999px;background:#FDE8E8;color:#B42318;white-space:nowrap">Critical</span></div>
+          <div style="min-width:0">
+            <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:9px">
+              <span style="font-size:13px;font-weight:700;color:#0F2A47">Micro pill</span>
+              <span style="font-size:11.5px;color:#98A2B3;min-width:0;text-wrap:pretty">Severity inside a dense row</span>
+            </div>
+            <div style="display:flex;gap:22px;flex-wrap:wrap"><div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">PADDING</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">2px 7–8px</div></div><div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">RADIUS</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">999px</div></div><div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">TYPE</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">9.5–10 / 700</div></div></div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:200px minmax(0,1fr);gap:20px;align-items:center;padding:16px 20px;border-bottom:1px solid #F5F3EE">
+          <div style="display:flex;align-items:center;min-height:44px"><button onClick="{{ demo }}" style="height:32px;padding:0 13px;border-radius:999px;border:1.5px solid #0E9384;background:#EEF6F5;font-size:12px;font-weight:700;color:#0B7A6E;cursor:pointer;font-family:inherit">Live Classes</button></div>
+          <div style="min-width:0">
+            <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:9px">
+              <span style="font-size:13px;font-weight:700;color:#0F2A47">Filter chip</span>
+              <span style="font-size:11.5px;color:#98A2B3;min-width:0;text-wrap:pretty">Multi-select filters</span>
+            </div>
+            <div style="display:flex;gap:22px;flex-wrap:wrap"><div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">HEIGHT</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">31–34px</div></div><div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">PADDING</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">0 13–14px</div></div><div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">RADIUS</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">999px</div></div><div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">TYPE</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">12–12.5 / 500–700</div></div></div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:200px minmax(0,1fr);gap:20px;align-items:center;padding:16px 20px;border-bottom:1px solid #F5F3EE">
+          <div style="display:flex;align-items:center;min-height:44px"><span style="display:inline-grid;place-items:center;min-width:18px;height:18px;padding:0 6px;border-radius:999px;background:#0E9384;color:#fff;font-size:10.5px;font-weight:700">3</span></div>
+          <div style="min-width:0">
+            <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:9px">
+              <span style="font-size:13px;font-weight:700;color:#0F2A47">Count badge</span>
+              <span style="font-size:11.5px;color:#98A2B3;min-width:0;text-wrap:pretty">Active filter count</span>
+            </div>
+            <div style="display:flex;gap:22px;flex-wrap:wrap"><div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">HEIGHT</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">18px min</div></div><div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">PADDING</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">0 6px</div></div><div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">RADIUS</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">999px</div></div><div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">TYPE</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">10.5 / 700</div></div></div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:200px minmax(0,1fr);gap:20px;align-items:center;padding:16px 20px;border-bottom:1px solid #F5F3EE">
+          <div style="display:flex;align-items:center;min-height:44px"><span style="display:inline-flex;align-items:center;gap:7px;padding:5px 11px;border-radius:999px;background:#E9F1FD"><span style="width:6px;height:6px;border-radius:50%;background:#1D4ED8"></span><span style="font-size:11.5px;font-weight:600;color:#1D4ED8">Upcoming</span></span></div>
+          <div style="min-width:0">
+            <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:9px">
+              <span style="font-size:13px;font-weight:700;color:#0F2A47">Legend chip</span>
+              <span style="font-size:11.5px;color:#98A2B3;min-width:0;text-wrap:pretty">Calendar and chart legends</span>
+            </div>
+            <div style="display:flex;gap:22px;flex-wrap:wrap"><div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">PADDING</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">4–6px 10–12px</div></div><div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">RADIUS</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">999px</div></div><div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">TYPE</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">11–12.5 / 600</div></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div style="border:1px solid #ECEAE2;border-radius:14px;background:#fff;overflow:hidden;margin-bottom:14px">
+        <div style="padding:15px 20px;border-bottom:1px solid #F2F0EA;display:flex;align-items:center;gap:10px">
+          <span style="font-size:13.5px;font-weight:700;color:#0F2A47">Tables</span>
+          <span style="flex:1"></span>
+          <span style="font-size:11px;color:#98A2B3">header row always #FCFBF7</span>
+        </div>
+        <div style="display:grid;grid-template-columns:200px minmax(0,1fr);gap:20px;align-items:center;padding:16px 20px;border-bottom:1px solid #F5F3EE">
+          <div style="display:flex;align-items:center;min-height:44px"><div style="width:100%;background:#FCFBF7;border:1px solid #F0EEE7;border-radius:7px;padding:10px 13px;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#7A8699">REGISTRATION ID</div></div>
+          <div style="min-width:0">
+            <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:9px">
+              <span style="font-size:13px;font-weight:700;color:#0F2A47">Header cell</span>
+              <span style="font-size:11.5px;color:#98A2B3;min-width:0;text-wrap:pretty">Uppercase, #7A8699</span>
+            </div>
+            <div style="display:flex;gap:22px;flex-wrap:wrap"><div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">PADDING</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">10–11px 13px · 20px edge</div></div><div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">TYPE</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">10–10.5 / 700 / .05em</div></div></div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:200px minmax(0,1fr);gap:20px;align-items:center;padding:16px 20px;border-bottom:1px solid #F5F3EE">
+          <div style="display:flex;align-items:center;min-height:44px"><div style="width:100%;padding:11px 13px;border-bottom:1px solid #F5F3EE;font-size:12.5px;color:#475467">4 batches · IC-38</div></div>
+          <div style="min-width:0">
+            <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:9px">
+              <span style="font-size:13px;font-weight:700;color:#0F2A47">Body cell</span>
+              <span style="font-size:11.5px;color:#98A2B3;min-width:0;text-wrap:pretty">#475467 with a 1px divider</span>
+            </div>
+            <div style="display:flex;gap:22px;flex-wrap:wrap"><div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">PADDING</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">10–12px 13px · 20px edge</div></div><div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">TYPE</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">12–12.5 / 400</div></div></div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:200px minmax(0,1fr);gap:20px;align-items:center;padding:16px 20px;border-bottom:1px solid #F5F3EE">
+          <div style="display:flex;align-items:center;min-height:44px"><div style="width:100%;padding:10px 13px"><div style="font-size:13.5px;font-weight:600;color:#0F2A47">Dr. Vikram Verma</div><div style="font-size:10.5px;color:#98A2B3;margin-top:2px;font-family:ui-monospace,monospace">TCH-2001</div></div></div>
+          <div style="min-width:0">
+            <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:9px">
+              <span style="font-size:13px;font-weight:700;color:#0F2A47">Primary cell</span>
+              <span style="font-size:11.5px;color:#98A2B3;min-width:0;text-wrap:pretty">Name with a monospace ID beneath</span>
+            </div>
+            <div style="display:flex;gap:22px;flex-wrap:wrap"><div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">PADDING</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">11–12px 20px</div></div><div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">TYPE</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">13.5 / 600 + 10.5 meta</div></div></div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:200px minmax(0,1fr);gap:20px;align-items:center;padding:16px 20px;border-bottom:1px solid #F5F3EE">
+          <div style="display:flex;align-items:center;min-height:44px"><div style="width:100%;border:1px solid #F0EEE7;border-radius:7px;overflow:hidden"><div style="height:22px;background:#fff"></div><div style="height:22px;background:#FCFBF7"></div><div style="height:22px;background:#fff"></div></div></div>
+          <div style="min-width:0">
+            <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:9px">
+              <span style="font-size:13px;font-weight:700;color:#0F2A47">Zebra rows</span>
+              <span style="font-size:11.5px;color:#98A2B3;min-width:0;text-wrap:pretty">Alternating row fill</span>
+            </div>
+            <div style="display:flex;gap:22px;flex-wrap:wrap"><div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">ODD</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">#FCFBF7</div></div><div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">EVEN</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">#ffffff</div></div></div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:200px minmax(0,1fr);gap:20px;align-items:center;padding:16px 20px;border-bottom:1px solid #F5F3EE">
+          <div style="display:flex;align-items:center;min-height:44px"><div style="width:100%;padding:11px 13px;background:#F7FBFA;border-radius:7px;font-size:12.5px;color:#475467">Hovered row</div></div>
+          <div style="min-width:0">
+            <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:9px">
+              <span style="font-size:13px;font-weight:700;color:#0F2A47">Hover row</span>
+              <span style="font-size:11.5px;color:#98A2B3;min-width:0;text-wrap:pretty">Pointer feedback on clickable rows</span>
+            </div>
+            <div style="display:flex;gap:22px;flex-wrap:wrap"><div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">FILL</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">#FCFBF7 or #F7FBFA</div></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div style="border:1px solid #ECEAE2;border-radius:14px;background:#fff;overflow:hidden;margin-bottom:14px">
+        <div style="padding:15px 20px;border-bottom:1px solid #F2F0EA;display:flex;align-items:center;gap:10px">
+          <span style="font-size:13.5px;font-weight:700;color:#0F2A47">Icons &amp; avatars</span>
+          <span style="flex:1"></span>
+          <span style="font-size:11px;color:#98A2B3">stroke icons at 2–2.4 weight</span>
+        </div>
+        <div style="display:grid;grid-template-columns:200px minmax(0,1fr);gap:20px;align-items:center;padding:16px 20px;border-bottom:1px solid #F5F3EE">
+          <div style="display:flex;align-items:center;min-height:44px"><span style="display:inline-grid;place-items:center;width:34px;height:34px;border-radius:9px;background:#0B1F3E;color:#C7D3E3"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9.5 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8" /></svg></span></div>
+          <div style="min-width:0">
+            <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:9px">
+              <span style="font-size:13px;font-weight:700;color:#0F2A47">Nav icon</span>
+              <span style="font-size:11.5px;color:#98A2B3;min-width:0;text-wrap:pretty">Sidebar items</span>
+            </div>
+            <div style="display:flex;gap:22px;flex-wrap:wrap"><div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">SIZE</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">17 × 17</div></div><div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">STROKE</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">2</div></div></div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:200px minmax(0,1fr);gap:20px;align-items:center;padding:16px 20px;border-bottom:1px solid #F5F3EE">
+          <div style="display:flex;align-items:center;min-height:44px"><span style="display:inline-grid;place-items:center;width:40px;height:40px;border-radius:11px;background:#E9F1FD"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1D4ED8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-8M21 7v6h-6" /></svg></span></div>
+          <div style="min-width:0">
+            <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:9px">
+              <span style="font-size:13px;font-weight:700;color:#0F2A47">KPI icon</span>
+              <span style="font-size:11.5px;color:#98A2B3;min-width:0;text-wrap:pretty">Inside a tinted 40 × 40 tile</span>
+            </div>
+            <div style="display:flex;gap:22px;flex-wrap:wrap"><div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">SIZE</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">18 × 18</div></div><div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">TILE</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">40 × 40 · r 11px</div></div><div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">STROKE</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">2</div></div></div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:200px minmax(0,1fr);gap:20px;align-items:center;padding:16px 20px;border-bottom:1px solid #F5F3EE">
+          <div style="display:flex;align-items:center;min-height:44px"><span style="display:inline-flex;align-items:center;gap:7px;height:34px;padding:0 13px;border-radius:9px;border:1px solid #E5E3DC;background:#fff;font-size:12.5px;font-weight:600;color:#344054"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4M7 11l5 5 5-5M4 20h16" /></svg>Export</span></div>
+          <div style="min-width:0">
+            <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:9px">
+              <span style="font-size:13px;font-weight:700;color:#0F2A47">Inline icon</span>
+              <span style="font-size:11.5px;color:#98A2B3;min-width:0;text-wrap:pretty">Buttons and chips</span>
+            </div>
+            <div style="display:flex;gap:22px;flex-wrap:wrap"><div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">SIZE</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">13–15px</div></div><div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">STROKE</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">2.1–2.4</div></div></div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:200px minmax(0,1fr);gap:20px;align-items:center;padding:16px 20px;border-bottom:1px solid #F5F3EE">
+          <div style="display:flex;align-items:center;min-height:44px"><span style="display:inline-flex;align-items:center;gap:9px"><span style="width:8px;height:8px;border-radius:50%;background:#B42318"></span><span style="width:8px;height:8px;border-radius:50%;background:#B45309"></span><span style="width:8px;height:8px;border-radius:50%;background:#15803D"></span></span></div>
+          <div style="min-width:0">
+            <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:9px">
+              <span style="font-size:13px;font-weight:700;color:#0F2A47">Status dot</span>
+              <span style="font-size:11.5px;color:#98A2B3;min-width:0;text-wrap:pretty">Alert and legend markers</span>
+            </div>
+            <div style="display:flex;gap:22px;flex-wrap:wrap"><div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">SIZE</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">7–8px</div></div><div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">RADIUS</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">50%</div></div></div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:200px minmax(0,1fr);gap:20px;align-items:center;padding:16px 20px;border-bottom:1px solid #F5F3EE">
+          <div style="display:flex;align-items:center;min-height:44px"><span style="display:inline-grid;place-items:center;width:40px;height:40px;border-radius:50%;background:#2C5A8A;color:#fff;font-size:12.5px;font-weight:700">VV</span></div>
+          <div style="min-width:0">
+            <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:9px">
+              <span style="font-size:13px;font-weight:700;color:#0F2A47">Avatar</span>
+              <span style="font-size:11.5px;color:#98A2B3;min-width:0;text-wrap:pretty">Initials on a tinted fill</span>
+            </div>
+            <div style="display:flex;gap:22px;flex-wrap:wrap"><div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">SIZE</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">36–40px</div></div><div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">RADIUS</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">50%</div></div><div style="min-width:0"><div style="font-size:9.5px;font-weight:700;letter-spacing:.05em;color:#B0B6BF">TYPE</div><div style="font-size:11.5px;font-weight:600;color:#475467;margin-top:2px;font-family:ui-monospace,monospace;white-space:nowrap">12.5 / 700</div></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="components" style="margin-bottom:40px">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+        <span style="width:3px;height:14px;border-radius:2px;background:#0E9384"></span>
+        <span style="font-size:11px;font-weight:700;letter-spacing:.09em;color:#475467">08 — COMPONENTS</span>
+        <span style="flex:1;height:1px;background:#F0EEE7"></span>
+        <span style="font-size:11.5px;color:#98A2B3">live, not screenshots</span>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:16px">
+
+        <div style="border:1px solid #ECEAE2;border-radius:14px;background:#fff;overflow:hidden">
+          <div style="padding:15px 20px;border-bottom:1px solid #F2F0EA;display:flex;align-items:center;gap:10px">
+            <span style="font-size:13.5px;font-weight:700;color:#0F2A47">Buttons</span>
+            <span style="flex:1"></span>
+            <span style="font-size:10.5px;color:#98A2B3;font-family:ui-monospace,monospace">h 38 · r 9–10</span>
+          </div>
+          <div style="padding:20px;display:flex;gap:9px;flex-wrap:wrap">
+            <button onClick="{{ demo }}" style="height:38px;padding:0 18px;border-radius:10px;border:0;background:#0E9384;font-size:14px;font-weight:700;color:#fff;cursor:pointer;font-family:inherit;white-space:nowrap;flex:none" style-hover="background:#0B7A6E">Primary</button>
+            <button onClick="{{ demo }}" style="height:38px;padding:0 16px;border-radius:10px;border:1px solid #E5E3DC;background:#fff;font-size:14px;font-weight:600;color:#344054;cursor:pointer;font-family:inherit;white-space:nowrap;flex:none" style-hover="background:#F6F5F0">Secondary</button>
+            <button onClick="{{ demo }}" style="height:38px;padding:0 16px;border-radius:10px;border:1px solid #BFE3DC;background:#EEF6F5;font-size:14px;font-weight:700;color:#0B7A6E;cursor:pointer;font-family:inherit;white-space:nowrap;flex:none" style-hover="background:#E2F1EE">Accent ghost</button>
+            <button onClick="{{ demo }}" style="height:38px;padding:0 16px;border-radius:10px;border:1px solid #F0D2CF;background:#fff;font-size:14px;font-weight:600;color:#B42318;cursor:pointer;font-family:inherit;white-space:nowrap;flex:none" style-hover="background:#FEF7F6">Destructive</button>
+            <button onClick="{{ demo }}" style="height:30px;padding:0 12px;border-radius:8px;border:1px solid #E5E3DC;background:#fff;font-size:12px;font-weight:600;color:#344054;cursor:pointer;font-family:inherit;white-space:nowrap;flex:none" style-hover="background:#F6F5F0">Table action · 30</button>
+          </div>
+        </div>
+
+        <div style="border:1px solid #ECEAE2;border-radius:14px;background:#fff;overflow:hidden">
+          <div style="padding:15px 20px;border-bottom:1px solid #F2F0EA;display:flex;align-items:center;gap:10px">
+            <span style="font-size:13.5px;font-weight:700;color:#0F2A47">Tabs &amp; filter pills</span>
+            <span style="flex:1"></span>
+            <span style="font-size:10.5px;color:#98A2B3;font-family:ui-monospace,monospace">h 32 · r 7–999</span>
+          </div>
+          <div style="padding:20px;display:flex;flex-direction:column;gap:14px">
+            <div style="display:flex;gap:2px;background:#FCFBF7;border:1px solid #F0EEE7;border-radius:11px;padding:4px;width:fit-content">
+              <sc-for list="{{ demoTabs }}" as="t" hint-placeholder-count="3">
+                <button onClick="{{ t.pick }}" style="height:32px;padding:0 16px;border:0;border-radius:8px;font-size:13px;cursor:pointer;background:{{ t.bg }};color:{{ t.fg }};font-weight:{{ t.weight }};font-family:inherit;white-space:nowrap">{{ t.label }}</button>
+              </sc-for>
+            </div>
+            <div style="display:flex;gap:7px;flex-wrap:wrap">
+              <sc-for list="{{ demoChips }}" as="c" hint-placeholder-count="4">
+                <button onClick="{{ c.pick }}" style="height:31px;padding:0 13px;border-radius:999px;border:1.5px solid {{ c.border }};background:{{ c.bg }};font-size:12px;font-weight:{{ c.weight }};color:{{ c.fg }};cursor:pointer;font-family:inherit;white-space:nowrap">{{ c.label }}</button>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+
+        <div style="border:1px solid #ECEAE2;border-radius:14px;background:#fff;overflow:hidden">
+          <div style="padding:15px 20px;border-bottom:1px solid #F2F0EA">
+            <span style="font-size:13.5px;font-weight:700;color:#0F2A47">KPI card</span>
+          </div>
+          <div style="padding:20px;display:grid;grid-template-columns:1fr 1fr;gap:13px">
+            <div style="min-width:0;background:#fff;border:1px solid #ECEAE2;border-radius:14px;padding:16px 18px;display:flex;align-items:center;justify-content:space-between;gap:10px">
+              <div style="min-width:0">
+                <div style="font-size:12px;font-weight:500;color:#6B7C93">Total Students</div>
+                <div style="font-size:26px;font-weight:800;letter-spacing:-.03em;color:#0F2A47;margin-top:6px">2,846</div>
+                <div style="display:flex;align-items:center;gap:6px;margin-top:5px">
+                  <span style="font-size:11.5px;font-weight:700;color:#15803D">▲ 4.2%</span>
+                  <span style="font-size:11px;color:#98A2B3">this month</span>
+                </div>
+              </div>
+              <div style="width:40px;height:40px;flex:none;border-radius:11px;background:#E9F1FD;display:grid;place-items:center">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1D4ED8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9.5 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8" /></svg>
+              </div>
+            </div>
+            <div style="min-width:0;border:1px solid #F0EEE7;border-radius:12px;padding:14px 16px;background:#FCFBF7">
+              <div style="font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#7A8699">AVG COMPLETION</div>
+              <div style="font-size:21px;font-weight:800;letter-spacing:-.03em;color:#0F2A47;margin-top:6px">88%</div>
+              <div style="font-size:10.5px;font-weight:600;color:#0B7A6E;margin-top:4px">weighted across products</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="border:1px solid #ECEAE2;border-radius:14px;background:#fff;overflow:hidden">
+          <div style="padding:15px 20px;border-bottom:1px solid #F2F0EA">
+            <span style="font-size:13.5px;font-weight:700;color:#0F2A47">Status pills</span>
+          </div>
+          <div style="padding:20px;display:flex;gap:8px;flex-wrap:wrap">
+            <sc-for list="{{ pills }}" as="p" hint-placeholder-count="9">
+              <span style="font-size:11px;font-weight:700;padding:4px 11px;border-radius:999px;background:{{ p.bg }};color:{{ p.fg }};white-space:nowrap">{{ p.label }}</span>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="border:1px solid #ECEAE2;border-radius:14px;background:#fff;overflow:hidden">
+          <div style="padding:15px 20px;border-bottom:1px solid #F2F0EA">
+            <span style="font-size:13.5px;font-weight:700;color:#0F2A47">Progress &amp; weighted bars</span>
+          </div>
+          <div style="padding:20px;display:flex;flex-direction:column;gap:14px">
+            <sc-for list="{{ bars }}" as="b" hint-placeholder-count="4">
+              <div>
+                <div style="display:flex;align-items:baseline;gap:9px;margin-bottom:6px">
+                  <span style="font-size:12.5px;color:#344054;flex:1;min-width:0">{{ b.label }}</span>
+                  <span style="font-size:11px;color:#98A2B3">{{ b.note }}</span>
+                  <span style="font-size:13px;font-weight:800;color:#0F2A47">{{ b.pct }}</span>
+                </div>
+                <div style="height:8px;border-radius:5px;background:#F2F0EA;overflow:hidden"><div style="height:100%;width:{{ b.pct }};border-radius:5px;background:{{ b.color }}"></div></div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="border:1px solid #ECEAE2;border-radius:14px;background:#fff;overflow:hidden">
+          <div style="padding:15px 20px;border-bottom:1px solid #F2F0EA">
+            <span style="font-size:13.5px;font-weight:700;color:#0F2A47">Form controls</span>
+          </div>
+          <div style="padding:20px;display:grid;grid-template-columns:1fr 1fr;gap:14px">
+            <div>
+              <label style="display:block;font-size:12px;font-weight:600;color:#344054;margin-bottom:7px">Text field</label>
+              <input value="{{ demoText }}" onChange="{{ setDemoText }}" style="width:100%;height:40px;padding:0 13px;border:1px solid #E5E3DC;border-radius:9px;font-size:13.5px;background:#fff;color:#0F2A47;outline:0;font-family:inherit;box-sizing:border-box" />
+            </div>
+            <div>
+              <label style="display:block;font-size:12px;font-weight:600;color:#344054;margin-bottom:7px">Select</label>
+              <select value="{{ demoSelect }}" onChange="{{ setDemoSelect }}" style="width:100%;height:40px;padding:0 12px;border:1px solid #E5E3DC;border-radius:9px;font-size:13.5px;background:#fff;color:#0F2A47;outline:0;font-family:inherit">
+                <sc-for list="{{ demoSelectOpts }}" as="o" hint-placeholder-count="3"><option>{{ o.o }}</option></sc-for>
+              </select>
+            </div>
+            <div style="grid-column:span 2">
+              <label style="display:block;font-size:12px;font-weight:600;color:#344054;margin-bottom:7px">Field in edit state <span style="color:#98A2B3;font-weight:500">— 1.5px teal border marks an unlocked field</span></label>
+              <input value="{{ demoEdit }}" onChange="{{ setDemoEdit }}" style="width:100%;height:40px;padding:0 13px;border:1.5px solid #0E9384;border-radius:9px;font-size:13.5px;background:#fff;color:#0F2A47;outline:0;font-family:inherit;box-sizing:border-box" />
+            </div>
+            <div style="grid-column:span 2">
+              <div style="font-size:12px;font-weight:600;color:#344054;margin-bottom:7px">Read-only value</div>
+              <div style="min-height:40px;display:flex;align-items:center;padding:0 13px;border:1px solid #F0EEE7;border-radius:9px;background:#FCFBF7;font-size:13.5px;color:#0F2A47">Dr. Vikram Verma · TCH-2001</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="border:1px solid #ECEAE2;border-radius:14px;background:#fff;overflow:hidden">
+          <div style="padding:15px 20px;border-bottom:1px solid #F2F0EA">
+            <span style="font-size:13.5px;font-weight:700;color:#0F2A47">Table row</span>
+          </div>
+          <div style="overflow-x:auto">
+            <table style="width:100%;min-width:480px;border-collapse:collapse">
+              <thead>
+                <tr style="background:#FCFBF7">
+                  <th style="padding:11px 20px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#7A8699;border-bottom:1px solid #F0EEE7">TEACHER</th>
+                  <th style="padding:11px 13px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#7A8699;border-bottom:1px solid #F0EEE7">BATCHES</th>
+                  <th style="padding:11px 13px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#7A8699;border-bottom:1px solid #F0EEE7">STATUS</th>
+                  <th style="padding:11px 20px 11px 13px;border-bottom:1px solid #F0EEE7"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <sc-for list="{{ demoRows }}" as="r" hint-placeholder-count="2">
+                  <tr style="background:{{ r.rowBg }}" style-hover="background:#FCFBF7">
+                    <td style="padding:12px 20px;border-bottom:1px solid #F5F3EE">
+                      <div style="font-size:13px;font-weight:600;color:#0F2A47;white-space:nowrap">{{ r.name }}</div>
+                      <div style="font-size:10.5px;color:#98A2B3;margin-top:2px;font-family:ui-monospace,monospace">{{ r.id }}</div>
+                    </td>
+                    <td style="padding:12px 13px;border-bottom:1px solid #F5F3EE;font-size:12.5px;color:#475467">{{ r.batches }}</td>
+                    <td style="padding:12px 13px;border-bottom:1px solid #F5F3EE"><span style="font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;background:{{ r.sBg }};color:{{ r.sFg }};white-space:nowrap">{{ r.status }}</span></td>
+                    <td style="padding:12px 20px 12px 13px;border-bottom:1px solid #F5F3EE;text-align:right"><span style="font-size:11.5px;font-weight:700;color:#0B7A6E;white-space:nowrap">Open →</span></td>
+                  </tr>
+                </sc-for>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div style="border:1px solid #ECEAE2;border-radius:14px;background:#fff;overflow:hidden">
+          <div style="padding:15px 20px;border-bottom:1px solid #F2F0EA">
+            <span style="font-size:13.5px;font-weight:700;color:#0F2A47">Section header</span>
+          </div>
+          <div style="padding:22px 20px">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:13px">
+              <span style="width:3px;height:14px;border-radius:2px;background:#0E9384"></span>
+              <span style="font-size:11px;font-weight:700;letter-spacing:.09em;color:#475467">COURSE &amp; BATCH</span>
+              <span style="flex:1;height:1px;background:#F0EEE7"></span>
+              <span style="font-size:11.5px;color:#98A2B3">6 batches</span>
+            </div>
+            <div style="font-size:12.5px;color:#7A8699;line-height:1.65;text-wrap:pretty">A 3px teal bar, an uppercase label at 11px/.09em, a hairline rule filling the gap, optional right-aligned meta. Used to divide every 360° tab.</div>
+          </div>
+        </div>
+
+        <div style="border:1px solid #ECEAE2;border-radius:14px;background:#fff;overflow:hidden">
+          <div style="padding:15px 20px;border-bottom:1px solid #F2F0EA">
+            <span style="font-size:13.5px;font-weight:700;color:#0F2A47">Alert row &amp; before/after</span>
+          </div>
+          <div style="padding:18px 20px;display:flex;flex-direction:column;gap:13px">
+            <div style="display:flex;align-items:flex-start;gap:11px">
+              <span style="width:7px;height:7px;flex:none;border-radius:50%;background:#B42318;margin-top:6px"></span>
+              <div style="min-width:0;flex:1">
+                <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+                  <span style="font-size:12.5px;font-weight:700;color:#0F2A47">4 batches have no teacher</span>
+                  <span style="font-size:9.5px;font-weight:700;padding:2px 7px;border-radius:999px;background:#FDE8E8;color:#B42318">Critical</span>
+                </div>
+                <div style="font-size:11.5px;color:#98A2B3;margin-top:4px">IC-01 Batch 03 · IC-02 Batch 04</div>
+              </div>
+              <span style="font-size:12px;font-weight:600;color:#0B7A6E;white-space:nowrap;flex:none">Resolve →</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:9px;flex-wrap:wrap;padding-top:13px;border-top:1px solid #F5F3EE">
+              <span style="font-size:12px;font-weight:600;padding:4px 11px;border-radius:999px;background:#FDE8E8;color:#B42318;text-decoration:line-through">Coordinator</span>
+              <span style="font-size:12px;font-weight:600;padding:4px 11px;border-radius:999px;background:#E7F7EE;color:#15803D">Academic Head</span>
+              <span style="font-size:12.5px;color:#7A8699">· leave cover</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="border:1px solid #ECEAE2;border-radius:14px;background:#fff;overflow:hidden">
+          <div style="padding:15px 20px;border-bottom:1px solid #F2F0EA">
+            <span style="font-size:13.5px;font-weight:700;color:#0F2A47">Toast &amp; empty state</span>
+          </div>
+          <div style="padding:20px;display:flex;flex-direction:column;gap:16px">
+            <div style="display:flex;align-items:center;gap:12px;padding:14px 20px;border-radius:12px;background:#0B1F3E;box-shadow:0 18px 44px rgba(11,31,62,.3)">
+              <span style="width:22px;height:22px;flex:none;border-radius:50%;background:#0E9384;display:grid;place-items:center;color:#fff;font-size:12px;font-weight:800">✓</span>
+              <div style="min-width:0">
+                <div style="color:#fff;font-size:13.5px;font-weight:600">Access revoked — Karan Bhatt</div>
+                <div style="font-size:11.5px;color:#9FB2CC;margin-top:2px">Written to the audit trail</div>
+              </div>
+            </div>
+            <div style="border:1px solid #F0EEE7;border-radius:11px;padding:30px 20px;text-align:center;background:#FCFBF7">
+              <div style="font-size:13px;font-weight:700;color:#475467">No records match these filters</div>
+              <div style="font-size:11.5px;color:#98A2B3;margin-top:5px">Reset the filters, or widen the date range.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="tabs360" style="margin-bottom:40px">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+        <span style="width:3px;height:14px;border-radius:2px;background:#0E9384"></span>
+        <span style="font-size:11px;font-weight:700;letter-spacing:.09em;color:#475467">09 — 360° TAB CONTRACT</span>
+        <span style="flex:1;height:1px;background:#F0EEE7"></span>
+        <span style="font-size:11.5px;color:#98A2B3">what every profile shares</span>
+      </div>
+      <div style="border:1px solid #ECEAE2;border-radius:14px;background:#fff;overflow:hidden">
+        <div style="overflow-x:auto">
+          <table style="width:100%;min-width:620px;border-collapse:collapse">
+            <thead>
+              <tr style="background:#FCFBF7">
+                <th style="padding:11px 20px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#7A8699;border-bottom:1px solid #F0EEE7">TAB</th>
+                <th style="padding:11px 13px;text-align:center;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#7A8699;border-bottom:1px solid #F0EEE7">STUDENT</th>
+                <th style="padding:11px 13px;text-align:center;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#7A8699;border-bottom:1px solid #F0EEE7">TEACHER</th>
+                <th style="padding:11px 13px;text-align:center;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#7A8699;border-bottom:1px solid #F0EEE7">COORDINATOR</th>
+                <th style="padding:11px 20px 11px 13px;text-align:center;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#7A8699;border-bottom:1px solid #F0EEE7">SPEAKER</th>
+              </tr>
+            </thead>
+            <tbody>
+              <sc-for list="{{ tabMatrix }}" as="t" hint-placeholder-count="12">
+                <tr style="background:{{ t.rowBg }}">
+                  <td style="padding:10px 20px;border-bottom:1px solid #F5F3EE;font-size:12.5px;font-weight:600;color:#0F2A47;white-space:nowrap">{{ t.tab }}</td>
+                  <td style="padding:10px 13px;border-bottom:1px solid #F5F3EE;text-align:center;font-size:13px;font-weight:800;color:{{ t.sFg }}">{{ t.s }}</td>
+                  <td style="padding:10px 13px;border-bottom:1px solid #F5F3EE;text-align:center;font-size:13px;font-weight:800;color:{{ t.tFg }}">{{ t.t }}</td>
+                  <td style="padding:10px 13px;border-bottom:1px solid #F5F3EE;text-align:center;font-size:13px;font-weight:800;color:{{ t.cFg }}">{{ t.c }}</td>
+                  <td style="padding:10px 20px 10px 13px;border-bottom:1px solid #F5F3EE;text-align:center;font-size:13px;font-weight:800;color:{{ t.pFg }}">{{ t.p }}</td>
+                </tr>
+              </sc-for>
+            </tbody>
+          </table>
+        </div>
+        <div style="padding:14px 20px;background:#FCFBF7;border-top:1px solid #F2F0EA;font-size:11.5px;color:#7A8699;text-wrap:pretty">Module-specific tabs sit after the shared set: Student adds Certificates, Tickets, Wallet and Payments · Teacher adds Achievements · Coordinator adds Teachers, Tasks &amp; Alerts and Permissions · Speaker adds Events, Coordinator, Content and Tasks &amp; Alerts.</div>
+      </div>
+    </section>
+
+    <section id="dodont" style="margin-bottom:40px">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+        <span style="width:3px;height:14px;border-radius:2px;background:#0E9384"></span>
+        <span style="font-size:11px;font-weight:700;letter-spacing:.09em;color:#475467">10 — DO &amp; DON'T</span>
+        <span style="flex:1;height:1px;background:#F0EEE7"></span>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));gap:14px">
+        <sc-for list="{{ dodont }}" as="d" hint-placeholder-count="6">
+          <div style="border:1px solid #ECEAE2;border-radius:14px;background:#fff;overflow:hidden">
+            <div style="padding:14px 18px;border-bottom:1px solid #F2F0EA">
+              <span style="font-size:13.5px;font-weight:700;color:#0F2A47;text-wrap:pretty">{{ d.topic }}</span>
+            </div>
+            <div style="padding:14px 18px;border-bottom:1px solid #F5F3EE">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+                <span style="width:16px;height:16px;border-radius:5px;background:#E7F7EE;color:#15803D;display:grid;place-items:center;font-size:10px;font-weight:800">✓</span>
+                <span style="font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#15803D">DO</span>
+              </div>
+              <div style="font-size:12.5px;color:#0F2A47;line-height:1.6;text-wrap:pretty">{{ d.do }}</div>
+            </div>
+            <div style="padding:14px 18px;background:#FCFBF7">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+                <span style="width:16px;height:16px;border-radius:5px;background:#FDE8E8;color:#B42318;display:grid;place-items:center;font-size:10px;font-weight:800">✕</span>
+                <span style="font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#B42318">DON'T</span>
+              </div>
+              <div style="font-size:12.5px;color:#98A2B3;line-height:1.6;text-wrap:pretty">{{ d.dont }}</div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <section id="voice" style="margin-bottom:20px">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+        <span style="width:3px;height:14px;border-radius:2px;background:#0E9384"></span>
+        <span style="font-size:11px;font-weight:700;letter-spacing:.09em;color:#475467">11 — VOICE</span>
+        <span style="flex:1;height:1px;background:#F0EEE7"></span>
+      </div>
+      <div style="border:1px solid #ECEAE2;border-radius:14px;background:#fff;overflow:hidden">
+        <sc-for list="{{ voice }}" as="v" hint-placeholder-count="5">
+          <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0;border-bottom:1px solid #F5F3EE">
+            <div style="padding:15px 20px;border-right:1px solid #F5F3EE">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+                <span style="width:16px;height:16px;border-radius:5px;background:#E7F7EE;color:#15803D;display:grid;place-items:center;font-size:10px;font-weight:800">✓</span>
+                <span style="font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#15803D">WE WRITE</span>
+              </div>
+              <div style="font-size:13px;color:#0F2A47;line-height:1.6;text-wrap:pretty">{{ v.good }}</div>
+            </div>
+            <div style="padding:15px 20px;background:#FCFBF7">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+                <span style="width:16px;height:16px;border-radius:5px;background:#FDE8E8;color:#B42318;display:grid;place-items:center;font-size:10px;font-weight:800">✕</span>
+                <span style="font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#B42318">NOT</span>
+              </div>
+              <div style="font-size:13px;color:#98A2B3;line-height:1.6;text-wrap:pretty">{{ v.bad }}</div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const BDG = {
+  green:['#E7F7EE','#15803D'], amber:['#FEF3E2','#B45309'], red:['#FDE8E8','#B42318'],
+  grey:['#F1F3F5','#667085'], blue:['#E9F1FD','#1D4ED8'], violet:['#F0EAFD','#6D28D9'],
+  teal:['#E6F4F1','#0B7A6E'], orange:['#FDF0E7','#C2410C']
+};
+
+class Component extends DCLogic {
+  state = { demoTab:'Active', demoChip:'Live Classes', demoText:'Dr. Vikram Verma',
+    demoSelect:'This month', demoEdit:'ananya.deshmukh@studycrux.io' };
+
+  renderVals() {
+    const s = this.state;
+
+    return {
+      demo: () => {},
+
+      toc: [
+        ['01','Principles','#principles'],['02','Colour','#colour'],['03','Typography','#type'],
+        ['04','Spacing & radii','#spacing'],['05','Page shell','#layout'],['06','Breakpoints','#responsive'],
+        ['07','Component specs','#specs'],['08','Components','#components'],['09','360° tabs','#tabs360'],
+        ['10','Do & don\'t','#dodont'],['11','Voice','#voice']
+      ].map(([n,label,href])=>({n, label, href})),
+
+      heroStats: [
+        {n:'6', label:'modules'},{n:'8', label:'status colours'},
+        {n:'21', label:'360° tabs, max'},{n:'1', label:'accent colour'}
+      ],
+
+      principles: [
+        {title:'Warm, not clinical', body:'Surfaces are warm off-whites — #FAF9F5 and #FCFBF7, never pure grey. Admin tools are lived in all day; the paper tone keeps long sessions comfortable.',
+         ibg:BDG.orange[0], ifg:BDG.orange[1], path:'M12 3a9 9 0 1 0 .01 0M12 7v5l3 2'},
+        {title:'One accent, earned', body:'Teal #0E9384 marks the single most useful action on a screen. If two things are teal, one of them is wrong.',
+         ibg:BDG.teal[0], ifg:BDG.teal[1], path:'M13 2 3 14h7l-1 8 10-12h-7z'},
+        {title:'Status is colour-coded, always', body:'Eight fixed pairs cover every state across every module. A green pill means the same thing in Payouts as it does in Roles & Access.',
+         ibg:BDG.green[0], ifg:BDG.green[1], path:'M12 3a9 9 0 1 0 .01 0M8.5 12l2.3 2.3 4.7-4.8'},
+        {title:'Density with air', body:'Tables run tight — 10 to 12px cells — because admins scan hundreds of rows; the cards around them breathe at 18 to 22px so the page never feels like a spreadsheet.',
+         ibg:BDG.blue[0], ifg:BDG.blue[1], path:'M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01'}
+      ],
+
+      coreColors: [
+        ['Sidebar navy','#0B1F3E','#0B1F3E','Sidebar, toast, score cards — the only dark surface'],
+        ['Navy line','#1B3358','#1B3358','Dividers inside dark surfaces'],
+        ['Ink','#0F2A47','#E5E3DC','All primary text and numerals'],
+        ['Body','#475467','#E5E3DC','Secondary copy, table cells'],
+        ['Muted','#98A2B3','#E5E3DC','Meta, timestamps, placeholders'],
+        ['Page','#FAF9F5','#E5E3DC','Application background'],
+        ['Card','#ffffff','#E5E3DC','Every raised surface'],
+        ['Subtle','#FCFBF7','#E5E3DC','Table headers, inset panels, zebra rows'],
+        ['Border','#ECEAE2','#E5E3DC','Card outline — the workhorse border'],
+        ['Hairline','#F5F3EE','#E5E3DC','Row dividers inside a card'],
+        ['Accent','#0E9384','#0E9384','Primary buttons, active tabs, progress fill'],
+        ['Accent dark','#0B7A6E','#0B7A6E','Hover on accent, links, ghost-button text']
+      ].map(([name,hex,border,use])=>({name, hex, border, use})),
+
+      badgeColors: [
+        ['green','Active','Success, approved, verified, on-target'],
+        ['amber','Expiring Soon','Warning, pending action, approaching a threshold'],
+        ['red','Suspended','Critical, failed, blocked, overdue'],
+        ['grey','Draft','Neutral, inactive, not started, not applicable'],
+        ['blue','Upcoming','Informational, scheduled, in review'],
+        ['violet','Privileged','Elevated scope, recorded content, special tier'],
+        ['teal','Live Class','Live delivery, assigned, in progress'],
+        ['orange','Workshop','Event formats, content categories']
+      ].map(([key,sample,use])=>({key, sample, use, bg:BDG[key][0], fg:BDG[key][1]})),
+
+      typeScale: [
+        ['45px','500','-.04em','#0F2A47','Heading / Large','3.214rem · tracking −4%','45 / 500'],
+        ['32px','400','-.03em','#0F2A47','Heading / Medium','2.286rem · tracking −3%','32 / 400'],
+        ['25px','400','-.03em','#0F2A47','Heading / Small','1.786rem · tracking −3%','25 / 400'],
+        ['22px','600','-.03em','#0F2A47','Heading / Extra-small','1.571rem · tracking −3%','22 / 600'],
+        ['20px','400','-.02em','#0F2A47','Subheading','1.429rem · tracking −2%','20 / 400'],
+        ['18px','400','-.02em','#0F2A47','Subheading','1.286rem · tracking −2%','18 / 400'],
+        ['18px','500','-.02em','#0F2A47','Subheading (Medium)','1.286rem · tracking −2%','18 / 500'],
+        ['18px','600','-.02em','#0F2A47','Subheading (Semibold)','1.286rem · tracking −2%','18 / 600'],
+        ['16px','400','-.02em','#0F2A47','Body / Large','1.143rem · tracking −2%','16 / 400'],
+        ['16px','500','-.02em','#0F2A47','Body / Large (Medium)','1.143rem · tracking −2%','16 / 500'],
+        ['14px','400','-.02em','#475467','Body / Medium — the base value','1.000rem · tracking −2%','14 / 400'],
+        ['14px','500','-.02em','#475467','Body / Medium (Medium)','1.000rem · tracking −2%','14 / 500'],
+        ['14px','600','-.02em','#0F2A47','Body / Medium (Semibold)','1.000rem · tracking −2%','14 / 600'],
+        ['12px','400','-.02em','#475467','Body / Small','0.857rem · tracking −2%','12 / 400'],
+        ['12px','500','-.02em','#475467','Body / Small (Medium)','0.857rem · tracking −2%','12 / 500'],
+        ['10px','600','.08em','#7A8699','LABEL','0.714rem · uppercase','10 / 600']
+      ].map(([size,weight,tracking,color,sample,role,spec],i)=>({size, weight, tracking, color, sample, role, spec,
+        rowBg: i%2 ? '#FCFBF7' : '#fff'})),
+
+      typeUsage: [
+        ['Heading / Large','45px','500','Design-system hero; reserved for marketing-scale moments'],
+        ['Heading / Medium','32px','400','Empty-state headlines, onboarding splash'],
+        ['Heading / Small','25px','400','KPI numerals, score values'],
+        ['Heading / Extra-small','22px','600','Page titles in every module header'],
+        ['Subheading','20px','400','Section intros inside a 360° tab'],
+        ['Subheading (Medium)','18px','500','Modal titles'],
+        ['Subheading (Semibold)','18px','600','Card titles, banner event name'],
+        ['Body / Large','16px','400','Page subtitles, descriptive copy'],
+        ['Body / Large (Medium)','16px','500','Emphasised inline values'],
+        ['Body / Medium','14px','400','Default body, table cells, field values'],
+        ['Body / Medium (Medium)','14px','500','Filter labels, secondary buttons'],
+        ['Body / Medium (Semibold)','14px','600','Primary buttons, row primary text'],
+        ['Body / Small','12px','400','Meta, timestamps, helper text'],
+        ['Body / Small (Medium)','12px','500','Status pills, chips, badges'],
+        ['Label','10px','600','Table headers, section eyebrows — uppercase, +8% tracking']
+      ].map(([token,size,weight,use],i)=>({token, size, weight, use, rowBg: i%2 ? '#FCFBF7' : '#fff'})),
+
+      spacing: [
+        ['40px','Page gutter on this doc; 32px in app screens'],
+        ['24px','Between major page sections'],
+        ['22px','Card inner padding, generous'],
+        ['16px','Grid gap between cards'],
+        ['13px','Grid gap between KPI cards'],
+        ['10px','Gap between inline controls'],
+        ['7px','Gap between chips and pills']
+      ].map(([px,use])=>({px, use})),
+
+      radii: [
+        ['999px','Pills, chips, avatars, status badges'],
+        ['16px','Modal shell'],
+        ['14px','Primary card'],
+        ['12px','Nested card, KPI tile'],
+        ['9px','Buttons, inputs, selects'],
+        ['6px','Micro chips inside calendar cells']
+      ].map(([px,use])=>({px, use})),
+
+      shadows: [
+        {name:'Card hover', css:'0 8px 22px rgba(11,31,62,.06)'},
+        {name:'Popover / dropdown', css:'0 18px 44px rgba(11,31,62,.16)'},
+        {name:'Modal', css:'0 24px 64px rgba(11,31,62,.22)'}
+      ],
+
+      breakpoints: [
+        ['≥ 1440px','Wide','6–8','Full KPI rows, 3-column card grids, every table column visible without scroll','teal'],
+        ['1200–1439px','Desktop','4–6','The reference width. Sidebar 262px + content; wide tables begin to scroll horizontally','green'],
+        ['1024–1199px','Laptop','3–4','KPI grids reflow to 3 across, two-column card rows stack to one','blue'],
+        ['768–1023px','Tablet','2–3','Sidebar stays but content columns collapse; filter selects wrap to two rows','amber'],
+        ['< 768px','Narrow','1–2','Not a supported admin target — layouts still reflow but tables are horizontally scrolled','grey']
+      ].map(([range,name,cols,note,c],i)=>({range, name, cols, note,
+        tBg:BDG[c][0], tFg:BDG[c][1], rowBg: i%2 ? '#FCFBF7' : '#fff'})),
+
+      responsiveRules: [
+        ['auto-fit, never fixed columns','↔','KPI and card grids declare a minimum tile width and let the browser decide the count. A 6-card row becomes 4, then 3, with no media query.',
+         'repeat(auto-fit, minmax(178px, 1fr))','teal'],
+        ['One scroll region','⇕','Only the content column scrolls. The sidebar has its own overflow, the header is fixed. The page body never scrolls.',
+         'flex:1; overflow-y:auto','blue'],
+        ['Tables scroll, pages do not','→','Wide tables get a min-width and sit inside an overflow-x wrapper, so the layout around them stays put.',
+         'min-width:1200px + overflow-x:auto','violet'],
+        ['min-width:0 on every flex child','⊣','Without it a long name refuses to shrink and pushes siblings out of the card. Applied to every text container inside a flex row.',
+         'min-width:0; text-wrap:pretty','amber'],
+        ['Truncate identity, wrap prose','✂','Names, IDs and dates get ellipsis and nowrap. Descriptions, reasons and notes wrap with text-wrap:pretty.',
+         'white-space:nowrap; text-overflow:ellipsis','green'],
+        ['Two-column cards collapse together','▤','Side-by-side card pairs use auto-fit with a 300–340px floor so they stack as a pair rather than squeezing.',
+         'repeat(auto-fit, minmax(330px, 1fr))','orange']
+      ].map(([title,icon,body,code,c])=>({title, icon, body, code, ibg:BDG[c][0], ifg:BDG[c][1]})),
+
+
+      dodont: [
+        ['Accent usage','Give one action per screen the teal fill — the thing the admin came to do.','Fill three buttons teal in the same header. The eye stops choosing and the accent stops meaning anything.'],
+        ['Status colour','Resolve every state through the eight BDG pairs so green means the same thing everywhere.','Invent a new hex for one badge because it "reads better" on that particular card.'],
+        ['Spacing','Space siblings with flex/grid gap so drag-reorder and delete keep their rhythm.','Add margin-bottom to each child and a negative margin on the last one.'],
+        ['Density','Keep table cells at 10–12px and let the card around them breathe at 18–22px.','Pad table rows to 20px — three rows fill the viewport and scanning dies.'],
+        ['Truncation','Ellipsis identity fields; wrap prose with text-wrap:pretty.','Let a long course name push the status pill off the right edge of the card.'],
+        ['Empty states','Say what is missing and what to change next.','Ship a bare "No data" with no route forward.']
+      ].map(([topic,d,dn])=>({topic, do:d, dont:dn})),
+
+      shellSpecs: [
+        ['SIDEBAR','262px','Fixed navy rail, own scroll, active item on #14335C'],
+        ['HEADER','24px 32px 16px','Title, subtitle, search, then actions right-aligned'],
+        ['CONTENT','flex:1 · overflow-y:auto','Padding 4px 32px 40px — the only scrolling region'],
+        ['KPI GRID','auto-fit · minmax(178px,1fr)','Never a fixed column count; reflows under 1200px'],
+        ['WIDE TABLE','min-width + overflow-x','Wide tables scroll horizontally, the page never does']
+      ].map(([label,v,note])=>({label, v, note})),
+
+      demoTabs: ['All','Active','Archived'].map(label=>{
+        const on = s.demoTab===label;
+        return {label, bg: on?'#0E9384':'transparent', fg: on?'#fff':'#6B7C93',
+          weight: on?'600':'500', pick: ()=>this.setState({demoTab:label})};
+      }),
+      demoChips: ['Mock Tests','Live Classes','Recorded','Drafts'].map(label=>{
+        const on = s.demoChip===label;
+        return {label, border: on?'#0E9384':'#E5E3DC', bg: on?'#EEF6F5':'#fff',
+          fg: on?'#0B7A6E':'#667085', weight: on?'700':'500',
+          pick: ()=>this.setState({demoChip:label})};
+      }),
+
+      pills: [
+        ['Active','green'],['Expiring Soon','amber'],['Suspended','red'],['Draft','grey'],
+        ['Upcoming','blue'],['Privileged','violet'],['Live Class','teal'],['Workshop','orange'],['Verified','green']
+      ].map(([label,c])=>({label, bg:BDG[c][0], fg:BDG[c][1]})),
+
+      bars: [
+        {label:'Course completion', note:'weighted', pct:'88%', color:'#0E9384'},
+        {label:'Attendance', note:'live classes', pct:'93%', color:'#0E9384'},
+        {label:'Assignment submission', note:'active batches', pct:'68%', color:'#F0A72A'},
+        {label:'Feedback response', note:'below target', pct:'41%', color:'#E88B78'}
+      ],
+
+      demoText: s.demoText, setDemoText: (e)=>this.setState({demoText:e.target.value}),
+      demoSelect: s.demoSelect, setDemoSelect: (e)=>this.setState({demoSelect:e.target.value}),
+      demoSelectOpts: ['Today','This week','This month','This quarter'].map(o=>({o})),
+      demoEdit: s.demoEdit, setDemoEdit: (e)=>this.setState({demoEdit:e.target.value}),
+
+      demoRows: [
+        ['Dr. Vikram Verma','TCH-2001','4','Active','green'],
+        ['Ayesha Khan','TCH-2031','1','On leave','blue']
+      ].map(([name,id,batches,status,c],i)=>({name, id, batches, status,
+        sBg:BDG[c][0], sFg:BDG[c][1], rowBg: i%2 ? '#FCFBF7' : '#fff'})),
+
+
+      tabMatrix: [
+        ['Overview',1,1,1,1],['Employment & Recruitment',0,1,1,1],['Personal & Professional',0,1,1,1],
+        ['Learning & Products',1,1,1,1],['Course & Batch',1,1,1,1],['Performance & Reports',0,1,1,1],
+        ['Ratings & Reviews',1,1,1,1],['Attendance & Leave',1,1,1,1],['Schedule',0,1,1,1],
+        ['Finance & Payroll',0,1,1,1],['Documents',1,1,1,1],['Communications',1,1,1,1],
+        ['Logins',1,1,1,1],['Devices',1,1,1,1],['Activity Timeline',1,1,1,1],['Internal Notes',1,1,1,1]
+      ].map(([tab,st,t,c,p],i)=>{
+        const M = (v)=> v ? '✓' : '—';
+        const F = (v)=> v ? '#15803D' : '#D8D4CA';
+        return {tab, s:M(st), t:M(t), c:M(c), p:M(p),
+          sFg:F(st), tFg:F(t), cFg:F(c), pFg:F(p), rowBg: i%2 ? '#FCFBF7' : '#fff'};
+      }),
+
+      voice: [
+        {good:'4 batches have no teacher assigned', bad:'Warning: teacher_id is null for 4 records'},
+        {good:'Revoking removes access immediately and cannot be undone from here.', bad:'Are you sure you want to proceed with this action?'},
+        {good:'Access extended — Rahul Kumar · new expiry 30 Nov', bad:'Update successful'},
+        {good:'Attendance below 60% for three weeks', bad:'Student flagged by rule ATT_RULE_03'},
+        {good:'Owner: Legal & Finance Admin · exit condition: Contract Signed', bad:'Stage 2 pending'}
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>
