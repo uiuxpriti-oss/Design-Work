@@ -4766,615 +4766,6 @@
         </div>
       </sc-if>
 
-      <sc-if value="{{ isAtt }}" hint-placeholder-val="{{ false }}">
-        <div>
-          <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap">
-            <span style="flex:1"></span>
-            <button onClick="{{ atSettings }}" style="flex:none;height:36px;padding:0 14px;border-radius:9px;border:1px solid #E5E3DC;background:#fff;font-size:12.5px;font-weight:600;color:#344054;cursor:pointer" style-hover="background:#F6F5F0">Attendance Settings</button>
-            <button onClick="{{ atActSettings }}" style="flex:none;height:36px;padding:0 14px;border-radius:9px;border:1px solid #E5E3DC;background:#fff;font-size:12.5px;font-weight:600;color:#344054;cursor:pointer" style-hover="background:#F6F5F0">Activity Settings</button>
-            <button onClick="{{ atExport }}" style="flex:none;height:36px;padding:0 16px;border-radius:9px;border:0;background:#0E9384;font-size:12.5px;font-weight:700;color:#fff;cursor:pointer;white-space:nowrap" style-hover="background:#0B7A6E">Export Report</button>
-            <div style="position:relative;flex:none">
-              <button onClick="{{ atOvToggle }}" style="width:36px;height:36px;border-radius:9px;border:1px solid #E5E3DC;background:#fff;display:grid;place-items:center;cursor:pointer;color:#475467" style-hover="background:#F6F5F0">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.7" /><circle cx="12" cy="12" r="1.7" /><circle cx="12" cy="19" r="1.7" /></svg>
-              </button>
-              <div style="display:{{ atOvDisplay }};position:absolute;top:42px;right:0;width:230px;background:#fff;border:1px solid #ECEAE2;border-radius:12px;box-shadow:0 18px 44px rgba(11,31,62,.16);padding:6px;z-index:50">
-                <sc-for list="{{ atOvItems }}" as="o" hint-placeholder-count="5">
-                  <div onClick="{{ o.pick }}" style="padding:9px 11px;border-radius:8px;font-size:12.5px;color:#344054;cursor:pointer" style-hover="background:#F7FBFA">{{ o.label }}</div>
-                </sc-for>
-              </div>
-            </div>
-          </div>
-
-          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:13px;margin-bottom:14px">
-            <sc-for list="{{ atKpis }}" as="k" hint-placeholder-count="8">
-              <div onClick="{{ k.go }}" style="min-width:0;background:#fff;border:1px solid #ECEAE2;border-radius:13px;padding:15px 17px;cursor:pointer" style-hover="border-color:#BFE3DC;box-shadow:0 8px 22px rgba(11,31,62,.06)">
-                <div style="font-size:11.5px;font-weight:500;color:#6B7C93;text-wrap:pretty">{{ k.label }}</div>
-                <div style="font-size:25px;font-weight:800;letter-spacing:-.03em;color:#0F2A47;margin-top:5px">{{ k.n }}</div>
-                <div style="font-size:11px;font-weight:600;color:{{ k.fg }};margin-top:4px;text-wrap:pretty">{{ k.note }}</div>
-              </div>
-            </sc-for>
-          </div>
-
-          <div style="display:flex;align-items:center;gap:10px;background:#EEF6F5;border:1px solid #DCEDEA;border-radius:11px;padding:11px 16px;margin-bottom:16px">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0B7A6E" stroke-width="2.1" stroke-linecap="round" style="flex:none"><circle cx="12" cy="12" r="9" /><path d="M12 11v5M12 8h.01" /></svg>
-            <span style="font-size:12.5px;color:#0B7A6E;text-wrap:pretty">Attendance is never a standalone score — speakers are assessed on attendance + activity + workload + operational outcomes together.</span>
-          </div>
-
-          <div style="display:flex;align-items:center;gap:11px;margin-bottom:15px;flex-wrap:wrap">
-            <div style="display:flex;gap:2px;background:#fff;border:1px solid #ECEAE2;border-radius:11px;padding:4px;overflow-x:auto;flex:none">
-              <sc-for list="{{ atSegs }}" as="t" hint-placeholder-count="8">
-                <button onClick="{{ t.pick }}" style="height:32px;padding:0 14px;border:0;border-radius:8px;font-size:12.5px;cursor:pointer;background:{{ t.bg }};color:{{ t.fg }};font-weight:{{ t.weight }};white-space:nowrap;flex:none">{{ t.label }}</button>
-              </sc-for>
-            </div>
-            <div style="position:relative;flex:1 1 220px;min-width:0">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#98A2B3" stroke-width="2.1" stroke-linecap="round" style="position:absolute;left:13px;top:12px"><circle cx="11" cy="11" r="7" /><path d="m20 20-3.6-3.6" /></svg>
-              <input value="{{ atQ }}" onChange="{{ setAtQ }}" placeholder="Search speaker, ID, event…" style="width:100%;height:38px;padding:0 13px 0 35px;border:1px solid #E5E3DC;border-radius:10px;font-size:13px;color:#0F2A47;background:#fff;outline:0;box-sizing:border-box" />
-            </div>
-            <button onClick="{{ atReset }}" style="display:{{ atResetShow }};align-items:center;flex:none;height:38px;padding:0 13px;border-radius:10px;border:1px solid #E5E3DC;background:#fff;font-size:12.5px;font-weight:600;color:#344054;cursor:pointer" style-hover="background:#F6F5F0">Reset</button>
-            <button onClick="{{ atFpToggle }}" style="flex:none;display:flex;align-items:center;gap:7px;height:38px;padding:0 14px;border-radius:10px;border:1px solid {{ atFpBd }};background:{{ atFpBg }};font-size:13px;font-weight:600;color:{{ atFpFg }};cursor:pointer;font-family:inherit">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"><path d="M4 6h16M7 12h10M10 18h4" /></svg>Filters
-            </button>
-          </div>
-
-          <div style="display:{{ atFpD }};background:#fff;border:1px solid #ECEAE2;border-radius:14px;padding:16px 20px;margin-bottom:16px">
-            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px">
-              <sc-for list="{{ atFilters }}" as="p" hint-placeholder-count="8">
-                <div style="min-width:0">
-                  <label style="display:block;font-size:11px;font-weight:600;color:#475467;margin-bottom:6px">{{ p.label }}</label>
-                  <select value="{{ p.value }}" onChange="{{ p.set }}" style="width:100%;height:36px;padding:0 10px;border:1px solid #E5E3DC;border-radius:8px;font-size:12.5px;background:#fff;color:#0F2A47;outline:0">
-                    <sc-for list="{{ p.opts }}" as="o" hint-placeholder-count="5">
-                      <option>{{ o.o }}</option>
-                    </sc-for>
-                  </select>
-                </div>
-              </sc-for>
-            </div>
-          </div>
-
-          <sc-if value="{{ atIsAtt }}" hint-placeholder-val="{{ true }}">
-            <div style="background:#fff;border:1px solid #ECEAE2;border-radius:14px;overflow:hidden">
-              <div style="padding:16px 20px;border-bottom:1px solid #F2F0EA">
-                <div style="font-size:14.5px;font-weight:700;color:#0F2A47">Today's speaker status</div>
-                <div style="font-size:12.5px;color:#6B7C93;margin-top:2px">{{ atCount }} records · 16 Aug 2026 · click a name for the 360° view</div>
-              </div>
-              <div style="overflow-x:auto">
-                <table style="width:100%;min-width:1780px;border-collapse:collapse">
-                  <thead>
-                    <tr style="background:#FCFBF7">
-                      <th style="padding:11px 20px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#7A8699;border-bottom:1px solid #F0EEE7;white-space:nowrap">SPEAKER</th><th style="padding:11px 13px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#7A8699;border-bottom:1px solid #F0EEE7;white-space:nowrap">STATUS</th><th style="padding:11px 13px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#7A8699;border-bottom:1px solid #F0EEE7;white-space:nowrap">DATE</th><th style="padding:11px 13px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#7A8699;border-bottom:1px solid #F0EEE7;white-space:nowrap">SHIFT</th><th style="padding:11px 13px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#7A8699;border-bottom:1px solid #F0EEE7;white-space:nowrap">SCHED IN</th><th style="padding:11px 13px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#7A8699;border-bottom:1px solid #F0EEE7;white-space:nowrap">ACTUAL IN</th><th style="padding:11px 13px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#7A8699;border-bottom:1px solid #F0EEE7;white-space:nowrap">LATE BY</th><th style="padding:11px 13px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#7A8699;border-bottom:1px solid #F0EEE7;white-space:nowrap">SCHED OUT</th><th style="padding:11px 13px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#7A8699;border-bottom:1px solid #F0EEE7;white-space:nowrap">ACTUAL OUT</th><th style="padding:11px 13px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#7A8699;border-bottom:1px solid #F0EEE7;white-space:nowrap">EARLY BY</th><th style="padding:11px 13px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#7A8699;border-bottom:1px solid #F0EEE7;white-space:nowrap">WORKING HOURS</th><th style="padding:11px 13px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#7A8699;border-bottom:1px solid #F0EEE7;white-space:nowrap">BREAK</th><th style="padding:11px 13px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#7A8699;border-bottom:1px solid #F0EEE7;white-space:nowrap">OVERTIME</th><th style="padding:11px 13px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#7A8699;border-bottom:1px solid #F0EEE7;white-space:nowrap">ATT %</th><th style="padding:11px 13px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#7A8699;border-bottom:1px solid #F0EEE7;white-space:nowrap">ACTIVITY</th><th style="padding:11px 13px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#7A8699;border-bottom:1px solid #F0EEE7;white-space:nowrap">WORKLOAD</th><th style="padding:11px 13px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#7A8699;border-bottom:1px solid #F0EEE7;white-space:nowrap">EXCEPTIONS</th><th style="padding:11px 13px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#7A8699;border-bottom:1px solid #F0EEE7;white-space:nowrap">LAST ACTIVITY</th>
-                      <th style="padding:11px 20px 11px 13px;border-bottom:1px solid #F0EEE7"></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <sc-for list="{{ atRows }}" as="r" hint-placeholder-count="10">
-                      <tr style-hover="background:#FCFBF7">
-                        <td onClick="{{ r.open }}" style="padding:11px 20px;border-bottom:1px solid #F5F3EE;cursor:pointer">
-                          <div style="display:flex;align-items:center;gap:10px">
-                            <div style="width:30px;height:30px;flex:none;border-radius:50%;background:{{ r.avBg }};display:grid;place-items:center;color:#fff;font-size:10.5px;font-weight:700">{{ r.init }}</div>
-                            <div>
-                              <div style="font-size:12.5px;font-weight:600;color:#0F2A47;white-space:nowrap">{{ r.name }}</div>
-                              <div style="font-size:10px;color:#98A2B3;margin-top:2px;font-family:ui-monospace,monospace">{{ r.id }}</div>
-                            </div>
-                          </div>
-                        </td>
-                        <td style="padding:11px 13px;border-bottom:1px solid #F5F3EE"><span style="display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;background:{{ r.sBg }};color:{{ r.sFg }};white-space:nowrap"><span style="width:6px;height:6px;border-radius:50%;background:{{ r.sFg }}"></span>{{ r.status }}</span></td>
-                        <td style="padding:11px 13px;border-bottom:1px solid #F5F3EE;font-size:12.5px;color:#475467;white-space:nowrap">{{ r.date }}</td><td style="padding:11px 13px;border-bottom:1px solid #F5F3EE;font-size:12.5px;color:#475467;white-space:nowrap;font-size:12px">{{ r.shift }}</td><td style="padding:11px 13px;border-bottom:1px solid #F5F3EE;font-size:12.5px;color:#475467;white-space:nowrap">{{ r.schedIn }}</td><td style="padding:11px 13px;border-bottom:1px solid #F5F3EE;font-size:12.5px;color:#475467;white-space:nowrap;font-weight:600;color:#0F2A47">{{ r.actualIn }}</td>
-                        <td style="padding:11px 13px;border-bottom:1px solid #F5F3EE;font-size:12.5px;font-weight:600;color:{{ r.lateFg }};white-space:nowrap">{{ r.lateBy }}</td>
-                        <td style="padding:11px 13px;border-bottom:1px solid #F5F3EE;font-size:12.5px;color:#475467;white-space:nowrap">{{ r.schedOut }}</td><td style="padding:11px 13px;border-bottom:1px solid #F5F3EE;font-size:12.5px;color:#475467;white-space:nowrap;font-weight:600;color:#0F2A47">{{ r.actualOut }}</td>
-                        <td style="padding:11px 13px;border-bottom:1px solid #F5F3EE;font-size:12.5px;font-weight:600;color:{{ r.earlyFg }};white-space:nowrap">{{ r.earlyBy }}</td>
-                        <td style="padding:11px 13px;border-bottom:1px solid #F5F3EE;font-size:12.5px;color:#475467;white-space:nowrap;font-weight:700;color:#0F2A47">{{ r.hours }}</td><td style="padding:11px 13px;border-bottom:1px solid #F5F3EE;font-size:12.5px;color:#475467;white-space:nowrap">{{ r.breaks }}</td><td style="padding:11px 13px;border-bottom:1px solid #F5F3EE;font-size:12.5px;color:#475467;white-space:nowrap">{{ r.overtime }}</td>
-                        <td style="padding:11px 13px;border-bottom:1px solid #F5F3EE;font-size:13px;font-weight:800;color:{{ r.pctFg }};white-space:nowrap">{{ r.attPct }}</td>
-                        <td style="padding:11px 13px;border-bottom:1px solid #F5F3EE;font-size:13px;font-weight:800;color:{{ r.actFg }};white-space:nowrap">{{ r.activity }}</td>
-                        <td style="padding:11px 13px;border-bottom:1px solid #F5F3EE"><span style="font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;background:{{ r.wBg }};color:{{ r.wFg }};white-space:nowrap">{{ r.workload }}</span></td>
-                        <td style="padding:11px 13px;border-bottom:1px solid #F5F3EE;font-size:12px;font-weight:600;color:{{ r.excFg }};white-space:nowrap">{{ r.exceptions }}</td>
-                        <td style="padding:11px 13px;border-bottom:1px solid #F5F3EE;font-size:12px;color:#98A2B3;white-space:nowrap">{{ r.lastActivity }}</td>
-                        <td style="padding:11px 20px 11px 13px;border-bottom:1px solid #F5F3EE;text-align:right;white-space:nowrap;position:relative">
-                          <button onClick="{{ r.correct }}" style="height:29px;padding:0 11px;border-radius:8px;border:1px solid #BFE3DC;background:#EEF6F5;font-size:11.5px;font-weight:600;color:#0B7A6E;cursor:pointer;margin-right:6px">Correct</button>
-                          <button onClick="{{ r.menu }}" style="width:28px;height:28px;border-radius:8px;border:1px solid #E5E3DC;background:#fff;display:inline-grid;place-items:center;cursor:pointer;color:#98A2B3;vertical-align:middle">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.6" /><circle cx="12" cy="12" r="1.6" /><circle cx="12" cy="19" r="1.6" /></svg>
-                          </button>
-                          <div style="display:{{ r.menuDisplay }};position:absolute;top:38px;right:20px;width:220px;background:#fff;border:1px solid #ECEAE2;border-radius:12px;box-shadow:0 18px 44px rgba(11,31,62,.16);padding:6px;z-index:40;text-align:left">
-                            <sc-for list="{{ r.menuItems }}" as="m" hint-placeholder-count="7">
-                              <div onClick="{{ m.pick }}" style="padding:8px 11px;border-radius:8px;font-size:12.5px;color:{{ m.fg }};cursor:pointer;border-top:{{ m.bt }};margin-top:{{ m.mt }};padding-top:{{ m.pt }}" style-hover="background:{{ m.hbg }}">{{ m.label }}</div>
-                            </sc-for>
-                          </div>
-                        </td>
-                      </tr>
-                    </sc-for>
-                  </tbody>
-                </table>
-              </div>
-              <div style="display:{{ atEmpty }};padding:36px 20px;text-align:center">
-                <div style="font-size:13.5px;font-weight:700;color:#475467">No attendance records found</div>
-                <div style="font-size:12px;color:#98A2B3;margin-top:5px">No speakers match your current filters — clear them or change the date range.</div>
-              </div>
-            </div>
-          </sc-if>
-
-          <sc-if value="{{ atIsCal }}" hint-placeholder-val="{{ false }}">
-            <div style="background:#fff;border:1px solid #ECEAE2;border-radius:14px;overflow:hidden">
-              <div style="display:flex;align-items:center;gap:12px;padding:16px 20px;border-bottom:1px solid #F2F0EA;flex-wrap:wrap">
-                <div style="min-width:0;flex:1 1 200px">
-                  <div style="font-size:14.5px;font-weight:700;color:#0F2A47">Attendance calendar — August 2026</div>
-                  <div style="font-size:12.5px;color:#6B7C93;margin-top:2px">Click a date for that day's detail</div>
-                </div>
-                <select value="{{ atCalWho }}" onChange="{{ setAtCalWho }}" style="flex:0 0 auto;width:190px;height:36px;padding:0 11px;border:1px solid #E5E3DC;border-radius:9px;font-size:12.5px;background:#fff;color:#0F2A47;outline:0">
-                  <sc-for list="{{ atCalWhoOpts }}" as="o" hint-placeholder-count="6">
-                    <option>{{ o.o }}</option>
-                  </sc-for>
-                </select>
-              </div>
-              <div style="display:flex;flex-wrap:wrap;gap:8px;padding:13px 20px;border-bottom:1px solid #F2F0EA;background:#FCFBF7">
-                <sc-for list="{{ atCalCodes }}" as="c" hint-placeholder-count="8">
-                  <span style="display:inline-flex;align-items:center;gap:7px;font-size:11px;font-weight:600;padding:4px 10px;border-radius:999px;background:{{ c.bg }};color:{{ c.fg }}">
-                    <strong style="font-weight:800">{{ c.code }}</strong>{{ c.label }}
-                  </span>
-                </sc-for>
-              </div>
-              <div style="padding:18px 20px">
-                <div style="display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:7px;margin-bottom:7px">
-                  <sc-for list="{{ atCalDows }}" as="d" hint-placeholder-count="7">
-                    <div style="text-align:center;font-size:11px;font-weight:700;letter-spacing:.05em;color:#98A2B3">{{ d.d }}</div>
-                  </sc-for>
-                </div>
-                <div style="display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:7px">
-                  <sc-for list="{{ atCalCells }}" as="c" hint-placeholder-count="35">
-                    <div onClick="{{ c.open }}" style="min-width:0;min-height:66px;border:1.5px solid {{ c.bd }};border-radius:10px;background:{{ c.bg }};padding:8px 10px;cursor:pointer">
-                      <div style="font-size:12px;font-weight:700;color:{{ c.fg }}">{{ c.d }}</div>
-                      <div style="font-size:14px;font-weight:800;color:{{ c.fg }};margin-top:8px">{{ c.code }}</div>
-                    </div>
-                  </sc-for>
-                </div>
-              </div>
-            </div>
-          </sc-if>
-
-          <sc-if value="{{ atIsAna }}" hint-placeholder-val="{{ false }}">
-            <div style="display:flex;flex-direction:column;gap:16px">
-              <div style="background:#fff;border:1px solid #ECEAE2;border-radius:14px;padding:20px 22px">
-                <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
-                  <div>
-                    <div style="font-size:14.5px;font-weight:700;color:#0F2A47">Attendance trend</div>
-                    <div style="font-size:12px;color:#98A2B3;margin-top:3px">{{ atTrendMetric }} · {{ atTrendRange }}</div>
-                  </div>
-                  <span style="flex:1"></span>
-                  <div style="display:flex;gap:2px;background:#FCFBF7;border:1px solid #ECEAE2;border-radius:10px;padding:3px">
-                    <sc-for list="{{ atTrendRanges }}" as="t" hint-placeholder-count="5">
-                      <button onClick="{{ t.pick }}" style="height:28px;padding:0 11px;border:0;border-radius:7px;font-size:12px;cursor:pointer;background:{{ t.bg }};color:{{ t.fg }};font-weight:{{ t.weight }};white-space:nowrap">{{ t.label }}</button>
-                    </sc-for>
-                  </div>
-                </div>
-                <div style="display:flex;flex-wrap:wrap;gap:7px;margin-top:14px">
-                  <sc-for list="{{ atTrendPills }}" as="m" hint-placeholder-count="6">
-                    <button onClick="{{ m.pick }}" style="height:30px;padding:0 12px;border-radius:999px;border:1px solid {{ m.bd }};background:{{ m.bg }};font-size:12px;font-weight:{{ m.fw }};color:{{ m.fg }};cursor:pointer;white-space:nowrap">{{ m.label }}</button>
-                  </sc-for>
-                </div>
-                <div style="display:flex;align-items:flex-end;gap:14px;height:190px;margin-top:18px">
-                  <sc-for list="{{ atTrend }}" as="b" hint-placeholder-count="7">
-                    <div style="flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;gap:8px">
-                      <span style="font-size:11px;font-weight:700;color:#0F2A47">{{ b.v }}</span>
-                      <div style="width:100%;height:{{ b.h }};border-radius:7px 7px 0 0;background:{{ b.bg }}"></div>
-                      <span style="font-size:11px;color:#98A2B3">{{ b.label }}</span>
-                    </div>
-                  </sc-for>
-                </div>
-              </div>
-              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(420px,1fr));gap:16px">
-                <div style="background:#fff;border:1px solid #ECEAE2;border-radius:14px;overflow:hidden">
-                  <div style="padding:15px 20px;border-bottom:1px solid #F2F0EA;background:#FCFBF7">
-                    <div style="font-size:11.5px;font-weight:700;letter-spacing:.08em;color:#475467">LATE ARRIVAL TREND</div>
-                    <div style="font-size:11.5px;color:#98A2B3;margin-top:4px;text-wrap:pretty">Delay pattern across the period</div>
-                  </div>
-                  <div style="padding:18px 20px">
-                    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px">
-                      <sc-for list="{{ atLateStats }}" as="k" hint-placeholder-count="4">
-                        <div style="min-width:0;border:1px solid #F0EEE7;border-radius:11px;padding:12px 14px;background:#FCFBF7">
-                          <div style="font-size:11px;font-weight:600;color:#7A8699;text-wrap:pretty">{{ k.label }}</div>
-                          <div style="font-size:19px;font-weight:800;color:#0F2A47;letter-spacing:-.02em;margin-top:5px">{{ k.v }}</div>
-                          <div style="font-size:10.5px;color:#98A2B3;margin-top:3px;text-wrap:pretty">{{ k.note }}</div>
-                        </div>
-                      </sc-for>
-                    </div>
-                  </div>
-                </div>
-                <div style="background:#fff;border:1px solid #ECEAE2;border-radius:14px;overflow:hidden">
-                  <div style="padding:15px 20px;border-bottom:1px solid #F2F0EA;background:#FCFBF7">
-                    <div style="font-size:11.5px;font-weight:700;letter-spacing:.08em;color:#475467">WORKING HOURS ANALYTICS</div>
-                    <div style="font-size:11.5px;color:#98A2B3;margin-top:4px;text-wrap:pretty">Expected against actual — scheduled and actual are stored separately</div>
-                  </div>
-                  <div style="padding:18px 20px">
-                    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px">
-                      <sc-for list="{{ atHours }}" as="k" hint-placeholder-count="8">
-                        <div style="min-width:0;border:1px solid #F0EEE7;border-radius:11px;padding:12px 14px;background:#FCFBF7">
-                          <div style="font-size:11px;font-weight:600;color:#7A8699;text-wrap:pretty">{{ k.label }}</div>
-                          <div style="font-size:19px;font-weight:800;color:#0F2A47;letter-spacing:-.02em;margin-top:5px">{{ k.v }}</div>
-                        </div>
-                      </sc-for>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </sc-if>
-
-          <sc-if value="{{ atIsAct }}" hint-placeholder-val="{{ false }}">
-            <div style="display:flex;flex-direction:column;gap:16px">
-                <div style="background:#fff;border:1px solid #ECEAE2;border-radius:14px;overflow:hidden">
-                  <div style="padding:15px 20px;border-bottom:1px solid #F2F0EA;background:#FCFBF7">
-                    <div style="font-size:11.5px;font-weight:700;letter-spacing:.08em;color:#475467">ACTIVITY KPIS</div>
-                    <div style="font-size:11.5px;color:#98A2B3;margin-top:4px;text-wrap:pretty">Attendance alone is not engagement — this is what the speaker actually did</div>
-                  </div>
-                  <div style="padding:18px 20px">
-                    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px">
-                      <sc-for list="{{ atActKpis }}" as="k" hint-placeholder-count="12">
-                        <div style="min-width:0;border:1px solid #F0EEE7;border-radius:11px;padding:12px 14px;background:#FCFBF7">
-                          <div style="font-size:11px;font-weight:600;color:#7A8699;text-wrap:pretty">{{ k.label }}</div>
-                          <div style="font-size:19px;font-weight:800;color:#0F2A47;letter-spacing:-.02em;margin-top:5px">{{ k.v }}</div>
-                        </div>
-                      </sc-for>
-                    </div>
-                  </div>
-                </div>
-              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(420px,1fr));gap:16px">
-                <div style="background:#fff;border:1px solid #ECEAE2;border-radius:14px;overflow:hidden">
-                  <div style="padding:15px 20px;border-bottom:1px solid #F2F0EA;background:#FCFBF7">
-                    <div style="font-size:11.5px;font-weight:700;letter-spacing:.08em;color:#475467">ACTIVITY SCORE WEIGHTS</div>
-                    <div style="font-size:11.5px;color:#98A2B3;margin-top:4px;text-wrap:pretty">Configurable — change these in Activity Settings</div>
-                  </div>
-                  <div style="padding:18px 20px">
-                    <div style="display:flex;flex-direction:column;gap:13px">
-                      <sc-for list="{{ atWeights }}" as="w" hint-placeholder-count="6">
-                        <div>
-                          <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
-                            <span style="font-size:12.5px;color:#475467;flex:1;min-width:0">{{ w.label }}</span>
-                            <span style="font-size:12.5px;font-weight:800;color:#0F2A47">{{ w.weight }}</span>
-                          </div>
-                          <div style="height:7px;border-radius:5px;background:#F2F0EA;overflow:hidden"><div style="height:100%;width:{{ w.w }};border-radius:5px;background:{{ w.color }}"></div></div>
-                        </div>
-                      </sc-for>
-                    </div>
-                  </div>
-                </div>
-                <div style="background:#fff;border:1px solid #ECEAE2;border-radius:14px;overflow:hidden">
-                  <div style="padding:15px 20px;border-bottom:1px solid #F2F0EA;background:#FCFBF7">
-                    <div style="font-size:11.5px;font-weight:700;letter-spacing:.08em;color:#475467">ACTIVITY LEVELS</div>
-                    <div style="font-size:11.5px;color:#98A2B3;margin-top:4px;text-wrap:pretty">Click a level to filter the attendance table</div>
-                  </div>
-                  <div style="padding:18px 20px">
-                    <div style="display:flex;flex-wrap:wrap;gap:9px">
-                      <sc-for list="{{ atLevels }}" as="l" hint-placeholder-count="5">
-                        <button onClick="{{ l.pick }}" style="display:flex;align-items:center;gap:9px;height:36px;padding:0 14px;border-radius:999px;border:1px solid #E5E3DC;background:#fff;cursor:pointer" style-hover="background:#F6F5F0">
-                          <span style="width:8px;height:8px;border-radius:50%;background:{{ l.color }}"></span>
-                          <span style="font-size:12.5px;color:#475467">{{ l.label }}</span>
-                          <span style="font-size:12.5px;font-weight:800;color:#0F2A47">{{ l.n }}</span>
-                        </button>
-                      </sc-for>
-                    </div>
-                  </div>
-                </div>
-              </div>
-                <div style="background:#fff;border:1px solid #ECEAE2;border-radius:14px;overflow:hidden">
-                  <div style="padding:15px 20px;border-bottom:1px solid #F2F0EA;background:#FCFBF7">
-                    <div style="font-size:11.5px;font-weight:700;letter-spacing:.08em;color:#475467">ACTIVITY BREAKDOWN</div>
-                    <div style="font-size:11.5px;color:#98A2B3;margin-top:4px;text-wrap:pretty">Event, attendee, rehearsal, live-session and content activity</div>
-                  </div>
-                  <div style="padding:18px 20px">
-                    <div style="display:flex;flex-direction:column;gap:10px">
-                      <sc-for list="{{ atActBreak }}" as="a" hint-placeholder-count="5">
-                        <div style="border:1px solid #F0EEE7;border-left:3px solid #0E9384;border-radius:10px;padding:12px 14px;background:#FCFBF7">
-                          <div style="font-size:12.5px;font-weight:700;color:#0F2A47">{{ a.label }}</div>
-                          <div style="font-size:11.5px;color:#7A8699;margin-top:4px;text-wrap:pretty">{{ a.detail }}</div>
-                        </div>
-                      </sc-for>
-                    </div>
-                  </div>
-                </div>
-                <div style="background:#fff;border:1px solid #ECEAE2;border-radius:14px;overflow:hidden">
-                  <div style="padding:15px 20px;border-bottom:1px solid #F2F0EA;background:#FCFBF7">
-                    <div style="font-size:11.5px;font-weight:700;letter-spacing:.08em;color:#475467">OPERATIONAL EFFECTIVENESS</div>
-                    <div style="font-size:11.5px;color:#98A2B3;margin-top:4px;text-wrap:pretty">Outcome measures, not activity volume</div>
-                  </div>
-                  <div style="padding:18px 20px">
-                    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:11px">
-                      <sc-for list="{{ atEffective }}" as="e" hint-placeholder-count="9">
-                        <div style="min-width:0;display:flex;align-items:center;gap:11px;border:1px solid #F0EEE7;border-radius:10px;padding:11px 13px;background:#FCFBF7">
-                          <div style="min-width:0;flex:1">
-                            <div style="font-size:12px;color:#475467;text-wrap:pretty">{{ e.label }}</div>
-                            <div style="font-size:10.5px;color:#98A2B3;margin-top:3px">{{ e.target }}</div>
-                          </div>
-                          <span style="font-size:12px;font-weight:800;padding:4px 10px;border-radius:999px;background:{{ e.sBg }};color:{{ e.sFg }};white-space:nowrap">{{ e.v }}</span>
-                        </div>
-                      </sc-for>
-                    </div>
-                  </div>
-                </div>
-              <div style="background:#fff;border:1px solid #ECEAE2;border-radius:14px;overflow:hidden">
-                <div style="padding:16px 20px;border-bottom:1px solid #F2F0EA">
-                  <div style="font-size:14.5px;font-weight:700;color:#0F2A47">Activity timeline</div>
-                  <div style="font-size:12.5px;color:#6B7C93;margin-top:2px">Every event timestamped with its source and result</div>
-                </div>
-                <div style="overflow-x:auto">
-                  <table style="width:100%;min-width:1000px;border-collapse:collapse">
-                    <thead>
-                      <tr style="background:#FCFBF7">
-                        <th style="padding:11px 20px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#7A8699;border-bottom:1px solid #F0EEE7;white-space:nowrap">TIME</th><th style="padding:11px 13px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#7A8699;border-bottom:1px solid #F0EEE7;white-space:nowrap">SPEAKER</th><th style="padding:11px 13px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#7A8699;border-bottom:1px solid #F0EEE7;white-space:nowrap">ACTIVITY TYPE</th><th style="padding:11px 13px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#7A8699;border-bottom:1px solid #F0EEE7;white-space:nowrap">EVENT TYPE</th><th style="padding:11px 13px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#7A8699;border-bottom:1px solid #F0EEE7;white-space:nowrap">EVENT</th><th style="padding:11px 13px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#7A8699;border-bottom:1px solid #F0EEE7;white-space:nowrap">DESCRIPTION</th><th style="padding:11px 13px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#7A8699;border-bottom:1px solid #F0EEE7;white-space:nowrap">RESULT</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <sc-for list="{{ atActLog }}" as="a" hint-placeholder-count="10">
-                        <tr style-hover="background:#FCFBF7">
-                          <td style="padding:11px 20px;border-bottom:1px solid #F5F3EE;font-size:12.5px;color:#475467;white-space:nowrap">{{ a.time }}</td>
-                          <td onClick="{{ a.open }}" style="padding:11px 13px;border-bottom:1px solid #F5F3EE;cursor:pointer">
-                            <div style="display:flex;align-items:center;gap:9px">
-                              <div style="width:28px;height:28px;flex:none;border-radius:50%;background:{{ a.avBg }};display:grid;place-items:center;color:#fff;font-size:10px;font-weight:700">{{ a.init }}</div>
-                              <span style="font-size:12.5px;color:#475467;white-space:nowrap">{{ a.who }}</span>
-                            </div>
-                          </td>
-                          <td style="padding:11px 13px;border-bottom:1px solid #F5F3EE;font-size:12.5px;font-weight:600;color:#0F2A47;white-space:nowrap">{{ a.type }}</td>
-                          <td style="padding:11px 13px;border-bottom:1px solid #F5F3EE;font-size:12.5px;color:#475467;white-space:nowrap">{{ a.course }}</td>
-                          <td style="padding:11px 13px;border-bottom:1px solid #F5F3EE;font-size:12px;color:#98A2B3;font-family:ui-monospace,monospace">{{ a.batch }}</td>
-                          <td style="padding:11px 13px;border-bottom:1px solid #F5F3EE;font-size:12px;color:#475467">{{ a.desc }}</td>
-                          <td style="padding:11px 13px;border-bottom:1px solid #F5F3EE"><span style="font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;background:{{ a.rBg }};color:{{ a.rFg }};white-space:nowrap">{{ a.result }}</span></td>
-                        </tr>
-                      </sc-for>
-                    </tbody>
-                  </table>
-                </div>
-                <div style="display:{{ atActLogEmpty }};padding:36px 20px;text-align:center">
-                  <div style="font-size:13.5px;font-weight:700;color:#475467">No speaker activity found</div>
-                  <div style="font-size:12px;color:#98A2B3;margin-top:5px">No activity matches the selected filters.</div>
-                </div>
-              </div>
-            </div>
-          </sc-if>
-
-          <sc-if value="{{ atIsLoad }}" hint-placeholder-val="{{ false }}">
-            <div style="display:flex;flex-direction:column;gap:16px">
-                <div style="background:#fff;border:1px solid #ECEAE2;border-radius:14px;overflow:hidden">
-                  <div style="padding:15px 20px;border-bottom:1px solid #F2F0EA;background:#FCFBF7">
-                    <div style="font-size:11.5px;font-weight:700;letter-spacing:.08em;color:#475467">WORKLOAD VS ACTIVITY</div>
-                    <div style="font-size:11.5px;color:#98A2B3;margin-top:4px;text-wrap:pretty">A management indicator, not an automatic verdict</div>
-                  </div>
-                  <div style="padding:18px 20px">
-                    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:11px">
-                      <sc-for list="{{ atMatrix }}" as="m" hint-placeholder-count="4">
-                        <div style="min-width:0;border:1px solid #F0EEE7;border-radius:11px;padding:13px 15px;background:#FCFBF7">
-                          <div style="font-size:11.5px;color:#7A8699">{{ m.w }} + {{ m.a }}</div>
-                          <span style="display:inline-block;margin-top:8px;font-size:12px;font-weight:700;padding:4px 11px;border-radius:999px;background:{{ m.sBg }};color:{{ m.sFg }}">{{ m.verdict }}</span>
-                        </div>
-                      </sc-for>
-                    </div>
-                  </div>
-                </div>
-              <div style="background:#fff;border:1px solid #ECEAE2;border-radius:14px;overflow:hidden">
-                <div style="padding:16px 20px;border-bottom:1px solid #F2F0EA">
-                  <div style="font-size:14.5px;font-weight:700;color:#0F2A47">Workload analytics</div>
-                  <div style="font-size:12.5px;color:#6B7C93;margin-top:2px">Operational load per speaker, read against activity</div>
-                </div>
-                <div style="overflow-x:auto">
-                  <table style="width:100%;min-width:1360px;border-collapse:collapse">
-                    <thead>
-                      <tr style="background:#FCFBF7">
-                        <th style="padding:11px 20px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#7A8699;border-bottom:1px solid #F0EEE7;white-space:nowrap">SPEAKER</th><th style="padding:11px 13px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#7A8699;border-bottom:1px solid #F0EEE7;white-space:nowrap">EVENT TYPES</th><th style="padding:11px 13px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#7A8699;border-bottom:1px solid #F0EEE7;white-space:nowrap">EVENTS</th><th style="padding:11px 13px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#7A8699;border-bottom:1px solid #F0EEE7;white-space:nowrap">REGISTRANTS</th><th style="padding:11px 13px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#7A8699;border-bottom:1px solid #F0EEE7;white-space:nowrap">CO-HOSTS</th><th style="padding:11px 13px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#7A8699;border-bottom:1px solid #F0EEE7;white-space:nowrap">LIVE SESSIONS</th><th style="padding:11px 13px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#7A8699;border-bottom:1px solid #F0EEE7;white-space:nowrap">RECORDINGS</th><th style="padding:11px 13px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#7A8699;border-bottom:1px solid #F0EEE7;white-space:nowrap">OPEN Q&amp;A</th><th style="padding:11px 13px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#7A8699;border-bottom:1px solid #F0EEE7;white-space:nowrap">PENDING CONTENT</th><th style="padding:11px 13px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#7A8699;border-bottom:1px solid #F0EEE7;white-space:nowrap">PENDING TASKS</th><th style="padding:11px 13px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#7A8699;border-bottom:1px solid #F0EEE7;white-space:nowrap">ACTIVITY</th><th style="padding:11px 13px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#7A8699;border-bottom:1px solid #F0EEE7;white-space:nowrap">WORKLOAD</th><th style="padding:11px 13px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#7A8699;border-bottom:1px solid #F0EEE7;white-space:nowrap">READ</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <sc-for list="{{ atLoadRows }}" as="r" hint-placeholder-count="10">
-                        <tr style-hover="background:#FCFBF7">
-                          <td onClick="{{ r.open }}" style="padding:11px 20px;border-bottom:1px solid #F5F3EE;cursor:pointer">
-                            <div style="display:flex;align-items:center;gap:10px">
-                              <div style="width:30px;height:30px;flex:none;border-radius:50%;background:{{ r.avBg }};display:grid;place-items:center;color:#fff;font-size:10.5px;font-weight:700">{{ r.init }}</div>
-                              <div>
-                                <div style="font-size:12.5px;font-weight:600;color:#0F2A47;white-space:nowrap">{{ r.name }}</div>
-                                <div style="font-size:10px;color:#98A2B3;margin-top:2px;font-family:ui-monospace,monospace">{{ r.id }}</div>
-                              </div>
-                            </div>
-                          </td>
-                          <td style="padding:11px 13px;border-bottom:1px solid #F5F3EE;font-size:12.5px;color:#475467;white-space:nowrap">{{ r.courses }}</td><td style="padding:11px 13px;border-bottom:1px solid #F5F3EE;font-size:12.5px;color:#475467;white-space:nowrap;font-weight:700;color:#0F2A47">{{ r.batches }}</td><td style="padding:11px 13px;border-bottom:1px solid #F5F3EE;font-size:12.5px;color:#475467;white-space:nowrap">{{ r.students }}</td><td style="padding:11px 13px;border-bottom:1px solid #F5F3EE;font-size:12.5px;color:#475467;white-space:nowrap">{{ r.teachers }}</td><td style="padding:11px 13px;border-bottom:1px solid #F5F3EE;font-size:12.5px;color:#475467;white-space:nowrap">{{ r.classes }}</td><td style="padding:11px 13px;border-bottom:1px solid #F5F3EE;font-size:12.5px;color:#475467;white-space:nowrap">{{ r.recorded }}</td><td style="padding:11px 13px;border-bottom:1px solid #F5F3EE;font-size:12.5px;color:#475467;white-space:nowrap">{{ r.openStudent }}</td><td style="padding:11px 13px;border-bottom:1px solid #F5F3EE;font-size:12.5px;color:#475467;white-space:nowrap">{{ r.openTeacher }}</td><td style="padding:11px 13px;border-bottom:1px solid #F5F3EE;font-size:12.5px;color:#475467;white-space:nowrap">{{ r.pending }}</td>
-                          <td style="padding:11px 13px;border-bottom:1px solid #F5F3EE;font-size:13px;font-weight:800;color:#0F2A47">{{ r.activity }}</td>
-                          <td style="padding:11px 13px;border-bottom:1px solid #F5F3EE"><span style="font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;background:{{ r.wBg }};color:{{ r.wFg }};white-space:nowrap">{{ r.workload }}</span></td>
-                          <td style="padding:11px 13px;border-bottom:1px solid #F5F3EE"><span style="font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;background:{{ r.vBg }};color:{{ r.vFg }};white-space:nowrap">{{ r.verdict }}</span></td>
-                        </tr>
-                      </sc-for>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          </sc-if>
-
-          <sc-if value="{{ atIsExc }}" hint-placeholder-val="{{ false }}">
-            <div style="background:#fff;border:1px solid #ECEAE2;border-radius:14px;overflow:hidden">
-              <div style="display:flex;align-items:center;gap:12px;padding:16px 20px;border-bottom:1px solid #F2F0EA">
-                <div>
-                  <div style="font-size:14.5px;font-weight:700;color:#0F2A47">Exceptions &amp; alerts</div>
-                  <div style="font-size:12.5px;color:#6B7C93;margin-top:2px">Attendance and activity exceptions · every alert carries an action</div>
-                </div>
-                <span style="flex:1"></span>
-                <span style="font-size:12px;font-weight:700;color:#B42318">10 open</span>
-              </div>
-              <sc-for list="{{ atExceptions }}" as="a" hint-placeholder-count="10">
-                <div style="display:flex;align-items:flex-start;gap:11px;padding:13px 20px;border-bottom:1px solid #F5F3EE;flex-wrap:wrap">
-                  <span style="width:8px;height:8px;flex:none;border-radius:50%;background:{{ a.dot }};margin-top:6px"></span>
-                  <div style="min-width:0;flex:1 1 240px">
-                    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
-                      <span style="font-size:12.5px;font-weight:700;color:#0F2A47;text-wrap:pretty">{{ a.title }}</span>
-                      <span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;background:{{ a.sBg }};color:{{ a.sFg }}">{{ a.sev }}</span>
-                      <span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;background:{{ a.kBg }};color:{{ a.kFg }}">{{ a.kLabel }}</span>
-                    </div>
-                    <div style="font-size:11.5px;color:#7A8699;margin-top:4px;text-wrap:pretty">{{ a.desc }}</div>
-                  </div>
-                  <button onClick="{{ a.view }}" style="flex:none;height:29px;padding:0 11px;border-radius:8px;border:1px solid #E5E3DC;background:#fff;font-size:11.5px;font-weight:600;color:#344054;cursor:pointer">View</button>
-                  <button onClick="{{ a.dismiss }}" style="flex:none;height:29px;padding:0 11px;border-radius:8px;border:1px solid #E5E3DC;background:#fff;font-size:11.5px;font-weight:600;color:#98A2B3;cursor:pointer">Dismiss</button>
-                  <button onClick="{{ a.act }}" style="flex:none;height:29px;padding:0 12px;border-radius:8px;border:0;background:#0E9384;font-size:11.5px;font-weight:700;color:#fff;cursor:pointer;white-space:nowrap">Take action</button>
-                </div>
-              </sc-for>
-            </div>
-          </sc-if>
-
-          <sc-if value="{{ atIsLeave }}" hint-placeholder-val="{{ false }}">
-            <div style="display:flex;flex-direction:column;gap:16px">
-              <div style="background:#fff;border:1px solid #ECEAE2;border-radius:14px;overflow:hidden">
-                <div style="padding:16px 20px;border-bottom:1px solid #F2F0EA">
-                  <div style="font-size:14.5px;font-weight:700;color:#0F2A47">Leave management</div>
-                  <div style="font-size:12.5px;color:#6B7C93;margin-top:2px">Requests, approvals and remaining balance</div>
-                </div>
-                <div style="overflow-x:auto">
-                  <table style="width:100%;min-width:1100px;border-collapse:collapse">
-                    <thead>
-                      <tr style="background:#FCFBF7">
-                        <th style="padding:11px 20px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#7A8699;border-bottom:1px solid #F0EEE7;white-space:nowrap">REQUEST</th><th style="padding:11px 13px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#7A8699;border-bottom:1px solid #F0EEE7;white-space:nowrap">SPEAKER</th><th style="padding:11px 13px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#7A8699;border-bottom:1px solid #F0EEE7;white-space:nowrap">LEAVE TYPE</th><th style="padding:11px 13px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#7A8699;border-bottom:1px solid #F0EEE7;white-space:nowrap">DATES</th><th style="padding:11px 13px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#7A8699;border-bottom:1px solid #F0EEE7;white-space:nowrap">DURATION</th><th style="padding:11px 13px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#7A8699;border-bottom:1px solid #F0EEE7;white-space:nowrap">REASON</th><th style="padding:11px 13px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#7A8699;border-bottom:1px solid #F0EEE7;white-space:nowrap">BALANCE</th><th style="padding:11px 13px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#7A8699;border-bottom:1px solid #F0EEE7;white-space:nowrap">STATUS</th>
-                        <th style="padding:11px 20px 11px 13px;border-bottom:1px solid #F0EEE7"></th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <sc-for list="{{ atLeaves }}" as="r" hint-placeholder-count="5">
-                        <tr style-hover="background:#FCFBF7">
-                          <td style="padding:11px 20px;border-bottom:1px solid #F5F3EE;font-size:12.5px;font-weight:600;font-family:ui-monospace,monospace;color:#0F2A47">{{ r.id }}</td>
-                          <td style="padding:11px 13px;border-bottom:1px solid #F5F3EE">
-                            <div style="display:flex;align-items:center;gap:10px">
-                              <div style="width:28px;height:28px;flex:none;border-radius:50%;background:{{ r.avBg }};display:grid;place-items:center;color:#fff;font-size:10px;font-weight:700">{{ r.init }}</div>
-                              <span style="font-size:12.5px;color:#475467;white-space:nowrap">{{ r.who }}</span>
-                            </div>
-                          </td>
-                          <td style="padding:11px 13px;border-bottom:1px solid #F5F3EE;font-size:12.5px;font-weight:600;color:#0F2A47;white-space:nowrap">{{ r.type }}</td>
-                          <td style="padding:11px 13px;border-bottom:1px solid #F5F3EE;font-size:12.5px;color:#475467;white-space:nowrap">{{ r.dates }}</td>
-                          <td style="padding:11px 13px;border-bottom:1px solid #F5F3EE;font-size:12.5px;color:#475467;white-space:nowrap">{{ r.duration }}</td>
-                          <td style="padding:11px 13px;border-bottom:1px solid #F5F3EE;font-size:12px;color:#475467">{{ r.reason }}</td>
-                          <td style="padding:11px 13px;border-bottom:1px solid #F5F3EE;font-size:12px;color:#98A2B3;white-space:nowrap">{{ r.balance }}</td>
-                          <td style="padding:11px 13px;border-bottom:1px solid #F5F3EE"><span style="font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;background:{{ r.sBg }};color:{{ r.sFg }}">{{ r.state }}</span></td>
-                          <td style="padding:11px 20px 11px 13px;border-bottom:1px solid #F5F3EE;text-align:right;white-space:nowrap">
-                            <button onClick="{{ r.reject }}" style="display:{{ r.actionsDisplay }};align-items:center;height:29px;padding:0 11px;border-radius:8px;border:1px solid #F0D2CF;background:#fff;font-size:11.5px;font-weight:600;color:#B42318;cursor:pointer;margin-right:6px">Reject</button>
-                            <button onClick="{{ r.approve }}" style="display:{{ r.actionsDisplay }};align-items:center;height:29px;padding:0 11px;border-radius:8px;border:0;background:#0E9384;font-size:11.5px;font-weight:700;color:#fff;cursor:pointer">Approve</button>
-                          </td>
-                        </tr>
-                      </sc-for>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-
-              <div style="background:#fff;border:1px solid #ECEAE2;border-radius:14px;overflow:hidden">
-                <div style="display:flex;align-items:center;gap:12px;padding:16px 20px;border-bottom:1px solid #F2F0EA">
-                  <div>
-                    <div style="font-size:14.5px;font-weight:700;color:#0F2A47">Attendance regularization</div>
-                    <div style="font-size:12.5px;color:#6B7C93;margin-top:2px">Original value, requested value and reason are all mandatory</div>
-                  </div>
-                  <span style="flex:1"></span>
-                  <button onClick="{{ atNewCorrection }}" style="flex:none;height:36px;padding:0 15px;border-radius:9px;border:0;background:#0E9384;font-size:12.5px;font-weight:700;color:#fff;cursor:pointer;white-space:nowrap" style-hover="background:#0B7A6E">New correction</button>
-                </div>
-                <div style="overflow-x:auto">
-                  <table style="width:100%;min-width:1160px;border-collapse:collapse">
-                    <thead>
-                      <tr style="background:#FCFBF7">
-                        <th style="padding:11px 20px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#7A8699;border-bottom:1px solid #F0EEE7;white-space:nowrap">REQUEST</th><th style="padding:11px 13px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#7A8699;border-bottom:1px solid #F0EEE7;white-space:nowrap">SPEAKER</th><th style="padding:11px 13px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#7A8699;border-bottom:1px solid #F0EEE7;white-space:nowrap">DATE</th><th style="padding:11px 13px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#7A8699;border-bottom:1px solid #F0EEE7;white-space:nowrap">ISSUE</th><th style="padding:11px 13px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#7A8699;border-bottom:1px solid #F0EEE7;white-space:nowrap">ORIGINAL</th><th style="padding:11px 13px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#7A8699;border-bottom:1px solid #F0EEE7;white-space:nowrap">REQUESTED</th><th style="padding:11px 13px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#7A8699;border-bottom:1px solid #F0EEE7;white-space:nowrap">REASON</th><th style="padding:11px 13px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#7A8699;border-bottom:1px solid #F0EEE7;white-space:nowrap">STATUS</th>
-                        <th style="padding:11px 20px 11px 13px;border-bottom:1px solid #F0EEE7"></th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <sc-for list="{{ atRegs }}" as="r" hint-placeholder-count="5">
-                        <tr style-hover="background:#FCFBF7">
-                          <td style="padding:11px 20px;border-bottom:1px solid #F5F3EE;font-size:12.5px;font-weight:600;font-family:ui-monospace,monospace;color:#0F2A47">{{ r.id }}</td>
-                          <td style="padding:11px 13px;border-bottom:1px solid #F5F3EE">
-                            <div style="display:flex;align-items:center;gap:10px">
-                              <div style="width:28px;height:28px;flex:none;border-radius:50%;background:{{ r.avBg }};display:grid;place-items:center;color:#fff;font-size:10px;font-weight:700">{{ r.init }}</div>
-                              <span style="font-size:12.5px;color:#475467;white-space:nowrap">{{ r.who }}</span>
-                            </div>
-                          </td>
-                          <td style="padding:11px 13px;border-bottom:1px solid #F5F3EE;font-size:12.5px;color:#475467;white-space:nowrap">{{ r.date }}</td>
-                          <td style="padding:11px 13px;border-bottom:1px solid #F5F3EE;font-size:12.5px;font-weight:600;color:#0F2A47;white-space:nowrap">{{ r.issue }}</td>
-                          <td style="padding:11px 13px;border-bottom:1px solid #F5F3EE;font-size:12.5px;color:{{ r.origFg }};white-space:nowrap">{{ r.orig }}</td>
-                          <td style="padding:11px 13px;border-bottom:1px solid #F5F3EE;font-size:12.5px;font-weight:700;color:#0F2A47;white-space:nowrap">{{ r.requested }}</td>
-                          <td style="padding:11px 13px;border-bottom:1px solid #F5F3EE;font-size:12px;color:#475467">{{ r.reason }}</td>
-                          <td style="padding:11px 13px;border-bottom:1px solid #F5F3EE"><span style="font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;background:{{ r.sBg }};color:{{ r.sFg }}">{{ r.state }}</span></td>
-                          <td style="padding:11px 20px 11px 13px;border-bottom:1px solid #F5F3EE;text-align:right;white-space:nowrap">
-                            <button onClick="{{ r.clarify }}" style="display:{{ r.actionsDisplay }};align-items:center;height:29px;padding:0 11px;border-radius:8px;border:1px solid #E5E3DC;background:#fff;font-size:11.5px;font-weight:600;color:#344054;cursor:pointer;margin-right:6px">Clarify</button>
-                            <button onClick="{{ r.reject }}" style="display:{{ r.actionsDisplay }};align-items:center;height:29px;padding:0 11px;border-radius:8px;border:1px solid #F0D2CF;background:#fff;font-size:11.5px;font-weight:600;color:#B42318;cursor:pointer;margin-right:6px">Reject</button>
-                            <button onClick="{{ r.approve }}" style="display:{{ r.actionsDisplay }};align-items:center;height:29px;padding:0 11px;border-radius:8px;border:0;background:#0E9384;font-size:11.5px;font-weight:700;color:#fff;cursor:pointer">Approve</button>
-                          </td>
-                        </tr>
-                      </sc-for>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          </sc-if>
-
-          <sc-if value="{{ atIsAudit }}" hint-placeholder-val="{{ false }}">
-            <div style="background:#fff;border:1px solid #ECEAE2;border-radius:14px;overflow:hidden">
-              <div style="padding:16px 20px;border-bottom:1px solid #F2F0EA">
-                <div style="font-size:14.5px;font-weight:700;color:#0F2A47">Attendance audit log</div>
-                <div style="font-size:12.5px;color:#6B7C93;margin-top:2px">Every manual modification with old value, new value and mandatory reason — never silently overwritten</div>
-              </div>
-              <div style="overflow-x:auto">
-                <table style="width:100%;min-width:1280px;border-collapse:collapse">
-                  <thead>
-                    <tr style="background:#FCFBF7">
-                      <th style="padding:11px 20px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#7A8699;border-bottom:1px solid #F0EEE7;white-space:nowrap">DATE / TIME</th><th style="padding:11px 13px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#7A8699;border-bottom:1px solid #F0EEE7;white-space:nowrap">SPEAKER</th><th style="padding:11px 13px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#7A8699;border-bottom:1px solid #F0EEE7;white-space:nowrap">CHANGED BY</th><th style="padding:11px 13px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#7A8699;border-bottom:1px solid #F0EEE7;white-space:nowrap">FIELD</th><th style="padding:11px 13px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#7A8699;border-bottom:1px solid #F0EEE7;white-space:nowrap">OLD VALUE</th><th style="padding:11px 13px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#7A8699;border-bottom:1px solid #F0EEE7;white-space:nowrap">NEW VALUE</th><th style="padding:11px 13px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#7A8699;border-bottom:1px solid #F0EEE7;white-space:nowrap">REASON</th><th style="padding:11px 13px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#7A8699;border-bottom:1px solid #F0EEE7;white-space:nowrap">SOURCE</th><th style="padding:11px 13px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.05em;color:#7A8699;border-bottom:1px solid #F0EEE7;white-space:nowrap">APPROVAL</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <sc-for list="{{ atAudit }}" as="a" hint-placeholder-count="5">
-                      <tr style-hover="background:#FCFBF7">
-                        <td style="padding:11px 20px;border-bottom:1px solid #F5F3EE;font-size:12.5px;color:#475467;white-space:nowrap">{{ a.when }}</td>
-                        <td style="padding:11px 13px;border-bottom:1px solid #F5F3EE;font-size:12.5px;font-weight:600;color:#0F2A47;white-space:nowrap">{{ a.who }}</td>
-                        <td style="padding:11px 13px;border-bottom:1px solid #F5F3EE;font-size:12.5px;color:#475467;white-space:nowrap">{{ a.by }}</td>
-                        <td style="padding:11px 13px;border-bottom:1px solid #F5F3EE;font-size:12.5px;color:#475467;white-space:nowrap">{{ a.field }}</td>
-                        <td style="padding:11px 13px;border-bottom:1px solid #F5F3EE;font-size:12.5px;color:{{ a.oldFg }};text-decoration:line-through;white-space:nowrap">{{ a.oldV }}</td>
-                        <td style="padding:11px 13px;border-bottom:1px solid #F5F3EE;font-size:12.5px;font-weight:700;color:#0F2A47;white-space:nowrap">{{ a.newV }}</td>
-                        <td style="padding:11px 13px;border-bottom:1px solid #F5F3EE;font-size:12px;color:#475467">{{ a.reason }}</td>
-                        <td style="padding:11px 13px;border-bottom:1px solid #F5F3EE"><span style="font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;background:{{ a.srcBg }};color:{{ a.srcFg }}">{{ a.source }}</span></td>
-                        <td style="padding:11px 13px;border-bottom:1px solid #F5F3EE;font-size:12px;color:#98A2B3;white-space:nowrap">{{ a.approval }}</td>
-                      </tr>
-                    </sc-for>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </sc-if>
-        </div>
-      
-        <sc-if value="{{ atMOpen }}" hint-placeholder-val="{{ false }}">
-          <div onClick="{{ atMClose }}" style="position:fixed;inset:0;background:rgba(11,31,62,.42);z-index:80"></div>
-          <div style="position:fixed;z-index:81;top:50%;left:50%;transform:translate(-50%,-50%);width:720px;max-width:94vw;max-height:88vh;display:flex;flex-direction:column;background:#fff;border-radius:16px;box-shadow:0 24px 64px rgba(11,31,62,.22);overflow:hidden">
-            <div style="padding:22px 24px 18px;border-bottom:1px solid #F0EEE7;display:flex;align-items:flex-start;gap:12px">
-              <div style="flex:1;min-width:0">
-                <h3 style="margin:0;font-size:16.5px;font-weight:700;color:#0F2A47">{{ atM.title }}</h3>
-                <p style="margin:5px 0 0;font-size:13px;color:#6B7C93;text-wrap:pretty">{{ atM.sub }}</p>
-              </div>
-              <button onClick="{{ atMClose }}" style="width:32px;height:32px;flex:none;border-radius:9px;border:1px solid #E5E3DC;background:#fff;display:grid;place-items:center;cursor:pointer;color:#7A8699" style-hover="background:#F6F5F0"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12" /></svg></button>
-            </div>
-            <div style="flex:1;overflow-y:auto;padding:20px 24px;display:flex;flex-direction:column;gap:18px">
-              <sc-for list="{{ atM.groups }}" as="g" hint-placeholder-count="2">
-                <div>
-                  <div style="font-size:11.5px;font-weight:700;letter-spacing:.07em;color:#7A8699;margin-bottom:12px">{{ g.t }}</div>
-                  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px">
-                    <sc-for list="{{ g.fields }}" as="f" hint-placeholder-count="4">
-                      <div style="min-width:0">
-                        <label style="display:block;font-size:12px;font-weight:600;color:#344054;margin-bottom:7px">{{ f.label }}</label>
-                        <select value="{{ f.value }}" onChange="{{ f.set }}" style="width:100%;height:40px;padding:0 12px;border:1px solid #E5E3DC;border-radius:9px;font-size:13.5px;background:#fff;color:#0F2A47;outline:0;font-family:inherit">
-                          <sc-for list="{{ f.opts }}" as="o" hint-placeholder-count="3"><option>{{ o.o }}</option></sc-for>
-                        </select>
-                      </div>
-                    </sc-for>
-                  </div>
-                </div>
-              </sc-for>
-              <div style="display:flex;align-items:flex-start;gap:10px;padding:12px 14px;border-radius:10px;background:#EEF6F5">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0B7A6E" stroke-width="2.1" stroke-linecap="round" style="flex:none;margin-top:1px"><circle cx="12" cy="12" r="9" /><path d="M12 11v5M12 8h.01" /></svg>
-                <span style="font-size:12.5px;color:#0B7A6E;text-wrap:pretty">{{ atM.info }}</span>
-              </div>
-            </div>
-            <div style="display:flex;align-items:center;gap:10px;padding:16px 24px;border-top:1px solid #F0EEE7;background:#FCFBF7">
-              <span style="flex:1"></span>
-              <button onClick="{{ atMClose }}" style="height:38px;padding:0 16px;border-radius:9px;border:1px solid #E5E3DC;background:#fff;font-size:13px;font-weight:600;color:#344054;cursor:pointer;font-family:inherit" style-hover="background:#F6F5F0">Cancel</button>
-              <button onClick="{{ atM.primary }}" style="height:38px;padding:0 18px;border-radius:9px;border:0;background:{{ atM.pBg }};font-size:13px;font-weight:700;color:#fff;cursor:pointer;font-family:inherit;white-space:nowrap">{{ atM.primaryLabel }}</button>
-            </div>
-          </div>
-        </sc-if>
-      </sc-if>
-
       <sc-if value="{{ isRAlerts }}" hint-placeholder-val="{{ false }}">
         <div>
           <div style="display:flex;align-items:center;gap:11px;margin-bottom:16px">
@@ -5871,60 +5262,499 @@
         </div>
       </sc-if>
 
-      <sc-if value="{{ isRpt }}" hint-placeholder-val="{{ false }}">
+      <sc-if value="{{ isReports }}" hint-placeholder-val="{{ false }}">
         <div>
           <div style="display:flex;align-items:center;gap:9px;margin-bottom:16px;flex-wrap:wrap">
             <div style="position:relative;flex:1;min-width:220px">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#98A2B3" stroke-width="2.1" stroke-linecap="round" style="position:absolute;left:12px;top:11px"><circle cx="11" cy="11" r="7" /><path d="m20 20-3.6-3.6" /></svg>
-              <input value="{{ rptQ }}" onChange="{{ setRptQ }}" placeholder="Search report types…" style="width:100%;height:37px;padding:0 13px 0 34px;border:1px solid #E5E3DC;border-radius:9px;font-size:13px;color:#0F2A47;background:#fff;outline:0;box-sizing:border-box;font-family:inherit" />
+              <input value="{{ repLibQ }}" onChange="{{ setRepLibQ }}" placeholder="Search report types…" style="width:100%;height:37px;padding:0 13px 0 34px;border:1px solid #E5E3DC;border-radius:9px;font-size:13px;color:#0F2A47;background:#fff;outline:0;box-sizing:border-box" />
             </div>
-            <select value="{{ rptCat }}" onChange="{{ setRptCat }}" style="height:37px;padding:0 11px;border:1px solid #E5E3DC;border-radius:9px;font-size:12.5px;background:#fff;color:#0F2A47;outline:0">
-              <sc-for list="{{ rptCatOpts }}" as="o" hint-placeholder-count="5"><option value="{{ o.o }}" selected="{{ o.sel }}">{{ o.label }}</option></sc-for>
+            <select value="{{ repLibGroup }}" onChange="{{ setRepLibGroup }}" style="height:37px;padding:0 11px;border:1px solid #E5E3DC;border-radius:9px;font-size:12.5px;background:#fff;color:#0F2A47;outline:0">
+              <sc-for list="{{ repLibGroupOpts }}" as="o" hint-placeholder-count="5"><option>{{ o.o }}</option></sc-for>
             </select>
-            <select value="{{ rptRange }}" onChange="{{ setRptRange }}" style="height:37px;padding:0 11px;border:1px solid #E5E3DC;border-radius:9px;font-size:12.5px;background:#fff;color:#0F2A47;outline:0">
-              <sc-for list="{{ rptRangeOpts }}" as="o" hint-placeholder-count="5"><option value="{{ o.o }}" selected="{{ o.sel }}">{{ o.o }}</option></sc-for>
+            <select value="{{ repRange }}" onChange="{{ setRepRange }}" style="height:37px;padding:0 11px;border:1px solid #E5E3DC;border-radius:9px;font-size:12.5px;background:#fff;color:#0F2A47;outline:0">
+              <sc-for list="{{ repRangeOpts }}" as="o" hint-placeholder-count="6"><option>{{ o }}</option></sc-for>
             </select>
           </div>
 
           <div style="display:flex;gap:2px;background:#fff;border:1px solid #ECEAE2;border-radius:12px;padding:4px;margin-bottom:16px;overflow-x:auto">
-            <sc-for list="{{ rptTabs }}" as="t" hint-placeholder-count="8">
-              <button onClick="{{ t.go }}" style="height:33px;padding:0 13px;border:0;border-radius:8px;font-size:12px;cursor:pointer;background:{{ t.bg }};color:{{ t.fg }};font-weight:{{ t.weight }};white-space:nowrap;flex:none">{{ t.label }}</button>
+            <sc-for list="{{ repCats }}" as="t" hint-placeholder-count="13">
+              <button onClick="{{ t.go }}" style="height:33px;padding:0 13px;border:0;border-radius:8px;font-size:12px;cursor:pointer;background:{{ t.bg }};color:{{ t.fg }};font-weight:{{ t.weight }};white-space:nowrap">{{ t.label }}</button>
             </sc-for>
           </div>
 
-          <div style="display:flex;align-items:center;gap:10px;margin-bottom:13px">
-            <span style="width:3px;height:14px;border-radius:2px;background:#0E9384"></span>
-            <span style="font-size:11px;font-weight:700;letter-spacing:.09em;color:#475467">{{ rptHead }}</span>
-            <span style="flex:1;height:1px;background:#F0EEE7"></span>
-            <span style="font-size:11.5px;color:#98A2B3">{{ rptCount }} of {{ rptTotal }} report types</span>
-          </div>
-          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px">
-            <sc-for list="{{ rptCards }}" as="r" hint-placeholder-count="9">
-              <div style="background:#fff;border:1px solid #ECEAE2;border-radius:14px;padding:20px 22px;display:flex;flex-direction:column" style-hover="border-color:#BFE3DC;box-shadow:0 8px 22px rgba(11,31,62,.05)">
-                <div style="display:flex;align-items:flex-start;gap:12px">
-                  <div style="width:40px;height:40px;flex:none;border-radius:11px;background:{{ r.ibg }};color:{{ r.ifg }};display:grid;place-items:center;font-size:13px;font-weight:800;letter-spacing:.02em">{{ r.code }}</div>
-                  <span style="flex:1"></span>
-                  <span style="font-size:10px;font-weight:700;padding:3px 9px;border-radius:999px;background:{{ r.cBg }};color:{{ r.cFg }}">{{ r.cat }}</span>
-                  <button onClick="{{ r.star }}" title="Save report" style="width:28px;height:28px;flex:none;border-radius:8px;border:1px solid #E5E3DC;background:#fff;display:grid;place-items:center;cursor:pointer;color:{{ r.starFg }};font-size:13px;padding:0" style-hover="background:#FEF7E6">{{ r.starIcon }}</button>
+          <sc-if value="{{ repTabIs.overview }}" hint-placeholder-val="{{ true }}">
+            <div>
+              <div style="display:flex;align-items:center;gap:10px;margin-bottom:13px">
+                <span style="width:3px;height:14px;border-radius:2px;background:#0E9384"></span>
+                <span style="font-size:11px;font-weight:700;letter-spacing:.09em;color:#475467">REPORT LIBRARY</span>
+                <span style="flex:1;height:1px;background:#F0EEE7"></span>
+                <span style="font-size:11.5px;color:#98A2B3">{{ repLibCount }} of {{ repLibTotal }} report types</span>
+              </div>
+              <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-bottom:10px">
+                <sc-for list="{{ repLibrary }}" as="r" hint-placeholder-count="12">
+                  <div style="background:#fff;border:1px solid {{ r.cardBorder }};border-radius:14px;padding:20px 22px;display:flex;flex-direction:column" style-hover="border-color:#BFE3DC;box-shadow:0 8px 22px rgba(11,31,62,.05)">
+                    <div style="display:flex;align-items:flex-start;gap:12px">
+                      <div style="width:40px;height:40px;flex:none;border-radius:11px;background:{{ r.ibg }};color:{{ r.ifg }};display:grid;place-items:center;font-size:13px;font-weight:800;letter-spacing:.02em">{{ r.code }}</div>
+                      <span style="flex:1"></span>
+                      <span style="font-size:10px;font-weight:700;padding:3px 9px;border-radius:999px;background:{{ r.groupBg }};color:{{ r.groupFg }};white-space:nowrap">{{ r.group }}</span>
+                      <button onClick="{{ r.fav }}" style="width:28px;height:28px;flex:none;border-radius:8px;border:1px solid #F0EEE7;background:#fff;cursor:pointer;color:{{ r.starFg }};font-size:13px;line-height:1;display:grid;place-items:center" style-hover="background:#FCFBF7">{{ r.star }}</button>
+                    </div>
+                    <div style="font-size:15px;font-weight:800;color:#0F2A47;margin-top:15px">{{ r.name }}</div>
+                    <div style="font-size:13px;color:#7A8699;line-height:1.55;margin-top:8px;flex:1;text-wrap:pretty">{{ r.desc }}</div>
+                    <div style="display:flex;align-items:center;gap:8px;margin-top:12px;font-size:11px;color:#98A2B3">
+                      <span>{{ r.formats }}</span>
+                      <span>·</span>
+                      <span>Last run {{ r.lastRun }}</span>
+                    </div>
+                    <button onClick="{{ r.download }}" style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;height:42px;margin-top:16px;border-radius:10px;border:0;background:#0E9384;font-size:13.5px;font-weight:700;color:#fff;cursor:pointer;font-family:inherit" style-hover="background:#0B7A6E">
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v12M7 11l5 5 5-5" /><path d="M4 19h16" /></svg>
+                      Download Report
+                    </button>
+                    <div style="display:flex;gap:9px;margin-top:10px">
+                      <button onClick="{{ r.generate }}" style="flex:1;height:36px;border-radius:9px;border:1px solid #E5E3DC;background:#fff;font-size:12.5px;font-weight:600;color:#344054;cursor:pointer;font-family:inherit" style-hover="background:#F6F5F0">Generate</button>
+                      <button onClick="{{ r.schedule }}" style="flex:1;height:36px;border-radius:9px;border:1px solid #E5E3DC;background:#fff;font-size:12.5px;font-weight:600;color:#344054;cursor:pointer;font-family:inherit" style-hover="background:#F6F5F0">Schedule</button>
+                      <button onClick="{{ r.preview }}" style="flex:1;height:36px;border-radius:9px;border:1px solid #E5E3DC;background:#fff;font-size:12.5px;font-weight:600;color:#344054;cursor:pointer;font-family:inherit" style-hover="background:#F6F5F0">Preview</button>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+              <div style="display:{{ repLibEmpty }};padding:34px;text-align:center;background:#fff;border:1px solid #ECEAE2;border-radius:14px;margin-bottom:26px">
+                <div style="font-size:13.5px;font-weight:700;color:#475467">No report types match your search</div>
+                <div style="font-size:12px;color:#98A2B3;margin-top:5px">Try a different keyword or switch the category filter.</div>
+              </div>
+              <div style="height:16px"></div>
+
+              <div style="display:flex;align-items:center;gap:10px;margin-bottom:13px">
+                <span style="width:3px;height:14px;border-radius:2px;background:#0E9384"></span>
+                <span style="font-size:11px;font-weight:700;letter-spacing:.09em;color:#475467">AT A GLANCE</span>
+                <span style="flex:1;height:1px;background:#F0EEE7"></span>
+              </div>
+              <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:13px">
+                <sc-for list="{{ repKpis }}" as="k" hint-placeholder-count="14">
+                  <div style="background:#fff;border:1px solid #ECEAE2;border-radius:12px;padding:14px 15px">
+                    <div style="font-size:11px;color:#98A2B3">{{ k.label }}</div>
+                    <div style="font-size:20px;font-weight:800;color:#0F2A47;margin-top:5px">{{ k.n }}</div>
+                    <div style="font-size:10.5px;color:#98A2B3;margin-top:4px">{{ k.note }}</div>
+                  </div>
+                </sc-for>
+              </div>
+
+              <div style="display:grid;grid-template-columns:1.35fr 1fr;gap:16px;margin-top:26px">
+                <div style="background:#fff;border:1px solid #ECEAE2;border-radius:14px;overflow:hidden">
+                  <div style="display:flex;align-items:center;gap:12px;padding:16px 20px;border-bottom:1px solid #F2F0EA">
+                    <div style="flex:1;min-width:0">
+                      <div style="font-size:14.5px;font-weight:700;color:#0F2A47">Recent exports</div>
+                      <div style="font-size:12px;color:#6B7C93;margin-top:2px">Generated in the last 7 days</div>
+                    </div>
+                    <button onClick="{{ repGoExport }}" style="height:32px;padding:0 13px;border-radius:8px;border:1px solid #E5E3DC;background:#fff;font-size:12px;font-weight:600;color:#344054;cursor:pointer;white-space:nowrap" style-hover="background:#F6F5F0">Export Center →</button>
+                  </div>
+                  <sc-for list="{{ repRecent }}" as="x" hint-placeholder-count="5">
+                    <div style="display:flex;align-items:center;gap:13px;padding:12px 20px;border-bottom:1px solid #F7F5F0">
+                      <span style="width:32px;height:32px;flex:none;border-radius:9px;background:{{ x.ibg }};color:{{ x.ifg }};font-size:9.5px;font-weight:800;display:grid;place-items:center">{{ x.fmt }}</span>
+                      <div style="min-width:0;flex:1">
+                        <div style="font-size:13px;font-weight:600;color:#0F2A47">{{ x.name }}</div>
+                        <div style="font-size:11.5px;color:#98A2B3;margin-top:3px">{{ x.meta }}</div>
+                      </div>
+                      <span style="font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;background:{{ x.sBg }};color:{{ x.sFg }};white-space:nowrap;flex:none">{{ x.status }}</span>
+                      <button onClick="{{ x.download }}" style="height:30px;padding:0 12px;border-radius:8px;border:1px solid #BFE3DC;background:#EEF6F5;font-size:11.5px;font-weight:700;color:#0B7A6E;cursor:pointer;flex:none;white-space:nowrap">Download</button>
+                    </div>
+                  </sc-for>
                 </div>
-                <div style="font-size:15px;font-weight:800;color:#0F2A47;margin-top:14px;letter-spacing:-.01em">{{ r.title }}</div>
-                <div style="font-size:12.5px;color:#6B7C93;margin-top:6px;line-height:1.55;text-wrap:pretty;flex:1">{{ r.desc }}</div>
-                <div style="font-size:11px;color:#98A2B3;margin-top:14px">{{ r.formats }}  ·  Last run {{ r.last }}</div>
-                <button onClick="{{ r.download }}" style="display:flex;align-items:center;justify-content:center;gap:8px;height:40px;margin-top:14px;border-radius:9px;border:0;background:#0E9384;font-size:13px;font-weight:700;color:#fff;cursor:pointer;font-family:inherit" style-hover="background:#0B7A6E">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7.5 10.5 12 15l4.5-4.5M4.5 19h15" /></svg>Download Report
-                </button>
-                <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:9px">
-                  <button onClick="{{ r.gen }}" style="height:35px;border-radius:9px;border:1px solid #E5E3DC;background:#fff;font-size:12.5px;font-weight:600;color:#344054;cursor:pointer;font-family:inherit" style-hover="background:#F6F5F0">Generate</button>
-                  <button onClick="{{ r.sched }}" style="height:35px;border-radius:9px;border:1px solid #E5E3DC;background:#fff;font-size:12.5px;font-weight:600;color:#344054;cursor:pointer;font-family:inherit" style-hover="background:#F6F5F0">{{ r.schedLabel }}</button>
-                  <button onClick="{{ r.preview }}" style="height:35px;border-radius:9px;border:1px solid #E5E3DC;background:#fff;font-size:12.5px;font-weight:600;color:#344054;cursor:pointer;font-family:inherit" style-hover="background:#F6F5F0">Preview</button>
+
+                <div style="background:#fff;border:1px solid #ECEAE2;border-radius:14px;overflow:hidden">
+                  <div style="display:flex;align-items:center;gap:12px;padding:16px 20px;border-bottom:1px solid #F2F0EA">
+                    <div style="flex:1;min-width:0">
+                      <div style="font-size:14.5px;font-weight:700;color:#0F2A47">Scheduled reports</div>
+                      <div style="font-size:12px;color:#6B7C93;margin-top:2px">{{ repSchedCount }} active schedules</div>
+                    </div>
+                    <button onClick="{{ repGoScheduled }}" style="height:32px;padding:0 13px;border-radius:8px;border:1px solid #E5E3DC;background:#fff;font-size:12px;font-weight:600;color:#344054;cursor:pointer;white-space:nowrap" style-hover="background:#F6F5F0">Manage →</button>
+                  </div>
+                  <sc-for list="{{ repSchedules }}" as="sc" hint-placeholder-count="4">
+                    <div style="padding:13px 20px;border-bottom:1px solid #F7F5F0">
+                      <div style="display:flex;align-items:center;gap:9px">
+                        <span style="font-size:13px;font-weight:600;color:#0F2A47;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ sc.name }}</span>
+                        <span style="font-size:10.5px;font-weight:700;padding:3px 9px;border-radius:999px;background:{{ sc.sBg }};color:{{ sc.sFg }};white-space:nowrap">{{ sc.freq }}</span>
+                      </div>
+                      <div style="font-size:11.5px;color:#98A2B3;margin-top:4px">Next run {{ sc.next }} · {{ sc.to }}</div>
+                    </div>
+                  </sc-for>
                 </div>
               </div>
-            </sc-for>
-          </div>
-          <div style="display:{{ rptEmpty }};padding:40px 20px;text-align:center;background:#fff;border:1px solid #ECEAE2;border-radius:14px">
-            <div style="font-size:14px;font-weight:700;color:#475467">{{ rptEmptyTitle }}</div>
-            <div style="font-size:12px;color:#98A2B3;margin-top:5px">{{ rptEmptySub }}</div>
-          </div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ repTabIs.master }}" hint-placeholder-val="{{ false }}">
+            <div>
+              <div style="display:flex;gap:9px;margin-bottom:13px;flex-wrap:wrap">
+                <input value="{{ repQ }}" onChange="{{ setRepQ }}" placeholder="Search speaker or expertise…" style="height:37px;padding:0 12px;border:1px solid #E5E3DC;border-radius:9px;font-size:13px;flex:1;min-width:200px;outline:0" />
+                <select value="{{ repStatusF }}" onChange="{{ setRepStatusF }}" style="height:37px;padding:0 10px;border:1px solid #E5E3DC;border-radius:9px;font-size:12.5px;background:#fff;outline:0"><option>All</option><option>Active</option><option>Inactive</option></select>
+              </div>
+              <div style="background:#fff;border:1px solid #ECEAE2;border-radius:14px;overflow:hidden">
+                <div style="overflow-x:auto">
+                  <table style="width:100%;min-width:1000px;border-collapse:collapse">
+                    <thead><tr style="background:#FCFBF7">
+                      <th style="padding:10px 20px;text-align:left;font-size:10.5px;font-weight:700;color:#7A8699;border-bottom:1px solid #F0EEE7">SPEAKER</th>
+                      <th style="padding:10px 13px;text-align:left;font-size:10.5px;font-weight:700;color:#7A8699;border-bottom:1px solid #F0EEE7">EXPERTISE</th>
+                      <th style="padding:10px 13px;text-align:left;font-size:10.5px;font-weight:700;color:#7A8699;border-bottom:1px solid #F0EEE7">TYPE</th>
+                      <th style="padding:10px 13px;text-align:left;font-size:10.5px;font-weight:700;color:#7A8699;border-bottom:1px solid #F0EEE7">SESSIONS</th>
+                      <th style="padding:10px 13px;text-align:left;font-size:10.5px;font-weight:700;color:#7A8699;border-bottom:1px solid #F0EEE7">RATING</th>
+                      <th style="padding:10px 13px;text-align:left;font-size:10.5px;font-weight:700;color:#7A8699;border-bottom:1px solid #F0EEE7">EARNINGS</th>
+                      <th style="padding:10px 13px;text-align:left;font-size:10.5px;font-weight:700;color:#7A8699;border-bottom:1px solid #F0EEE7">STATUS</th>
+                      <th style="padding:10px 20px 10px 13px;border-bottom:1px solid #F0EEE7"></th>
+                    </tr></thead>
+                    <tbody>
+                      <sc-for list="{{ repMasterRows }}" as="r" hint-placeholder-count="6">
+                        <tr style-hover="background:#FCFBF7">
+                          <td style="padding:10px 20px;border-bottom:1px solid #F5F3EE;font-size:13px;font-weight:600;color:#0F2A47;white-space:nowrap">{{ r.name }}<div style="font-size:10px;color:#98A2B3;font-family:ui-monospace,monospace">{{ r.id }}</div></td>
+                          <td style="padding:10px 13px;border-bottom:1px solid #F5F3EE;font-size:12.5px;color:#475467;white-space:nowrap">{{ r.exp }}</td>
+                          <td style="padding:10px 13px;border-bottom:1px solid #F5F3EE;font-size:12px;color:#475467;white-space:nowrap">{{ r.type }}</td>
+                          <td style="padding:10px 13px;border-bottom:1px solid #F5F3EE;font-size:12.5px;font-weight:600;color:#0F2A47">{{ r.sessions }}</td>
+                          <td style="padding:10px 13px;border-bottom:1px solid #F5F3EE;font-size:12.5px;color:#B45309;font-weight:600">★ {{ r.rating }}</td>
+                          <td style="padding:10px 13px;border-bottom:1px solid #F5F3EE;font-size:12.5px;color:#475467;white-space:nowrap">{{ r.revenue }}</td>
+                          <td style="padding:10px 13px;border-bottom:1px solid #F5F3EE"><span style="font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;background:{{ r.sBg }};color:{{ r.sFg }};white-space:nowrap">{{ r.status }}</span></td>
+                          <td style="padding:10px 20px 10px 13px;border-bottom:1px solid #F5F3EE;text-align:right;white-space:nowrap">
+                            <span onClick="{{ r.view }}" style="font-size:12px;font-weight:600;color:#0B7A6E;cursor:pointer;margin-right:9px">View</span>
+                            <span onClick="{{ r.viewPerf }}" style="font-size:12px;font-weight:600;color:#0B7A6E;cursor:pointer">Performance</span>
+                          </td>
+                        </tr>
+                      </sc-for>
+                    </tbody>
+                  </table>
+                </div>
+                <div style="display:{{ repMasterEmpty }};padding:44px 20px;text-align:center"><div style="font-size:14px;font-weight:700;color:#475467">No speakers match your filters.</div></div>
+              </div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ repTabIs.onboarding }}" hint-placeholder-val="{{ false }}">
+            <div>
+              <div style="background:#fff;border:1px solid #ECEAE2;border-radius:14px;padding:20px 22px;margin-bottom:16px">
+                <div style="font-size:14px;font-weight:700;color:#0F2A47;margin-bottom:16px">Onboarding funnel</div>
+                <div style="display:flex;flex-direction:column;gap:12px">
+                  <sc-for list="{{ repFunnel }}" as="f" hint-placeholder-count="6">
+                    <div>
+                      <div style="display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:6px"><span style="color:#344054">{{ f.label }}</span><span style="font-weight:700;color:#0F2A47">{{ f.n }} ({{ f.pct }}%)</span></div>
+                      <div style="height:9px;border-radius:5px;background:#F2F0EA;overflow:hidden"><div style="height:100%;width:{{ f.pct }}%;border-radius:5px;background:#0E9384"></div></div>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+              <div style="background:#fff;border:1px solid #ECEAE2;border-radius:14px;overflow:hidden">
+                <div style="overflow-x:auto">
+                  <table style="width:100%;min-width:760px;border-collapse:collapse">
+                    <thead><tr style="background:#FCFBF7">
+                      <th style="padding:10px 20px;text-align:left;font-size:10.5px;font-weight:700;color:#7A8699;border-bottom:1px solid #F0EEE7">SPEAKER</th>
+                      <th style="padding:10px 13px;text-align:left;font-size:10.5px;font-weight:700;color:#7A8699;border-bottom:1px solid #F0EEE7">INVITED</th>
+                      <th style="padding:10px 13px;text-align:left;font-size:10.5px;font-weight:700;color:#7A8699;border-bottom:1px solid #F0EEE7">STARTED</th>
+                      <th style="padding:10px 13px;text-align:left;font-size:10.5px;font-weight:700;color:#7A8699;border-bottom:1px solid #F0EEE7">SUBMITTED</th>
+                      <th style="padding:10px 13px;text-align:left;font-size:10.5px;font-weight:700;color:#7A8699;border-bottom:1px solid #F0EEE7">VERIFICATION</th>
+                      <th style="padding:10px 13px;text-align:left;font-size:10.5px;font-weight:700;color:#7A8699;border-bottom:1px solid #F0EEE7">APPROVED</th>
+                      <th style="padding:10px 20px 10px 13px;text-align:left;font-size:10.5px;font-weight:700;color:#7A8699;border-bottom:1px solid #F0EEE7">TIME TAKEN</th>
+                    </tr></thead>
+                    <tbody>
+                      <sc-for list="{{ repOnboardRows }}" as="o" hint-placeholder-count="6">
+                        <tr style-hover="background:#FCFBF7">
+                          <td style="padding:10px 20px;border-bottom:1px solid #F5F3EE;font-size:12.5px;font-weight:600;color:#0F2A47;white-space:nowrap">{{ o.name }}</td>
+                          <td style="padding:10px 13px;border-bottom:1px solid #F5F3EE;font-size:12px;color:#475467">{{ o.invited }}</td>
+                          <td style="padding:10px 13px;border-bottom:1px solid #F5F3EE;font-size:12px;color:#475467">{{ o.started }}</td>
+                          <td style="padding:10px 13px;border-bottom:1px solid #F5F3EE;font-size:12px;color:#475467">{{ o.submitted }}</td>
+                          <td style="padding:10px 13px;border-bottom:1px solid #F5F3EE;font-size:12px;color:#475467;white-space:nowrap">{{ o.verification }}</td>
+                          <td style="padding:10px 13px;border-bottom:1px solid #F5F3EE;font-size:12px;color:#475467">{{ o.approved }}</td>
+                          <td style="padding:10px 20px 10px 13px;border-bottom:1px solid #F5F3EE;font-size:12px;color:#475467;white-space:nowrap">{{ o.time }}</td>
+                        </tr>
+                      </sc-for>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ repTabIs.verification }}" hint-placeholder-val="{{ false }}">
+            <div style="background:#fff;border:1px solid #ECEAE2;border-radius:14px;overflow:hidden">
+              <div style="overflow-x:auto">
+                <table style="width:100%;min-width:800px;border-collapse:collapse">
+                  <thead><tr style="background:#FCFBF7">
+                    <th style="padding:10px 20px;text-align:left;font-size:10.5px;font-weight:700;color:#7A8699;border-bottom:1px solid #F0EEE7">SPEAKER</th>
+                    <th style="padding:10px 13px;text-align:left;font-size:10.5px;font-weight:700;color:#7A8699;border-bottom:1px solid #F0EEE7">KYC</th>
+                    <th style="padding:10px 13px;text-align:left;font-size:10.5px;font-weight:700;color:#7A8699;border-bottom:1px solid #F0EEE7">CREDENTIALS</th>
+                    <th style="padding:10px 13px;text-align:left;font-size:10.5px;font-weight:700;color:#7A8699;border-bottom:1px solid #F0EEE7">BANK</th>
+                    <th style="padding:10px 13px;text-align:left;font-size:10.5px;font-weight:700;color:#7A8699;border-bottom:1px solid #F0EEE7">CONTRACT</th>
+                    <th style="padding:10px 13px;text-align:left;font-size:10.5px;font-weight:700;color:#7A8699;border-bottom:1px solid #F0EEE7">OVERALL</th>
+                    <th style="padding:10px 20px 10px 13px;border-bottom:1px solid #F0EEE7"></th>
+                  </tr></thead>
+                  <tbody>
+                    <sc-for list="{{ repVerifRows }}" as="v" hint-placeholder-count="6">
+                      <tr style-hover="background:#FCFBF7">
+                        <td style="padding:10px 20px;border-bottom:1px solid #F5F3EE;font-size:12.5px;font-weight:600;color:#0F2A47;white-space:nowrap">{{ v.name }}</td>
+                        <td style="padding:10px 13px;border-bottom:1px solid #F5F3EE;font-size:12px;color:#475467">{{ v.kyc }}</td>
+                        <td style="padding:10px 13px;border-bottom:1px solid #F5F3EE;font-size:12px;color:#475467">{{ v.credentials }}</td>
+                        <td style="padding:10px 13px;border-bottom:1px solid #F5F3EE;font-size:12px;color:#475467">{{ v.bank }}</td>
+                        <td style="padding:10px 13px;border-bottom:1px solid #F5F3EE;font-size:12px;color:#475467">{{ v.contract }}</td>
+                        <td style="padding:10px 13px;border-bottom:1px solid #F5F3EE"><span style="font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;background:{{ v.sBg }};color:{{ v.sFg }};white-space:nowrap">{{ v.overall }}</span></td>
+                        <td style="padding:10px 20px 10px 13px;border-bottom:1px solid #F5F3EE;text-align:right"><span onClick="{{ v.view }}" style="font-size:12px;font-weight:600;color:#0B7A6E;cursor:pointer;white-space:nowrap">View →</span></td>
+                      </tr>
+                    </sc-for>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ repTabIs.events }}" hint-placeholder-val="{{ false }}">
+            <div>
+              <div style="margin-bottom:13px">
+                <select value="{{ repEvTypeF }}" onChange="{{ setRepEvTypeF }}" style="height:37px;padding:0 11px;border:1px solid #E5E3DC;border-radius:9px;font-size:12.5px;background:#fff;outline:0"><option>All</option><option>Webinar</option><option>Workshop</option></select>
+              </div>
+              <div style="background:#fff;border:1px solid #ECEAE2;border-radius:14px;overflow:hidden">
+                <div style="overflow-x:auto">
+                  <table style="width:100%;min-width:1000px;border-collapse:collapse">
+                    <thead><tr style="background:#FCFBF7">
+                      <th style="padding:10px 20px;text-align:left;font-size:10.5px;font-weight:700;color:#7A8699;border-bottom:1px solid #F0EEE7">EVENT</th>
+                      <th style="padding:10px 13px;text-align:left;font-size:10.5px;font-weight:700;color:#7A8699;border-bottom:1px solid #F0EEE7">SPEAKER</th>
+                      <th style="padding:10px 13px;text-align:left;font-size:10.5px;font-weight:700;color:#7A8699;border-bottom:1px solid #F0EEE7">DATE</th>
+                      <th style="padding:10px 13px;text-align:left;font-size:10.5px;font-weight:700;color:#7A8699;border-bottom:1px solid #F0EEE7">STATUS</th>
+                      <th style="padding:10px 13px;text-align:left;font-size:10.5px;font-weight:700;color:#7A8699;border-bottom:1px solid #F0EEE7">REG</th>
+                      <th style="padding:10px 13px;text-align:left;font-size:10.5px;font-weight:700;color:#7A8699;border-bottom:1px solid #F0EEE7">ATTEND %</th>
+                      <th style="padding:10px 13px;text-align:left;font-size:10.5px;font-weight:700;color:#7A8699;border-bottom:1px solid #F0EEE7">ENGAGEMENT</th>
+                      <th style="padding:10px 20px 10px 13px;text-align:left;font-size:10.5px;font-weight:700;color:#7A8699;border-bottom:1px solid #F0EEE7">RATING</th>
+                    </tr></thead>
+                    <tbody>
+                      <sc-for list="{{ repEventRows }}" as="e" hint-placeholder-count="8">
+                        <tr style-hover="background:#FCFBF7">
+                          <td style="padding:10px 20px;border-bottom:1px solid #F5F3EE;font-size:13px;font-weight:600;color:#0F2A47;white-space:nowrap">{{ e.name }}</td>
+                          <td style="padding:10px 13px;border-bottom:1px solid #F5F3EE;font-size:12.5px;color:#475467;white-space:nowrap">{{ e.speaker }}</td>
+                          <td style="padding:10px 13px;border-bottom:1px solid #F5F3EE;font-size:12px;color:#475467;white-space:nowrap">{{ e.date }}</td>
+                          <td style="padding:10px 13px;border-bottom:1px solid #F5F3EE;font-size:12px;color:#475467">{{ e.status }}</td>
+                          <td style="padding:10px 13px;border-bottom:1px solid #F5F3EE;font-size:12px;color:#475467">{{ e.reg }}</td>
+                          <td style="padding:10px 13px;border-bottom:1px solid #F5F3EE;font-size:12px;color:#475467">{{ e.attPct }}</td>
+                          <td style="padding:10px 13px;border-bottom:1px solid #F5F3EE;font-size:12px;color:#475467">{{ e.eng }}%</td>
+                          <td style="padding:10px 20px 10px 13px;border-bottom:1px solid #F5F3EE;font-size:12px;color:#B45309;font-weight:600">★ {{ e.rating }}</td>
+                        </tr>
+                      </sc-for>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ repTabIs.performance }}" hint-placeholder-val="{{ false }}">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+              <div style="background:#fff;border:1px solid #ECEAE2;border-radius:14px;overflow:hidden">
+                <div style="padding:14px 18px;border-bottom:1px solid #F2F0EA;font-size:13.5px;font-weight:700;color:#0F2A47">Speaker performance</div>
+                <sc-for list="{{ repPerfRows }}" as="p" hint-placeholder-count="6">
+                  <div onClick="{{ p.open }}" style="display:flex;align-items:center;gap:12px;padding:11px 18px;border-bottom:1px solid #F7F5F0;cursor:pointer" style-hover="background:#FCFBF7">
+                    <div style="min-width:0;flex:1"><div style="font-size:12.5px;font-weight:600;color:#0F2A47">{{ p.name }}</div><div style="font-size:11px;color:#98A2B3;margin-top:2px">{{ p.events }} events · {{ p.participants }} participants</div></div>
+                    <span style="font-size:13px;font-weight:800;color:#0F2A47">{{ p.score }}</span>
+                  </div>
+                </sc-for>
+              </div>
+              <div style="background:#fff;border:1px solid #ECEAE2;border-radius:14px;overflow:hidden">
+                <div style="padding:14px 18px;border-bottom:1px solid #F2F0EA;font-size:13.5px;font-weight:700;color:#0F2A47">Speaker ranking</div>
+                <sc-for list="{{ repRankRows }}" as="r" hint-placeholder-count="6">
+                  <div style="display:flex;align-items:center;gap:12px;padding:11px 18px;border-bottom:1px solid #F7F5F0">
+                    <span style="font-size:13px;font-weight:800;color:#98A2B3;width:20px">{{ r.rank }}</span>
+                    <div style="min-width:0;flex:1"><div style="font-size:12.5px;font-weight:600;color:#0F2A47">{{ r.name }}</div><div style="font-size:11px;color:#98A2B3;margin-top:2px">★ {{ r.rating }} · {{ r.attendance }} attendance · {{ r.engagement }} engagement</div></div>
+                    <span style="font-size:13px;font-weight:800;color:#0E9384">{{ r.score }}</span>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ repTabIs.payout }}" hint-placeholder-val="{{ false }}">
+            <div style="background:#fff;border:1px solid #ECEAE2;border-radius:14px;overflow:hidden">
+              <div style="overflow-x:auto">
+                <table style="width:100%;min-width:820px;border-collapse:collapse">
+                  <thead><tr style="background:#FCFBF7">
+                    <th style="padding:10px 20px;text-align:left;font-size:10.5px;font-weight:700;color:#7A8699;border-bottom:1px solid #F0EEE7">PAYOUT ID</th>
+                    <th style="padding:10px 13px;text-align:left;font-size:10.5px;font-weight:700;color:#7A8699;border-bottom:1px solid #F0EEE7">SPEAKER</th>
+                    <th style="padding:10px 13px;text-align:left;font-size:10.5px;font-weight:700;color:#7A8699;border-bottom:1px solid #F0EEE7">EVENTS</th>
+                    <th style="padding:10px 13px;text-align:left;font-size:10.5px;font-weight:700;color:#7A8699;border-bottom:1px solid #F0EEE7">FEE</th>
+                    <th style="padding:10px 13px;text-align:left;font-size:10.5px;font-weight:700;color:#7A8699;border-bottom:1px solid #F0EEE7">TAX</th>
+                    <th style="padding:10px 13px;text-align:left;font-size:10.5px;font-weight:700;color:#7A8699;border-bottom:1px solid #F0EEE7">NET PAYABLE</th>
+                    <th style="padding:10px 20px 10px 13px;text-align:left;font-size:10.5px;font-weight:700;color:#7A8699;border-bottom:1px solid #F0EEE7">STATUS</th>
+                  </tr></thead>
+                  <tbody>
+                    <sc-for list="{{ repPayoutRows }}" as="p" hint-placeholder-count="6">
+                      <tr style-hover="background:#FCFBF7">
+                        <td style="padding:10px 20px;border-bottom:1px solid #F5F3EE;font-size:12px;font-family:ui-monospace,monospace;color:#0F2A47">{{ p.id }}</td>
+                        <td style="padding:10px 13px;border-bottom:1px solid #F5F3EE;font-size:12.5px;font-weight:600;color:#0F2A47;white-space:nowrap">{{ p.speaker }}</td>
+                        <td style="padding:10px 13px;border-bottom:1px solid #F5F3EE;font-size:12px;color:#475467;white-space:nowrap">{{ p.event }}</td>
+                        <td style="padding:10px 13px;border-bottom:1px solid #F5F3EE;font-size:12px;color:#475467;white-space:nowrap">{{ p.fee }}</td>
+                        <td style="padding:10px 13px;border-bottom:1px solid #F5F3EE;font-size:12px;color:#475467;white-space:nowrap">{{ p.tax }}</td>
+                        <td style="padding:10px 13px;border-bottom:1px solid #F5F3EE;font-size:12.5px;font-weight:700;color:#0F2A47;white-space:nowrap">{{ p.net }}</td>
+                        <td style="padding:10px 20px 10px 13px;border-bottom:1px solid #F5F3EE"><span style="font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;background:{{ p.sBg }};color:{{ p.sFg }};white-space:nowrap">{{ p.status }}</span></td>
+                      </tr>
+                    </sc-for>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ repTabIs.contracts }}" hint-placeholder-val="{{ false }}">
+            <div style="background:#fff;border:1px solid #ECEAE2;border-radius:14px;overflow:hidden">
+              <div style="overflow-x:auto">
+                <table style="width:100%;min-width:800px;border-collapse:collapse">
+                  <thead><tr style="background:#FCFBF7">
+                    <th style="padding:10px 20px;text-align:left;font-size:10.5px;font-weight:700;color:#7A8699;border-bottom:1px solid #F0EEE7">SPEAKER</th>
+                    <th style="padding:10px 13px;text-align:left;font-size:10.5px;font-weight:700;color:#7A8699;border-bottom:1px solid #F0EEE7">TYPE</th>
+                    <th style="padding:10px 13px;text-align:left;font-size:10.5px;font-weight:700;color:#7A8699;border-bottom:1px solid #F0EEE7">START</th>
+                    <th style="padding:10px 13px;text-align:left;font-size:10.5px;font-weight:700;color:#7A8699;border-bottom:1px solid #F0EEE7">EXPIRY</th>
+                    <th style="padding:10px 13px;text-align:left;font-size:10.5px;font-weight:700;color:#7A8699;border-bottom:1px solid #F0EEE7">FEE TERMS</th>
+                    <th style="padding:10px 20px 10px 13px;text-align:left;font-size:10.5px;font-weight:700;color:#7A8699;border-bottom:1px solid #F0EEE7">STATUS</th>
+                  </tr></thead>
+                  <tbody>
+                    <sc-for list="{{ repContractRows }}" as="c" hint-placeholder-count="6">
+                      <tr style-hover="background:#FCFBF7">
+                        <td style="padding:10px 20px;border-bottom:1px solid #F5F3EE;font-size:12.5px;font-weight:600;color:#0F2A47;white-space:nowrap">{{ c.name }}</td>
+                        <td style="padding:10px 13px;border-bottom:1px solid #F5F3EE;font-size:12px;color:#475467;white-space:nowrap">{{ c.type }}</td>
+                        <td style="padding:10px 13px;border-bottom:1px solid #F5F3EE;font-size:12px;color:#475467;white-space:nowrap">{{ c.start }}</td>
+                        <td style="padding:10px 13px;border-bottom:1px solid #F5F3EE;font-size:12px;color:#475467;white-space:nowrap">{{ c.expiry }}</td>
+                        <td style="padding:10px 13px;border-bottom:1px solid #F5F3EE;font-size:12px;color:#475467;white-space:nowrap">{{ c.fee }}</td>
+                        <td style="padding:10px 20px 10px 13px;border-bottom:1px solid #F5F3EE"><span style="font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;background:{{ c.sBg }};color:{{ c.sFg }};white-space:nowrap">{{ c.status }}</span></td>
+                      </tr>
+                    </sc-for>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ repTabIs.activity }}" hint-placeholder-val="{{ false }}">
+            <div style="background:#fff;border:1px solid #ECEAE2;border-radius:14px;overflow:hidden">
+              <div style="overflow-x:auto">
+                <table style="width:100%;min-width:900px;border-collapse:collapse">
+                  <thead><tr style="background:#FCFBF7">
+                    <th style="padding:10px 20px;text-align:left;font-size:10.5px;font-weight:700;color:#7A8699;border-bottom:1px solid #F0EEE7">TIMESTAMP</th>
+                    <th style="padding:10px 13px;text-align:left;font-size:10.5px;font-weight:700;color:#7A8699;border-bottom:1px solid #F0EEE7">SPEAKER</th>
+                    <th style="padding:10px 13px;text-align:left;font-size:10.5px;font-weight:700;color:#7A8699;border-bottom:1px solid #F0EEE7">ACTIVITY</th>
+                    <th style="padding:10px 13px;text-align:left;font-size:10.5px;font-weight:700;color:#7A8699;border-bottom:1px solid #F0EEE7">EVENT</th>
+                    <th style="padding:10px 13px;text-align:left;font-size:10.5px;font-weight:700;color:#7A8699;border-bottom:1px solid #F0EEE7">PERFORMED BY</th>
+                    <th style="padding:10px 20px 10px 13px;text-align:left;font-size:10.5px;font-weight:700;color:#7A8699;border-bottom:1px solid #F0EEE7">STATUS</th>
+                  </tr></thead>
+                  <tbody>
+                    <sc-for list="{{ repActivityRows }}" as="a" hint-placeholder-count="6">
+                      <tr style-hover="background:#FCFBF7">
+                        <td style="padding:10px 20px;border-bottom:1px solid #F5F3EE;font-size:12px;color:#475467;white-space:nowrap">{{ a.t }}</td>
+                        <td style="padding:10px 13px;border-bottom:1px solid #F5F3EE;font-size:12.5px;font-weight:600;color:#0F2A47;white-space:nowrap">{{ a.speaker }}</td>
+                        <td style="padding:10px 13px;border-bottom:1px solid #F5F3EE;font-size:12px;color:#475467;white-space:nowrap">{{ a.activity }}</td>
+                        <td style="padding:10px 13px;border-bottom:1px solid #F5F3EE;font-size:12px;color:#475467;white-space:nowrap">{{ a.event }}</td>
+                        <td style="padding:10px 13px;border-bottom:1px solid #F5F3EE;font-size:12px;color:#475467;white-space:nowrap">{{ a.by }}</td>
+                        <td style="padding:10px 20px 10px 13px;border-bottom:1px solid #F5F3EE;font-size:12px;color:#475467;white-space:nowrap">{{ a.status }}</td>
+                      </tr>
+                    </sc-for>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ repTabIs.builder }}" hint-placeholder-val="{{ false }}">
+            <div style="background:#fff;border:1px solid #ECEAE2;border-radius:14px;padding:22px 24px;max-width:560px">
+              <div style="font-size:14px;font-weight:700;color:#0F2A47;margin-bottom:16px">Custom report builder — Step {{ builderStep }} of 4</div>
+              <label style="display:block;font-size:12px;font-weight:600;color:#344054;margin-bottom:7px">Data Source</label>
+              <select value="{{ builderSource }}" onChange="{{ setBuilderSource }}" style="width:100%;height:38px;border:1px solid #E5E3DC;border-radius:9px;font-size:13px;background:#fff;outline:0;margin-bottom:14px"><option>Speakers</option><option>Onboarding</option><option>Events</option><option>Attendance</option><option>Engagement</option><option>Feedback</option><option>Payouts</option><option>Contracts</option><option>Activity</option></select>
+              <label style="display:block;font-size:12px;font-weight:600;color:#344054;margin-bottom:9px">Fields</label>
+              <div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px">
+                <sc-for list="{{ [{f:'Speaker Name'},{f:'Expertise'},{f:'Events'},{f:'Rating'},{f:'Attendance'},{f:'Engagement'},{f:'Payout'}] }}" as="fl" hint-placeholder-count="7">
+                  <span onClick="{{ toggleBuilderField }}" style="height:30px;padding:0 12px;border-radius:999px;border:1px solid #E5E3DC;background:#F7FBFA;font-size:12px;color:#344054;cursor:pointer">{{ fl.f }}</span>
+                </sc-for>
+              </div>
+              <label style="display:block;font-size:12px;font-weight:600;color:#344054;margin-bottom:7px">Visualization</label>
+              <select value="{{ builderViz }}" onChange="{{ setBuilderViz }}" style="width:100%;height:38px;border:1px solid #E5E3DC;border-radius:9px;font-size:13px;background:#fff;outline:0;margin-bottom:14px"><option>Table</option><option>KPI</option><option>Bar Chart</option><option>Line Chart</option><option>Donut</option><option>Funnel</option></select>
+              <label style="display:block;font-size:12px;font-weight:600;color:#344054;margin-bottom:7px">Report Name *</label>
+              <input value="{{ builderName }}" onChange="{{ setBuilderName }}" placeholder="e.g. Top Insurance Workshop Speakers — 2026" style="width:100%;height:38px;border:1px solid #E5E3DC;border-radius:9px;font-size:13px;padding:0 11px;outline:0;box-sizing:border-box;margin-bottom:16px" />
+              <div style="display:flex;justify-content:flex-end;gap:10px">
+                <button onClick="{{ builderBack }}" style="height:37px;padding:0 14px;border-radius:9px;border:1px solid #E5E3DC;background:#fff;font-size:12.5px;font-weight:600;color:#344054;cursor:pointer">Back</button>
+                <button onClick="{{ builderSave }}" style="height:37px;padding:0 16px;border-radius:9px;border:0;background:#0E9384;font-size:12.5px;font-weight:700;color:#fff;cursor:pointer">Save Report</button>
+              </div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ repTabIs.saved }}" hint-placeholder-val="{{ false }}">
+            <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:13px">
+              <sc-for list="{{ repSavedReports }}" as="r" hint-placeholder-count="8">
+                <div style="background:#fff;border:1px solid #ECEAE2;border-radius:12px;padding:15px 17px">
+                  <div style="font-size:13.5px;font-weight:700;color:#0F2A47">{{ r.name }}</div>
+                  <div style="display:flex;gap:8px;margin-top:11px;flex-wrap:wrap">
+                    <span onClick="{{ r.view }}" style="font-size:12px;font-weight:600;color:#0B7A6E;cursor:pointer">View</span>
+                    <span onClick="{{ r.edit }}" style="font-size:12px;font-weight:600;color:#0B7A6E;cursor:pointer">Edit</span>
+                    <span onClick="{{ r.duplicate }}" style="font-size:12px;font-weight:600;color:#0B7A6E;cursor:pointer">Duplicate</span>
+                    <span onClick="{{ r.exportIt }}" style="font-size:12px;font-weight:600;color:#0B7A6E;cursor:pointer">Export</span>
+                    <span onClick="{{ r.del }}" style="font-size:12px;font-weight:600;color:#B42318;cursor:pointer">Delete</span>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ repTabIs.scheduled }}" hint-placeholder-val="{{ false }}">
+            <div style="background:#fff;border:1px solid #ECEAE2;border-radius:14px;overflow:hidden">
+              <div style="overflow-x:auto">
+                <table style="width:100%;min-width:700px;border-collapse:collapse">
+                  <thead><tr style="background:#FCFBF7">
+                    <th style="padding:10px 20px;text-align:left;font-size:10.5px;font-weight:700;color:#7A8699;border-bottom:1px solid #F0EEE7">REPORT</th>
+                    <th style="padding:10px 13px;text-align:left;font-size:10.5px;font-weight:700;color:#7A8699;border-bottom:1px solid #F0EEE7">FREQUENCY</th>
+                    <th style="padding:10px 13px;text-align:left;font-size:10.5px;font-weight:700;color:#7A8699;border-bottom:1px solid #F0EEE7">DATE</th>
+                    <th style="padding:10px 13px;text-align:left;font-size:10.5px;font-weight:700;color:#7A8699;border-bottom:1px solid #F0EEE7">TIME</th>
+                    <th style="padding:10px 13px;text-align:left;font-size:10.5px;font-weight:700;color:#7A8699;border-bottom:1px solid #F0EEE7">FORMAT</th>
+                    <th style="padding:10px 20px 10px 13px;text-align:left;font-size:10.5px;font-weight:700;color:#7A8699;border-bottom:1px solid #F0EEE7">STATUS</th>
+                  </tr></thead>
+                  <tbody>
+                    <sc-for list="{{ repScheduledReports }}" as="r" hint-placeholder-count="4">
+                      <tr style-hover="background:#FCFBF7">
+                        <td style="padding:10px 20px;border-bottom:1px solid #F5F3EE;font-size:12.5px;font-weight:600;color:#0F2A47;white-space:nowrap">{{ r.report }}</td>
+                        <td style="padding:10px 13px;border-bottom:1px solid #F5F3EE;font-size:12px;color:#475467">{{ r.freq }}</td>
+                        <td style="padding:10px 13px;border-bottom:1px solid #F5F3EE;font-size:12px;color:#475467">{{ r.date }}</td>
+                        <td style="padding:10px 13px;border-bottom:1px solid #F5F3EE;font-size:12px;color:#475467">{{ r.time }}</td>
+                        <td style="padding:10px 13px;border-bottom:1px solid #F5F3EE;font-size:12px;color:#475467">{{ r.fmt }}</td>
+                        <td style="padding:10px 20px 10px 13px;border-bottom:1px solid #F5F3EE"><span style="font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;background:{{ r.sBg }};color:{{ r.sFg }};white-space:nowrap">{{ r.status }}</span></td>
+                      </tr>
+                    </sc-for>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ repTabIs.export }}" hint-placeholder-val="{{ false }}">
+            <div style="background:#fff;border:1px solid #ECEAE2;border-radius:14px;overflow:hidden">
+              <div style="overflow-x:auto">
+                <table style="width:100%;min-width:880px;border-collapse:collapse">
+                  <thead><tr style="background:#FCFBF7">
+                    <th style="padding:10px 20px;text-align:left;font-size:10.5px;font-weight:700;color:#7A8699;border-bottom:1px solid #F0EEE7">REPORT</th>
+                    <th style="padding:10px 13px;text-align:left;font-size:10.5px;font-weight:700;color:#7A8699;border-bottom:1px solid #F0EEE7">REQUESTED BY</th>
+                    <th style="padding:10px 13px;text-align:left;font-size:10.5px;font-weight:700;color:#7A8699;border-bottom:1px solid #F0EEE7">FORMAT</th>
+                    <th style="padding:10px 13px;text-align:left;font-size:10.5px;font-weight:700;color:#7A8699;border-bottom:1px solid #F0EEE7">RECORDS</th>
+                    <th style="padding:10px 13px;text-align:left;font-size:10.5px;font-weight:700;color:#7A8699;border-bottom:1px solid #F0EEE7">REQUESTED AT</th>
+                    <th style="padding:10px 13px;text-align:left;font-size:10.5px;font-weight:700;color:#7A8699;border-bottom:1px solid #F0EEE7">STATUS</th>
+                    <th style="padding:10px 20px 10px 13px;border-bottom:1px solid #F0EEE7"></th>
+                  </tr></thead>
+                  <tbody>
+                    <sc-for list="{{ repExportRows }}" as="e" hint-placeholder-count="5">
+                      <tr style-hover="background:#FCFBF7">
+                        <td style="padding:10px 20px;border-bottom:1px solid #F5F3EE;font-size:12.5px;font-weight:600;color:#0F2A47;white-space:nowrap">{{ e.report }}</td>
+                        <td style="padding:10px 13px;border-bottom:1px solid #F5F3EE;font-size:12px;color:#475467;white-space:nowrap">{{ e.by }}</td>
+                        <td style="padding:10px 13px;border-bottom:1px solid #F5F3EE;font-size:12px;color:#475467">{{ e.fmt }}</td>
+                        <td style="padding:10px 13px;border-bottom:1px solid #F5F3EE;font-size:12px;color:#475467">{{ e.records }}</td>
+                        <td style="padding:10px 13px;border-bottom:1px solid #F5F3EE;font-size:12px;color:#475467;white-space:nowrap">{{ e.at }}</td>
+                        <td style="padding:10px 13px;border-bottom:1px solid #F5F3EE"><span style="font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px;background:{{ e.sBg }};color:{{ e.sFg }};white-space:nowrap">{{ e.status }}</span></td>
+                        <td style="padding:10px 20px 10px 13px;border-bottom:1px solid #F5F3EE;text-align:right;white-space:nowrap">
+                          <span onClick="{{ e.download }}" style="font-size:12px;font-weight:600;color:#0B7A6E;cursor:pointer;margin-right:9px">Download</span>
+                          <span onClick="{{ e.regen }}" style="font-size:12px;font-weight:600;color:#0B7A6E;cursor:pointer;margin-right:9px">Regenerate</span>
+                          <span onClick="{{ e.del }}" style="font-size:12px;font-weight:600;color:#B42318;cursor:pointer">Delete</span>
+                        </td>
+                      </tr>
+                    </sc-for>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </sc-if>
         </div>
       </sc-if>
 
@@ -11220,394 +11050,7 @@ class Component extends DCLogic {
       v[p+'ResetShow'] = sig===this._frBase[p] ? 'none' : 'inline-flex'; });
     return v; }
 
-  rptVals() { const s = this.state, LIB = [
-  ['IS','People','Individual Speaker Report','One speaker, one document — pick the sections you need: events, ratings, payouts, availability.','PDF · XLSX','2 days ago'],
-  ['SM','People','Speaker Master','Full speaker roster with contact details, expertise, status and onboarding stage. Filterable before export.','CSV · XLSX','Yesterday'],
-  ['EA','Events','Event Allocation','Every webinar and workshop assignment with speaker, coordinator and delivery mode.','CSV · XLSX','3 days ago'],
-  ['ER','Events','Event Performance','Registrations, attendance, drop-off and engagement per completed event.','PDF · XLSX','Today'],
-  ['FB','Content','Feedback & Ratings','Attendee ratings by speaker, content and delivery dimension with comment export.','PDF · CSV','Yesterday'],
-  ['PY','Commercial','Payout Report','Event-level fees, TDS, net payable, UTR and settlement status per cycle.','XLSX · PDF','Today'],
-  ['CT','Commercial','Contract Report','Agreement validity, compensation mode and renewal windows across all speakers.','PDF','5 days ago'],
-  ['ON','People','Onboarding Report','Invitation-to-activation funnel with link status, documents and verification stage.','CSV','4 days ago'],
-  ['AT','Events','Attendance Report','Session-level audience attendance with join/leave times and participation duration.','CSV · XLSX','2 days ago'],
-  ['CL','Content','Content Library Report','Recordings, resources and assets with version, approval status and reuse tracking.','XLSX','6 days ago'],
-  ['AV','Operations','Availability Report','Declared availability against scheduled load, conflicts and substitution history.','CSV','Never'],
-  ['AL','Operations','Alert & Reminder Log','Every automated and manual notification with channel, delivery status and escalation.','CSV','Yesterday']
-];
-    const CC = {People:['#E9F1FD','#1D4ED8'],Academic:['#E6F4F1','#0B7A6E'],Performance:['#F0EAFD','#6D28D9'],Attendance:['#E7F7EE','#15803D'],Finance:['#FEF3E2','#B45309'],Compliance:['#F1F3F5','#667085'],Operations:['#FEF3E2','#B45309'],Content:['#F0EAFD','#6D28D9'],Events:['#E6F4F1','#0B7A6E'],Commercial:['#FDF0E7','#C2410C']};
-    const cats = Array.from(new Set(LIB.map(r=>r[1])));
-    const tab = s.rptTab || 'overview', cat = s.rptCat || 'All', q = (s.rptQ||'').trim().toLowerCase();
-    const star = s.rptStar || {}, sch = s.rptSched || {}, dl = s.rptDl || {};
-    const tabs = [['overview','Overview'], ...cats.map(c=>['c:'+c, c]), ['saved','Saved Reports'], ['scheduled','Scheduled'], ['export','Export Center']];
-    const list = LIB.filter(r => (tab==='overview' || (tab.startsWith('c:') ? r[1]===tab.slice(2) : tab==='saved' ? star[r[2]] : tab==='scheduled' ? sch[r[2]] : dl[r[2]]))
-      && (cat==='All' || r[1]===cat) && (!q || (r[2]+' '+r[3]).toLowerCase().includes(q)));
-    const range = s.rptRange || 'This month';
-    const done = (label, sub)=>this.fire(label, sub, true);
-    return { isRpt: s.route==='reports', rptCat: cat, rptRange: range, rptQ: s.rptQ||'', setRptQ:(e)=>this.setState({rptQ:e.target.value}),
-      rptCatOpts: [{o:'All',label:'All categories',sel:cat==='All'}, ...cats.map(c=>({o:c,label:c,sel:cat===c}))], setRptCat:(e)=>this.setState({rptCat:e.target.value}),
-      rptRangeOpts: ['Today','This week','This month','Last 3 months','This year','Custom'].map(o=>({o, sel:o===range})), setRptRange:(e)=>this.setState({rptRange:e.target.value}),
-      rptTabs: tabs.map(([k,label])=>({label, bg: tab===k?'#0E9384':'transparent', fg: tab===k?'#fff':'#6B7C93', weight: tab===k?'700':'500', go:()=>this.setState({rptTab:k})})),
-      rptHead: tab==='saved' ? 'SAVED REPORTS' : tab==='scheduled' ? 'SCHEDULED REPORTS' : tab==='export' ? 'EXPORT CENTER' : tab.startsWith('c:') ? tab.slice(2).toUpperCase()+' REPORTS' : 'REPORT LIBRARY',
-      rptCount: String(list.length), rptTotal: String(LIB.length), rptEmpty: list.length ? 'none' : 'block',
-      rptEmptyTitle: tab==='saved' ? 'No saved reports yet' : tab==='scheduled' ? 'Nothing scheduled yet' : tab==='export' ? 'No exports yet' : 'No report types match',
-      rptEmptySub: tab==='saved' ? 'Star a report to keep it here.' : tab==='scheduled' ? 'Use Schedule on any report to send it automatically.' : tab==='export' ? 'Downloaded reports appear here.' : 'Try another search or category.',
-      rptCards: list.map(([code,c,title,desc,formats,last])=>{ const col = CC[c] || CC.Operations, on = !!star[title];
-        return {code, cat:c, title, desc, formats, last: dl[title] ? 'just now' : last, ibg:col[0], ifg:col[1], cBg:col[0], cFg:col[1],
-          starIcon: on ? '★' : '☆', starFg: on ? '#D97706' : '#98A2B3',
-          star:()=>{ this.setState(x=>({rptStar:{...(x.rptStar||{}), [title]:!on}})); done(on ? 'Removed from saved' : 'Saved to your reports', title); },
-          download:()=>{ this.setState(x=>({rptDl:{...(x.rptDl||{}), [title]:true}})); done('Report downloaded — '+title, formats.split(' · ')[0]+' · '+range); },
-          gen:()=>done('Report generated — '+title, range+' · ready to download'),
-          sched:()=>{ this.setState(x=>({rptSched:{...(x.rptSched||{}), [title]:true}})); done('Report scheduled — '+title, 'Every Monday 09:00 · Email'); },
-          schedLabel: sch[title] ? 'Scheduled' : 'Schedule',
-          preview:()=>done('Preview — '+title, range+' · first 50 rows')}; }) };
-  }
-
-  attVals() {
-    const s = this.state;
-    const BDG = {green:['#E7F7EE','#15803D'],amber:['#FEF3E2','#B45309'],red:['#FDE8E8','#B42318'],grey:['#F1F3F5','#667085'],blue:['#E9F1FD','#1D4ED8'],violet:['#F0EAFD','#6D28D9']};
-    const WL = {Low:['#F1F3F5','#667085'],Normal:['#E7F7EE','#15803D'],High:['#FEF3E2','#B45309'],Overloaded:['#FDE8E8','#B42318']};
-    const AVP = ['#6D28D9','#0E9384','#1D4ED8','#B45309','#B42318','#0B7A6E','#C2410C','#475467'];
-    const AVc = (n) => AVP[n.charCodeAt(n.length-1) % AVP.length];
-    const ATT = [
-      ['Priya Mehta','SPK-20251','Present','green','09:00','09:02','2 min','18:00','18:14','—','8h 42m','48m','14m',96,91,'—','2 min ago',8,'High'],
-      ['Amit Sharma','SPK-20248','Present','green','09:00','08:58','—','18:00','18:05','—','8h 34m','33m','5m',94,82,'—','8 min ago',6,'Normal'],
-      ['Rajiv Kapoor','SPK-20260','Late','amber','09:00','09:38','38 min','18:00','18:02','—','7h 52m','32m','—',89,87,'Repeated late arrival','14 min ago',7,'High'],
-      ['Neha Singh','SPK-20254','Present','green','09:00','09:00','—','18:00','18:00','—','8h 30m','30m','—',97,88,'—','22 min ago',5,'Normal'],
-      ['Dr. Ankit Sharma','SPK-20275','Absent','red','09:00','—','—','18:00','—','—','—','—','—',82,34,'Unapproved absence','2 days ago',6,'Normal'],
-      ['Sneha Kulkarni','SPK-20257','Present','green','09:00','08:52','—','18:00','19:10','—','9h 26m','32m','1h 10m',98,93,'Unusual working hours','1 min ago',9,'Overloaded'],
-      ['Rahul Verma','SPK-20263','On Leave','blue','—','—','—','—','—','—','—','—','—',93,0,'—','3 days ago',4,'Low'],
-      ['Arvind Menon','SPK-20269','Early Checkout','amber','09:00','09:24','24 min','18:00','16:40','1h 20m','6h 46m','30m','—',88,76,'Early checkout · late arrival','2 h ago',7,'High'],
-      ['Kavita Rao','SPK-20272','Present','green','09:00','09:05','5 min','18:00','18:08','—','8h 33m','30m','8m',95,84,'—','35 min ago',5,'Normal'],
-      ['Ananya Deshmukh','SPK-20266','Missing Punch','grey','09:00','08:47','—','18:00','—','—','—','28m','—',96,90,'Missing checkout','1 h ago',8,'Overloaded'],
-      ['Meera Krishnan','SPK-20278','Absent','red','09:00','—','—','18:00','—','—','—','—','—',76,22,'2 consecutive absences','6 days ago',3,'Low'],
-      ['Arjun Nair','SPK-20281','Half Day','amber','09:00','09:00','—','18:00','13:30','4h 30m','4h 12m','18m','—',94,58,'Approved half day','4 h ago',6,'Normal']
-    ];
-    const ACTLOG = [
-      ['10:42 AM','Priya Mehta','Live Session','Webinar','EV-301','Delivered Life Insurance Sales Webinar · 412 attendees','Completed','green'],
-      ['10:25 AM','Priya Mehta','Q&A','Webinar','EV-301','38 audience questions answered','Resolved','green'],
-      ['10:11 AM','Amit Sharma','Rehearsal','Workshop','EV-298','Technical rehearsal completed','Completed','green'],
-      ['09:58 AM','Rajiv Kapoor','Content Upload','Masterclass','EV-305','Presentation deck submitted for review','Pending','amber'],
-      ['09:44 AM','Sneha Kulkarni','Live Session','Workshop','EV-299','Session started 12 min late','Late start','amber'],
-      ['09:30 AM','Neha Singh','Confirmation','Webinar','EV-310','Event schedule confirmed','Completed','green'],
-      ['09:18 AM','Dr. Ankit Sharma','Resources','Panel Discussion','EV-307','Handouts shared with registrants','Completed','green'],
-      ['09:05 AM','Arvind Menon','Substitution','Webinar','EV-312','Substitute speaker requested','Pending','amber'],
-      ['08:52 AM','Kavita Rao','Communication','Workshop','EV-304','Pre-event announcement published','Completed','green'],
-      ['08:40 AM','Ananya Deshmukh','Administrative','—','—','Invoice submitted for August events','Completed','green'],
-      ['08:22 AM','Sneha Kulkarni','Recording','Workshop','EV-299','Recording reviewed and approved','Resolved','green'],
-      ['08:10 AM','Amit Sharma','Feedback','Workshop','EV-298','Attendee feedback reviewed','Completed','green']
-    ];
-    const AWEIGHTS = [
-      ['Live Sessions',30],['Audience Engagement',20],['Content Preparation',20],
-      ['Rehearsals & Readiness',15],['Administrative Tasks',15]
-    ];
-    const LEAVES = [
-      ['LV-2041','Rahul Verma','Planned leave','16 – 18 Aug 2026','3 days','Family function','Approved','green','8 of 18 remaining'],
-      ['LV-2038','Arjun Nair','Half day','16 Aug 2026','0.5 day','Medical appointment','Approved','green','11 of 18 remaining'],
-      ['LV-2035','Arvind Menon','Sick leave','19 Aug 2026','1 day','Fever','Pending','amber','6 of 18 remaining'],
-      ['LV-2031','Dr. Ankit Sharma','Casual leave','14 Aug 2026','1 day','Personal','Rejected','red','9 of 18 remaining'],
-      ['LV-2028','Rajiv Kapoor','Planned leave','25 – 26 Aug 2026','2 days','Travel','Pending','amber','7 of 18 remaining']
-    ];
-    const REGS = [
-      ['RG-8812','Ananya Deshmukh','12 Aug 2026','Missing checkout','—','18:12','Forgot to check out','Pending','amber'],
-      ['RG-8808','Rajiv Kapoor','11 Aug 2026','Late arrival','09:38','09:05','Traffic diversion · informed speaker','Pending','amber'],
-      ['RG-8804','Arvind Menon','10 Aug 2026','Early checkout','16:40','18:00','System did not record the second half','Approved','green'],
-      ['RG-8799','Dr. Ankit Sharma','08 Aug 2026','Missing check-in','—','09:00','Worked remotely · VPN issue','Rejected','red'],
-      ['RG-8794','Kavita Rao','07 Aug 2026','Missing punch','—','18:05','Power outage at the office','Approved','green']
-    ];
-    const ATTAUDIT = [
-      ['16 Aug, 11:32 AM','Ananya Deshmukh','Admin User','Checkout time','—','18:12','Approved regularization RG-8812','Manual','Approved'],
-      ['15 Aug, 04:20 PM','Arvind Menon','Admin User','Attendance status','Absent','Half Day','Verified with the speaker','Manual','Approved'],
-      ['14 Aug, 09:15 AM','Rajiv Kapoor','Anita Rao','Late flag','Late','Present','Traffic diversion — informed in advance','Manual','Approved'],
-      ['13 Aug, 06:02 PM','Dr. Ankit Sharma','System','Attendance status','Pending','Absent','No punch recorded by end of day','System','—'],
-      ['12 Aug, 10:48 AM','Amit Sharma','Admin User','Break duration','58m','33m','Break tracker double-counted','Manual','Approved']
-    ];
-    
-    const atFiltered = () => {
-    
-    const q = (s.atQ||'').trim().toLowerCase();
-    return ATT.filter(a =>
-      ((s.atStatus||'All')==='All' || a[2]===s.atStatus) &&
-      ((s.atWho||'All')==='All' || a[0]===s.atWho) &&
-      ((s.atLoad||'All')==='All' || a[18]===s.atLoad) &&
-      ((s.atPct||'All')==='All' || (s.atPct==='Below 90%' ? a[13]<90 : s.atPct==='90–95%' ? (a[13]>=90&&a[13]<=95) : a[13]>95)) &&
-      ((s.atExc||'All')==='All' || (s.atExc==='With exceptions' ? a[15]!=='—' : a[15]==='—')) &&
-      ((s.atLevel||'All')==='All' || (s.atLevel==='Highly Active' ? a[14]>=90 : s.atLevel==='Active' ? (a[14]>=80&&a[14]<90) : s.atLevel==='Moderately Active' ? (a[14]>=60&&a[14]<80) : s.atLevel==='Low Activity' ? (a[14]>=25&&a[14]<60) : a[14]<25)) &&
-      (!q || (a[0]+a[1]).toLowerCase().includes(q))
-    ).map(a=>({
-      name:a[0], id:a[1], status:a[2], schedIn:a[4], actualIn:a[5], lateBy:a[6],
-      schedOut:a[7], actualOut:a[8], earlyBy:a[9], hours:a[10], breaks:a[11], overtime:a[12],
-      attPct:a[13]+'%', activity:String(a[14]), exceptions:a[15], lastActivity:a[16],
-      batches:String(a[17]), workload:a[18], date:'16 Aug 2026', shift:'General · 09:00 – 18:00',
-      init:this.initials(a[0]), avBg:AVc(a[0]),
-      sBg:BDG[a[3]][0], sFg:BDG[a[3]][1],
-      wBg:WL[a[18]][0], wFg:WL[a[18]][1],
-      pctFg: a[13]>=95 ? '#15803D' : a[13]>=90 ? '#0B7A6E' : '#B42318',
-      actFg: a[14]>=80 ? '#15803D' : a[14]>=50 ? '#B45309' : '#B42318',
-      lateFg: a[6]==='—' ? '#98A2B3' : '#B45309',
-      earlyFg: a[9]==='—' ? '#98A2B3' : '#B45309',
-      excFg: a[15]==='—' ? '#98A2B3' : '#B42318',
-      menuDisplay: s.atMenu===a[1] ? 'block' : 'none',
-      menu: ()=>this.setState({atMenu: s.atMenu===a[1] ? null : a[1]}),
-      open: ()=>{ this.setState({atMenu:null}); this.fire('Opening 360° — '+a[0], 'Attendance & Activity'); },
-      correct: ()=>this.setState({atModal:'correct', atCtx:{who:a[0], date:'16 Aug 2026', issue:'Manual correction', orig:a[5]||'—', requested:''}}),
-      menuItems: [
-        ['View Attendance',0],['View Activity',0],['View Speaker 360°',0],
-        ['Add Attendance Correction',0],['View Regularization',0],['Send Reminder',0],['Export Speaker Report',0]
-      ].map(([label,danger],i)=>({label,
-        fg: danger?'#B42318':'#344054', hbg: danger?'#FEF7F6':'#F7FBFA',
-        bt: (i===3) ? '1px solid #F2F0EA' : 'none', mt: (i===3) ? '4px' : '0', pt: (i===3) ? '8px' : '0',
-        pick: label==='View Speaker 360°' ? (()=>{ this.setState({atMenu:null}); this.fire('Opening 360° — '+a[0], 'Overview'); })
-          : label==='View Attendance' ? (()=>{ this.setState({atMenu:null}); this.fire('Opening 360° — '+a[0], 'Attendance & Activity'); })
-          : label==='Add Attendance Correction' ? (()=>this.setState({atMenu:null, atModal:'correct', atCtx:{who:a[0], date:'16 Aug 2026', issue:'Manual correction', orig:a[5]||'—', requested:''}}))
-          : label==='View Regularization' ? (()=>this.setState({atMenu:null, atTab:'leave'}))
-          : label==='Export Speaker Report' ? (()=>this.setState({atMenu:null, atModal:'attExport', atCtx:{who:a[0]}}))
-          : (()=>this.setState({atMenu:null, atModal:'act', atCtx:{label, who:a[0]}}))}))
-    }));
-    };
-    return {
-      ...(()=>{ const k = s.atModal, c = s.atCtx||{}, F = s.atF||{};
-        const fld = (label,key,def,opts)=>({label, value: F[key]||def, opts: opts.map(o=>({o})), set:(e)=>{ const v=e.target.value; this.setState(x=>({atF:{...(x.atF||{}), [key]:v}})); }});
-        const close = ()=>this.setState({atModal:null, atCtx:null});
-        const done = (msg,sub)=>()=>{ close(); this.fire(msg,sub); };
-        const WHO = ATT.map(a=>a[0]);
-        const D = {
-          attExport: {title:'Generate Report', sub:'Attendance and activity reports · runs in the background', primaryLabel:'Generate Report',
-            groups:[{t:'REPORT', fields:[fld('Report','aeReport','Attendance summary',['Daily attendance','Monthly attendance','Attendance summary','Late arrival report','Early checkout report','Absence report','Leave report','Missing punch report','Working hours report','Overtime report','Regularization report','Activity report','Workload report','Exception report']), fld('Date range','aeRange','This month',['Today','This week','This month','Last month','This quarter','Custom range']), fld('People','aeWho', c.who||'All', ['All'].concat(WHO))]},
-              {t:'OUTPUT', fields:[fld('Format','aeFmt','Excel (.xlsx)',['Excel (.xlsx)','CSV (.csv)','PDF (.pdf)']), fld('Delivery','aeDel','Download when ready',['Download when ready','Email to me','Save to reports library'])]}],
-            info:'Active filters are carried into the export · large reports are queued and generated in the background.',
-            primary: done('Report queued — '+(F.aeReport||'Attendance summary'), (F.aeFmt||'Excel (.xlsx)')+' · generating in background')},
-          attSettings: {title: c.label||'Attendance Settings', sub:'Attendance rules are configurable — nothing is hard-coded', primaryLabel:'Save Settings',
-            groups:[{t:'SHIFT & WORKING HOURS', fields:[fld('Default shift','asShift','General · 09:00 – 18:00',['General · 09:00 – 18:00','Morning · 07:00 – 16:00','Evening · 12:00 – 21:00','Flexible']), fld('Expected working hours','asHours','8 hours',['6 hours','7 hours','8 hours','9 hours']), fld('Grace period','asGrace','15 minutes',['5 minutes','10 minutes','15 minutes','30 minutes']), fld('Half-day threshold','asHalf','Under 4 hours',['Under 4 hours','Under 5 hours','Under 6 hours'])]},
-              {t:'POLICY & REGULARIZATION', fields:[fld('Attendance % formula','asFormula','Present + Half Day (0.5) ÷ working days',['Present ÷ working days','Present + Half Day (0.5) ÷ working days','Present + Leave ÷ calendar days']), fld('Missing punch treatment','asMP','Flag as exception',['Flag as exception','Mark absent','Auto-close at shift end']), fld('Consecutive absence alert','asAbs','After 2 days',['After 1 day','After 2 days','After 3 days']), fld('Regularization window','asWin','7 days',['3 days','7 days','15 days','30 days'])]}],
-            info:'Attendance is never used as a standalone performance score — it is combined with activity, workload and outcomes.',
-            primary: done('Settings saved — '+(c.label||'Attendance Settings'),'Applied platform-wide · audit-logged')},
-          actSettings: {title:'Configure Activity Metrics', sub:'Activity weights and thresholds drive the activity score', primaryLabel:'Save Configuration',
-            groups:[{t:'ACTIVITY WEIGHTS', fields: AWEIGHTS.map(([l,w],i)=>fld(l,'aw'+i,w+'%',['5%','10%','15%','20%','25%','30%']))},
-              {t:'ACTIVITY LEVELS', fields:[fld('Highly active from','alH','90',['80','85','90','95']), fld('Active from','alA','80',['70','75','80']), fld('Low activity from','alL','25',['20','25','30']), fld('No-activity alert','alN','After 2 days',['After 1 day','After 2 days','After 3 days'])]}],
-            info:'Weights, thresholds and workload factors are configurable — the score is transparent and defensible.',
-            primary: done('Activity metrics updated','Weights and thresholds applied to future calculations')},
-          correct: {title:'Attendance Correction', sub:[c.who, c.date, c.issue].filter(Boolean).join(' · ') || 'Correct an attendance record', primaryLabel:'Save Correction',
-            groups:[{t:'CORRECTION', fields:[fld('Person','crWho', c.who||WHO[0], WHO), fld('Field','crField','Checkout time',['Check-in time','Checkout time','Attendance status','Break duration']), fld('Corrected value','crVal', c.requested||'18:00',['09:00','09:05','18:00','18:12','Present','Half Day']), fld('Reason','crReason','Approved regularization',['Approved regularization','System error','Worked remotely','Manager confirmation'])]}],
-            info:'Every correction keeps the original value and is written to the audit log.',
-            primary: done('Attendance corrected — '+(F.crWho||c.who||WHO[0]), (F.crField||'Checkout time')+' → '+(F.crVal||c.requested||'18:00')+' · audit logged')},
-          resolve: {title:'Resolve Exception', sub: c.title||'', primaryLabel:'Mark Resolved',
-            groups:[{t:'RESOLUTION', fields:[fld('Resolution','rsHow','Followed up with the person',['Followed up with the person','Regularization approved','Leave applied retroactively','Escalated to manager','No action required']), fld('Owner','rsOwner','Admin User',['Admin User','Operations Head','Academic Head'])]}],
-            info:'Resolved exceptions stay visible in the exception history.',
-            primary: done('Exception resolved', c.title||'')},
-          act: {title: c.label||'Confirm', sub: c.who||'', primaryLabel: c.label||'Confirm', danger: !!c.danger,
-            groups:[{t:'DETAILS', fields:[fld('Note','acNote','No additional note',['No additional note','Informed by email','Discussed on call','Policy exception'])]}],
-            info:'This action is recorded in the audit log.',
-            primary: done((c.label||'Done')+' — '+(c.who||''),'Recorded · audit logged')}
-        };
-        const m = D[k] || D.act;
-        return { atMOpen: !!k, atMClose: close, atM: {...m, pBg: m.danger ? '#B42318' : '#0E9384'},
-          atFpToggle: ()=>this.setState({atFpOpen:!s.atFpOpen}), atFpD: s.atFpOpen?'block':'none',
-          atFpBd: s.atFpOpen?'#0E9384':'#E5E3DC', atFpBg: s.atFpOpen?'#EEF6F5':'#fff', atFpFg: s.atFpOpen?'#0B7A6E':'#344054' };
-      })(),
-      isAtt: s.route==='attendance',
-
-      atKpis: [
-        {label:'Total Speakers',n:'24',note:'active this period',fg:'#6B7C93',key:'All'},
-        {label:'Present Today',n:'6',note:'checked in',fg:'#15803D',key:'Present'},
-        {label:'Absent Today',n:'2',note:'no punch recorded',fg:'#B42318',key:'Absent'},
-        {label:'On Leave',n:'1',note:'approved leave',fg:'#1D4ED8',key:'On Leave'},
-        {label:'Late Today',n:'2',note:'past the 15-min threshold',fg:'#B45309',key:'Late'},
-        {label:'Early Checkout',n:'1',note:'left before shift end',fg:'#B45309',key:'Early Checkout'},
-        {label:'Missing Punches',n:'1',note:'incomplete attendance',fg:'#B45309',key:'Missing Punch'},
-        {label:'Attendance %',n:'92%',note:'▲ 1.4% vs last month',fg:'#15803D',key:'All'}
-      ].map(k=>({...k, go: ()=>{ this.setState({atStatus:k.key, atTab:'att'}); this.fire('Filtered to '+k.label, k.note); }})),
-
-      atSegs: [['Attendance','att'],['Calendar','cal'],['Analytics','ana'],['Activity','act'],['Workload','load'],['Exceptions','exc'],['Leave & Regularization','leave'],['Audit Log','audit']].map(([label,k])=>{
-        const on = (s.atTab||'att')===k;
-        return {label, bg:on?'#0E9384':'transparent', fg:on?'#fff':'#6B7C93', weight:on?'600':'500',
-          pick:()=>this.setState({atTab:k})};
-      }),
-      atIsAtt: (s.atTab||'att')==='att', atIsCal: s.atTab==='cal', atIsAna: s.atTab==='ana',
-      atIsAct: s.atTab==='act', atIsLoad: s.atTab==='load', atIsExc: s.atTab==='exc',
-      atIsLeave: s.atTab==='leave', atIsAudit: s.atTab==='audit',
-      atQ: s.atQ||'', setAtQ:(e)=>this.setState({atQ:e.target.value}),
-      atFilters: [
-        ['Date','atDate',['Today','Yesterday','This week','This month','Last month','Custom range']],
-        ['Attendance status','atStatus',['All','Present','Late','Absent','On Leave','Half Day','Early Checkout','Working Remotely','Missing Punch','Attendance Pending']],
-        ['Speaker','atWho',['All'].concat(ATT.map(a=>a[0]))],
-        ['Event type','atCourse',['All','Webinar','Workshop','Masterclass','Panel Discussion']],
-        ['Attendance %','atPct',['All','Below 90%','90–95%','Above 95%']],
-        ['Activity level','atLevel',['All','Highly Active','Active','Moderately Active','Low Activity','Inactive']],
-        ['Workload','atLoad',['All','Low','Normal','High','Overloaded']],
-        ['Exceptions','atExc',['All','With exceptions','No exceptions']]
-      ].map(([label,key,opts])=>({label, value:s[key]||(key==='atDate'?'Today':'All'), opts:opts.map(o=>({o})),
-        set:(e)=>this.setState({[key]:e.target.value})})),
-      atReset: ()=>{ this.setState({atStatus:'All',atWho:'All',atCourse:'All',atPct:'All',atLevel:'All',atLoad:'All',atExc:'All',atDate:'Today',atQ:''});
-        this.fire('Filters reset','Showing all speakers'); },
-      atSaveFilter: this.act('Filter view saved','Available from Manage saved filters'),
-      atManageFilters: this.act('Saved filters','3 saved views · Below 90%, Repeat late, Low activity'),
-      atExport: ()=>this.setState({atModal:'attExport', atCtx:{}}),
-      atSettings: ()=>this.setState({atModal:'attSettings', atCtx:{label:'Attendance Settings'}}),
-      atActSettings: ()=>this.setState({atModal:'actSettings', atCtx:{}}),
-      atOvOpen: !!s.atOv, atOvDisplay: s.atOv ? 'block' : 'none',
-      atOvToggle: ()=>this.setState(x=>({atOv:!x.atOv})),
-      atOvItems: ['Configure Attendance Rules','Configure Activity Metrics','Manage Working Hours','Manage Holidays','View Audit Logs'].map(label=>({label,
-        pick: label==='View Audit Logs' ? (()=>this.setState({atOv:false, atTab:'audit'}))
-          : label==='Configure Activity Metrics' ? (()=>this.setState({atOv:false, atModal:'actSettings', atCtx:{}}))
-          : (()=>this.setState({atOv:false, atModal:'attSettings', atCtx:{label}}))})),
-
-      atRows: atFiltered(),
-      atEmpty: atFiltered().length ? 'none' : 'block',
-      atCount: String(atFiltered().length),
-
-      atCalCodes: [['P','Present','#E7F7EE','#15803D'],['L','Late','#FEF3E2','#B45309'],['A','Absent','#FDE8E8','#B42318'],
-        ['HD','Half Day','#FDF3D6','#8A5A0B'],['LV','Leave','#E9F1FD','#1D4ED8'],['WO','Week Off','#F1F3F5','#667085'],
-        ['H','Holiday','#F0EAFD','#6D28D9'],['MP','Missing Punch','#F4F2EC','#98A2B3']].map(([code,label,bg,fg])=>({code,label,bg,fg})),
-      atCalWho: s.atCalWho || 'Priya Mehta',
-      setAtCalWho: (e)=>this.setState({atCalWho:e.target.value}),
-      atCalWhoOpts: ATT.map(a=>({o:a[0]})),
-      atCalDows: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map(d=>({d})),
-      atCalCells: (()=>{
-        const SEQ = ['P','P','L','P','P','WO','WO','P','P','P','MP','P','WO','WO','P','L','P','P','LV','WO','WO','H','P','P','P','P','WO','WO','P','HD','A'];
-        const M = {P:['#E7F7EE','#15803D'],L:['#FEF3E2','#B45309'],A:['#FDE8E8','#B42318'],HD:['#FDF3D6','#8A5A0B'],
-          LV:['#E9F1FD','#1D4ED8'],WO:['#F1F3F5','#667085'],H:['#F0EAFD','#6D28D9'],MP:['#F4F2EC','#98A2B3']};
-        const out = [];
-        for (let i=0;i<35;i++) {
-          const day = i-4;
-          const inMonth = day>=1 && day<=31;
-          const code = inMonth ? SEQ[day-1] : '';
-          out.push({d: inMonth ? String(day) : '', code,
-            bg: inMonth ? M[code][0] : '#fff', fg: inMonth ? M[code][1] : '#C8CDD4',
-            bd: day===16 ? '#0E9384' : '#F0EEE7',
-            open: inMonth ? (()=>this.fire('Attendance detail — '+day+' Aug', code==='P'?'Present · 09:02 in · 18:14 out · 8h 42m':code==='L'?'Late by 38 min · 7h 52m':code==='A'?'Absent · no punch recorded':'Recorded as '+code)) : (()=>{})});
-        }
-        return out;
-      })(),
-
-      atTrendMetric: s.atMetric || 'Attendance %',
-      atTrendPills: ['Attendance %','Present days','Absent days','Late days','Leave days','Half days'].map(m=>{
-        const on = (s.atMetric||'Attendance %')===m;
-        return {label:m, bd:on?'#0E9384':'#E5E3DC', bg:on?'#EEF6F5':'#fff', fg:on?'#0B7A6E':'#475467', fw:on?'700':'600',
-          pick:()=>this.setState({atMetric:m})};
-      }),
-      atTrendRange: s.atRange || '30 Days',
-      atTrendRanges: ['7 Days','30 Days','3 Months','6 Months','12 Months'].map(r=>{
-        const on = (s.atRange||'30 Days')===r;
-        return {label:r, bg:on?'#0B1F3E':'transparent', fg:on?'#fff':'#6B7C93', weight:on?'600':'500',
-          pick:()=>this.setState({atRange:r})};
-      }),
-      atTrend: (()=>{
-        const DATA = {'Attendance %':[92,90,94,91,95,93,96],'Present days':[18,17,19,18,20,19,21],
-          'Absent days':[2,3,1,2,1,2,1],'Late days':[4,5,3,4,2,3,2],'Leave days':[1,2,1,1,2,1,1],'Half days':[1,0,1,1,0,1,0]};
-        const vals = DATA[s.atMetric||'Attendance %'];
-        const labels = {'7 Days':['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],'30 Days':['W1','W2','W3','W4','W5','W6','Now'],
-          '3 Months':['Jun','Jul','Aug','Sep','Oct','Nov','Dec'],'6 Months':['Mar','Apr','May','Jun','Jul','Aug','Sep'],
-          '12 Months':['Q1 25','Q2 25','Q3 25','Q4 25','Q1 26','Q2 26','Q3 26']}[s.atRange||'30 Days'];
-        const max = Math.max(...vals);
-        const unit = (s.atMetric||'Attendance %')==='Attendance %' ? '%' : '';
-        return vals.map((v,i)=>({label:labels[i], v:v+unit, h:Math.round(v/max*160)+'px',
-          bg: i===vals.length-1 ? '#0E9384' : v>=max*0.95 ? '#5AC0B0' : '#B7DFD8'}));
-      })(),
-      atLateStats: [['Total late arrivals','18','this month'],['Average delay','14 min','across late arrivals'],
-        ['Severe late arrivals','4','over 30 minutes'],['Repeat late arrivals','2','speakers with 4+']]
-        .map(([label,v,note])=>({label,v,note})),
-      atHours: [['Expected working hours','8h 00m / day'],['Actual working hours','7h 42m / day'],
-        ['Average working hours','8h 12m / day'],['Total overtime','18h 40m'],['Average overtime','24m / day'],
-        ['Shortfall hours','18m / day'],['Break duration','34m / day'],['Maximum working hours','9h 26m']]
-        .map(([label,v])=>({label,v})),
-
-      atActKpis: [['Total activities','1,284'],['Active speakers','21'],['Inactive speakers','3'],
-        ['Tasks completed','986'],['Tasks pending','48'],['Audience interactions','642'],
-        ['Coordinator interactions','218'],['Events delivered','186'],['Rehearsals held','94'],
-        ['Support interactions','486'],['Announcements','48'],['Notifications handled','312']]
-        .map(([label,v])=>({label,v})),
-      atWeights: AWEIGHTS.map(([label,w])=>({label, weight:w+'%', w:w+'%',
-        color: w>=20 ? '#0E9384' : w>=15 ? '#5AC0B0' : '#B7DFD8'})),
-      atLevels: [['Highly Active','6','#0E9384'],['Active','9','#5AC0B0'],['Moderately Active','5','#F0A72A'],
-        ['Low Activity','3','#E9C46A'],['Inactive','1','#E88B78']]
-        .map(([label,n,color])=>({label,n,color,
-          pick:()=>{ this.setState({atLevel:label, atTab:'att'}); this.fire('Filtered to '+label, n+' speakers'); }})),
-      atActBreak: [
-        ['Audience activity','Questions handled 642 · answered live 458 · escalated 9 · follow-ups 186'],
-        ['Coordinator activity','Interactions 218 · confirmations 96 · substitutions 24 · issues 12'],
-        ['Event activity','Events 186 · reschedules 42 · announcements 48 · co-host changes 18'],
-        ['Rehearsal activity','Rehearsals 142 · readiness checks 128 · AV issues handled 16 · reschedules 12'],
-        ['Content activity','Decks submitted 142 · approved 126 · revisions 5 · avg review 1h 48m']
-      ].map(([label,detail])=>({label,detail})),
-      atActLog: ACTLOG.filter(a => (s.atWho||'All')==='All' || a[1]===s.atWho).map(([time,who,type,course,batch,desc,result,c])=>({
-        time,who,type,course,batch,desc,result,
-        init:this.initials(who), avBg:AVc(who), rBg:BDG[c][0], rFg:BDG[c][1],
-        open: ()=>{ this.setState({atMenu:null}); this.fire('Opening 360° — '+who, 'Overview'); }})),
-      atActLogEmpty: ACTLOG.filter(a => (s.atWho||'All')==='All' || a[1]===s.atWho).length ? 'none' : 'block',
-      atEffective: [['Audience response time','2h 14m','Target 4h','green'],['Q&A answer rate','94%','Target 90%','green'],
-        ['Follow-up completion','88%','Target 90%','amber'],['Content submission on time','6h 12m','Target 8h','green'],
-        ['Event confirmation rate','96%','Target 95%','green'],['Session readiness','93%','Target 95%','amber'],
-        ['Escalation rate','8%','Target under 10%','green'],['Pending task rate','4.6%','Target under 5%','green'],
-        ['SLA adherence','96%','Target 95%','green']]
-        .map(([label,v,target,c])=>({label,v,target, sBg:BDG[c][0], sFg:BDG[c][1]})),
-
-      atLoadRows: ATT.map(a=>({
-        name:a[0], id:a[1], batches:String(a[17]), workload:a[18],
-        courses: a[17]>=8 ? '3' : a[17]>=6 ? '2' : '1',
-        students: String(a[17]*44), teachers: String(Math.round(a[17]*1.6)),
-        classes: String(a[17]*3), recorded: a[17]>=7 ? '2' : '1',
-        openStudent: String(Math.max(0, 24 - a[14]/5|0)), openTeacher: a[18]==='Overloaded' ? '3' : '1',
-        pending: a[18]==='Overloaded' ? '8' : a[18]==='High' ? '5' : '2',
-        activity: String(a[14]),
-        init:this.initials(a[0]), avBg:AVc(a[0]),
-        wBg:WL[a[18]][0], wFg:WL[a[18]][1],
-        verdict: (a[18]==='Overloaded'||a[18]==='High') ? (a[14]>=80 ? 'Healthy' : 'Attention required')
-          : (a[14]>=80 ? 'Available capacity' : 'Investigate'),
-        vBg: (a[18]==='Overloaded'||a[18]==='High') ? (a[14]>=80 ? '#E7F7EE' : '#FDE8E8') : (a[14]>=80 ? '#E9F1FD' : '#FEF3E2'),
-        vFg: (a[18]==='Overloaded'||a[18]==='High') ? (a[14]>=80 ? '#15803D' : '#B42318') : (a[14]>=80 ? '#1D4ED8' : '#B45309'),
-        open: ()=>{ this.setState({atMenu:null}); this.fire('Opening 360° — '+a[0], 'Overview'); }})),
-      atMatrix: [
-        ['High event load','High activity','Healthy','green'],
-        ['High event load','Low activity','Attention required','red'],
-        ['Low event load','High activity','Available capacity','blue'],
-        ['Low event load','Low activity','Investigate','amber']
-      ].map(([w,a,verdict,c])=>({w,a,verdict, sBg:BDG[c][0], sFg:BDG[c][1]})),
-
-      atExceptions: [
-        ['Speaker absent for 2 consecutive working days','Meera Krishnan · 14 and 15 Aug · no leave applied','Critical','red','attendance'],
-        ['Dr. Ankit Sharma absent today with 3 events uncovered','No punch recorded · speaker unreachable','Critical','red','attendance'],
-        ['Rajiv Kapoor has 5 late arrivals this month','Average delay 22 minutes · threshold is 3','High','amber','attendance'],
-        ['Ananya Deshmukh has a missing checkout','12 Aug · regularization RG-8812 pending','High','amber','attendance'],
-        ['12 audience Q&A questions remain unanswered','Arvind Menon · oldest is 3 days past SLA','Critical','red','activity'],
-        ['Meera Krishnan activity is 72% below his 30-day average','Activity score 22 against a personal average of 78','High','amber','activity'],
-        ['3 events have pending speaker actions','EV-305 deck · EV-307 handouts · EV-312 rehearsal','High','amber','activity'],
-        ['Sneha Kulkarni logged 9h 26m — unusual working hours','1h 10m overtime · third occurrence this week','Medium','grey','attendance'],
-        ['Arvind Menon has no attendee follow-up in 4 days','2 post-event surveys and 18 registrant queries awaiting reply','Medium','grey','activity'],
-        ['Excessive attendance corrections','Rajiv Kapoor · 4 corrections this month','Medium','grey','attendance']
-      ].map(([title,desc,sev,c,kind])=>({title,desc,sev,kind,
-        dot:BDG[c][1], sBg:BDG[c][0], sFg:BDG[c][1],
-        kBg: kind==='attendance' ? '#E9F1FD' : '#F0EAFD',
-        kFg: kind==='attendance' ? '#1D4ED8' : '#6D28D9',
-        kLabel: kind==='attendance' ? 'Attendance' : 'Activity',
-        act: ()=>this.setState({atModal:'resolve', atCtx:{title, sev, who:desc.split(' · ')[0], meta:desc}}),
-        view: this.act('Opening record', desc),
-        dismiss: this.act('Exception dismissed','Still visible in the exception history')})),
-
-      atLeaves: LEAVES.map(([id,who,type,dates,duration,reason,state,c,balance])=>({
-        id,who,type,dates,duration,reason,state,balance,
-        init:this.initials(who), avBg:AVc(who), sBg:BDG[c][0], sFg:BDG[c][1],
-        actionsDisplay: state==='Pending' ? 'inline-flex' : 'none',
-        approve: ()=>this.setState({atModal:'act', atCtx:{label:'Approve Leave', who:who+' · '+dates}}),
-        reject: ()=>this.setState({atModal:'act', atCtx:{label:'Reject Leave', danger:1, who:who+' · '+dates}})})),
-      atRegs: REGS.map(([id,who,date,issue,orig,requested,reason,state,c])=>({
-        id,who,date,issue,orig,requested,reason,state,
-        init:this.initials(who), avBg:AVc(who), sBg:BDG[c][0], sFg:BDG[c][1],
-        origFg: orig==='—' ? '#98A2B3' : '#475467',
-        actionsDisplay: state==='Pending' ? 'inline-flex' : 'none',
-        approve: ()=>this.setState({atModal:'correct', atCtx:{who, date, issue, orig, requested, reg:id}}),
-        reject: ()=>this.setState({atModal:'act', atCtx:{label:'Reject Regularization', danger:1, who:who+' · '+id}}),
-        clarify: this.act('Clarification requested — '+id, who+' notified by email and in-app')})),
-      atNewCorrection: ()=>this.setState({atModal:'correct', atCtx:{}}),
-
-      atAudit: ATTAUDIT.map(([when,who,by,field,oldV,newV,reason,source,approval])=>({
-        when,who,by,field,oldV,newV,reason,source,approval,
-        oldFg: oldV==='—' ? '#98A2B3' : '#475467',
-        srcBg: source==='System' ? '#F1F3F5' : '#E9F1FD',
-        srcFg: source==='System' ? '#667085' : '#1D4ED8'})),
-    };
-  }
-
-  renderVals() { const v = this.renderVals1(); Object.assign(v, this.attVals()); Object.assign(v, this.rptVals()); { const IC=(l)=>/cal/i.test(l)?'M8 3v4M16 3v4M3 10h18M5 5h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z':/agenda/i.test(l)?'M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01':/table|list/i.test(l)?'M4 6h16M4 12h16M4 18h16':'M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h7v7h-7z'; if (Array.isArray(v.spk_schViewTabs)) v.spk_schViewTabs = v.spk_schViewTabs.map(x=>({...x, ic: IC(x.label||x.key||'')})); if (Array.isArray(v.wwViewTabs)) v.wwViewTabs = v.wwViewTabs.map(x=>({...x, ic: IC(x.label||x.key||'')})); if (Array.isArray(v.schViewTabs)) v.schViewTabs = v.schViewTabs.map(x=>({...x, ic: IC(x.label||x.key||'')})); } { const s = this.state, on = !!s.pffOpen, D = {pfRange:'All', pfEventType:'All', pfStatus:'All', pfSort:'Performance'};
+  renderVals() { const v = this.renderVals1(); { const IC=(l)=>/cal/i.test(l)?'M8 3v4M16 3v4M3 10h18M5 5h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z':/agenda/i.test(l)?'M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01':/table|list/i.test(l)?'M4 6h16M4 12h16M4 18h16':'M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h7v7h-7z'; if (Array.isArray(v.spk_schViewTabs)) v.spk_schViewTabs = v.spk_schViewTabs.map(x=>({...x, ic: IC(x.label||x.key||'')})); if (Array.isArray(v.wwViewTabs)) v.wwViewTabs = v.wwViewTabs.map(x=>({...x, ic: IC(x.label||x.key||'')})); if (Array.isArray(v.schViewTabs)) v.schViewTabs = v.schViewTabs.map(x=>({...x, ic: IC(x.label||x.key||'')})); } { const s = this.state, on = !!s.pffOpen, D = {pfRange:'All', pfEventType:'All', pfStatus:'All', pfSort:'Performance'};
       const n = Object.keys(D).filter(k=>(v[k]||D[k])!==D[k]).length;
       Object.assign(v, {pffToggle:()=>this.setState({pffOpen:!on}), pffDisplay: on?'block':'none', pffCount:String(n), pffHas: n?'grid':'none', pffResetShow: n?'inline-flex':'none',
         pffBd: on||n?'#0E9384':'#E5E3DC', pffBg: on||n?'#EEF6F5':'#fff', pffFg: on||n?'#0B7A6E':'#344054',
@@ -11645,7 +11088,7 @@ class Component extends DCLogic {
       comms:['Communication','Message history and campaigns across email, SMS and WhatsApp.'],
       performance:['Speaker Performance','Compare speakers on delivery, engagement, content quality and outcomes — not attendance or ratings alone.'],
       perf360:['Performance · '+((PERF_SPEAKERS.find(sp=>sp.id===s.perfWho)||PERF_SPEAKERS[0]).name), (PERF_SPEAKERS.find(sp=>sp.id===s.perfWho)||PERF_SPEAKERS[0]).spec],
-      attendance:['Attendance & Activity','Monitor speaker availability, attendance, session punctuality and event activity across StudyCrux.'],ralerts:['Reminders & Alerts','Automated and manual speaker notifications, delivery tracking, escalations and event readiness.'],
+      ralerts:['Reminders & Alerts','Automated and manual speaker notifications, delivery tracking, escalations and event readiness.'],
       schedule:['Speaker Schedule','When and where all speakers are conducting events — calendar, conflicts, readiness and rescheduling.'],
       payouts:['Payouts','Event-based speaker compensation from agreement through payment and reconciliation.'],
       payout360:['Payout · '+(s.poWho||'SPK-PO-00121'),'Full contract → event → calculation → approval → payment trail.'],
@@ -11665,7 +11108,7 @@ class Component extends DCLogic {
       ['allocation','Webinars & Workshops'],['onboard','Onboarding'],
       ['performance','Performance'],['payouts','Speaker Payouts'],
       ['content','Content Library'],
-      ['attendance','Attendance & Activity'],['ralerts','Reminders & Alerts'],['reports','Reports']
+      ['ralerts','Reminders & Alerts'],['reports','Reports']
     ];
     const activeNav = s.route==='appDetail' ? 'speakers' : s.route==='speakerDetail' ? 'speakers'
       : s.route==='contentDetail' ? 'content' : s.route;
