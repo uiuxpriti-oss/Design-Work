@@ -1801,7 +1801,7 @@ export const links = {
   linkedin: "https://www.linkedin.com/in/priti-jani14/",
   behance: "https://www.behance.net/pritijani",
   github: "https://github.com/uiuxpriti-oss",
-  cv: "Priti-Jani-CV.pdf",
+  cv: "Priti-Jani-CV.pdf?v=20261021",
 };
 
 export interface Experience {
