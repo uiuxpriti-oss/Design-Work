@@ -71,6 +71,7 @@ import {
   Award,
   Image as ImageIcon,
   Linkedin,
+  Github,
   Mail,
   type LucideIcon,
 } from "lucide-react";
@@ -2875,6 +2876,7 @@ function FooterCTA() {
     { href: links.cv, label: "Resume", Icon: FileText },
     { href: links.linkedin, label: "LinkedIn", Icon: Linkedin },
     { href: links.behance, label: "Behance", Icon: BehanceIcon },
+    { href: links.github, label: "GitHub", Icon: Github },
   ];
   return (
     <section id="contact" className="mt-16 scroll-mt-24 border-t border-border sm:mt-24">
@@ -2971,6 +2973,7 @@ function Footer() {
           {[
             { href: links.linkedin, label: "LinkedIn", ext: true, Icon: Linkedin },
             { href: links.behance, label: "Behance", ext: true, Icon: BehanceIcon },
+            { href: links.github, label: "GitHub", ext: true, Icon: Github },
             { href: links.email, label: "Email", ext: false, Icon: Mail },
             { href: links.cv, label: "Resume", ext: true, Icon: FileText },
           ].map(({ href, label, ext, Icon }) => (

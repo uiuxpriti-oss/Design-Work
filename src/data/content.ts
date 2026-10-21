@@ -1800,6 +1800,7 @@ export const links = {
   emailAddress: "uiuxpriti@gmail.com",
   linkedin: "https://www.linkedin.com/in/priti-jani14/",
   behance: "https://www.behance.net/pritijani",
+  github: "https://github.com/uiuxpriti-oss",
   cv: "Priti-Jani-CV.pdf",
 };
 
