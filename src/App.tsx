@@ -25,11 +25,7 @@ import {
   ExternalLink,
   X,
   Wand2,
-  Play,
-  Pause,
   Presentation,
-  SkipBack,
-  SkipForward,
   Target,
   Network,
   Search,
@@ -97,7 +93,6 @@ import {
   quotes,
   links,
   learning,
-  onRepeat,
   principles,
 } from "./data/content";
 import type { StudyBlock } from "./data/content";
@@ -2618,136 +2613,6 @@ function Creatives({ onViewAll }: { onViewAll: () => void }) {
   );
 }
 
-const SONG_TITLE = "The Winner Takes It All";
-const SONG_ARTIST = "ABBA";
-const SONG_SRC = "on-repeat.mp3";
-
-function OnRepeatCard() {
-  const [playing, setPlaying] = useState(false);
-  const mediaRef = useRef<HTMLAudioElement | null>(null);
-
-  const toggle = () => {
-    const m = mediaRef.current;
-    if (!m) return;
-    if (playing) {
-      m.pause();
-      setPlaying(false);
-      return;
-    }
-    m.play()
-      .then(() => setPlaying(true))
-      .catch(() => setPlaying(false));
-  };
-
-  const restart = () => {
-    const m = mediaRef.current;
-    if (!m) return;
-    m.currentTime = 0;
-    m.play()
-      .then(() => setPlaying(true))
-      .catch(() => setPlaying(false));
-  };
-
-  useEffect(() => () => mediaRef.current?.pause(), []);
-
-  return (
-    <div className="group/player w-full max-w-[21.5rem]">
-      {/* Hidden audio element plays the track when the play button is clicked. */}
-      <audio
-        ref={mediaRef}
-        src={SONG_SRC}
-        loop
-        preload="metadata"
-        onEnded={() => setPlaying(false)}
-        onPause={() => setPlaying(false)}
-        onPlay={() => setPlaying(true)}
-        className="pointer-events-none absolute h-px w-px opacity-0"
-        aria-hidden="true"
-      />
-      <div className="flex -rotate-2 items-center gap-3.5 rounded-[22px] bg-white/70 p-3 shadow-[0_18px_40px_-18px_rgba(12,40,70,0.5)] ring-1 ring-white/60 backdrop-blur-md transition-transform duration-500 ease-out hover:rotate-0 dark:bg-white/10 dark:ring-white/15">
-        {/* Spinning vinyl */}
-        <button
-          type="button"
-          onClick={toggle}
-          aria-label={`${playing ? "Pause" : "Play"} ${SONG_TITLE} by ${SONG_ARTIST}`}
-          className="relative h-14 w-14 shrink-0 rounded-full outline-none focus-visible:ring-2 focus-visible:ring-white/70"
-        >
-          <span
-            className={`absolute inset-0 rounded-full shadow-inner ${playing ? "animate-record" : ""}`}
-            style={{
-              background:
-                "repeating-radial-gradient(circle at center, rgba(255,255,255,0.08) 0 1px, transparent 1px 4px), radial-gradient(circle at center, #241f3a 0%, #0a0a0c 100%)",
-            }}
-          >
-            <span className="absolute left-1/2 top-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#efe3c8] ring-1 ring-black/20">
-              <span className="absolute left-1/2 top-1/2 h-1 w-1 -translate-x-1/2 -translate-y-1/2 rounded-full bg-neutral-900" />
-            </span>
-          </span>
-          {/* Play/pause veil */}
-          <span
-            className={`absolute inset-0 flex items-center justify-center rounded-full bg-black/35 text-white backdrop-blur-[1px] transition-opacity duration-200 ${
-              playing ? "opacity-0 group-hover/player:opacity-100" : "opacity-100"
-            }`}
-          >
-            {playing ? (
-              <Pause className="h-4 w-4 fill-current" aria-hidden="true" />
-            ) : (
-              <Play className="h-4 w-4 translate-x-[1px] fill-current" aria-hidden="true" />
-            )}
-          </span>
-        </button>
-        {/* Track info */}
-        <div className="min-w-0 flex-1">
-          <div className="flex items-center gap-2">
-            <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-sky-900/60 dark:text-sky-100/60">
-              On repeat
-            </p>
-            {playing && (
-              <span className="flex h-3 items-end gap-[2px]" aria-hidden="true">
-                {[0, 1, 2].map((i) => (
-                  <span
-                    key={i}
-                    className="animate-eq w-[2px] rounded-full bg-sky-900/60 dark:bg-sky-100/70"
-                    style={{ animationDelay: `${i * 0.15}s` }}
-                  />
-                ))}
-              </span>
-            )}
-          </div>
-          <p className="mt-0.5 truncate text-[14px] font-bold text-sky-950 dark:text-white">
-            {SONG_TITLE}
-          </p>
-          <p className="truncate text-[12px] text-sky-900/60 dark:text-sky-100/60">
-            {SONG_ARTIST}
-          </p>
-        </div>
-        {/* Skip controls */}
-        <div className="flex shrink-0 items-center gap-1.5 pr-1">
-          <button
-            type="button"
-            onClick={restart}
-            aria-label="Restart"
-            className="text-sky-900/45 transition-colors hover:text-sky-950 dark:text-sky-100/50 dark:hover:text-white"
-          >
-            <SkipBack className="h-3.5 w-3.5 fill-current" aria-hidden="true" />
-          </button>
-          <button
-            type="button"
-            onClick={restart}
-            aria-label="Next"
-            className="text-sky-900/45 transition-colors hover:text-sky-950 dark:text-sky-100/50 dark:hover:text-white"
-          >
-            <SkipForward className="h-3.5 w-3.5 fill-current" aria-hidden="true" />
-          </button>
-        </div>
-      </div>
-      <p className="mt-3.5 px-1 text-center text-[12px] leading-relaxed text-sky-900/60 dark:text-sky-100/60">
-        {onRepeat}
-      </p>
-    </div>
-  );
-}
-
 function AboutMeSection() {
   return (
     <section className="pt-16">
@@ -2756,13 +2621,18 @@ function AboutMeSection() {
           About
         </p>
         <div>
-          <p className="text-[15px] font-semibold text-foreground">
-            these days I'm learning:
-          </p>
-          <ul className="mt-3 space-y-2 text-[15px] text-foreground/85">
-            {learning.map((l) => (
-              <li key={l} className="flex gap-2">
-                <span className="text-foreground/40">•</span>
+          <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">
+            These days I&apos;m learning
+          </h2>
+          <ul className="mt-8 grid gap-3 sm:grid-cols-2">
+            {learning.map((l, i) => (
+              <li
+                key={l}
+                className="flex items-start gap-3 rounded-2xl border border-border bg-card px-4 py-3.5 text-[15px] leading-relaxed text-foreground/85 shadow-sm transition-colors hover:border-foreground/25"
+              >
+                <span className="mt-0.5 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-foreground/[0.06] text-[11px] font-medium text-muted-foreground">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
                 {l}
               </li>
             ))}
@@ -2820,10 +2690,12 @@ function DesignPhilosophy() {
         <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-[#A9C6BA]">
           My design philosophy
         </p>
+        <div className="relative grid gap-10 lg:grid-cols-[1.15fr_1fr] lg:gap-14">
+          <div>
         <h2 className="mt-4 text-3xl font-semibold leading-[1.08] tracking-tight text-white sm:text-5xl">
           Beyond <span className="italic text-[#A9C6BA]">pixels.</span>
         </h2>
-        <p className="relative mt-6 max-w-2xl text-base leading-relaxed text-white/85 sm:text-lg">
+        <p className="relative mt-6 text-base leading-relaxed text-white/85 sm:text-lg">
           i see design as a{" "}
           <span className="text-[#E3A64A]">powerful strategic tool</span> to solve
           complex business challenges and create lasting value. i believe designers
@@ -2834,7 +2706,7 @@ function DesignPhilosophy() {
           work.
         </p>
         <span className="mt-8 block h-px w-24 bg-white/15" aria-hidden="true" />
-        <p className="relative mt-8 max-w-2xl text-base leading-relaxed text-white/70 sm:text-lg">
+        <p className="relative mt-8 text-base leading-relaxed text-white/70 sm:text-lg">
           Design is the bridge between{" "}
           <span className="text-white">complex technology</span> and{" "}
           <span className="text-white">human emotion</span>. I don&apos;t just make
@@ -2844,6 +2716,26 @@ function DesignPhilosophy() {
             slight obsession with micro-interactions.
           </span>
         </p>
+          </div>
+        <div className="relative mt-10 flex flex-col gap-3 lg:mt-0 lg:justify-center">
+          {[
+            ["01", "Research", "Start from real people and real problems."],
+            ["02", "Rapid iteration with AI", "Prototype fast, learn faster."],
+            ["03", "Micro-interactions", "The small details that make it feel right."],
+          ].map(([n, t, d]) => (
+            <div
+              key={n}
+              className="flex items-start gap-4 rounded-2xl border border-white/10 bg-white/[0.04] p-5 backdrop-blur-sm"
+            >
+              <span className="text-sm font-medium text-[#E3A64A]">{n}</span>
+              <div>
+                <p className="text-base font-semibold text-white">{t}</p>
+                <p className="mt-1 text-sm leading-relaxed text-white/60">{d}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+        </div>
       </div>
     </section>
   );
@@ -2908,9 +2800,6 @@ function AboutAvatar() {
             Designer by trade, builder by habit — currently shipping AI products
             at Lumenore.
           </p>
-          <div className="mt-8 flex w-full justify-center">
-            <OnRepeatCard />
-          </div>
         </div>
       </div>
     </section>

@@ -2073,10 +2073,10 @@ export const learning: string[] = [
   "Prototyping with AI more than I expected.",
   "Reading more books.",
   "Learning development to build what I design.",
+  "Psychology — why people think, feel and behave the way they do.",
+  "Service design — mapping the whole experience beyond the screen.",
   "Trying to keep the promises I make to myself.",
 ];
-
-export const onRepeat = "Played enough times that Spotify is judging me.";
 
 export interface Principle {
   tag: string;
