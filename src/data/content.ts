@@ -1811,6 +1811,8 @@ export interface Experience {
   company: string;
   location: string;
   present?: boolean;
+  /** Role progression within the same company, newest first. */
+  roles?: { title: string; period: string }[];
   /** Detailed responsibilities shown when the role is expanded. */
   bullets?: string[];
   /** Featured project called out above the bullets. */
@@ -1821,24 +1823,29 @@ export interface Experience {
 
 export const experience: Experience[] = [
   {
-    role: "Product Designer",
-    period: "June 2024 – Present",
+    role: "Senior Product Designer",
+    period: "Jul 2024 – Present",
     present: true,
     description:
-      "Working on end-to-end product design for B2B SaaS data platforms, collaborating with cross-functional teams to improve workflows, usability, feature adoption, and overall user experience.",
-    company: "Netlink Software Group America Inc",
+      "Promoted from Associate UI/UX Designer to Senior Product Designer in 2026. Designing Lumenore, a BI & AI platform spanning conversational analytics, data management, dashboards, and enterprise workflows.",
+    company: "Netlink Software Group",
     location: "Bhopal, India",
+    roles: [
+      { title: "Senior Product Designer", period: "2026 – Present" },
+      { title: "Associate UI/UX Designer", period: "Jul 2024 – 2026" },
+    ],
     highlight: {
       label: "Ask Me",
-      text: "Led design for a chat-based data-analysis experience, running user interviews and usability testing to shape a natural, conversational way for people to explore and query their data.",
+      text: "Designed Lumenore Ask Me, a GenAI conversational analytics assistant (agentic RAG, MCP integrations): natural language querying, streaming answer states, uncertainty and error handling, and confirmation before users act on model output.",
     },
     bullets: [
-      "Designed UX for B2B SaaS data products — ETL workflows, dashboards, enterprise data interfaces, and conversational data-analysis experiences.",
-      "Simplified complex workflows by improving information architecture, navigation patterns, and step-by-step task flows, helping users complete data operations more efficiently.",
-      "Conducted UX research end-to-end — user interviews, usability testing, A/B testing, journey mapping, focus groups, and ideation workshops (Crazy 8s) — to identify pain points and validate design decisions.",
-      "Built reusable UI components and micro design systems to improve consistency, scalability, and developer efficiency.",
-      "Collaborated closely with product managers and engineering teams on feature planning, design handoff, and iterative product improvements.",
-      "Delivered interactive prototypes and usability validations to ensure solutions met both user and business needs.",
+      "Own end-to-end design across Ask Me, Data Magnet, dashboards, alerts, scheduler, and data-management workflows, from discovery through design QA and release.",
+      "Run user testing sessions with enterprise customers, including moderated walkthroughs, task-based scenarios, and post-release follow-ups.",
+      "Reduced task completion time by up to 50% by simplifying complex analytics workflows for non-technical users.",
+      "Shipped 3 major features, reducing onboarding drop-off by 32% and support queries by 20%, reaching 5,000+ active users.",
+      "Built and governed a design system of 120+ components, variants, states, and tokens, increasing reuse by 40%.",
+      "Ran usability studies and WCAG 2.1 AA audits across 80+ screens; mobile-first validation improved task completion by 25%.",
+      "Partner with product, engineering, QA, and business stakeholders to align design with OKRs, KPIs, and technical constraints.",
     ],
     logo: { text: "N", className: "bg-[#1e56a0] text-white", src: "logos/netlink.png" },
   },
@@ -1846,15 +1853,13 @@ export const experience: Experience[] = [
     role: "UI/UX Designer",
     period: "Jul 2023 – Jun 2024",
     description:
-      "Designed a SaaS product end-to-end in an agile team, built a scalable design system, and translated client ideas into intuitive, user-tested flows while strengthening brand identity.",
+      "Owned product design across SaaS, B2C, healthcare, and audit products, from discovery through live release.",
     company: "Shanti Infosoft LLP",
     location: "Indore, India",
     bullets: [
-      "Designed user experiences for B2B and B2C platforms across cybersecurity, rental, and astrology domains.",
-      "Created responsive dashboards, product flows, and admin interfaces to support multi-role usage.",
-      "Improved onboarding, feature accessibility, and task discoverability through UX research and iterative design.",
-      "Delivered high-fidelity UIs, prototypes, and design specifications for engineering teams.",
-      "Contributed to product-level decisions by aligning UX requirements with business priorities.",
+      "Shipped 6 end-to-end products across web, mobile, and tablet, covering research, flows, interaction design, prototyping, and developer handoff.",
+      "Validated mobile-first healthcare and audit workflows through Maze studies, improving task success by 35%.",
+      "Created reusable Figma systems and clearer specs, cutting developer clarification time by 30% and reducing user errors by 20%.",
     ],
     logo: { text: "S", className: "bg-[#e8502e] text-white", src: "logos/shanti.png" },
   },
@@ -1862,23 +1867,20 @@ export const experience: Experience[] = [
     role: "UI/UX & Graphic Designer",
     period: "Aug 2022 – Jun 2023",
     description:
-      "Delivered UI designs across web, mobile, e-commerce, and pitch decks with a focus on usability and brand impact.",
-    company: "Incscale Technology",
-    location: "Ahmedabad",
+      "Designed mobile-first B2C applications, e-commerce journeys, landing pages, and responsive websites.",
+    company: "Incscale Technologies",
+    location: "Indore, India",
     bullets: [
-      "Designed end-to-end UX for B2C applications across e-commerce, grocery, and education.",
-      "Created pitch-deck designs that communicated product vision to clients and stakeholders.",
-      "Conducted UX audits to identify friction points and propose design improvements.",
-      "Built scalable UI kits and interaction components to unify mobile and web platforms.",
-      "Collaborated cross-functionally with stakeholders to align on product scope and feature priorities.",
+      "Used Hotjar insights to reduce bounce rate by 15%; interactive prototypes cut design review cycles by 25%.",
+      "Created wireframes, user flows, and high-fidelity prototypes for client validation and development handoff; supported AI-assisted front-end prototyping.",
     ],
     logo: { text: "iS", className: "bg-white text-[#e8502e] ring-1 ring-border", src: "logos/incscale.png" },
   },
   {
-    role: "Graphic Designer Intern",
-    period: "Summer 2017",
+    role: "Graphic Designer (Volunteer)",
+    period: "2021 – 2022",
     description:
-      "Created engaging social media posters and graphics to support awareness campaigns.",
+      "Designed campaign and social media creatives supporting outreach programs for underprivileged communities.",
     company: "Aashman Foundation",
     location: "Remote",
     logo: { text: "A", className: "bg-[#29abe2] text-white", src: "logos/aashman.png" },

@@ -71,6 +71,9 @@ import {
   Award,
   Image as ImageIcon,
   Linkedin,
+  Brain,
+  Code2,
+  BookOpen,
   Github,
   Mail,
   type LucideIcon,
@@ -2116,6 +2119,34 @@ function ExperienceList() {
               </p>
               {open && (
                 <div className="mt-4 space-y-4">
+                  {job.roles && job.roles.length > 1 && (
+                    <ol className="space-y-0 rounded-xl border border-emerald-200 bg-emerald-50/70 p-3.5 dark:border-emerald-500/25 dark:bg-emerald-500/10">
+                      {job.roles.map((r, ri) => (
+                        <li key={r.title} className="flex gap-3">
+                          <div className="flex flex-col items-center">
+                            <span
+                              className={`mt-1.5 h-2.5 w-2.5 rounded-full ${ri === 0 ? "bg-emerald-500" : "bg-foreground/30"}`}
+                              aria-hidden="true"
+                            />
+                            {ri < job.roles!.length - 1 && (
+                              <span className="w-px flex-1 bg-foreground/15" aria-hidden="true" />
+                            )}
+                          </div>
+                          <div className="flex flex-1 flex-wrap items-baseline justify-between gap-x-3 pb-3 last:pb-0">
+                            <p className="text-[15px] font-medium text-foreground">
+                              {r.title}
+                              {ri === 0 && (
+                                <span className="ml-2 inline-block rounded-md border border-emerald-300 bg-emerald-100 px-2 py-0.5 align-middle text-[11px] font-medium text-emerald-900 dark:border-emerald-500/30 dark:bg-emerald-500/20 dark:text-emerald-200">
+                                  Promoted
+                                </span>
+                              )}
+                            </p>
+                            <span className="font-mono text-[12px] text-muted-foreground">{r.period}</span>
+                          </div>
+                        </li>
+                      ))}
+                    </ol>
+                  )}
                   <p className="text-[15px] leading-relaxed text-foreground/85">
                     {job.description}
                   </p>
@@ -2614,32 +2645,53 @@ function Creatives({ onViewAll }: { onViewAll: () => void }) {
   );
 }
 
+const LEARNING_STYLES: { Icon: LucideIcon; tile: string }[] = [
+  { Icon: Sparkles, tile: "bg-violet-100 text-violet-700 dark:bg-violet-500/15 dark:text-violet-300" },
+  { Icon: FlaskConical, tile: "bg-sky-100 text-sky-700 dark:bg-sky-500/15 dark:text-sky-300" },
+  { Icon: BookOpen, tile: "bg-amber-100 text-amber-700 dark:bg-amber-500/15 dark:text-amber-300" },
+  { Icon: Code2, tile: "bg-emerald-100 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300" },
+  { Icon: Brain, tile: "bg-rose-100 text-rose-700 dark:bg-rose-500/15 dark:text-rose-300" },
+  { Icon: Workflow, tile: "bg-indigo-100 text-indigo-700 dark:bg-indigo-500/15 dark:text-indigo-300" },
+  { Icon: Target, tile: "bg-orange-100 text-orange-700 dark:bg-orange-500/15 dark:text-orange-300" },
+];
+
 function AboutMeSection() {
   return (
-    <section className="pt-16">
-      <div>
-        <p className="mb-8 text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
-          About
+    <section className="pt-10 sm:pt-16">
+      <p className="mb-4 text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
+        About
+      </p>
+      <div className="flex flex-wrap items-end justify-between gap-x-8 gap-y-3">
+        <h2 className="text-3xl font-semibold tracking-tight sm:text-5xl">
+          These days I&apos;m <span className="italic text-muted-foreground">learning</span>
+        </h2>
+        <p className="max-w-sm text-[15px] leading-relaxed text-muted-foreground">
+          Curiosity is the job. Here&apos;s what&apos;s on my desk right now.
         </p>
-        <div>
-          <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">
-            These days I&apos;m learning
-          </h2>
-          <ul className="mt-8 grid gap-3 sm:grid-cols-2">
-            {learning.map((l, i) => (
-              <li
-                key={l}
-                className="flex items-start gap-3 rounded-2xl border border-border bg-card px-4 py-3.5 text-[15px] leading-relaxed text-foreground/85 shadow-sm transition-colors hover:border-foreground/25"
-              >
-                <span className="mt-0.5 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-foreground/[0.06] text-[11px] font-medium text-muted-foreground">
+      </div>
+      <ul className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {learning.map((l, i) => {
+          const { Icon, tile } = LEARNING_STYLES[i % LEARNING_STYLES.length];
+          return (
+            <li
+              key={l}
+              className={`group relative flex flex-col gap-5 overflow-hidden rounded-3xl border border-border bg-card p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg ${
+                i === learning.length - 1 && learning.length % 3 === 1 ? "lg:col-span-3" : ""
+              }`}
+            >
+              <div className="flex items-center justify-between">
+                <span className={`inline-flex h-11 w-11 items-center justify-center rounded-2xl ${tile}`}>
+                  <Icon className="h-5 w-5" aria-hidden="true" />
+                </span>
+                <span className="font-mono text-[12px] text-muted-foreground/70">
                   {String(i + 1).padStart(2, "0")}
                 </span>
-                {l}
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
+              </div>
+              <p className="text-[16px] font-medium leading-snug text-foreground">{l}</p>
+            </li>
+          );
+        })}
+      </ul>
     </section>
   );
 }
@@ -2742,71 +2794,6 @@ function DesignPhilosophy() {
   );
 }
 
-// About hero — the 3D avatar floating in a sky card with sticker chips.
-function AboutAvatar() {
-  const [ok, setOk] = useState(true);
-  const stickers = [
-    { emoji: "⭐", cls: "left-[6%] top-[18%]", delay: "0s", rotate: "-8deg" },
-    { emoji: "💗", cls: "right-[8%] top-[12%]", delay: "0.8s", rotate: "10deg" },
-    { emoji: "🌸", cls: "left-[10%] bottom-[16%]", delay: "1.6s", rotate: "6deg" },
-    { emoji: "✦", cls: "right-[7%] bottom-[20%]", delay: "2.2s", rotate: "-12deg" },
-  ];
-  return (
-    <section className="pt-10">
-      <div className="relative overflow-hidden rounded-[2rem] bg-gradient-to-b from-sky-300 via-sky-200 to-sky-50 px-6 py-12 sm:py-16 dark:from-sky-900 dark:via-sky-950 dark:to-background">
-        {/* Soft clouds */}
-        <span
-          className="pointer-events-none absolute -left-10 top-10 h-24 w-56 rounded-full bg-white/70 blur-2xl dark:bg-white/10"
-          aria-hidden="true"
-        />
-        <span
-          className="pointer-events-none absolute -right-8 bottom-12 h-28 w-64 rounded-full bg-white/60 blur-2xl dark:bg-white/[0.07]"
-          aria-hidden="true"
-        />
-        {/* Floating sticker chips echoing the artwork */}
-        {stickers.map((s) => (
-          <span
-            key={s.emoji}
-            aria-hidden="true"
-            style={{ animationDelay: s.delay, rotate: s.rotate }}
-            className={`animate-float pointer-events-none absolute ${s.cls} hidden h-10 w-10 items-center justify-center rounded-2xl bg-white/90 text-lg shadow-lg ring-1 ring-black/5 sm:flex dark:bg-white/10 dark:ring-white/10`}
-          >
-            {s.emoji}
-          </span>
-        ))}
-        <div className="relative mx-auto flex max-w-sm flex-col items-center">
-          <div className="animate-float">
-            {ok ? (
-              <img
-                src={assetUrl("avatar-3d.png")}
-                alt="Priti Jani"
-                onError={() => setOk(false)}
-                className="h-52 w-auto object-contain drop-shadow-[0_22px_28px_rgba(12,40,70,0.32)] transition-transform duration-500 hover:scale-[1.04] sm:h-64"
-              />
-            ) : (
-              <span className="flex h-44 w-44 items-center justify-center rounded-full bg-gradient-to-br from-white/80 to-white/40 text-4xl font-semibold text-sky-900 shadow-xl ring-1 ring-white/60 sm:h-56 sm:w-56">
-                PJ
-              </span>
-            )}
-          </div>
-          {/* Ground shadow that breathes with the bob */}
-          <span
-            aria-hidden="true"
-            className="animate-float-shadow -mt-1 h-3 w-32 rounded-[50%] bg-sky-950/25 blur-md sm:w-40 dark:bg-black/50"
-          />
-          <p className="mt-7 text-center text-[15px] font-medium text-sky-950 dark:text-sky-100">
-            Hi, I&apos;m Priti 👋
-          </p>
-          <p className="mt-1.5 text-center text-[14px] leading-relaxed text-sky-900/70 dark:text-sky-200/70">
-            Designer by trade, builder by habit — currently shipping AI products
-            at Lumenore.
-          </p>
-        </div>
-      </div>
-    </section>
-  );
-}
-
 function AboutPage({ onBack }: { onBack: () => void }) {
   return (
     <>
@@ -2818,7 +2805,6 @@ function AboutPage({ onBack }: { onBack: () => void }) {
         >
           <ArrowLeft className="h-4 w-4" aria-hidden="true" /> Back
         </button>
-        <AboutAvatar />
         <AboutMeSection />
         <DesignPhilosophy />
         <Experience />
