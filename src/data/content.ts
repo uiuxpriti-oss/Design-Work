@@ -1971,12 +1971,6 @@ export interface Creative {
 
 export const creatives: Creative[] = [
   {
-    name: "Néant — Logo",
-    category: "Brand Identity",
-    image: "creatives/neant-logo.webp",
-    gradient: "from-violet-500/30 to-indigo-800/30",
-  },
-  {
     name: "Néant — Monogram",
     category: "Logo Design",
     image: "creatives/neant-monogram.webp",
