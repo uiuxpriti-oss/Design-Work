@@ -70,22 +70,6 @@ html.lenis body {
     radial-gradient(50rem 30rem at 110% -10%, rgba(120, 90, 255, 0.16), transparent 60%);
   background-attachment: fixed;
 }
-:root.dark .bg-\[\#0F2720\] {
-  background-color: #14103d;
-  background-image: radial-gradient(40rem 20rem at 0% 100%, rgba(70, 50, 220, 0.5), transparent 65%);
-}
-:root.dark .hover\:bg-\[\#16382E\]:hover {
-  background-color: #1d1855;
-}
-:root.dark .text-\[\#A9C6BA\],
-:root.dark .dark\:text-\[\#A9C6BA\] {
-  color: #a79bff;
-}
-:root.dark .text-\[\#E3A64A\],
-:root.dark .text-\[\#E3A64A\]\/75 {
-  color: #b6f500;
-}
-
 @layer utilities {
   @keyframes marquee-left {
     from {
