@@ -2834,6 +2834,155 @@ function AboutIntro() {
   );
 }
 
+function BhopalTime() {
+  const fmt = () =>
+    new Intl.DateTimeFormat("en-IN", {
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+      timeZone: "Asia/Kolkata",
+    }).format(new Date());
+  const [t, setT] = useState(fmt);
+  useEffect(() => {
+    const id = window.setInterval(() => setT(fmt()), 30000);
+    return () => window.clearInterval(id);
+  }, []);
+  return <>{t.toUpperCase()}</>;
+}
+
+const INTRO_BTN_PRIMARY =
+  "inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground shadow-sm outline-none transition-all hover:opacity-90 active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-foreground/25";
+const INTRO_BTN_GHOST =
+  "inline-flex items-center gap-2 rounded-full border border-border bg-background/70 px-5 py-2.5 text-sm font-medium text-foreground outline-none transition-colors hover:bg-card focus-visible:ring-2 focus-visible:ring-foreground/25";
+
+// Variation: creative — sticker board with floating stat stickers.
+function AboutIntroCreative() {
+  const stickers = [
+    { v: "↓50%", l: "task time", cls: "left-[2%] top-[8%]", rot: "-7deg", d: "0s" },
+    { v: "↓32%", l: "onboarding drop-off", cls: "right-[0%] top-[20%]", rot: "6deg", d: "0.8s" },
+    { v: "5,000+", l: "active users", cls: "left-[6%] bottom-[6%]", rot: "4deg", d: "1.6s" },
+  ];
+  return (
+    <section className="pt-10 sm:pt-14">
+      <div className="grid items-center gap-10 lg:grid-cols-[1.1fr_1fr]">
+        <div>
+          <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3.5 py-1.5 text-[13px] text-foreground/80">
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-500 opacity-60" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+            </span>
+            Open to work · Bhopal · <BhopalTime />
+          </span>
+          <h1 className="mt-6 text-4xl font-semibold leading-[1.06] tracking-tight sm:text-6xl">
+            I turn complex data into decisions people can{" "}
+            <span className="relative inline-block">
+              <span className="relative z-10 italic">trust.</span>
+              <span
+                aria-hidden="true"
+                className="absolute inset-x-[-4px] bottom-1 top-[55%] -rotate-1 rounded-sm bg-violet-400/50 dark:bg-violet-400/40"
+              />
+            </span>
+          </h1>
+          <p className="mt-6 max-w-xl text-[16px] leading-[1.75] text-foreground/80">
+            Senior Product Designer with 4+ years in enterprise SaaS, AI and data. I design
+            Lumenore at Netlink — from Ask Me, a GenAI analytics assistant, to dashboards and
+            data workflows — and own it from discovery to release.
+          </p>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <a href={links.cv} target="_blank" rel="noreferrer" className={INTRO_BTN_PRIMARY}>
+              <FileText className="h-4 w-4" aria-hidden="true" /> Resume
+            </a>
+            <ContactButton align="left" className={INTRO_BTN_GHOST}>
+              <Send className="h-4 w-4" aria-hidden="true" /> Say hello
+            </ContactButton>
+          </div>
+        </div>
+        <div className="relative mx-auto aspect-square w-full max-w-md">
+          <span
+            aria-hidden="true"
+            className="absolute inset-[8%] rounded-[2.5rem] bg-gradient-to-br from-violet-200 via-sky-100 to-emerald-100 dark:from-violet-500/25 dark:via-sky-500/10 dark:to-emerald-500/10"
+          />
+          <div className="animate-float absolute inset-0 flex items-center justify-center">
+            <img
+              src={assetUrl("avatar-3d.png")}
+              alt="Priti Jani"
+              className="h-[78%] w-auto object-contain drop-shadow-[0_22px_28px_rgba(40,30,90,0.3)]"
+            />
+          </div>
+          {stickers.map((st) => (
+            <span
+              key={st.v}
+              style={{ rotate: st.rot, animationDelay: st.d }}
+              className={`animate-float absolute ${st.cls} rounded-2xl bg-white px-4 py-2.5 shadow-lg ring-1 ring-black/5 dark:bg-card dark:ring-white/10`}
+            >
+              <span className="block text-2xl font-semibold leading-none tracking-tight">{st.v}</span>
+              <span className="mt-1 block text-[11px] text-muted-foreground">{st.l}</span>
+            </span>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// Variation: aesthetic — centered, airy, soft gradient wash with a glass stats bar.
+function AboutIntroAesthetic() {
+  return (
+    <section className="pt-8 sm:pt-12">
+      <div className="relative overflow-hidden rounded-[2rem] px-6 py-14 text-center sm:py-20">
+        <span
+          aria-hidden="true"
+          className="absolute inset-0 -z-10 bg-gradient-to-b from-violet-100 via-fuchsia-50/60 to-transparent dark:from-violet-500/20 dark:via-indigo-500/10 dark:to-transparent"
+        />
+        <span
+          aria-hidden="true"
+          className="absolute -left-16 top-10 -z-10 h-56 w-56 rounded-full bg-sky-200/60 blur-3xl dark:bg-sky-500/15"
+        />
+        <span
+          aria-hidden="true"
+          className="absolute -right-10 top-24 -z-10 h-64 w-64 rounded-full bg-pink-200/50 blur-3xl dark:bg-fuchsia-500/10"
+        />
+        <img
+          src={assetUrl("logo.png")}
+          alt="Priti Jani"
+          className="mx-auto h-20 w-20 rounded-full object-cover ring-4 ring-white/80 shadow-xl dark:ring-white/10"
+        />
+        <p className="mt-6 text-[11px] font-medium uppercase tracking-[0.2em] text-muted-foreground">
+          Senior Product Designer · Netlink
+        </p>
+        <h1 className="mx-auto mt-5 max-w-3xl text-4xl font-light leading-[1.1] tracking-tight sm:text-6xl">
+          I turn complex data into decisions people can{" "}
+          <span className="font-semibold italic">trust.</span>
+        </h1>
+        <p className="mx-auto mt-6 max-w-xl text-[16px] leading-[1.8] text-foreground/70">
+          Four years across enterprise SaaS, AI and data. Today I shape Lumenore — from Ask Me, a
+          GenAI analytics assistant, to dashboards and data workflows.
+        </p>
+        <dl className="mx-auto mt-10 grid max-w-xl grid-cols-3 divide-x divide-foreground/10 rounded-2xl border border-white/60 bg-white/60 py-5 shadow-sm backdrop-blur-md dark:border-white/10 dark:bg-white/[0.05]">
+          {[
+            ["↓50%", "task time"],
+            ["↓32%", "drop-off"],
+            ["5,000+", "users"],
+          ].map(([v, l]) => (
+            <div key={v} className="px-3">
+              <dt className="text-2xl font-medium tracking-tight sm:text-3xl">{v}</dt>
+              <dd className="mt-1 text-[12px] text-muted-foreground">{l}</dd>
+            </div>
+          ))}
+        </dl>
+        <div className="mt-8 flex flex-wrap justify-center gap-3">
+          <a href={links.cv} target="_blank" rel="noreferrer" className={INTRO_BTN_PRIMARY}>
+            <FileText className="h-4 w-4" aria-hidden="true" /> Resume
+          </a>
+          <ContactButton align="left" className={INTRO_BTN_GHOST}>
+            <Send className="h-4 w-4" aria-hidden="true" /> Say hello
+          </ContactButton>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function AboutNow() {
   return (
     <section className="mt-12 grid gap-8 border-t border-border pt-8 sm:mt-16 md:grid-cols-[10rem_1fr]">
@@ -2903,7 +3052,10 @@ function AboutPage({ onBack }: { onBack: () => void }) {
         >
           <ArrowLeft className="h-4 w-4" aria-hidden="true" /> Back
         </button>
-        <AboutIntro />
+        {(() => {
+          const v = new URLSearchParams(window.location.search).get("intro");
+          return v === "creative" ? <AboutIntroCreative /> : v === "aesthetic" ? <AboutIntroAesthetic /> : <AboutIntro />;
+        })()}
         <AboutNow />
         <AboutPhilosophy />
         <Experience />
