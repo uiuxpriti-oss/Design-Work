@@ -1995,12 +1995,6 @@ export const creatives: Creative[] = [
     gradient: "from-blue-500/30 to-indigo-700/30",
   },
   {
-    name: "Career Crush",
-    category: "Logo Design",
-    image: "creatives/career-crush-logo.webp",
-    gradient: "from-orange-400/30 to-rose-400/30",
-  },
-  {
     name: "Career Crush — Concept",
     category: "Brand Ideation",
     image: "creatives/career-crush-concept.webp",
