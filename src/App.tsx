@@ -24,10 +24,7 @@ import {
   Check,
   ExternalLink,
   X,
-  Info,
   Wand2,
-  CornerDownRight,
-  RotateCcw,
   Play,
   Pause,
   Presentation,
@@ -180,14 +177,6 @@ function useTapSound() {
       document.removeEventListener("scroll", onCancel, { capture: true });
     };
   }, []);
-}
-
-function Sparkle() {
-  return (
-    <span className="inline-block text-xs transition-transform group-hover:animate-sparkle">
-      ✦
-    </span>
-  );
 }
 
 const LINKEDIN_HANDLE = "@priti-jani14";
@@ -477,13 +466,11 @@ function ThemeToggle() {
 
 function Header({
   page,
-  onOpenAsk,
   onHome,
   onWork,
   onAbout,
 }: {
   page: "home" | "projects" | "about" | "case";
-  onOpenAsk: () => void;
   onHome: () => void;
   onWork: () => void;
   onAbout: () => void;
@@ -579,7 +566,7 @@ function Header({
           >
             <FileText className="h-4 w-4" aria-hidden="true" /> Resume
           </a>
-          {scrolled ? (
+          {scrolled && (
             <div className="hidden sm:block">
               <ContactButton
                 align="right"
@@ -589,16 +576,6 @@ function Header({
                 <span className="hidden sm:inline">Contact</span>
               </ContactButton>
             </div>
-          ) : (
-            <button
-              type="button"
-              onClick={onOpenAsk}
-              className={`group hidden items-center gap-1.5 rounded-full px-3 py-2 text-sm text-foreground transition-colors duration-300 sm:inline-flex sm:px-3.5 ${NAV_SOLID}`}
-            >
-              <span className="inline-flex items-center gap-1.5 font-medium text-foreground">
-                <Sparkle /> <span className="hidden sm:inline">Ask AI</span>
-              </span>
-            </button>
           )}
 
           {/* Mobile menu button */}
@@ -645,18 +622,6 @@ function Header({
                   );
                 })}
                 <div className="my-1.5 h-px bg-border" />
-                <button
-                  type="button"
-                  onClick={() => {
-                    setMenuOpen(false);
-                    onOpenAsk();
-                  }}
-                  className="flex w-full items-center rounded-xl px-3 py-2.5 text-left hover:bg-foreground/[0.04]"
-                >
-                  <span className="inline-flex items-center gap-3 text-[15px] font-semibold text-foreground">
-                    <Sparkle /> Ask AI
-                  </span>
-                </button>
                 <a
                   href={links.cv}
                   target="_blank"
@@ -2065,12 +2030,6 @@ function CaseStudyPage({
   );
 }
 
-const ABOUT_PARAGRAPHS = [
-  "I'm Priti, a 23-year-old UX-focused designer and developer. I've been designing in different forms since I was 11, driven by a curiosity for how digital products are built and experienced.",
-  "I enjoy working across the full process — from early ideas to finished products — with a focus on creating solutions that are clear, usable, and visually considered.",
-  "Outside of design, I enjoy gaming, building side projects, experiencing spirituality, and exploring new places through travel.",
-];
-
 function ContactBadge() {
   return (
     <div className="mt-10 flex justify-center">
@@ -2982,13 +2941,7 @@ function AboutPage({ onBack }: { onBack: () => void }) {
   );
 }
 
-function FloatingAsk({
-  onOpenAsk,
-  hidden,
-}: {
-  onOpenAsk: () => void;
-  hidden?: boolean;
-}) {
+function FloatingAsk() {
   const [show, setShow] = useState(false);
   useEffect(() => {
     const onScroll = () => {
@@ -3007,7 +2960,7 @@ function FloatingAsk({
       window.removeEventListener("resize", onScroll);
     };
   }, []);
-  const visible = show && !hidden;
+  const visible = show;
   return (
     <div
       className={`fixed inset-x-0 bottom-6 z-40 flex items-center justify-center gap-3 px-6 transition-all duration-300 ease-out ${
@@ -3016,15 +2969,6 @@ function FloatingAsk({
           : "pointer-events-none opacity-0 translate-y-4"
       }`}
     >
-      <button
-        type="button"
-        onClick={onOpenAsk}
-        className="group inline-flex items-center gap-2 rounded-full bg-[#0F2720] px-5 py-2.5 text-sm font-medium shadow-lg shadow-black/25 ring-1 ring-white/10 outline-none transition duration-200 ease-out hover:bg-[#16382E] active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-foreground/25 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-      >
-        <span className="inline-flex items-center gap-2 text-white">
-          <Sparkle /> Ask AI
-        </span>
-      </button>
       <button
         type="button"
         onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
@@ -3155,290 +3099,6 @@ function Footer() {
         </div>
       </div>
     </footer>
-  );
-}
-
-const ASK_SUGGESTIONS = [
-  "What's your strongest project?",
-  "Tell me about the Punjab Land Records project",
-  "Can you tell me more about yourself?",
-  "What's your design + code background?",
-];
-
-const ASK_FOLLOWUPS = [
-  "What got you into product design?",
-  "Which project are you proudest of?",
-  "What's it like working with you?",
-  "How do you use AI in your work?",
-  "What are you learning these days?",
-];
-
-function pickFollowups(asked: string): string[] {
-  const a = asked.toLowerCase();
-  return ASK_FOLLOWUPS.filter((f) => f.toLowerCase() !== a).slice(0, 3);
-}
-
-// Grounded in the site's own content — no external AI backend.
-function askReply(q: string): string {
-  const t = q.toLowerCase();
-  const match = projects.find((p) => t.includes(p.title.toLowerCase()));
-  if (match) return `${match.title} — ${match.description} You can open it from the Work section.`;
-  if (t.includes("strongest") || t.includes("best") || t.includes("project"))
-    return `My most-liked project is ${projects[0].title} — ${projects[0].description} It's in the Work section.`;
-  if (t.includes("yourself") || t.includes("about") || t.includes("who"))
-    return ABOUT_PARAGRAPHS[0];
-  if (t.includes("background") || t.includes("code") || t.includes("design") || t.includes("skill"))
-    return "I'm a product designer who also builds — design in Figma, Framer & Protopie, and engineering in React, TypeScript, Tailwind and more. See the Skills & Tools section.";
-  if (t.includes("experience") || t.includes("work") || t.includes("job"))
-    return `Right now I'm a ${experience[0].role} at ${experience[0].company}. The Experience section has the full timeline.`;
-  return "Thanks for asking! For anything specific, reach out via the Contact button — always happy to talk.";
-}
-
-function AskPanel({ open, onClose }: { open: boolean; onClose: () => void }) {
-  const [messages, setMessages] = useState<{ role: "user" | "bot"; text: string }[]>([]);
-  const [input, setInput] = useState("");
-  const [popover, setPopover] = useState<null | "ask" | "browse">(null);
-  const [followups, setFollowups] = useState<string[]>([]);
-  const [typing, setTyping] = useState(false);
-  const bodyRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
-    if (open) document.addEventListener("keydown", onKey);
-    return () => document.removeEventListener("keydown", onKey);
-  }, [open, onClose]);
-
-  useEffect(() => {
-    bodyRef.current?.scrollTo({ top: bodyRef.current.scrollHeight, behavior: "smooth" });
-  }, [messages, followups, typing]);
-
-  const submit = (text: string) => {
-    const q = text.trim();
-    if (!q || typing) return;
-    setInput("");
-    setPopover(null);
-    setFollowups([]);
-    setMessages((m) => [...m, { role: "user", text: q }]);
-    setTyping(true);
-    window.setTimeout(() => {
-      setTyping(false);
-      setMessages((m) => [...m, { role: "bot", text: askReply(q) }]);
-      setFollowups(pickFollowups(q));
-    }, 1100);
-  };
-
-  const reset = () => {
-    setMessages([]);
-    setFollowups([]);
-    setInput("");
-    setPopover(null);
-    setTyping(false);
-  };
-
-  return (
-    <aside
-      role="dialog"
-      aria-label="Ask Priti"
-      className={`fixed right-0 top-0 z-50 flex h-full w-full max-w-md flex-col border-l border-border bg-card shadow-2xl transition-transform duration-300 ease-out ${
-        open ? "translate-x-0" : "translate-x-full"
-      }`}
-    >
-      <div className="flex shrink-0 items-center justify-between border-b border-border px-5 py-4">
-        <div className="flex items-center gap-2">
-          <span className="inline-flex items-center text-foreground">
-            <Sparkle />
-          </span>
-          <span className="text-[15px] font-semibold text-foreground">
-            Ask AI
-          </span>
-          <span className="group relative flex h-4 w-4 cursor-help items-center justify-center rounded-full bg-foreground/10 text-muted-foreground">
-            <Info className="h-3 w-3" aria-hidden="true" />
-            <span className="pointer-events-none absolute left-0 top-full z-10 mt-2 w-64 -translate-x-1/4 rounded-xl bg-foreground px-3.5 py-2.5 text-[13px] leading-relaxed text-background opacity-0 shadow-lg transition-opacity duration-150 group-hover:opacity-100">
-              This is an AI trained on my real case studies. It can occasionally
-              get things wrong — check the project pages for the full story.
-            </span>
-          </span>
-        </div>
-        <div className="flex items-center gap-0.5">
-          <button
-            type="button"
-            onClick={reset}
-            aria-label="Reset conversation"
-            className="rounded-full p-1.5 text-muted-foreground transition-colors hover:bg-foreground/[0.06] hover:text-foreground"
-          >
-            <RotateCcw className="h-4 w-4" aria-hidden="true" />
-          </button>
-          <button
-            type="button"
-            onClick={onClose}
-            aria-label="Close"
-            className="rounded-full p-1 text-muted-foreground transition-colors hover:bg-foreground/[0.06] hover:text-foreground"
-          >
-            <X className="h-5 w-5" aria-hidden="true" />
-          </button>
-        </div>
-      </div>
-
-        <div ref={bodyRef} className="flex-1 overflow-y-auto px-5 py-6">
-          {messages.length === 0 ? (
-            <>
-              <h3 className="text-xl font-semibold tracking-tight">Ask me anything.</h3>
-              <ul className="mt-6 space-y-4">
-                {ASK_SUGGESTIONS.map((s) => (
-                  <li key={s}>
-                    <button
-                      type="button"
-                      onClick={() => submit(s)}
-                      className="group flex w-full items-start gap-3 text-left text-[14px] text-foreground/80 transition-colors hover:text-foreground"
-                    >
-                      <CornerDownRight className="mt-0.5 h-4 w-4 shrink-0 text-foreground/40 group-hover:text-foreground" aria-hidden="true" />
-                      {s}
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </>
-          ) : (
-            <div className="space-y-4">
-              {messages.map((m, i) => (
-                <div
-                  key={i}
-                  className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-[14px] leading-relaxed ${
-                    m.role === "user"
-                      ? "ml-auto bg-primary text-primary-foreground"
-                      : "bg-background text-foreground/90"
-                  }`}
-                >
-                  {m.text}
-                </div>
-              ))}
-              {typing && (
-                <div className="flex max-w-[85%] items-center gap-2.5 rounded-2xl bg-background px-4 py-3">
-                  <span className="flex items-center gap-1.5" aria-hidden="true">
-                    <span className="h-2.5 w-2.5 animate-loader-pulse rounded-[3px] bg-gradient-to-br from-indigo-500 to-fuchsia-500" />
-                    <span className="h-2.5 w-2.5 animate-loader-pulse rounded-full bg-gradient-to-br from-fuchsia-500 to-pink-500 [animation-delay:0.16s]" />
-                    <span className="inline-flex rotate-45">
-                      <span className="block h-2.5 w-2.5 animate-loader-pulse rounded-[2px] bg-gradient-to-br from-pink-500 to-indigo-500 [animation-delay:0.32s]" />
-                    </span>
-                  </span>
-                  <span className="bg-gradient-to-r from-indigo-500 via-fuchsia-500 to-pink-500 bg-clip-text text-[13px] font-medium text-transparent">
-                    Generating response…
-                  </span>
-                </div>
-              )}
-              {followups.length > 0 && (
-                <div className="pt-2">
-                  <p className="text-[13px] text-muted-foreground">Keep exploring</p>
-                  <ul className="mt-3 space-y-3">
-                    {followups.map((f) => (
-                      <li key={f}>
-                        <button
-                          type="button"
-                          onClick={() => submit(f)}
-                          className="group flex w-full items-start gap-3 text-left text-[14px] text-foreground/80 transition-colors hover:text-foreground"
-                        >
-                          <CornerDownRight className="mt-0.5 h-4 w-4 shrink-0 text-foreground/40 group-hover:text-foreground" aria-hidden="true" />
-                          {f}
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-            </div>
-          )}
-        </div>
-
-        <div className="relative border-t border-border p-4">
-          {popover && (
-            <div className="absolute inset-x-4 bottom-full mb-2 rounded-2xl border border-border bg-background p-4 shadow-lg">
-              <p className="mb-3 text-xs text-muted-foreground">
-                {popover === "ask" ? "Try asking" : "Browse case studies"}
-              </p>
-              {popover === "ask" ? (
-                <ul className="space-y-3">
-                  {ASK_SUGGESTIONS.map((s) => (
-                    <li key={s}>
-                      <button
-                        type="button"
-                        onClick={() => submit(s)}
-                        className="group flex w-full items-start gap-3 text-left text-[15px] text-foreground/80 hover:text-foreground"
-                      >
-                        <CornerDownRight className="mt-0.5 h-4 w-4 shrink-0 text-foreground/40 group-hover:text-foreground" aria-hidden="true" />
-                        {s}
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <ul className="space-y-3">
-                  {projects.map((p) => (
-                    <li key={p.id}>
-                      <button
-                        type="button"
-                        onClick={() => submit(`Tell me about ${p.title}`)}
-                        className="group flex w-full items-start gap-3 text-left"
-                      >
-                        <Inbox className="mt-0.5 h-4 w-4 shrink-0 text-foreground/40 group-hover:text-foreground" aria-hidden="true" />
-                        <span>
-                          <span className="block text-[15px] font-medium text-foreground">{p.title}</span>
-                          <span className="block text-[13px] text-muted-foreground">{p.description}</span>
-                        </span>
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
-          )}
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              submit(input);
-            }}
-            className="rounded-2xl border border-border bg-background p-3"
-          >
-            <input
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              placeholder="Ask about Priti…"
-              className="w-full bg-transparent px-1 text-[15px] outline-none placeholder:text-muted-foreground"
-            />
-            <div className="mt-3 flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <button
-                  type="button"
-                  onClick={() => setPopover((p) => (p === "ask" ? null : "ask"))}
-                  aria-label="Suggested questions"
-                  className={`flex h-9 w-9 items-center justify-center rounded-full transition-colors ${
-                    popover === "ask" ? "bg-foreground/10 text-foreground" : "text-muted-foreground hover:bg-foreground/[0.06]"
-                  }`}
-                >
-                  <Wand2 className="h-4 w-4" aria-hidden="true" />
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setPopover((p) => (p === "browse" ? null : "browse"))}
-                  aria-label="Browse case studies"
-                  className={`flex h-9 w-9 items-center justify-center rounded-full transition-colors ${
-                    popover === "browse" ? "bg-foreground/10 text-foreground" : "text-muted-foreground hover:bg-foreground/[0.06]"
-                  }`}
-                >
-                  <Inbox className="h-4 w-4" aria-hidden="true" />
-                </button>
-              </div>
-              <button
-                type="submit"
-                aria-label="Send"
-                disabled={!input.trim()}
-                className="flex h-9 w-9 items-center justify-center rounded-full bg-primary text-primary-foreground transition-opacity disabled:opacity-40"
-              >
-                <ArrowUp className="h-4 w-4" aria-hidden="true" />
-              </button>
-            </div>
-          </form>
-        </div>
-    </aside>
   );
 }
 
@@ -3576,7 +3236,6 @@ export default function App() {
       delete (window as unknown as { __lenis?: Lenis }).__lenis;
     };
   }, []);
-  const [askOpen, setAskOpen] = useState(false);
   const [route0] = useState(routeFromPath);
   const [page, setPage] = useState<"home" | "projects" | "about" | "case">(
     route0.page,
@@ -3676,14 +3335,9 @@ export default function App() {
   return (
     <div className="isolate min-h-screen bg-background text-foreground antialiased">
       <CursorDots />
-      <div
-        className={`transition-[padding] duration-300 ease-out ${
-          askOpen ? "lg:pr-[28rem]" : ""
-        }`}
-      >
+      <div>
         <Header
           page={page}
-          onOpenAsk={() => setAskOpen(true)}
           onHome={goHome}
           onWork={() => openProjects("case")}
           onAbout={goAbout}
@@ -3716,8 +3370,7 @@ export default function App() {
         <FooterCTA />
         <Footer />
       </div>
-      <FloatingAsk onOpenAsk={() => setAskOpen(true)} hidden={askOpen} />
-      <AskPanel open={askOpen} onClose={() => setAskOpen(false)} />
+      <FloatingAsk />
     </div>
   );
 }
