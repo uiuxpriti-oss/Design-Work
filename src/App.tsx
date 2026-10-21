@@ -2814,19 +2814,14 @@ const INTRO_BTN_GHOST =
 function AboutIntro() {
   return (
     <section className="pt-8 sm:pt-12">
-      <div className="relative overflow-hidden rounded-[2rem] px-6 py-14 text-center sm:py-20">
-        <span
-          aria-hidden="true"
-          className="absolute inset-0 -z-10 bg-gradient-to-b from-violet-100 via-fuchsia-50/60 to-transparent dark:from-violet-500/20 dark:via-indigo-500/10 dark:to-transparent"
-        />
-        <span
-          aria-hidden="true"
-          className="absolute -left-16 top-10 -z-10 h-56 w-56 rounded-full bg-sky-200/60 blur-3xl dark:bg-sky-500/15"
-        />
-        <span
-          aria-hidden="true"
-          className="absolute -right-10 top-24 -z-10 h-64 w-64 rounded-full bg-pink-200/50 blur-3xl dark:bg-fuchsia-500/10"
-        />
+      <div className="relative rounded-[2rem] px-6 py-14 text-center sm:py-20">
+        {/* Decorative wash — clipped on its own so popovers inside can overflow the card */}
+        <div aria-hidden="true" className="absolute inset-0 overflow-hidden rounded-[2rem]">
+          <span className="absolute inset-0 bg-gradient-to-b from-violet-100 via-fuchsia-50/60 to-transparent dark:from-violet-500/20 dark:via-indigo-500/10 dark:to-transparent" />
+          <span className="absolute -left-16 top-10 h-56 w-56 rounded-full bg-sky-200/60 blur-3xl dark:bg-sky-500/15" />
+          <span className="absolute -right-10 top-24 h-64 w-64 rounded-full bg-pink-200/50 blur-3xl dark:bg-fuchsia-500/10" />
+        </div>
+        <div className="relative z-10">
         <img
           src={assetUrl("logo.png")}
           alt="Priti Jani"
@@ -2862,6 +2857,7 @@ function AboutIntro() {
           <ContactButton align="left" className={INTRO_BTN_GHOST}>
             <Send className="h-4 w-4" aria-hidden="true" /> Say hello
           </ContactButton>
+        </div>
         </div>
       </div>
     </section>
