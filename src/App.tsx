@@ -2856,14 +2856,14 @@ function AboutStory() {
   );
 }
 
-const LEARNING_STYLES: { Icon: LucideIcon; tile: string }[] = [
-  { Icon: Sparkles, tile: "bg-violet-100 text-violet-700 dark:bg-violet-500/15 dark:text-violet-300" },
-  { Icon: FlaskConical, tile: "bg-sky-100 text-sky-700 dark:bg-sky-500/15 dark:text-sky-300" },
-  { Icon: BookOpen, tile: "bg-amber-100 text-amber-700 dark:bg-amber-500/15 dark:text-amber-300" },
-  { Icon: Code2, tile: "bg-emerald-100 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300" },
-  { Icon: Brain, tile: "bg-rose-100 text-rose-700 dark:bg-rose-500/15 dark:text-rose-300" },
-  { Icon: Workflow, tile: "bg-indigo-100 text-indigo-700 dark:bg-indigo-500/15 dark:text-indigo-300" },
-  { Icon: Target, tile: "bg-orange-100 text-orange-700 dark:bg-orange-500/15 dark:text-orange-300" },
+const LEARNING_STYLES: { Icon: LucideIcon; card: string; tile: string; num: string }[] = [
+  { Icon: Sparkles, card: "from-violet-100 via-violet-50 to-white border-violet-200/70 dark:from-violet-500/20 dark:via-violet-500/5 dark:to-transparent dark:border-violet-500/25", tile: "bg-violet-600 shadow-violet-600/30", num: "text-violet-300 dark:text-violet-400/30" },
+  { Icon: FlaskConical, card: "from-sky-100 via-sky-50 to-white border-sky-200/70 dark:from-sky-500/20 dark:via-sky-500/5 dark:to-transparent dark:border-sky-500/25", tile: "bg-sky-600 shadow-sky-600/30", num: "text-sky-300 dark:text-sky-400/30" },
+  { Icon: BookOpen, card: "from-amber-100 via-amber-50 to-white border-amber-200/70 dark:from-amber-500/20 dark:via-amber-500/5 dark:to-transparent dark:border-amber-500/25", tile: "bg-amber-500 shadow-amber-500/30", num: "text-amber-300 dark:text-amber-400/30" },
+  { Icon: Code2, card: "from-emerald-100 via-emerald-50 to-white border-emerald-200/70 dark:from-emerald-500/20 dark:via-emerald-500/5 dark:to-transparent dark:border-emerald-500/25", tile: "bg-emerald-600 shadow-emerald-600/30", num: "text-emerald-300 dark:text-emerald-400/30" },
+  { Icon: Brain, card: "from-rose-100 via-rose-50 to-white border-rose-200/70 dark:from-rose-500/20 dark:via-rose-500/5 dark:to-transparent dark:border-rose-500/25", tile: "bg-rose-500 shadow-rose-500/30", num: "text-rose-300 dark:text-rose-400/30" },
+  { Icon: Workflow, card: "from-indigo-100 via-indigo-50 to-white border-indigo-200/70 dark:from-indigo-500/20 dark:via-indigo-500/5 dark:to-transparent dark:border-indigo-500/25", tile: "bg-indigo-600 shadow-indigo-600/30", num: "text-indigo-300 dark:text-indigo-400/30" },
+  { Icon: Target, card: "from-orange-100 via-orange-50 to-white border-orange-200/70 dark:from-orange-500/20 dark:via-orange-500/5 dark:to-transparent dark:border-orange-500/25", tile: "bg-orange-500 shadow-orange-500/30", num: "text-orange-300 dark:text-orange-400/30" },
 ];
 
 function AboutMeSection() {
@@ -2882,23 +2882,29 @@ function AboutMeSection() {
       </div>
       <ul className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {learning.map((l, i) => {
-          const { Icon, tile } = LEARNING_STYLES[i % LEARNING_STYLES.length];
+          const { Icon, card, tile, num } = LEARNING_STYLES[i % LEARNING_STYLES.length];
+          const wide = i === learning.length - 1 && learning.length % 3 === 1;
           return (
             <li
               key={l}
-              className={`group relative flex flex-col gap-5 overflow-hidden rounded-3xl border border-border bg-card p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg ${
-                i === learning.length - 1 && learning.length % 3 === 1 ? "lg:col-span-3" : ""
+              className={`group relative flex min-h-[10.5rem] flex-col justify-between gap-8 overflow-hidden rounded-3xl border bg-gradient-to-br p-6 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl ${card} ${
+                wide ? "lg:col-span-3 lg:min-h-[8rem]" : ""
               }`}
             >
-              <div className="flex items-center justify-between">
-                <span className={`inline-flex h-11 w-11 items-center justify-center rounded-2xl ${tile}`}>
-                  <Icon className="h-5 w-5" aria-hidden="true" />
-                </span>
-                <span className="font-mono text-[12px] text-muted-foreground/70">
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-              </div>
-              <p className="text-[16px] font-medium leading-snug text-foreground">{l}</p>
+              <span
+                className={`pointer-events-none absolute right-4 top-3 select-none text-[3.5rem] opacity-70 font-bold leading-none tracking-tighter ${num}`}
+                aria-hidden="true"
+              >
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              <span
+                className={`relative inline-flex h-12 w-12 items-center justify-center rounded-2xl text-white shadow-lg transition-transform duration-300 group-hover:-rotate-6 group-hover:scale-110 ${tile}`}
+              >
+                <Icon className="h-6 w-6" aria-hidden="true" />
+              </span>
+              <p className="relative max-w-md text-[17px] font-semibold leading-snug tracking-tight text-foreground">
+                {l}
+              </p>
             </li>
           );
         })}
