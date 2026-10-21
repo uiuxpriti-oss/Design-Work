@@ -71,6 +71,7 @@ import {
   Award,
   Image as ImageIcon,
   Linkedin,
+  Lock,
   Brain,
   Code2,
   BookOpen,
@@ -1651,6 +1652,120 @@ function FloatingBack({ onBack }: { onBack: () => void }) {
   );
 }
 
+// Case studies that require a password. Only a SHA-256 hash is stored here, and the
+// unlock lives in sessionStorage — this is a casual gate for a static site, not real
+// access control (the page content is still part of the public bundle).
+const PROTECTED_CASES: Record<string, string> = {
+  "project-studycrux": "1aede9f588ca5083ae9ffd28200ce6c4e1a9e66e98ac9d699b686b948c2c8b7d",
+};
+
+async function sha256Hex(text: string) {
+  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(text));
+  return Array.from(new Uint8Array(buf))
+    .map((b) => b.toString(16).padStart(2, "0"))
+    .join("");
+}
+
+const unlockKey = (id: string) => `unlocked:${id}`;
+function isUnlocked(id: string) {
+  if (!PROTECTED_CASES[id]) return true;
+  try {
+    return sessionStorage.getItem(unlockKey(id)) === "1";
+  } catch {
+    return false;
+  }
+}
+
+function PasswordGate({
+  id,
+  title,
+  onUnlock,
+  onBack,
+}: {
+  id: string;
+  title: string;
+  onUnlock: () => void;
+  onBack: () => void;
+}) {
+  const [value, setValue] = useState("");
+  const [error, setError] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const submit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!value || busy) return;
+    setBusy(true);
+    let ok = false;
+    try {
+      ok = (await sha256Hex(value)) === PROTECTED_CASES[id];
+    } catch {
+      ok = false;
+    }
+    setBusy(false);
+    if (ok) {
+      try {
+        sessionStorage.setItem(unlockKey(id), "1");
+      } catch {
+        /* storage unavailable — unlock for this view only */
+      }
+      onUnlock();
+    } else {
+      setError(true);
+    }
+  };
+  return (
+    <main className="mx-auto flex min-h-[70vh] max-w-[72rem] flex-col px-6 pb-14 sm:pb-32">
+      <button
+        type="button"
+        onClick={onBack}
+        className="mt-6 inline-flex items-center gap-1.5 self-start text-sm text-muted-foreground outline-none transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-foreground/20"
+      >
+        <ArrowLeft className="h-4 w-4" aria-hidden="true" /> All work
+      </button>
+      <div className="m-auto w-full max-w-sm py-16 text-center">
+        <span className="mx-auto inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-foreground/[0.06] text-foreground">
+          <Lock className="h-6 w-6" aria-hidden="true" />
+        </span>
+        <h1 className="mt-6 text-2xl font-semibold tracking-tight sm:text-3xl">
+          This case study is private
+        </h1>
+        <p className="mt-3 text-[15px] leading-relaxed text-muted-foreground">
+          {title} is password protected. Enter the password to view it, or reach out
+          and I&apos;ll share it with you.
+        </p>
+        <form onSubmit={submit} className="mt-8 space-y-3">
+          <input
+            type="password"
+            value={value}
+            onChange={(e) => {
+              setValue(e.target.value);
+              setError(false);
+            }}
+            placeholder="Password"
+            aria-label="Password"
+            aria-invalid={error}
+            autoFocus
+            className={`w-full rounded-full border bg-background px-5 py-3 text-center text-[15px] outline-none transition-colors focus-visible:ring-2 focus-visible:ring-foreground/25 ${
+              error ? "border-red-500" : "border-border"
+            }`}
+          />
+          {error && (
+            <p role="alert" className="text-[13px] text-red-600">
+              Incorrect password. Please try again.
+            </p>
+          )}
+          <button
+            type="submit"
+            disabled={busy}
+            className="w-full rounded-full bg-primary px-5 py-3 text-sm font-medium text-primary-foreground outline-none transition-all hover:opacity-90 active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-foreground/25 disabled:opacity-60"
+          >
+            Unlock case study
+          </button>
+        </form>
+      </div>
+    </main>
+  );
+}
+
 function CaseStudyPage({
   id,
   onBack,
@@ -1666,7 +1781,18 @@ function CaseStudyPage({
   const [zoom, setZoom] = useState<string | null>(null);
   useEffect(() => setImgOk(true), [id]);
   useEffect(() => setZoom(null), [id]);
+  const [, setTick] = useState(0);
   if (!project || !cs) return null;
+  if (!isUnlocked(id)) {
+    return (
+      <PasswordGate
+        id={id}
+        title={project.title}
+        onUnlock={() => setTick((t) => t + 1)}
+        onBack={onBack}
+      />
+    );
+  }
   const idx = projects.findIndex((p) => p.id === id);
   const next = projects[(idx + 1) % projects.length];
   return (
