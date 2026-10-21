@@ -2856,62 +2856,14 @@ function AboutStory() {
   );
 }
 
-const LEARNING_STYLES: {
-  Icon: LucideIcon;
-  emoji: string[];
-  back: string;
-  front: string;
-  badge: string;
-}[] = [
-  {
-    Icon: Sparkles,
-    emoji: ["✨", "🤖", "⚡"],
-    back: "border-violet-300/60 bg-violet-200/70 dark:border-violet-500/30 dark:bg-violet-500/20",
-    front: "border-violet-400/70 from-violet-50 dark:border-violet-500/50 dark:from-violet-500/10",
-    badge: "border-violet-400 text-violet-600 dark:border-violet-400/60 dark:text-violet-300",
-  },
-  {
-    Icon: FlaskConical,
-    emoji: ["🧪", "🪄", "🎛️"],
-    back: "border-sky-300/60 bg-sky-200/70 dark:border-sky-500/30 dark:bg-sky-500/20",
-    front: "border-sky-400/70 from-sky-50 dark:border-sky-500/50 dark:from-sky-500/10",
-    badge: "border-sky-400 text-sky-600 dark:border-sky-400/60 dark:text-sky-300",
-  },
-  {
-    Icon: BookOpen,
-    emoji: ["📚", "📖", "🔖"],
-    back: "border-amber-300/60 bg-amber-200/70 dark:border-amber-500/30 dark:bg-amber-500/20",
-    front: "border-amber-400/70 from-amber-50 dark:border-amber-500/50 dark:from-amber-500/10",
-    badge: "border-amber-400 text-amber-600 dark:border-amber-400/60 dark:text-amber-300",
-  },
-  {
-    Icon: Code2,
-    emoji: ["💻", "⌨️", "🧩"],
-    back: "border-emerald-300/60 bg-emerald-200/70 dark:border-emerald-500/30 dark:bg-emerald-500/20",
-    front: "border-emerald-400/70 from-emerald-50 dark:border-emerald-500/50 dark:from-emerald-500/10",
-    badge: "border-emerald-400 text-emerald-600 dark:border-emerald-400/60 dark:text-emerald-300",
-  },
-  {
-    Icon: Brain,
-    emoji: ["🧠", "💭", "🫶"],
-    back: "border-rose-300/60 bg-rose-200/70 dark:border-rose-500/30 dark:bg-rose-500/20",
-    front: "border-rose-400/70 from-rose-50 dark:border-rose-500/50 dark:from-rose-500/10",
-    badge: "border-rose-400 text-rose-600 dark:border-rose-400/60 dark:text-rose-300",
-  },
-  {
-    Icon: Workflow,
-    emoji: ["🗺️", "🔗", "🧭"],
-    back: "border-indigo-300/60 bg-indigo-200/70 dark:border-indigo-500/30 dark:bg-indigo-500/20",
-    front: "border-indigo-400/70 from-indigo-50 dark:border-indigo-500/50 dark:from-indigo-500/10",
-    badge: "border-indigo-400 text-indigo-600 dark:border-indigo-400/60 dark:text-indigo-300",
-  },
-  {
-    Icon: Target,
-    emoji: ["🎯", "🤝", "✅"],
-    back: "border-orange-300/60 bg-orange-200/70 dark:border-orange-500/30 dark:bg-orange-500/20",
-    front: "border-orange-400/70 from-orange-50 dark:border-orange-500/50 dark:from-orange-500/10",
-    badge: "border-orange-400 text-orange-600 dark:border-orange-400/60 dark:text-orange-300",
-  },
+const LEARNING_STYLES: { Icon: LucideIcon; tile: string }[] = [
+  { Icon: Sparkles, tile: "bg-violet-100 text-violet-600 dark:bg-violet-500/15 dark:text-violet-300" },
+  { Icon: FlaskConical, tile: "bg-sky-100 text-sky-600 dark:bg-sky-500/15 dark:text-sky-300" },
+  { Icon: BookOpen, tile: "bg-amber-100 text-amber-600 dark:bg-amber-500/15 dark:text-amber-300" },
+  { Icon: Code2, tile: "bg-emerald-100 text-emerald-600 dark:bg-emerald-500/15 dark:text-emerald-300" },
+  { Icon: Brain, tile: "bg-rose-100 text-rose-600 dark:bg-rose-500/15 dark:text-rose-300" },
+  { Icon: Workflow, tile: "bg-indigo-100 text-indigo-600 dark:bg-indigo-500/15 dark:text-indigo-300" },
+  { Icon: Target, tile: "bg-orange-100 text-orange-600 dark:bg-orange-500/15 dark:text-orange-300" },
 ];
 
 function AboutMeSection() {
@@ -2928,48 +2880,18 @@ function AboutMeSection() {
           Curiosity is the job. Here&apos;s what&apos;s on my desk right now.
         </p>
       </div>
-      <ul className="mt-12 grid gap-x-5 gap-y-8 sm:grid-cols-2 lg:grid-cols-3">
+      <ul className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {learning.map((l, i) => {
-          const { Icon, emoji, back, front, badge } = LEARNING_STYLES[i % LEARNING_STYLES.length];
-          const wide = i === learning.length - 1 && learning.length % 3 === 1;
-          const tilts = ["-rotate-[8deg] translate-y-1", "rotate-[3deg]", "rotate-[9deg] translate-y-1.5"];
+          const { Icon, tile } = LEARNING_STYLES[i % LEARNING_STYLES.length];
           return (
-            <li key={l} className={`group relative ${wide ? "lg:col-span-3" : ""}`}>
-              {/* Back layer — peeks out above the front card like a folder tab */}
-              <span
-                aria-hidden="true"
-                className={`absolute inset-x-0 bottom-0 top-8 rounded-3xl border ${back}`}
-              />
-              {/* Tilted tiles peeking over the top edge */}
-              <span
-                aria-hidden="true"
-                className="absolute right-5 top-0 z-10 flex items-end -space-x-1.5 transition-transform duration-300 ease-out group-hover:-translate-y-1.5"
-              >
-                {emoji.map((e, ei) => (
-                  <span
-                    key={ei}
-                    className={`flex h-14 w-12 items-start justify-center rounded-xl bg-white pt-2 text-xl shadow-md ring-1 ring-black/5 transition-transform duration-300 dark:bg-card dark:ring-white/10 ${tilts[ei]} group-hover:rotate-0`}
-                  >
-                    {e}
-                  </span>
-                ))}
+            <li
+              key={l}
+              className="flex items-center gap-3.5 rounded-2xl border border-border bg-background px-4 py-3.5 transition-colors duration-200 hover:bg-card"
+            >
+              <span className={`inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full ${tile}`}>
+                <Icon className="h-4 w-4" aria-hidden="true" />
               </span>
-              {/* Front card */}
-              <div
-                className={`relative z-20 mt-12 flex min-h-[10rem] flex-col justify-end rounded-3xl border bg-gradient-to-b to-white p-6 pt-12 shadow-sm transition-shadow duration-300 group-hover:shadow-xl dark:to-card ${front}`}
-              >
-                <span
-                  className={`absolute -top-5 left-5 inline-flex h-11 w-11 items-center justify-center rounded-full border bg-white shadow-sm dark:bg-card ${badge}`}
-                >
-                  <Icon className="h-5 w-5" aria-hidden="true" />
-                </span>
-                <p className="text-[17px] font-semibold leading-snug tracking-tight text-foreground">
-                  {l}
-                </p>
-                <p className="mt-2 font-mono text-[12px] text-muted-foreground">
-                  {String(i + 1).padStart(2, "0")} / {String(learning.length).padStart(2, "0")}
-                </p>
-              </div>
+              <p className="text-[15px] font-medium leading-snug text-foreground">{l}</p>
             </li>
           );
         })}
