@@ -1969,6 +1969,20 @@ export interface Creative {
   image?: string;
 }
 
+export interface MotionItem {
+  title: string;
+  category: string;
+  /** Video file under /public (mp4/webm), played inline. */
+  src?: string;
+  /** External link (YouTube, Vimeo, Drive…) when there is no local file. */
+  href?: string;
+  /** Poster / thumbnail image under /public. */
+  poster?: string;
+}
+
+/** Animation & video work — add entries here and they appear in the Animation / Video tab. */
+export const motionWork: MotionItem[] = [];
+
 export const creatives: Creative[] = [
   {
     name: "Néant — Monogram",

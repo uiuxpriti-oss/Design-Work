@@ -71,6 +71,7 @@ import {
   Award,
   Image as ImageIcon,
   Linkedin,
+  Play,
   Lock,
   Brain,
   Code2,
@@ -93,6 +94,7 @@ import {
   caseStudies,
   skillCategories,
   creatives,
+  motionWork,
   experience,
   awards,
   quotes,
@@ -1061,22 +1063,80 @@ function CreativeGridCard({
   );
 }
 
+function MotionGrid() {
+  if (motionWork.length === 0) {
+    return (
+      <section className="flex min-h-[18rem] flex-col items-center justify-center gap-3 rounded-3xl border border-dashed border-border px-6 py-16 text-center">
+        <span className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-foreground/[0.06] text-foreground">
+          <Play className="h-5 w-5" aria-hidden="true" />
+        </span>
+        <p className="text-lg font-semibold tracking-tight">Animation &amp; video, coming soon</p>
+        <p className="max-w-sm text-[15px] leading-relaxed text-muted-foreground">
+          Motion studies, prototypes and short videos will live here.
+        </p>
+      </section>
+    );
+  }
+  return (
+    <section className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+      {motionWork.map((m) => (
+        <figure key={m.title} className="overflow-hidden rounded-3xl bg-foreground/[0.05] p-2.5">
+          <div className="aspect-video w-full overflow-hidden rounded-[20px] bg-black">
+            {m.src ? (
+              <video
+                src={assetUrl(m.src)}
+                poster={m.poster ? assetUrl(m.poster) : undefined}
+                controls
+                playsInline
+                preload="metadata"
+                className="h-full w-full object-cover"
+              />
+            ) : (
+              <a
+                href={m.href}
+                target="_blank"
+                rel="noreferrer"
+                className="group relative block h-full w-full"
+                aria-label={`Watch ${m.title}`}
+              >
+                {m.poster && (
+                  <img src={assetUrl(m.poster)} alt="" className="h-full w-full object-cover" loading="lazy" />
+                )}
+                <span className="absolute inset-0 flex items-center justify-center bg-black/25 transition-colors group-hover:bg-black/35">
+                  <span className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-white/90 text-neutral-900 shadow-xl">
+                    <Play className="h-6 w-6 translate-x-0.5 fill-current" aria-hidden="true" />
+                  </span>
+                </span>
+              </a>
+            )}
+          </div>
+          <figcaption className="px-3 pb-2 pt-4">
+            <p className="text-[16px] font-semibold tracking-tight text-foreground">{m.title}</p>
+            <p className="mt-0.5 text-[14px] text-muted-foreground">{m.category}</p>
+          </figcaption>
+        </figure>
+      ))}
+    </section>
+  );
+}
+
 function ProjectsPage({
   initialTab,
   onOpen,
   onBack,
 }: {
-  initialTab: "case" | "creative";
+  initialTab: "case" | "creative" | "motion";
   onOpen: (id: string) => void;
   onBack: () => void;
 }) {
-  const [tab, setTab] = useState<"case" | "creative">(initialTab);
+  const [tab, setTab] = useState<"case" | "creative" | "motion">(initialTab);
   const [creativeOpen, setCreativeOpen] = useState<
     (typeof creatives)[number] | null
   >(null);
   const TABS = [
     { id: "case", label: "Case Studies" },
     { id: "creative", label: "Creatives" },
+    { id: "motion", label: "Animation / Video" },
   ] as const;
   return (
     <>
@@ -1116,6 +1176,8 @@ function ProjectsPage({
               <ProjectCard key={project.id} project={project} onOpen={onOpen} />
             ))}
           </section>
+        ) : tab === "motion" ? (
+          <MotionGrid />
         ) : (
           <section className="grid grid-cols-1 gap-6 sm:grid-cols-2">
             {creatives.map((creative, i) => (
@@ -3184,14 +3246,17 @@ const assetUrl = (p: string) =>
 
 type Route =
   | { page: "home" }
-  | { page: "projects"; projectsTab: "case" | "creative" }
+  | { page: "projects"; projectsTab: "case" | "creative" | "motion" }
   | { page: "about" }
   | { page: "case"; caseId: string };
 
 function pathForRoute(r: Route): string {
   if (r.page === "about") return ROUTE_BASE + "about";
   if (r.page === "projects")
-    return ROUTE_BASE + (r.projectsTab === "creative" ? "creatives" : "work");
+    return (
+      ROUTE_BASE +
+      (r.projectsTab === "creative" ? "creatives" : r.projectsTab === "motion" ? "animation" : "work")
+    );
   if (r.page === "case") return ROUTE_BASE + "work/" + slugForId(r.caseId);
   return ROUTE_BASE;
 }
@@ -3210,6 +3275,7 @@ function routeFromPath(): Route {
     return { page: "projects", projectsTab: "case" };
   }
   if (seg[0] === "creatives") return { page: "projects", projectsTab: "creative" };
+  if (seg[0] === "animation") return { page: "projects", projectsTab: "motion" };
   if (seg[0] === "about") return { page: "about" };
   return { page: "home" };
 }
@@ -3246,7 +3312,7 @@ export default function App() {
   const [page, setPage] = useState<"home" | "projects" | "about" | "case">(
     route0.page,
   );
-  const [projectsTab, setProjectsTab] = useState<"case" | "creative">(
+  const [projectsTab, setProjectsTab] = useState<"case" | "creative" | "motion">(
     route0.page === "projects" ? route0.projectsTab : "case",
   );
   const [caseId, setCaseId] = useState<string | null>(
@@ -3260,7 +3326,7 @@ export default function App() {
   };
   // When navigating back to the home page, scroll to this section (else top).
   const [scrollTarget, setScrollTarget] = useState<string | null>(null);
-  const openProjects = (tab: "case" | "creative") => {
+  const openProjects = (tab: "case" | "creative" | "motion") => {
     setProjectsTab(tab);
     setPage("projects");
     pushRoute({ page: "projects", projectsTab: tab });
