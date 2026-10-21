@@ -1682,8 +1682,13 @@ function FloatingBack({ onBack }: { onBack: () => void }) {
 // Case studies that require a password. Only a SHA-256 hash is stored here, and the
 // unlock lives in sessionStorage — this is a casual gate for a static site, not real
 // access control (the page content is still part of the public bundle).
+const CASE_PASSWORD_HASH =
+  "1aede9f588ca5083ae9ffd28200ce6c4e1a9e66e98ac9d699b686b948c2c8b7d";
 const PROTECTED_CASES: Record<string, string> = {
-  "project-studycrux": "1aede9f588ca5083ae9ffd28200ce6c4e1a9e66e98ac9d699b686b948c2c8b7d",
+  "project-studycrux": CASE_PASSWORD_HASH,
+  "project-tabnet-security": CASE_PASSWORD_HASH,
+  "project-baladi-express": CASE_PASSWORD_HASH,
+  "project-leadsdemos": CASE_PASSWORD_HASH,
 };
 
 async function sha256Hex(text: string) {
