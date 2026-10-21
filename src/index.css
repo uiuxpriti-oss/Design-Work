@@ -31,14 +31,14 @@ html.lenis body {
   }
 
   :root.dark {
-    /* Warm near-black dark theme */
-    --background: 24 10% 7%;
-    --foreground: 40 10% 92%;
-    --card: 24 8% 12%;
-    --primary: 40 10% 92%;
-    --primary-foreground: 24 12% 8%;
-    --muted-foreground: 40 5% 58%;
-    --border: 30 6% 20%;
+    /* Midnight dark theme: near-black ground, indigo glow, lavender + lime accents */
+    --background: 240 18% 5%; /* #0A0A0F */
+    --foreground: 240 30% 96%;
+    --card: 240 14% 9%;
+    --primary: 0 0% 100%;
+    --primary-foreground: 245 45% 12%;
+    --muted-foreground: 240 10% 64%;
+    --border: 240 12% 16%;
     color-scheme: dark;
   }
 
@@ -60,6 +60,44 @@ html.lenis body {
       background-color 0.3s ease,
       color 0.3s ease;
   }
+}
+
+/* Midnight dark theme extras: indigo glow ground, and the brand green / gold
+   accents re-mapped to deep indigo / lavender / lime. */
+:root.dark body {
+  background-image:
+    radial-gradient(70rem 40rem at -10% 105%, rgba(54, 38, 200, 0.42), transparent 60%),
+    radial-gradient(50rem 30rem at 110% -10%, rgba(120, 90, 255, 0.16), transparent 60%);
+  background-attachment: fixed;
+}
+:root.dark .bg-\[\#0F2720\] {
+  background-color: #14103d;
+  background-image: radial-gradient(40rem 20rem at 0% 100%, rgba(70, 50, 220, 0.5), transparent 65%);
+}
+:root.dark .bg-\[\#11332a\] {
+  background-color: #17124a;
+  background-image:
+    radial-gradient(28rem 20rem at 92% 70%, rgba(167, 155, 255, 0.35), transparent 65%),
+    radial-gradient(18rem 12rem at 80% 100%, rgba(182, 245, 0, 0.16), transparent 70%),
+    radial-gradient(45rem 24rem at 0% 110%, rgba(76, 54, 235, 0.55), transparent 65%);
+}
+:root.dark img[src="hero-card.webp"],
+:root.dark img[src="hero-journal.webp"] {
+  display: none !important; /* artwork has a baked-in green backdrop */
+}
+:root.dark .lg\:hidden[aria-hidden="true"] {
+  display: block !important;
+}
+:root.dark .hover\:bg-\[\#16382E\]:hover {
+  background-color: #1d1855;
+}
+:root.dark .text-\[\#A9C6BA\],
+:root.dark .dark\:text-\[\#A9C6BA\] {
+  color: #a79bff;
+}
+:root.dark .text-\[\#E3A64A\],
+:root.dark .text-\[\#E3A64A\]\/75 {
+  color: #b6f500;
 }
 
 @layer utilities {
