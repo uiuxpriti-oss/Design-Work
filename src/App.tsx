@@ -235,7 +235,7 @@ function ContactButton({
       <div
         role="dialog"
         aria-label="Get in touch"
-        className={`absolute top-full z-50 mt-2 w-[24rem] max-w-[calc(100vw-2rem)] origin-top rounded-2xl bg-neutral-900 p-5 text-white shadow-2xl ring-1 ring-white/10 transition-all duration-200 ease-out ${
+        className={`absolute top-full z-50 mt-2 w-[24rem] max-w-[calc(100vw-2rem)] origin-top rounded-2xl bg-neutral-900 p-5 text-left text-white shadow-2xl ring-1 ring-white/10 transition-all duration-200 ease-out ${
           align === "right" ? "right-0" : "left-0"
         } ${
           open
