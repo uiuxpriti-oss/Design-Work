@@ -98,7 +98,6 @@ import {
   quotes,
   links,
   learning,
-  principles,
 } from "./data/content";
 import type { StudyBlock } from "./data/content";
 
@@ -2237,7 +2236,7 @@ function ExperienceLogo({ job }: { job: (typeof experience)[number] }) {
 }
 
 function ExperienceList() {
-  const [openIdx, setOpenIdx] = useState(0);
+  const [openIdx, setOpenIdx] = useState(-1);
   return (
     <ul>
       {experience.map((job, i) => {
@@ -2343,7 +2342,7 @@ function ExperienceList() {
 
 function Experience() {
   return (
-    <section id="experience" className="mt-14 sm:mt-24 scroll-mt-24">
+    <section id="experience" className="mt-12 scroll-mt-24 border-t border-border pt-8 sm:mt-16">
       <h2 className="text-2xl font-semibold italic tracking-tight sm:text-3xl">
         So Far, So Good
       </h2>
@@ -2800,199 +2799,94 @@ function Creatives({ onViewAll }: { onViewAll: () => void }) {
 }
 
 const ABOUT_STATS = [
-  { value: "↓50%", label: "Task completion time, by simplifying complex analytics workflows for non-technical users" },
-  { value: "↓32%", label: "Onboarding drop-off, across 3 major features shipped on an enterprise BI & AI platform" },
-  { value: "5,000+", label: "Active users reached by the products I design at Lumenore" },
-  { value: "120+", label: "Components in the design system I built and govern, lifting reuse by 40%" },
+  { value: "↓50%", label: "task completion time" },
+  { value: "↓32%", label: "onboarding drop-off" },
+  { value: "5,000+", label: "active users" },
 ];
 
-function AboutStory() {
+const LEARNING_ICONS: LucideIcon[] = [Sparkles, FlaskConical, BookOpen, Code2, Brain, Workflow, Target];
+
+function AboutIntro() {
   return (
     <section className="pt-10 sm:pt-16">
-      <p className="mb-4 text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
+      <p className="mb-5 text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
         About
       </p>
-      <h1 className="max-w-4xl text-4xl font-semibold leading-[1.08] tracking-tight sm:text-6xl">
+      <h1 className="max-w-3xl text-3xl font-semibold leading-[1.1] tracking-tight sm:text-5xl">
         I turn complex data into decisions people can{" "}
         <span className="italic text-muted-foreground">trust.</span>
       </h1>
-      <div className="mt-12 grid gap-12 sm:mt-16 lg:grid-cols-[1fr_1.15fr] lg:gap-20">
-        <dl className="border-t border-border">
-          {ABOUT_STATS.map((st) => (
-            <div
-              key={st.value}
-              className="flex items-center gap-5 border-b border-border py-6 sm:gap-8 sm:py-7"
-            >
-              <dt className="w-[8.5rem] shrink-0 text-4xl font-semibold tracking-tight sm:w-44 sm:text-5xl">
-                {st.value}
-              </dt>
-              <dd className="text-[14px] leading-relaxed text-muted-foreground">{st.label}</dd>
-            </div>
-          ))}
-        </dl>
-        <div className="space-y-6 text-[16px] leading-[1.75] text-foreground/85">
-          <p>
-            I came into design through the visual side and kept following the problems
-            underneath the screens — the flows, the data, and the systems around them.
-            Today that means designing Lumenore, a BI &amp; AI platform where
-            non-technical people ask questions of their data and act on the answers.
-          </p>
-          <p>
-            In 2026 I was promoted from Associate UI/UX Designer to Senior Product
-            Designer at Netlink Software Group. I own Ask Me, Data Magnet, dashboards,
-            alerts, and the scheduler end to end — from discovery through design QA and
-            release — and I test with enterprise customers before and after every launch.
-          </p>
-          <p>
-            Screens are the visible output. The real work is the systems underneath:{" "}
-            <em>design systems, accessibility audits across 80+ screens, and research habits</em>{" "}
-            that keep a product improving long after I&apos;ve moved to the next feature.
-            I&apos;m now learning psychology, service design, and development to close the
-            gap between what I design and what ships.
-          </p>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-const LEARNING_STYLES: { Icon: LucideIcon; tile: string }[] = [
-  { Icon: Sparkles, tile: "bg-violet-100 text-violet-600 dark:bg-violet-500/15 dark:text-violet-300" },
-  { Icon: FlaskConical, tile: "bg-sky-100 text-sky-600 dark:bg-sky-500/15 dark:text-sky-300" },
-  { Icon: BookOpen, tile: "bg-amber-100 text-amber-600 dark:bg-amber-500/15 dark:text-amber-300" },
-  { Icon: Code2, tile: "bg-emerald-100 text-emerald-600 dark:bg-emerald-500/15 dark:text-emerald-300" },
-  { Icon: Brain, tile: "bg-rose-100 text-rose-600 dark:bg-rose-500/15 dark:text-rose-300" },
-  { Icon: Workflow, tile: "bg-indigo-100 text-indigo-600 dark:bg-indigo-500/15 dark:text-indigo-300" },
-  { Icon: Target, tile: "bg-orange-100 text-orange-600 dark:bg-orange-500/15 dark:text-orange-300" },
-];
-
-function AboutMeSection() {
-  return (
-    <section className="pt-10 sm:pt-16">
-      <p className="mb-4 text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
-        About
+      <p className="mt-6 max-w-2xl text-[16px] leading-[1.75] text-foreground/80">
+        I&apos;m a Senior Product Designer with 4+ years in enterprise SaaS, AI and data
+        products. At Netlink I design Lumenore — from Ask Me, a GenAI analytics
+        assistant, to dashboards and data workflows — and own it from discovery to
+        release.
       </p>
-      <div className="flex flex-wrap items-end justify-between gap-x-8 gap-y-3">
-        <h2 className="text-3xl font-semibold tracking-tight sm:text-5xl">
-          These days I&apos;m <span className="italic text-muted-foreground">learning</span>
-        </h2>
-        <p className="max-w-sm text-[15px] leading-relaxed text-muted-foreground">
-          Curiosity is the job. Here&apos;s what&apos;s on my desk right now.
-        </p>
-      </div>
-      <ul className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-        {learning.map((l, i) => {
-          const { Icon, tile } = LEARNING_STYLES[i % LEARNING_STYLES.length];
-          return (
-            <li
-              key={l}
-              className="flex items-center gap-3.5 rounded-2xl border border-border bg-background px-4 py-3.5 transition-colors duration-200 hover:bg-card"
-            >
-              <span className={`inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full ${tile}`}>
-                <Icon className="h-4 w-4" aria-hidden="true" />
-              </span>
-              <p className="text-[15px] font-medium leading-snug text-foreground">{l}</p>
-            </li>
-          );
-        })}
-      </ul>
+      <dl className="mt-8 grid max-w-2xl grid-cols-3 gap-4 border-t border-border pt-6">
+        {ABOUT_STATS.map((st) => (
+          <div key={st.value}>
+            <dt className="text-2xl font-semibold tracking-tight sm:text-4xl">{st.value}</dt>
+            <dd className="mt-1 text-[13px] leading-snug text-muted-foreground">{st.label}</dd>
+          </div>
+        ))}
+      </dl>
     </section>
   );
 }
 
-function WorkingWithMe() {
+function AboutNow() {
   return (
-    <section className="mt-14 sm:mt-24">
-      <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">
-        How it is to be working with me?
-      </h2>
-      <div className="mt-10 grid items-start gap-10 md:grid-cols-[1fr_300px]">
-        <div className="space-y-7">
-          {principles.map((p) => (
-            <p key={p.tag} className="text-[15px] leading-relaxed text-foreground/85">
-              <span
-                className={`mr-2 inline-block rounded-md border px-2 py-0.5 text-[15px] font-medium ${p.tagClass}`}
-              >
-                {p.tag}
-              </span>
-              {p.text}
-            </p>
-          ))}
-        </div>
-        <div className="aspect-[3/4] w-full min-w-0 overflow-hidden rounded-2xl bg-gradient-to-br from-slate-200 to-slate-300 ring-1 ring-border">
-          <img
-            src="about/workspace.webp"
-            alt="My desk — a mood-board wall, a fairy-lit Ganesha idol, and a laptop open to work."
-            loading="lazy"
-            className="h-full w-full object-cover"
-          />
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function DesignPhilosophy() {
-  return (
-    <section className="mt-14 sm:mt-24">
-      {/* Philosophy statement card — dark brand green, mirroring the hero card */}
-      <div className="relative overflow-hidden rounded-3xl bg-[#0F2720] p-7 sm:p-12">
-        {/* Faint oversized quote mark */}
-        <span
-          className="pointer-events-none absolute -top-8 right-4 select-none text-[16rem] font-semibold leading-none text-white/[0.05] sm:right-10"
-          aria-hidden="true"
-        >
-          &rdquo;
-        </span>
-        <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-[#A9C6BA]">
-          My design philosophy
-        </p>
-        <div className="relative grid gap-10 lg:grid-cols-[1.15fr_1fr] lg:gap-14">
-          <div>
-        <h2 className="mt-4 text-3xl font-semibold leading-[1.08] tracking-tight text-white sm:text-5xl">
-          Beyond <span className="italic text-[#A9C6BA]">pixels.</span>
-        </h2>
-        <p className="relative mt-6 text-base leading-relaxed text-white/85 sm:text-lg">
-          i see design as a{" "}
-          <span className="text-[#E3A64A]">powerful strategic tool</span> to solve
-          complex business challenges and create lasting value. i believe designers
-          carry a responsibility not just towards their work, but also towards
-          society and the people they design for. i consider it a{" "}
-          <span className="text-[#E3A64A]">privilege to design</span> aka create for
-          a living, and my goal is to reflect that belief through the quality of my
-          work.
-        </p>
-        <span className="mt-8 block h-px w-24 bg-white/15" aria-hidden="true" />
-        <p className="relative mt-8 text-base leading-relaxed text-white/70 sm:text-lg">
-          Design is the bridge between{" "}
-          <span className="text-white">complex technology</span> and{" "}
-          <span className="text-white">human emotion</span>. I don&apos;t just make
-          things look good; I make them work seamlessly.{" "}
-          <span className="italic text-[#A9C6BA]">
-            My process is deeply rooted in research, rapid iteration with AI, and a
-            slight obsession with micro-interactions.
+    <section className="mt-12 grid gap-8 border-t border-border pt-8 sm:mt-16 md:grid-cols-[10rem_1fr]">
+      <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
+        Now
+      </p>
+      <div className="space-y-6">
+        <p className="text-[15px] text-foreground/85">
+          Senior Product Designer at <span className="font-medium text-foreground">Netlink Software Group</span>
+          <span className="ml-2 inline-block rounded-md border border-emerald-300 bg-emerald-100 px-2 py-0.5 align-middle text-[11px] font-medium text-emerald-900 dark:border-emerald-500/30 dark:bg-emerald-500/20 dark:text-emerald-200">
+            Promoted 2026
           </span>
         </p>
-          </div>
-        <div className="relative mt-10 flex flex-col gap-3 lg:mt-0 lg:justify-center">
-          {[
-            ["01", "Research", "Start from real people and real problems."],
-            ["02", "Rapid iteration with AI", "Prototype fast, learn faster."],
-            ["03", "Micro-interactions", "The small details that make it feel right."],
-          ].map(([n, t, d]) => (
-            <div
-              key={n}
-              className="flex items-start gap-4 rounded-2xl border border-white/10 bg-white/[0.04] p-5 backdrop-blur-sm"
-            >
-              <span className="text-sm font-medium text-[#E3A64A]">{n}</span>
-              <div>
-                <p className="text-base font-semibold text-white">{t}</p>
-                <p className="mt-1 text-sm leading-relaxed text-white/60">{d}</p>
-              </div>
-            </div>
+        <div>
+          <p className="text-[13px] text-muted-foreground">Learning</p>
+          <ul className="mt-3 flex flex-wrap gap-2">
+            {learning.map((l, i) => {
+              const Icon = LEARNING_ICONS[i % LEARNING_ICONS.length];
+              return (
+                <li
+                  key={l}
+                  className="inline-flex items-center gap-2 rounded-full border border-border px-3.5 py-1.5 text-[13.5px] text-foreground/85"
+                >
+                  <Icon className="h-3.5 w-3.5 text-muted-foreground" aria-hidden="true" />
+                  {l.replace(/\s+—.*$/, "").replace(/\.$/, "")}
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function AboutPhilosophy() {
+  return (
+    <section className="mt-12 grid gap-8 border-t border-border pt-8 sm:mt-16 md:grid-cols-[10rem_1fr]">
+      <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
+        Philosophy
+      </p>
+      <div>
+        <p className="max-w-2xl text-xl font-semibold leading-snug tracking-tight sm:text-2xl">
+          Design is the bridge between complex technology and human emotion —{" "}
+          <span className="italic text-muted-foreground">beyond pixels.</span>
+        </p>
+        <ul className="mt-5 flex flex-wrap gap-2">
+          {["Research", "Rapid iteration with AI", "Micro-interactions"].map((t) => (
+            <li key={t} className="rounded-full bg-foreground/[0.06] px-3.5 py-1.5 text-[13.5px] text-foreground/85">
+              {t}
+            </li>
           ))}
-        </div>
-        </div>
+        </ul>
       </div>
     </section>
   );
@@ -3009,11 +2903,10 @@ function AboutPage({ onBack }: { onBack: () => void }) {
         >
           <ArrowLeft className="h-4 w-4" aria-hidden="true" /> Back
         </button>
-        <AboutStory />
-        <AboutMeSection />
-        <DesignPhilosophy />
+        <AboutIntro />
+        <AboutNow />
+        <AboutPhilosophy />
         <Experience />
-        <WorkingWithMe />
         <div className="mt-16">
           <ContactBadge />
         </div>
