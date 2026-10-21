@@ -2799,6 +2799,63 @@ function Creatives({ onViewAll }: { onViewAll: () => void }) {
   );
 }
 
+const ABOUT_STATS = [
+  { value: "↓50%", label: "Task completion time, by simplifying complex analytics workflows for non-technical users" },
+  { value: "↓32%", label: "Onboarding drop-off, across 3 major features shipped on an enterprise BI & AI platform" },
+  { value: "5,000+", label: "Active users reached by the products I design at Lumenore" },
+  { value: "120+", label: "Components in the design system I built and govern, lifting reuse by 40%" },
+];
+
+function AboutStory() {
+  return (
+    <section className="pt-10 sm:pt-16">
+      <p className="mb-4 text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
+        About
+      </p>
+      <h1 className="max-w-4xl text-4xl font-semibold leading-[1.08] tracking-tight sm:text-6xl">
+        I turn complex data into decisions people can{" "}
+        <span className="italic text-muted-foreground">trust.</span>
+      </h1>
+      <div className="mt-12 grid gap-12 sm:mt-16 lg:grid-cols-[1fr_1.15fr] lg:gap-20">
+        <dl className="border-t border-border">
+          {ABOUT_STATS.map((st) => (
+            <div
+              key={st.value}
+              className="flex items-center gap-5 border-b border-border py-6 sm:gap-8 sm:py-7"
+            >
+              <dt className="w-[8.5rem] shrink-0 text-4xl font-semibold tracking-tight sm:w-44 sm:text-5xl">
+                {st.value}
+              </dt>
+              <dd className="text-[14px] leading-relaxed text-muted-foreground">{st.label}</dd>
+            </div>
+          ))}
+        </dl>
+        <div className="space-y-6 text-[16px] leading-[1.75] text-foreground/85">
+          <p>
+            I came into design through the visual side and kept following the problems
+            underneath the screens — the flows, the data, and the systems around them.
+            Today that means designing Lumenore, a BI &amp; AI platform where
+            non-technical people ask questions of their data and act on the answers.
+          </p>
+          <p>
+            In 2026 I was promoted from Associate UI/UX Designer to Senior Product
+            Designer at Netlink Software Group. I own Ask Me, Data Magnet, dashboards,
+            alerts, and the scheduler end to end — from discovery through design QA and
+            release — and I test with enterprise customers before and after every launch.
+          </p>
+          <p>
+            Screens are the visible output. The real work is the systems underneath:{" "}
+            <em>design systems, accessibility audits across 80+ screens, and research habits</em>{" "}
+            that keep a product improving long after I&apos;ve moved to the next feature.
+            I&apos;m now learning psychology, service design, and development to close the
+            gap between what I design and what ships.
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 const LEARNING_STYLES: { Icon: LucideIcon; tile: string }[] = [
   { Icon: Sparkles, tile: "bg-violet-100 text-violet-700 dark:bg-violet-500/15 dark:text-violet-300" },
   { Icon: FlaskConical, tile: "bg-sky-100 text-sky-700 dark:bg-sky-500/15 dark:text-sky-300" },
@@ -2959,6 +3016,7 @@ function AboutPage({ onBack }: { onBack: () => void }) {
         >
           <ArrowLeft className="h-4 w-4" aria-hidden="true" /> Back
         </button>
+        <AboutStory />
         <AboutMeSection />
         <DesignPhilosophy />
         <Experience />
