@@ -22,7 +22,7 @@ export interface Project {
 export const projects: Project[] = [
   {
     id: "project-studycrux",
-    title: "StudyCrux",
+    title: "Admin Management",
     description:
       "A super-admin console for a multi-module ed-tech platform — students, teachers, coordinators, and speakers in one system.",
     href: "https://uiuxpriti.com/projects/studycrux",
@@ -31,7 +31,7 @@ export const projects: Project[] = [
     gradient: "from-slate-800 via-teal-700 to-emerald-900",
     measures: ["6 modules, one system", "One shared health language", "RBAC that surfaces risk"],
     headline:
-      "Six sprawling admin tools collapsed into one super-admin console — with a shared health language across every module.",
+      "Six admin tools, one console — and a shared language for module health.",
     tag: "Admin Console",
   },
   {
@@ -268,7 +268,7 @@ export interface StudyBlock {
 export const caseStudies: Record<string, CaseStudy> = {
   "project-studycrux": {
     intro: [
-      "**StudyCrux** is the operations backbone for a competitive-exam coaching business — the super-admin platform that runs students, teachers, coordinators, and guest speakers across dozens of live batches. I designed the entire console: **six operationally distinct modules**, each with its own data model, folded into one coherent system.",
+      "**Admin Management** is the operations backbone for a competitive-exam coaching business — the super-admin platform that runs students, teachers, coordinators, and guest speakers across dozens of live batches. I designed the entire console: **six operationally distinct modules**, each with its own data model, folded into one coherent system.",
       "Admin tools like this usually sprawl into six tabs that don't talk to each other — open Students to see who's at risk, Teachers to catch a payout deadline, Roles to catch a security gap, with **nothing rolling up** to tell an admin what actually needs a decision today.",
       "I built a **shared 'module health' language** — every module reports through the same four numbers, one trend meter, and a status pill — so a Dashboard can roll all six up into one screen, while each module still goes as deep as its own domain needs underneath.",
     ],
@@ -280,7 +280,7 @@ export const caseStudies: Record<string, CaseStudy> = {
     },
     eyebrow: "Product Design · Admin Platform",
     summary:
-      "A super-admin console for StudyCrux, a multi-module ed-tech platform — unifying students, teachers, coordinators, speakers, course allocation, and access control into one operational system.",
+      "A super-admin console for a multi-module ed-tech platform — unifying students, teachers, coordinators, speakers, course allocation, and access control into one operational system.",
     meta: {
       role: "Product Designer",
       timeline: "Self-directed",
@@ -288,14 +288,14 @@ export const caseStudies: Record<string, CaseStudy> = {
       tools: "Figma · Claude Code",
     },
     overview:
-      "StudyCrux runs a competitive-exam coaching operation — students juggling mock tests, live batches, and recorded courses at once; teachers and coordinators running the batches; guest speakers running webinars. I designed the super-admin console that Ops and academic leadership use to run all of it: six modules, one system, one consistent way to read what's healthy and what needs a decision.",
+      "Admin Management runs a competitive-exam coaching operation — students juggling mock tests, live batches, and recorded courses at once; teachers and coordinators running the batches; guest speakers running webinars. I designed the super-admin console that Ops and academic leadership use to run all of it: six modules, one system, one consistent way to read what's healthy and what needs a decision.",
     problem: {
       stats: [
         { value: "6", label: "modules, one super-admin persona" },
         { value: "3", label: "concurrent entitlement types per student" },
         { value: "8", label: "roles across 221 users to secure" },
       ],
-      text: "Most internal admin tools grow module-by-module until they're six unrelated apps wearing the same sidebar — nothing surfaces urgency across them. StudyCrux's commercial model made the underlying data harder than usual too: **there's no subscription** — students hold several concurrent entitlements (mock-test tiers, live batches, recorded passes) at once, each with its own price, validity, and batch rules.",
+      text: "Most internal admin tools grow module-by-module until they're six unrelated apps wearing the same sidebar — nothing surfaces urgency across them. Admin Management's commercial model made the underlying data harder than usual too: **there's no subscription** — students hold several concurrent entitlements (mock-test tiers, live batches, recorded passes) at once, each with its own price, validity, and batch rules.",
       goals: [
         "Give one super-admin persona a single screen that rolls up all six modules' health",
         "Model multi-entitlement students honestly, without forcing one purchase per row",

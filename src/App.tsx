@@ -894,6 +894,18 @@ function FocusAreas() {
   );
 }
 
+function LockFillIcon({ className = "" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className={className}>
+      <path
+        fillRule="evenodd"
+        d="M12 1.5a5.25 5.25 0 0 0-5.25 5.25V9H6a2.5 2.5 0 0 0-2.5 2.5v8A2.5 2.5 0 0 0 6 22h12a2.5 2.5 0 0 0 2.5-2.5v-8A2.5 2.5 0 0 0 18 9h-.75V6.75A5.25 5.25 0 0 0 12 1.5Zm3.25 7.5V6.75a3.25 3.25 0 0 0-6.5 0V9h6.5Z"
+        clipRule="evenodd"
+      />
+    </svg>
+  );
+}
+
 function ProjectCard({
   project,
   onOpen,
@@ -902,6 +914,7 @@ function ProjectCard({
   onOpen: (id: string) => void;
 }) {
   const [imgOk, setImgOk] = useState(true);
+  const locked = !!PROTECTED_CASES[project.id] && !isUnlocked(project.id);
   return (
     <article id={project.id} className="scroll-mt-24">
       <button
@@ -925,8 +938,9 @@ function ProjectCard({
               </p>
             )}
           </div>
-          <span className="inline-flex w-fit items-center rounded-full bg-[#0F2720] px-5 py-2.5 text-sm font-medium text-white dark:bg-foreground dark:text-background">
-            {project.tag ?? "Case study"}
+          <span className="inline-flex w-fit items-center gap-2 rounded-full bg-[#0F2720] px-5 py-2.5 text-sm font-medium text-white dark:bg-foreground dark:text-background">
+            {locked && <LockFillIcon className="h-3.5 w-3.5" />}
+            {locked ? "Unlock case study" : (project.tag ?? "Case study")}
           </span>
         </div>
         {/* Right panel — image fills the whole card, zooms on hover */}
@@ -938,15 +952,29 @@ function ProjectCard({
                 alt={project.title}
                 loading="lazy"
                 onError={() => setImgOk(false)}
-                className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover/img:scale-105"
+                className={`h-full w-full object-cover transition-transform duration-500 ease-out group-hover/img:scale-105 ${
+                  locked ? "scale-110 blur-xl" : ""
+                }`}
               />
             ) : (
               <div
-                className={`h-full w-full bg-gradient-to-br ${project.gradient} transition-transform duration-500 ease-out group-hover/img:scale-105`}
+                className={`h-full w-full bg-gradient-to-br ${project.gradient} transition-transform duration-500 ease-out group-hover/img:scale-105 ${
+                  locked ? "blur-xl" : ""
+                }`}
                 aria-label={project.title}
               />
             )}
           </div>
+          {locked && (
+            <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-black/25 text-white">
+              <span className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-white/90 text-[#0F2720] shadow-xl ring-1 ring-black/5 transition-transform duration-300 group-hover/img:scale-105">
+                <LockFillIcon className="h-7 w-7" />
+              </span>
+              <span className="rounded-full bg-black/40 px-3.5 py-1.5 text-[12px] font-medium tracking-wide backdrop-blur-sm">
+                Password protected
+              </span>
+            </div>
+          )}
         </div>
       </button>
     </article>
