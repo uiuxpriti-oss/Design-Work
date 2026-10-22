@@ -1773,13 +1773,11 @@ function isUnlocked(id: string) {
 function PasswordGate({
   id,
   title,
-  image,
   onUnlock,
   onBack,
 }: {
   id: string;
   title: string;
-  image?: string;
   onUnlock: () => void;
   onBack: () => void;
 }) {
@@ -1827,29 +1825,10 @@ function PasswordGate({
             leaving ? "scale-[0.98] opacity-0 blur-sm" : ""
           }`}
         >
-          {image && (
-            <div aria-hidden="true" className="absolute inset-0 overflow-hidden rounded-[2rem]">
-              <img
-                src={assetUrl(image)}
-                alt=""
-                className="h-full w-full scale-125 object-cover opacity-45 blur-2xl saturate-125 dark:opacity-35"
-                style={{
-                  maskImage: "radial-gradient(ellipse at center, black 25%, transparent 75%)",
-                  WebkitMaskImage: "radial-gradient(ellipse at center, black 25%, transparent 75%)",
-                }}
-              />
-            </div>
-          )}
           <div className="relative z-10 mx-auto max-w-xl">
-            <div className="animate-float relative mx-auto h-16 w-16">
-              <span
-                aria-hidden="true"
-                className="animate-gate-glow absolute -inset-4 rounded-full bg-violet-400/50 blur-xl dark:bg-violet-400/30"
-              />
-              <span className="relative inline-flex h-16 w-16 items-center justify-center rounded-full bg-white text-foreground shadow-xl ring-4 ring-white/80 dark:bg-card dark:ring-white/10">
-                <Lock className="h-6 w-6" aria-hidden="true" />
-              </span>
-            </div>
+            <span className="mx-auto inline-flex h-14 w-14 items-center justify-center rounded-full border border-border text-foreground">
+              <Lock className="h-5 w-5" aria-hidden="true" />
+            </span>
             <p className="mt-6 text-[11px] font-medium uppercase tracking-[0.2em] text-muted-foreground">
               Protected work
             </p>
@@ -1884,7 +1863,7 @@ function PasswordGate({
                 placeholder="Enter password"
                 aria-invalid={error}
                 autoFocus
-                className={`w-full rounded-full border bg-background px-5 py-3 text-center text-[15px] shadow-sm outline-none transition-colors placeholder:text-muted-foreground/70 focus-visible:ring-2 focus-visible:ring-foreground/25 ${
+                className={`w-full rounded-full border bg-background px-5 py-3 text-center text-[15px] outline-none transition-colors placeholder:text-muted-foreground/70 focus-visible:ring-2 focus-visible:ring-foreground/25 ${
                   error ? "border-red-500" : "border-border"
                 }`}
               />
@@ -1898,14 +1877,14 @@ function PasswordGate({
                 <button
                   type="submit"
                   disabled={busy}
-                  className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-2.5 text-sm font-medium text-primary-foreground shadow-sm outline-none transition-all hover:opacity-90 active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-foreground/25 disabled:opacity-60"
+                  className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-2.5 text-sm font-medium text-primary-foreground outline-none transition-all hover:opacity-90 active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-foreground/25 disabled:opacity-60"
                 >
                   Unlock <ArrowRight className="h-4 w-4" aria-hidden="true" />
                 </button>
                 <button
                   type="button"
                   onClick={onBack}
-                  className="inline-flex items-center gap-2 rounded-full border border-border bg-background/70 px-6 py-2.5 text-sm font-medium text-foreground outline-none transition-colors hover:bg-card focus-visible:ring-2 focus-visible:ring-foreground/25"
+                  className="inline-flex items-center gap-2 rounded-full border border-border bg-background px-6 py-2.5 text-sm font-medium text-foreground outline-none transition-colors hover:bg-card focus-visible:ring-2 focus-visible:ring-foreground/25"
                 >
                   <ArrowLeft className="h-4 w-4" aria-hidden="true" /> Back to home
                 </button>
@@ -1943,7 +1922,6 @@ function CaseStudyPage({
       <PasswordGate
         id={id}
         title={project.title}
-        image={project.image}
         onUnlock={() => setTick((t) => t + 1)}
         onBack={onBack}
       />
