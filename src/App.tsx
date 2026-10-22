@@ -1807,7 +1807,7 @@ function PasswordGate({
     }
   };
   return (
-    <main className="mx-auto flex min-h-[70vh] max-w-[72rem] flex-col px-6 pb-14 sm:pb-32">
+    <main className="mx-auto max-w-[72rem] px-6 pb-14 sm:pb-32">
       <button
         type="button"
         onClick={onBack}
@@ -1815,73 +1815,80 @@ function PasswordGate({
       >
         <ArrowLeft className="h-4 w-4" aria-hidden="true" /> Back
       </button>
-      <div className="w-full max-w-md py-14 sm:py-20">
-        <p className="flex items-center gap-3 text-[11px] font-medium uppercase tracking-[0.16em] text-muted-foreground">
-          <Lock className="h-3.5 w-3.5" aria-hidden="true" /> Protected work
-          <span className="h-px flex-1 bg-border" aria-hidden="true" />
-        </p>
-        <h1 className="mt-6 text-4xl font-light leading-[1.08] tracking-tight sm:text-5xl">
-          This case study is{" "}
-          <span className="font-semibold italic text-violet-600 dark:text-violet-300">
-            password protected.
-          </span>
-        </h1>
-        <p className="mt-6 text-[15px] leading-relaxed text-muted-foreground">
-          These write-ups contain client work I keep out of open search. If you have the
-          password, enter it below. If you don&apos;t, email me at{" "}
-          <a
-            href={`${links.email}?subject=${encodeURIComponent(`Password for ${title}`)}`}
-            className="text-foreground underline underline-offset-4 decoration-foreground/30 transition-colors hover:decoration-foreground"
-          >
-            {links.emailAddress}
-          </a>{" "}
-          and I&apos;ll send it over.
-        </p>
-        <form onSubmit={submit} className="mt-8">
-          <label
-            htmlFor="case-password"
-            className="text-[11px] font-medium uppercase tracking-[0.16em] text-muted-foreground"
-          >
-            Password
-          </label>
-          <input
-            id="case-password"
-            type="password"
-            value={value}
-            onChange={(e) => {
-              setValue(e.target.value);
-              setError(false);
-            }}
-            placeholder="Enter password"
-            aria-invalid={error}
-            autoFocus
-            className={`mt-2 w-full rounded-xl border bg-card px-4 py-3 text-[15px] outline-none transition-colors placeholder:text-muted-foreground/70 focus-visible:ring-2 focus-visible:ring-foreground/25 ${
-              error ? "border-red-500" : "border-border"
-            }`}
-          />
-          {error && (
-            <p role="alert" className="mt-2 text-[13px] text-red-600 dark:text-red-400">
-              Incorrect password. Please try again.
-            </p>
-          )}
-          <div className="mt-6 flex flex-wrap gap-3">
-            <button
-              type="submit"
-              disabled={busy}
-              className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-2.5 text-sm font-medium text-primary-foreground outline-none transition-all hover:opacity-90 active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-foreground/25 disabled:opacity-60"
-            >
-              Unlock <ArrowRight className="h-4 w-4" aria-hidden="true" />
-            </button>
-            <button
-              type="button"
-              onClick={onBack}
-              className="inline-flex items-center gap-2 rounded-full border border-border px-6 py-2.5 text-sm font-medium text-foreground outline-none transition-colors hover:bg-card focus-visible:ring-2 focus-visible:ring-foreground/25"
-            >
-              <ArrowLeft className="h-4 w-4" aria-hidden="true" /> Back to home
-            </button>
+      <section className="pt-8 sm:pt-12">
+        <div className="relative rounded-[2rem] px-6 py-14 text-center sm:py-20">
+          {/* Soft wash — same treatment as the About intro */}
+          <div aria-hidden="true" className="absolute inset-0 overflow-hidden rounded-[2rem]">
+            <span className="absolute inset-0 bg-gradient-to-b from-violet-100 via-fuchsia-50/60 to-transparent dark:from-violet-500/20 dark:via-indigo-500/10 dark:to-transparent" />
+            <span className="absolute -left-16 top-10 h-56 w-56 rounded-full bg-sky-200/60 blur-3xl dark:bg-sky-500/15" />
+            <span className="absolute -right-10 top-24 h-64 w-64 rounded-full bg-pink-200/50 blur-3xl dark:bg-fuchsia-500/10" />
           </div>
-        </form>
-      </div>
+          <div className="relative z-10 mx-auto max-w-xl">
+            <span className="mx-auto inline-flex h-16 w-16 items-center justify-center rounded-full bg-white text-foreground shadow-xl ring-4 ring-white/80 dark:bg-card dark:ring-white/10">
+              <Lock className="h-6 w-6" aria-hidden="true" />
+            </span>
+            <p className="mt-6 text-[11px] font-medium uppercase tracking-[0.2em] text-muted-foreground">
+              Protected work
+            </p>
+            <h1 className="mt-5 text-4xl font-light leading-[1.1] tracking-tight sm:text-5xl">
+              This case study is{" "}
+              <span className="font-semibold italic">password protected.</span>
+            </h1>
+            <p className="mx-auto mt-6 max-w-md text-[15px] leading-[1.8] text-foreground/70">
+              These write-ups contain client work I keep out of open search. If you have the
+              password, enter it below. If you don&apos;t, email me at{" "}
+              <a
+                href={`${links.email}?subject=${encodeURIComponent(`Password for ${title}`)}`}
+                className="text-foreground underline underline-offset-4 decoration-foreground/30 transition-colors hover:decoration-foreground"
+              >
+                {links.emailAddress}
+              </a>{" "}
+              and I&apos;ll send it over.
+            </p>
+            <form onSubmit={submit} className="mx-auto mt-8 max-w-sm">
+              <label htmlFor="case-password" className="sr-only">
+                Password
+              </label>
+              <input
+                id="case-password"
+                type="password"
+                value={value}
+                onChange={(e) => {
+                  setValue(e.target.value);
+                  setError(false);
+                }}
+                placeholder="Enter password"
+                aria-invalid={error}
+                autoFocus
+                className={`w-full rounded-full border bg-white/70 px-5 py-3 text-center text-[15px] shadow-sm outline-none backdrop-blur-md transition-colors placeholder:text-muted-foreground/70 focus-visible:ring-2 focus-visible:ring-foreground/25 dark:bg-white/[0.05] ${
+                  error ? "border-red-500" : "border-white/60 dark:border-white/10"
+                }`}
+              />
+              {error && (
+                <p role="alert" className="mt-2 text-[13px] text-red-600 dark:text-red-400">
+                  Incorrect password. Please try again.
+                </p>
+              )}
+              <div className="mt-5 flex flex-wrap justify-center gap-3">
+                <button
+                  type="submit"
+                  disabled={busy}
+                  className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-2.5 text-sm font-medium text-primary-foreground shadow-sm outline-none transition-all hover:opacity-90 active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-foreground/25 disabled:opacity-60"
+                >
+                  Unlock <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                </button>
+                <button
+                  type="button"
+                  onClick={onBack}
+                  className="inline-flex items-center gap-2 rounded-full border border-border bg-background/70 px-6 py-2.5 text-sm font-medium text-foreground outline-none transition-colors hover:bg-card focus-visible:ring-2 focus-visible:ring-foreground/25"
+                >
+                  <ArrowLeft className="h-4 w-4" aria-hidden="true" /> Back to home
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
     </main>
   );
 }
