@@ -1773,17 +1773,21 @@ function isUnlocked(id: string) {
 function PasswordGate({
   id,
   title,
+  image,
   onUnlock,
   onBack,
 }: {
   id: string;
   title: string;
+  image?: string;
   onUnlock: () => void;
   onBack: () => void;
 }) {
   const [value, setValue] = useState("");
   const [error, setError] = useState(false);
   const [busy, setBusy] = useState(false);
+  const [shake, setShake] = useState(0);
+  const [leaving, setLeaving] = useState(false);
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!value || busy) return;
@@ -1801,9 +1805,11 @@ function PasswordGate({
       } catch {
         /* storage unavailable — unlock for this view only */
       }
-      onUnlock();
+      setLeaving(true);
+      window.setTimeout(onUnlock, 380);
     } else {
       setError(true);
+      setShake((n) => n + 1);
     }
   };
   return (
@@ -1816,17 +1822,35 @@ function PasswordGate({
         <ArrowLeft className="h-4 w-4" aria-hidden="true" /> Back
       </button>
       <section className="pt-8 sm:pt-12">
-        <div className="relative rounded-[2rem] px-6 py-14 text-center sm:py-20">
+        <div
+          className={`animate-gate-in relative rounded-[2rem] px-6 py-14 text-center transition-all duration-[380ms] ease-out sm:py-20 ${
+            leaving ? "scale-[0.98] opacity-0 blur-sm" : ""
+          }`}
+        >
           {/* Soft wash — same treatment as the About intro */}
           <div aria-hidden="true" className="absolute inset-0 overflow-hidden rounded-[2rem]">
+            {image && (
+              <img
+                src={assetUrl(image)}
+                alt=""
+                className="absolute inset-0 h-full w-full scale-125 object-cover opacity-30 blur-3xl saturate-150 dark:opacity-25"
+                style={{ maskImage: "linear-gradient(to bottom, black 0%, transparent 85%)", WebkitMaskImage: "linear-gradient(to bottom, black 0%, transparent 85%)" }}
+              />
+            )}
             <span className="absolute inset-0 bg-gradient-to-b from-violet-100 via-fuchsia-50/60 to-transparent dark:from-violet-500/20 dark:via-indigo-500/10 dark:to-transparent" />
             <span className="absolute -left-16 top-10 h-56 w-56 rounded-full bg-sky-200/60 blur-3xl dark:bg-sky-500/15" />
             <span className="absolute -right-10 top-24 h-64 w-64 rounded-full bg-pink-200/50 blur-3xl dark:bg-fuchsia-500/10" />
           </div>
           <div className="relative z-10 mx-auto max-w-xl">
-            <span className="mx-auto inline-flex h-16 w-16 items-center justify-center rounded-full bg-white text-foreground shadow-xl ring-4 ring-white/80 dark:bg-card dark:ring-white/10">
-              <Lock className="h-6 w-6" aria-hidden="true" />
-            </span>
+            <div className="animate-float relative mx-auto h-16 w-16">
+              <span
+                aria-hidden="true"
+                className="animate-gate-glow absolute -inset-4 rounded-full bg-violet-400/50 blur-xl dark:bg-violet-400/30"
+              />
+              <span className="relative inline-flex h-16 w-16 items-center justify-center rounded-full bg-white text-foreground shadow-xl ring-4 ring-white/80 dark:bg-card dark:ring-white/10">
+                <Lock className="h-6 w-6" aria-hidden="true" />
+              </span>
+            </div>
             <p className="mt-6 text-[11px] font-medium uppercase tracking-[0.2em] text-muted-foreground">
               Protected work
             </p>
@@ -1846,6 +1870,7 @@ function PasswordGate({
               and I&apos;ll send it over.
             </p>
             <form onSubmit={submit} className="mx-auto mt-8 max-w-sm">
+              <div key={shake} className={shake ? "animate-gate-shake" : ""}>
               <label htmlFor="case-password" className="sr-only">
                 Password
               </label>
@@ -1869,6 +1894,7 @@ function PasswordGate({
                   Incorrect password. Please try again.
                 </p>
               )}
+              </div>
               <div className="mt-5 flex flex-wrap justify-center gap-3">
                 <button
                   type="submit"
@@ -1885,6 +1911,9 @@ function PasswordGate({
                   <ArrowLeft className="h-4 w-4" aria-hidden="true" /> Back to home
                 </button>
               </div>
+              <p className="mt-6 text-[12px] tracking-wide text-muted-foreground">
+                Private · shared on request
+              </p>
             </form>
           </div>
         </div>
@@ -1915,6 +1944,7 @@ function CaseStudyPage({
       <PasswordGate
         id={id}
         title={project.title}
+        image={project.image}
         onUnlock={() => setTick((t) => t + 1)}
         onBack={onBack}
       />
