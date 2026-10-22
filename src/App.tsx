@@ -1823,24 +1823,23 @@ function PasswordGate({
       </button>
       <section className="pt-8 sm:pt-12">
         <div
-          className={`animate-gate-in relative rounded-[2rem] px-6 py-14 text-center transition-all duration-[380ms] ease-out sm:py-20 ${
+          className={`animate-gate-in relative rounded-[2rem] px-6 py-14 text-center transition-all duration-[380ms] ease-out sm:py-24 ${
             leaving ? "scale-[0.98] opacity-0 blur-sm" : ""
           }`}
         >
-          {/* Soft wash — same treatment as the About intro */}
-          <div aria-hidden="true" className="absolute inset-0 overflow-hidden rounded-[2rem]">
-            {image && (
+          {image && (
+            <div aria-hidden="true" className="absolute inset-0 overflow-hidden rounded-[2rem]">
               <img
                 src={assetUrl(image)}
                 alt=""
-                className="absolute inset-0 h-full w-full scale-125 object-cover opacity-30 blur-3xl saturate-150 dark:opacity-25"
-                style={{ maskImage: "linear-gradient(to bottom, black 0%, transparent 85%)", WebkitMaskImage: "linear-gradient(to bottom, black 0%, transparent 85%)" }}
+                className="h-full w-full scale-125 object-cover opacity-45 blur-2xl saturate-125 dark:opacity-35"
+                style={{
+                  maskImage: "radial-gradient(ellipse at center, black 25%, transparent 75%)",
+                  WebkitMaskImage: "radial-gradient(ellipse at center, black 25%, transparent 75%)",
+                }}
               />
-            )}
-            <span className="absolute inset-0 bg-gradient-to-b from-violet-100 via-fuchsia-50/60 to-transparent dark:from-violet-500/20 dark:via-indigo-500/10 dark:to-transparent" />
-            <span className="absolute -left-16 top-10 h-56 w-56 rounded-full bg-sky-200/60 blur-3xl dark:bg-sky-500/15" />
-            <span className="absolute -right-10 top-24 h-64 w-64 rounded-full bg-pink-200/50 blur-3xl dark:bg-fuchsia-500/10" />
-          </div>
+            </div>
+          )}
           <div className="relative z-10 mx-auto max-w-xl">
             <div className="animate-float relative mx-auto h-16 w-16">
               <span
@@ -1885,8 +1884,8 @@ function PasswordGate({
                 placeholder="Enter password"
                 aria-invalid={error}
                 autoFocus
-                className={`w-full rounded-full border bg-white/70 px-5 py-3 text-center text-[15px] shadow-sm outline-none backdrop-blur-md transition-colors placeholder:text-muted-foreground/70 focus-visible:ring-2 focus-visible:ring-foreground/25 dark:bg-white/[0.05] ${
-                  error ? "border-red-500" : "border-white/60 dark:border-white/10"
+                className={`w-full rounded-full border bg-background px-5 py-3 text-center text-[15px] shadow-sm outline-none transition-colors placeholder:text-muted-foreground/70 focus-visible:ring-2 focus-visible:ring-foreground/25 ${
+                  error ? "border-red-500" : "border-border"
                 }`}
               />
               {error && (
