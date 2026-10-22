@@ -1811,49 +1811,75 @@ function PasswordGate({
       <button
         type="button"
         onClick={onBack}
-        className="mt-6 inline-flex items-center gap-1.5 self-start text-sm text-muted-foreground outline-none transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-foreground/20"
+        className="mt-6 inline-flex items-center gap-1.5 self-start text-sm text-muted-foreground outline-none transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-foreground/20 sm:hidden"
       >
-        <ArrowLeft className="h-4 w-4" aria-hidden="true" /> All work
+        <ArrowLeft className="h-4 w-4" aria-hidden="true" /> Back
       </button>
-      <div className="m-auto w-full max-w-sm py-16 text-center">
-        <span className="mx-auto inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-foreground/[0.06] text-foreground">
-          <Lock className="h-6 w-6" aria-hidden="true" />
-        </span>
-        <h1 className="mt-6 text-2xl font-semibold tracking-tight sm:text-3xl">
-          This case study is private
-        </h1>
-        <p className="mt-3 text-[15px] leading-relaxed text-muted-foreground">
-          {title} is password protected. Enter the password to view it, or reach out
-          and I&apos;ll share it with you.
+      <div className="w-full max-w-md py-14 sm:py-20">
+        <p className="flex items-center gap-3 text-[11px] font-medium uppercase tracking-[0.16em] text-muted-foreground">
+          <Lock className="h-3.5 w-3.5" aria-hidden="true" /> Protected work
+          <span className="h-px flex-1 bg-border" aria-hidden="true" />
         </p>
-        <form onSubmit={submit} className="mt-8 space-y-3">
+        <h1 className="mt-6 text-4xl font-light leading-[1.08] tracking-tight sm:text-5xl">
+          This case study is{" "}
+          <span className="font-semibold italic text-violet-600 dark:text-violet-300">
+            password protected.
+          </span>
+        </h1>
+        <p className="mt-6 text-[15px] leading-relaxed text-muted-foreground">
+          These write-ups contain client work I keep out of open search. If you have the
+          password, enter it below. If you don&apos;t, email me at{" "}
+          <a
+            href={`${links.email}?subject=${encodeURIComponent(`Password for ${title}`)}`}
+            className="text-foreground underline underline-offset-4 decoration-foreground/30 transition-colors hover:decoration-foreground"
+          >
+            {links.emailAddress}
+          </a>{" "}
+          and I&apos;ll send it over.
+        </p>
+        <form onSubmit={submit} className="mt-8">
+          <label
+            htmlFor="case-password"
+            className="text-[11px] font-medium uppercase tracking-[0.16em] text-muted-foreground"
+          >
+            Password
+          </label>
           <input
+            id="case-password"
             type="password"
             value={value}
             onChange={(e) => {
               setValue(e.target.value);
               setError(false);
             }}
-            placeholder="Password"
-            aria-label="Password"
+            placeholder="Enter password"
             aria-invalid={error}
             autoFocus
-            className={`w-full rounded-full border bg-background px-5 py-3 text-center text-[15px] outline-none transition-colors focus-visible:ring-2 focus-visible:ring-foreground/25 ${
+            className={`mt-2 w-full rounded-xl border bg-card px-4 py-3 text-[15px] outline-none transition-colors placeholder:text-muted-foreground/70 focus-visible:ring-2 focus-visible:ring-foreground/25 ${
               error ? "border-red-500" : "border-border"
             }`}
           />
           {error && (
-            <p role="alert" className="text-[13px] text-red-600">
+            <p role="alert" className="mt-2 text-[13px] text-red-600 dark:text-red-400">
               Incorrect password. Please try again.
             </p>
           )}
-          <button
-            type="submit"
-            disabled={busy}
-            className="w-full rounded-full bg-primary px-5 py-3 text-sm font-medium text-primary-foreground outline-none transition-all hover:opacity-90 active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-foreground/25 disabled:opacity-60"
-          >
-            Unlock case study
-          </button>
+          <div className="mt-6 flex flex-wrap gap-3">
+            <button
+              type="submit"
+              disabled={busy}
+              className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-2.5 text-sm font-medium text-primary-foreground outline-none transition-all hover:opacity-90 active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-foreground/25 disabled:opacity-60"
+            >
+              Unlock <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            </button>
+            <button
+              type="button"
+              onClick={onBack}
+              className="inline-flex items-center gap-2 rounded-full border border-border px-6 py-2.5 text-sm font-medium text-foreground outline-none transition-colors hover:bg-card focus-visible:ring-2 focus-visible:ring-foreground/25"
+            >
+              <ArrowLeft className="h-4 w-4" aria-hidden="true" /> Back to home
+            </button>
+          </div>
         </form>
       </div>
     </main>
