@@ -1064,7 +1064,7 @@ function CreativeGridCard({
 }
 
 // Click-to-load YouTube player: shows the thumbnail first (fast, no tracking until played).
-function YouTubeEmbed({ id, title, vertical }: { id: string; title: string; vertical?: boolean }) {
+function YouTubeEmbed({ id, title, poster }: { id: string; title: string; poster?: string }) {
   const [playing, setPlaying] = useState(false);
   const [thumb, setThumb] = useState<"maxresdefault" | "hqdefault">("maxresdefault");
   const [thumbFailed, setThumbFailed] = useState(false);
@@ -1091,29 +1091,33 @@ function YouTubeEmbed({ id, title, vertical }: { id: string; title: string; vert
         aria-hidden="true"
         className="absolute inset-0 bg-gradient-to-b from-violet-600 via-indigo-700 to-slate-900"
       />
-      {!thumbFailed && (
+      {poster ? (
         <img
-          src={`https://i.ytimg.com/vi/${id}/${thumb}.jpg`}
+          src={assetUrl(poster)}
           alt=""
           loading="lazy"
-          onLoad={(e) => {
-            // YouTube serves a tiny grey placeholder (120px wide) when maxres doesn't exist.
-            if (thumb === "maxresdefault" && e.currentTarget.naturalWidth <= 120) setThumb("hqdefault");
-          }}
-          onError={() => (thumb === "maxresdefault" ? setThumb("hqdefault") : setThumbFailed(true))}
           className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
+      ) : (
+        !thumbFailed && (
+          <img
+            src={`https://i.ytimg.com/vi/${id}/${thumb}.jpg`}
+            alt=""
+            loading="lazy"
+            onLoad={(e) => {
+              // YouTube serves a tiny grey placeholder (120px wide) when maxres doesn't exist.
+              if (thumb === "maxresdefault" && e.currentTarget.naturalWidth <= 120) setThumb("hqdefault");
+            }}
+            onError={() => (thumb === "maxresdefault" ? setThumb("hqdefault") : setThumbFailed(true))}
+            className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+          />
+        )
       )}
       <span className="absolute inset-0 flex items-center justify-center bg-black/20 transition-colors group-hover:bg-black/30">
         <span className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-white/90 text-neutral-900 shadow-xl transition-transform group-hover:scale-105">
           <Play className="h-7 w-7 translate-x-0.5 fill-current" aria-hidden="true" />
         </span>
       </span>
-      {vertical && (
-        <span className="absolute inset-x-0 bottom-6 text-center text-[13px] font-medium tracking-wide text-white/85">
-          Tap to play
-        </span>
-      )}
     </button>
   );
 }
@@ -1142,7 +1146,7 @@ function MotionGrid() {
             }`}
           >
             {m.youtube ? (
-              <YouTubeEmbed id={m.youtube} title={m.title} vertical={m.vertical} />
+              <YouTubeEmbed id={m.youtube} title={m.title} poster={m.poster} />
             ) : m.src ? (
               <video
                 src={assetUrl(m.src)}
