@@ -1138,56 +1138,69 @@ function MotionGrid() {
   }
   const videos = motionWork.filter((m) => !m.image);
   const micro = motionWork.filter((m) => m.image);
+  // One wide + one portrait video sit side by side with players of equal height.
+  const paired = videos.length === 2 && videos.filter((v) => v.vertical).length === 1;
+
+  const videoCard = (m: (typeof motionWork)[number]) => (
+    <figure key={m.title} className="flex flex-col overflow-hidden rounded-3xl bg-foreground/[0.05] p-2.5">
+      <div
+        className={`overflow-hidden rounded-[20px] bg-black ${
+          m.vertical
+            ? "mx-auto aspect-[9/16] w-full max-w-[19rem] lg:max-w-none"
+            : paired
+              ? "aspect-video w-full lg:aspect-auto lg:h-[28rem]"
+              : "aspect-video w-full"
+        }`}
+      >
+        {m.youtube ? (
+          <YouTubeEmbed id={m.youtube} title={m.title} poster={m.poster} />
+        ) : m.src ? (
+          <video
+            src={assetUrl(m.src)}
+            poster={m.poster ? assetUrl(m.poster) : undefined}
+            controls
+            playsInline
+            preload="metadata"
+            className="h-full w-full object-cover"
+          />
+        ) : (
+          <a
+            href={m.href}
+            target="_blank"
+            rel="noreferrer"
+            className="group relative block h-full w-full"
+            aria-label={`Watch ${m.title}`}
+          >
+            {m.poster && (
+              <img src={assetUrl(m.poster)} alt="" className="h-full w-full object-cover" loading="lazy" />
+            )}
+            <span className="absolute inset-0 flex items-center justify-center bg-black/25 transition-colors group-hover:bg-black/35">
+              <span className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-white/90 text-neutral-900 shadow-xl">
+                <Play className="h-6 w-6 translate-x-0.5 fill-current" aria-hidden="true" />
+              </span>
+            </span>
+          </a>
+        )}
+      </div>
+      <figcaption className="px-3 pb-2 pt-4">
+        <p className="text-[16px] font-semibold tracking-tight text-foreground">{m.title}</p>
+        <p className="mt-0.5 text-[14px] text-muted-foreground">{m.category}</p>
+        {m.description && (
+          <p className="mt-2 text-[14px] leading-relaxed text-foreground/70">{m.description}</p>
+        )}
+      </figcaption>
+    </figure>
+  );
+
   return (
     <div className="space-y-14">
       {videos.length > 0 && (
-        <section className="grid grid-cols-1 items-start gap-6 sm:grid-cols-2">
-          {videos.map((m) => (
-            <figure key={m.title} className="overflow-hidden rounded-3xl bg-foreground/[0.05] p-2.5">
-              <div
-                className={`overflow-hidden rounded-[20px] bg-black ${
-                  m.vertical ? "mx-auto aspect-[9/16] w-full max-w-[19rem]" : "aspect-video w-full"
-                }`}
-              >
-                {m.youtube ? (
-                  <YouTubeEmbed id={m.youtube} title={m.title} poster={m.poster} />
-                ) : m.src ? (
-                  <video
-                    src={assetUrl(m.src)}
-                    poster={m.poster ? assetUrl(m.poster) : undefined}
-                    controls
-                    playsInline
-                    preload="metadata"
-                    className="h-full w-full object-cover"
-                  />
-                ) : (
-                  <a
-                    href={m.href}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="group relative block h-full w-full"
-                    aria-label={`Watch ${m.title}`}
-                  >
-                    {m.poster && (
-                      <img src={assetUrl(m.poster)} alt="" className="h-full w-full object-cover" loading="lazy" />
-                    )}
-                    <span className="absolute inset-0 flex items-center justify-center bg-black/25 transition-colors group-hover:bg-black/35">
-                      <span className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-white/90 text-neutral-900 shadow-xl">
-                        <Play className="h-6 w-6 translate-x-0.5 fill-current" aria-hidden="true" />
-                      </span>
-                    </span>
-                  </a>
-                )}
-              </div>
-              <figcaption className="px-3 pb-2 pt-4">
-                <p className="text-[16px] font-semibold tracking-tight text-foreground">{m.title}</p>
-                <p className="mt-0.5 text-[14px] text-muted-foreground">{m.category}</p>
-                {m.description && (
-                  <p className="mt-2 text-[14px] leading-relaxed text-foreground/70">{m.description}</p>
-                )}
-              </figcaption>
-            </figure>
-          ))}
+        <section
+          className={`grid grid-cols-1 gap-6 ${
+            paired ? "lg:grid-cols-[minmax(0,1fr)_17rem]" : "sm:grid-cols-2"
+          }`}
+        >
+          {paired ? [...videos].sort((x, y) => Number(!!x.vertical) - Number(!!y.vertical)).map(videoCard) : videos.map(videoCard)}
         </section>
       )}
       {micro.length > 0 && (
@@ -1195,13 +1208,13 @@ function MotionGrid() {
           <p className="mb-5 text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
             Micro-interactions
           </p>
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
             {micro.map((m) => (
               <figure
                 key={m.title}
-                className="group overflow-hidden rounded-3xl bg-foreground/[0.05] p-2.5"
+                className="group flex flex-col gap-4 overflow-hidden rounded-3xl bg-foreground/[0.05] p-2.5 sm:flex-row sm:items-center"
               >
-                <div className="aspect-square w-full overflow-hidden rounded-[20px] bg-white dark:bg-[#f1f4f8]">
+                <div className="aspect-square w-full shrink-0 overflow-hidden rounded-[20px] bg-white sm:w-52 dark:bg-[#f1f4f8]">
                   <img
                     src={assetUrl(m.image!)}
                     alt={`${m.title} — ${m.category}`}
@@ -1209,7 +1222,7 @@ function MotionGrid() {
                     className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04]"
                   />
                 </div>
-                <figcaption className="px-3 pb-2 pt-4">
+                <figcaption className="min-w-0 px-3 pb-3 sm:px-2 sm:pb-0 sm:pr-5">
                   <p className="text-[16px] font-semibold tracking-tight text-foreground">{m.title}</p>
                   <p className="mt-0.5 text-[14px] text-muted-foreground">{m.category}</p>
                   {m.description && (
