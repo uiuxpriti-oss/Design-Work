@@ -1991,19 +1991,19 @@ export interface MotionItem {
 /** Animation & video work — add entries here and they appear in the Animation / Video tab. */
 export const motionWork: MotionItem[] = [
   {
-    title: "Dashboard Creation — Made with Claude",
-    category: "AI-assisted · Motion design",
-    description:
-      "An animation of a dashboard coming together from a blank screen to a finished view, created with Claude AI.",
-    youtube: "KkRSZQ-6les",
-  },
-  {
     title: "Ask Me — Mobile App",
     category: "Product animation · GenAI",
     description:
       "A walkthrough of the Ask Me mobile app, Lumenore's GenAI conversational analytics assistant — ask in plain language and get a clear answer from your data.",
+    youtube: "KkRSZQ-6les",
+    poster: "motion/ask-me-promo.webp",
+  },
+  {
+    title: "Dashboard Creation — Made with Claude",
+    category: "AI-assisted · Motion design",
+    description:
+      "An animation of a dashboard coming together from a blank screen to a finished view, created with Claude AI.",
     youtube: "r-LXJZjG4qU",
-    poster: "motion/ask-me-mobile.webp",
     vertical: true,
   },
   {
