@@ -1063,6 +1063,42 @@ function CreativeGridCard({
   );
 }
 
+// Click-to-load YouTube player: shows the thumbnail first (fast, no tracking until played).
+function YouTubeEmbed({ id, title }: { id: string; title: string }) {
+  const [playing, setPlaying] = useState(false);
+  if (playing) {
+    return (
+      <iframe
+        src={`https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0&modestbranding=1`}
+        title={title}
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
+        allowFullScreen
+        className="h-full w-full border-0"
+      />
+    );
+  }
+  return (
+    <button
+      type="button"
+      onClick={() => setPlaying(true)}
+      aria-label={`Play ${title}`}
+      className="group relative block h-full w-full outline-none focus-visible:ring-2 focus-visible:ring-foreground/40"
+    >
+      <img
+        src={`https://i.ytimg.com/vi/${id}/hqdefault.jpg`}
+        alt=""
+        loading="lazy"
+        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+      />
+      <span className="absolute inset-0 flex items-center justify-center bg-black/20 transition-colors group-hover:bg-black/30">
+        <span className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-white/90 text-neutral-900 shadow-xl transition-transform group-hover:scale-105">
+          <Play className="h-7 w-7 translate-x-0.5 fill-current" aria-hidden="true" />
+        </span>
+      </span>
+    </button>
+  );
+}
+
 function MotionGrid() {
   if (motionWork.length === 0) {
     return (
@@ -1082,7 +1118,9 @@ function MotionGrid() {
       {motionWork.map((m) => (
         <figure key={m.title} className="overflow-hidden rounded-3xl bg-foreground/[0.05] p-2.5">
           <div className="aspect-video w-full overflow-hidden rounded-[20px] bg-black">
-            {m.src ? (
+            {m.youtube ? (
+              <YouTubeEmbed id={m.youtube} title={m.title} />
+            ) : m.src ? (
               <video
                 src={assetUrl(m.src)}
                 poster={m.poster ? assetUrl(m.poster) : undefined}
@@ -1113,6 +1151,9 @@ function MotionGrid() {
           <figcaption className="px-3 pb-2 pt-4">
             <p className="text-[16px] font-semibold tracking-tight text-foreground">{m.title}</p>
             <p className="mt-0.5 text-[14px] text-muted-foreground">{m.category}</p>
+            {m.description && (
+              <p className="mt-2 text-[14px] leading-relaxed text-foreground/70">{m.description}</p>
+            )}
           </figcaption>
         </figure>
       ))}

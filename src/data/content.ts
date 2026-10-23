@@ -1978,10 +1978,22 @@ export interface MotionItem {
   href?: string;
   /** Poster / thumbnail image under /public. */
   poster?: string;
+  /** YouTube video id (the part after youtu.be/). Plays inline, loaded on click. */
+  youtube?: string;
+  /** Optional one-line description shown under the title. */
+  description?: string;
 }
 
 /** Animation & video work — add entries here and they appear in the Animation / Video tab. */
-export const motionWork: MotionItem[] = [];
+export const motionWork: MotionItem[] = [
+  {
+    title: "Promo — Made with Claude",
+    category: "AI-assisted · Motion design",
+    description:
+      "A short promo animation created with Claude AI — from idea to finished motion, with the design decisions still in my hands.",
+    youtube: "KkRSZQ-6les",
+  },
+];
 
 export const creatives: Creative[] = [
   {
