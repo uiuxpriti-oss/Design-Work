@@ -1066,6 +1066,8 @@ function CreativeGridCard({
 // Click-to-load YouTube player: shows the thumbnail first (fast, no tracking until played).
 function YouTubeEmbed({ id, title, vertical }: { id: string; title: string; vertical?: boolean }) {
   const [playing, setPlaying] = useState(false);
+  const [thumb, setThumb] = useState<"maxresdefault" | "hqdefault">("maxresdefault");
+  const [thumbFailed, setThumbFailed] = useState(false);
   if (playing) {
     return (
       <iframe
@@ -1084,17 +1086,22 @@ function YouTubeEmbed({ id, title, vertical }: { id: string; title: string; vert
       aria-label={`Play ${title}`}
       className="group relative block h-full w-full outline-none focus-visible:ring-2 focus-visible:ring-foreground/40"
     >
-      {vertical ? (
-        <span
-          aria-hidden="true"
-          className="absolute inset-0 bg-gradient-to-b from-violet-600 via-indigo-700 to-slate-900"
-        />
-      ) : (
+      {/* Gradient shows while the thumbnail loads, or if YouTube can't be reached. */}
+      <span
+        aria-hidden="true"
+        className="absolute inset-0 bg-gradient-to-b from-violet-600 via-indigo-700 to-slate-900"
+      />
+      {!thumbFailed && (
         <img
-          src={`https://i.ytimg.com/vi/${id}/hqdefault.jpg`}
+          src={`https://i.ytimg.com/vi/${id}/${thumb}.jpg`}
           alt=""
           loading="lazy"
-          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+          onLoad={(e) => {
+            // YouTube serves a tiny grey placeholder (120px wide) when maxres doesn't exist.
+            if (thumb === "maxresdefault" && e.currentTarget.naturalWidth <= 120) setThumb("hqdefault");
+          }}
+          onError={() => (thumb === "maxresdefault" ? setThumb("hqdefault") : setThumbFailed(true))}
+          className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
       )}
       <span className="absolute inset-0 flex items-center justify-center bg-black/20 transition-colors group-hover:bg-black/30">
