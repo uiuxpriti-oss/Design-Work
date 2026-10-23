@@ -1204,34 +1204,18 @@ function MotionGrid() {
         </section>
       )}
       {micro.length > 0 && (
-        <section>
-          <p className="mb-5 text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
-            Micro-interactions
-          </p>
-          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-            {micro.map((m) => (
-              <figure
-                key={m.title}
-                className="group flex flex-col gap-4 overflow-hidden rounded-3xl bg-foreground/[0.05] p-2.5 sm:flex-row sm:items-center"
-              >
-                <div className="aspect-square w-full shrink-0 overflow-hidden rounded-[20px] bg-white sm:w-52 dark:bg-[#f1f4f8]">
-                  <img
-                    src={assetUrl(m.image!)}
-                    alt={`${m.title} — ${m.category}`}
-                    loading="lazy"
-                    className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04]"
-                  />
-                </div>
-                <figcaption className="min-w-0 px-3 pb-3 sm:px-2 sm:pb-0 sm:pr-5">
-                  <p className="text-[16px] font-semibold tracking-tight text-foreground">{m.title}</p>
-                  <p className="mt-0.5 text-[14px] text-muted-foreground">{m.category}</p>
-                  {m.description && (
-                    <p className="mt-2 text-[14px] leading-relaxed text-foreground/70">{m.description}</p>
-                  )}
-                </figcaption>
-              </figure>
-            ))}
-          </div>
+        <section className="grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-3">
+          {micro.map((m) => (
+            <div key={m.title} className="aspect-square w-full overflow-hidden rounded-3xl bg-[#f1f4f8]">
+              <img
+                src={assetUrl(m.image!)}
+                alt={`${m.title} — ${m.category}`}
+                loading="lazy"
+                // White-backed GIFs blend into the tile colour so every animation sits on the same ground.
+                className={`h-full w-full object-cover ${m.image!.endsWith(".gif") ? "mix-blend-multiply" : ""}`}
+              />
+            </div>
+          ))}
         </section>
       )}
     </div>
