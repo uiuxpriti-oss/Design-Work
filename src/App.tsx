@@ -1064,7 +1064,7 @@ function CreativeGridCard({
 }
 
 // Click-to-load YouTube player: shows the thumbnail first (fast, no tracking until played).
-function YouTubeEmbed({ id, title }: { id: string; title: string }) {
+function YouTubeEmbed({ id, title, vertical }: { id: string; title: string; vertical?: boolean }) {
   const [playing, setPlaying] = useState(false);
   if (playing) {
     return (
@@ -1084,17 +1084,29 @@ function YouTubeEmbed({ id, title }: { id: string; title: string }) {
       aria-label={`Play ${title}`}
       className="group relative block h-full w-full outline-none focus-visible:ring-2 focus-visible:ring-foreground/40"
     >
-      <img
-        src={`https://i.ytimg.com/vi/${id}/hqdefault.jpg`}
-        alt=""
-        loading="lazy"
-        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-      />
+      {vertical ? (
+        <span
+          aria-hidden="true"
+          className="absolute inset-0 bg-gradient-to-b from-violet-600 via-indigo-700 to-slate-900"
+        />
+      ) : (
+        <img
+          src={`https://i.ytimg.com/vi/${id}/hqdefault.jpg`}
+          alt=""
+          loading="lazy"
+          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+        />
+      )}
       <span className="absolute inset-0 flex items-center justify-center bg-black/20 transition-colors group-hover:bg-black/30">
         <span className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-white/90 text-neutral-900 shadow-xl transition-transform group-hover:scale-105">
           <Play className="h-7 w-7 translate-x-0.5 fill-current" aria-hidden="true" />
         </span>
       </span>
+      {vertical && (
+        <span className="absolute inset-x-0 bottom-6 text-center text-[13px] font-medium tracking-wide text-white/85">
+          Tap to play
+        </span>
+      )}
     </button>
   );
 }
@@ -1114,12 +1126,16 @@ function MotionGrid() {
     );
   }
   return (
-    <section className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+    <section className="grid grid-cols-1 items-start gap-6 sm:grid-cols-2">
       {motionWork.map((m) => (
         <figure key={m.title} className="overflow-hidden rounded-3xl bg-foreground/[0.05] p-2.5">
-          <div className="aspect-video w-full overflow-hidden rounded-[20px] bg-black">
+          <div
+            className={`overflow-hidden rounded-[20px] bg-black ${
+              m.vertical ? "mx-auto aspect-[9/16] w-full max-w-[19rem]" : "aspect-video w-full"
+            }`}
+          >
             {m.youtube ? (
-              <YouTubeEmbed id={m.youtube} title={m.title} />
+              <YouTubeEmbed id={m.youtube} title={m.title} vertical={m.vertical} />
             ) : m.src ? (
               <video
                 src={assetUrl(m.src)}

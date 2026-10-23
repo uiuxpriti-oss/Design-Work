@@ -1982,15 +1982,25 @@ export interface MotionItem {
   youtube?: string;
   /** Optional one-line description shown under the title. */
   description?: string;
+  /** Portrait video (YouTube Short / phone recording) — shown in a 9:16 player. */
+  vertical?: boolean;
 }
 
 /** Animation & video work — add entries here and they appear in the Animation / Video tab. */
 export const motionWork: MotionItem[] = [
   {
-    title: "Promo — Made with Claude",
+    title: "Ask Me — Mobile App",
+    category: "Product animation · GenAI",
+    description:
+      "A walkthrough of the Ask Me mobile app, Lumenore's GenAI conversational analytics assistant — ask in plain language and get a clear answer from your data.",
+    youtube: "r-LXJZjG4qU",
+    vertical: true,
+  },
+  {
+    title: "Dashboard Creation — Made with Claude",
     category: "AI-assisted · Motion design",
     description:
-      "A short promo animation created with Claude AI — from idea to finished motion, with the design decisions still in my hands.",
+      "An animation of a dashboard coming together from a blank screen to a finished view, created with Claude AI.",
     youtube: "KkRSZQ-6les",
   },
 ];
