@@ -1206,13 +1206,12 @@ function MotionGrid() {
       {micro.length > 0 && (
         <section className="grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-3">
           {micro.map((m) => (
-            <div key={m.title} className="aspect-square w-full overflow-hidden rounded-3xl bg-[#f1f4f8]">
+            <div key={m.title} className="aspect-square w-full overflow-hidden rounded-3xl border border-slate-100 bg-white">
               <img
                 src={assetUrl(m.image!)}
                 alt={`${m.title} — ${m.category}`}
                 loading="lazy"
-                // White-backed GIFs blend into the tile colour so every animation sits on the same ground.
-                className={`h-full w-full object-cover ${m.image!.endsWith(".gif") ? "mix-blend-multiply" : ""}`}
+                className="h-full w-full object-cover"
               />
             </div>
           ))}
