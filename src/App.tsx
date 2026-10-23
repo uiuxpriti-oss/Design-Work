@@ -1136,55 +1136,92 @@ function MotionGrid() {
       </section>
     );
   }
+  const videos = motionWork.filter((m) => !m.image);
+  const micro = motionWork.filter((m) => m.image);
   return (
-    <section className="grid grid-cols-1 items-start gap-6 sm:grid-cols-2">
-      {motionWork.map((m) => (
-        <figure key={m.title} className="overflow-hidden rounded-3xl bg-foreground/[0.05] p-2.5">
-          <div
-            className={`overflow-hidden rounded-[20px] bg-black ${
-              m.vertical ? "mx-auto aspect-[9/16] w-full max-w-[19rem]" : "aspect-video w-full"
-            }`}
-          >
-            {m.youtube ? (
-              <YouTubeEmbed id={m.youtube} title={m.title} poster={m.poster} />
-            ) : m.src ? (
-              <video
-                src={assetUrl(m.src)}
-                poster={m.poster ? assetUrl(m.poster) : undefined}
-                controls
-                playsInline
-                preload="metadata"
-                className="h-full w-full object-cover"
-              />
-            ) : (
-              <a
-                href={m.href}
-                target="_blank"
-                rel="noreferrer"
-                className="group relative block h-full w-full"
-                aria-label={`Watch ${m.title}`}
+    <div className="space-y-14">
+      {videos.length > 0 && (
+        <section className="grid grid-cols-1 items-start gap-6 sm:grid-cols-2">
+          {videos.map((m) => (
+            <figure key={m.title} className="overflow-hidden rounded-3xl bg-foreground/[0.05] p-2.5">
+              <div
+                className={`overflow-hidden rounded-[20px] bg-black ${
+                  m.vertical ? "mx-auto aspect-[9/16] w-full max-w-[19rem]" : "aspect-video w-full"
+                }`}
               >
-                {m.poster && (
-                  <img src={assetUrl(m.poster)} alt="" className="h-full w-full object-cover" loading="lazy" />
+                {m.youtube ? (
+                  <YouTubeEmbed id={m.youtube} title={m.title} poster={m.poster} />
+                ) : m.src ? (
+                  <video
+                    src={assetUrl(m.src)}
+                    poster={m.poster ? assetUrl(m.poster) : undefined}
+                    controls
+                    playsInline
+                    preload="metadata"
+                    className="h-full w-full object-cover"
+                  />
+                ) : (
+                  <a
+                    href={m.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="group relative block h-full w-full"
+                    aria-label={`Watch ${m.title}`}
+                  >
+                    {m.poster && (
+                      <img src={assetUrl(m.poster)} alt="" className="h-full w-full object-cover" loading="lazy" />
+                    )}
+                    <span className="absolute inset-0 flex items-center justify-center bg-black/25 transition-colors group-hover:bg-black/35">
+                      <span className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-white/90 text-neutral-900 shadow-xl">
+                        <Play className="h-6 w-6 translate-x-0.5 fill-current" aria-hidden="true" />
+                      </span>
+                    </span>
+                  </a>
                 )}
-                <span className="absolute inset-0 flex items-center justify-center bg-black/25 transition-colors group-hover:bg-black/35">
-                  <span className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-white/90 text-neutral-900 shadow-xl">
-                    <Play className="h-6 w-6 translate-x-0.5 fill-current" aria-hidden="true" />
-                  </span>
-                </span>
-              </a>
-            )}
+              </div>
+              <figcaption className="px-3 pb-2 pt-4">
+                <p className="text-[16px] font-semibold tracking-tight text-foreground">{m.title}</p>
+                <p className="mt-0.5 text-[14px] text-muted-foreground">{m.category}</p>
+                {m.description && (
+                  <p className="mt-2 text-[14px] leading-relaxed text-foreground/70">{m.description}</p>
+                )}
+              </figcaption>
+            </figure>
+          ))}
+        </section>
+      )}
+      {micro.length > 0 && (
+        <section>
+          <p className="mb-5 text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
+            Micro-interactions
+          </p>
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {micro.map((m) => (
+              <figure
+                key={m.title}
+                className="group overflow-hidden rounded-3xl bg-foreground/[0.05] p-2.5"
+              >
+                <div className="aspect-square w-full overflow-hidden rounded-[20px] bg-white dark:bg-[#f1f4f8]">
+                  <img
+                    src={assetUrl(m.image!)}
+                    alt={`${m.title} — ${m.category}`}
+                    loading="lazy"
+                    className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04]"
+                  />
+                </div>
+                <figcaption className="px-3 pb-2 pt-4">
+                  <p className="text-[16px] font-semibold tracking-tight text-foreground">{m.title}</p>
+                  <p className="mt-0.5 text-[14px] text-muted-foreground">{m.category}</p>
+                  {m.description && (
+                    <p className="mt-2 text-[14px] leading-relaxed text-foreground/70">{m.description}</p>
+                  )}
+                </figcaption>
+              </figure>
+            ))}
           </div>
-          <figcaption className="px-3 pb-2 pt-4">
-            <p className="text-[16px] font-semibold tracking-tight text-foreground">{m.title}</p>
-            <p className="mt-0.5 text-[14px] text-muted-foreground">{m.category}</p>
-            {m.description && (
-              <p className="mt-2 text-[14px] leading-relaxed text-foreground/70">{m.description}</p>
-            )}
-          </figcaption>
-        </figure>
-      ))}
-    </section>
+        </section>
+      )}
+    </div>
   );
 }
 

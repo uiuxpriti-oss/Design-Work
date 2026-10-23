@@ -1984,6 +1984,8 @@ export interface MotionItem {
   description?: string;
   /** Portrait video (YouTube Short / phone recording) — shown in a 9:16 player. */
   vertical?: boolean;
+  /** Looping animated image (GIF / animated WebP) under /public — a micro-interaction, no video needed. */
+  image?: string;
 }
 
 /** Animation & video work — add entries here and they appear in the Animation / Video tab. */
@@ -2003,6 +2005,18 @@ export const motionWork: MotionItem[] = [
     youtube: "r-LXJZjG4qU",
     poster: "motion/ask-me-mobile.webp",
     vertical: true,
+  },
+  {
+    title: "Grid Wave",
+    category: "Micro-interaction",
+    description: "Cells fill in a diagonal wave from the first selection — a loading and selection pattern for data grids.",
+    image: "motion/grid-wave.gif",
+  },
+  {
+    title: "AI Sparkle",
+    category: "Micro-interaction",
+    description: "The sparkle mark used for AI moments — a small, friendly cue that something smart is happening.",
+    image: "motion/ai-sparkle.webp",
   },
 ];
 
