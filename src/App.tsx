@@ -92,6 +92,7 @@ import {
   projects,
   caseStudies,
   skillCategories,
+  toolstack,
   creatives,
   motionWork,
   experience,
@@ -2730,6 +2731,79 @@ const SKILL_ICONS: Record<string, LucideIcon> = {
   Git: GitBranch,
 };
 
+// Tools without a bundled logo get a brand-coloured initials tile (swap in a real mark in brands.tsx).
+const TOOL_TILES: Record<string, { bg: string; fg: string; text: string }> = {
+  ProtoPie: { bg: "#6D3CF5", fg: "#fff", text: "Pp" },
+  Jira: { bg: "#2684FF", fg: "#fff", text: "Ji" },
+  Confluence: { bg: "#1868DB", fg: "#fff", text: "Cf" },
+  Maze: { bg: "#6B4EFF", fg: "#fff", text: "Mz" },
+  Hotjar: { bg: "#FD3A5C", fg: "#fff", text: "Hj" },
+  Miro: { bg: "#FFD02F", fg: "#050038", text: "Mi" },
+};
+
+function ToolGlyph({ name }: { name: string }) {
+  if (name === "Claude Code")
+    return (
+      <span
+        aria-hidden="true"
+        className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[10px] bg-[#1f1e1d] text-[12px] font-bold leading-none text-[#d97757]"
+      >
+        &gt;_
+      </span>
+    );
+  const Brand = BRAND_LOGOS[name];
+  if (Brand) return <Brand className="h-8 w-8 shrink-0" />;
+  const t = TOOL_TILES[name] ?? { bg: "#334155", fg: "#fff", text: name.slice(0, 2) };
+  return (
+    <span
+      aria-hidden="true"
+      style={{ background: t.bg, color: t.fg }}
+      className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[10px] text-[11px] font-bold leading-none"
+    >
+      {t.text}
+    </span>
+  );
+}
+
+function Toolstack() {
+  return (
+    <section id="toolstack" className="mt-14 scroll-mt-24 sm:mt-24">
+      <SectionHeading eyebrow="Toolstack" title="What I work with" />
+      <div className="mt-8 flex flex-wrap gap-x-6 gap-y-6 bg-[radial-gradient(circle,hsl(var(--border))_1px,transparent_1.5px)] [background-size:9px_9px] xl:flex-nowrap xl:justify-between xl:gap-x-3">
+        {toolstack.map((group) => (
+          <div
+            key={group.label}
+            className="max-w-full overflow-hidden rounded-2xl border border-black/[0.07] bg-background dark:border-white/10 xl:shrink-0"
+          >
+            <p className="whitespace-nowrap border-b border-black/[0.06] bg-foreground/[0.03] px-4 py-2.5 font-mono text-[10.5px] uppercase tracking-[0.14em] text-muted-foreground dark:border-white/10">
+              {group.label}
+            </p>
+            <ul className="flex flex-wrap">
+              {group.tools.map((tool) => (
+                <li
+                  key={tool}
+                  className="group relative flex h-16 w-16 items-center justify-center xl:h-14 xl:w-14 border-r border-black/[0.06] transition-colors duration-200 last:border-r-0 hover:bg-foreground/[0.04] dark:border-white/10"
+                >
+                  <span className="transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:scale-110">
+                    <ToolGlyph name={tool} />
+                  </span>
+                  <span className="sr-only">{tool}</span>
+                  <span
+                    aria-hidden="true"
+                    className="pointer-events-none absolute -top-1 left-1/2 z-10 -translate-x-1/2 -translate-y-full whitespace-nowrap rounded-md bg-foreground px-2 py-1 text-[11px] font-medium text-background opacity-0 shadow-md transition-opacity duration-150 group-hover:opacity-100"
+                  >
+                    {tool}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 function SkillsAndTools() {
   return (
     <section id="skills-tools" className="mt-14 sm:mt-24 scroll-mt-24">
@@ -3667,6 +3741,7 @@ export default function App() {
               <div className="mx-auto max-w-[72rem] px-6">
                 <Work onViewAll={() => openProjects("case")} onOpen={openCase} />
                 <SkillsAndTools />
+                <Toolstack />
                 <Awards />
               </div>
             </main>
