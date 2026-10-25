@@ -24,48 +24,11 @@ import {
   Check,
   ExternalLink,
   X,
-  Wand2,
-  Presentation,
   Target,
-  Network,
-  Search,
-  ListTree,
-  Boxes,
-  ClipboardCheck,
-  PenLine,
-  Compass,
-  GitCompare,
   Route,
-  Frame,
-  MousePointerClick,
-  Zap,
-  Figma,
-  Framer,
-  Component,
-  Terminal,
-  Plug,
-  MessageSquareText,
-  FileCode,
-  Braces,
-  LayoutGrid,
-  Droplets,
-  GitBranch,
-  TrendingUp,
-  Type,
-  Palette,
-  Layout,
-  Accessibility,
   FileText,
-  Users,
-  MessagesSquare,
   Workflow,
-  Megaphone,
-  Layers,
-  ShieldCheck,
-  Coins,
   FlaskConical,
-  Smartphone,
-  Lightbulb,
   Sun,
   Moon,
   Award,
@@ -92,7 +55,7 @@ function BehanceIcon({ className = "" }: { className?: string }) {
 import {
   projects,
   caseStudies,
-  skillCategories,
+  toolstack,
   creatives,
   motionWork,
   experience,
@@ -2566,102 +2529,62 @@ function Experience() {
   );
 }
 
-const SKILL_ICONS: Record<string, LucideIcon> = {
-  // Design & Product Thinking
-  "UX Strategy": Target,
-  "Product Thinking": Lightbulb,
-  "Product Design": Boxes,
-  "UX/UI": Layout,
-  "Interaction Design": MousePointerClick,
-  "Systems Thinking": Network,
-  "User Research": Search,
-  Discovery: Compass,
-  "Information Architecture": ListTree,
-  "Usability Testing": ClipboardCheck,
-  "A/B Testing": GitCompare,
-  Experimentation: FlaskConical,
-  "Conversion Rate Optimisation": TrendingUp,
-  "Journey Mapping": Route,
-  "Data-Informed Decisions": TrendingUp,
-  "Product Positioning": Compass,
-  "UX Copywriting": PenLine,
-  "Design QA": ShieldCheck,
-  "Product Psychology": Users,
-  // Design Systems
-  Tokens: Coins,
-  "Component Libraries": Layers,
-  Governance: ShieldCheck,
-  Documentation: FileText,
-  "Multi-brand Systems": Boxes,
-  // UI & Visual Design
-  "Visual Design": Palette,
-  Typography: Type,
-  "Pitch Deck Design": Presentation,
-  Layout: LayoutGrid,
-  Branding: Palette,
-  "Responsive Design": Smartphone,
-  Accessibility: Accessibility,
-  WCAG: Accessibility,
-  // Collaboration & Leadership
-  "Cross-Functional Collaboration": Users,
-  "Stakeholder Communication": MessagesSquare,
-  "Design-Engineering Handoff": Workflow,
-  "Campaign & Growth Design": Megaphone,
-  // Interaction & Prototyping
-  Wireframing: Frame,
-  Prototyping: MousePointerClick,
-  "User Testing": ClipboardCheck,
-  "Motion & Micro-interactions": Zap,
-  Figma: Figma,
-  "Figma Make": Wand2,
-  Framer: Framer,
-  Protopie: Component,
-  // AI Tools & Workflow
-  Claude: Sparkles,
-  "Claude Code": Terminal,
-  "Figma MCP": Plug,
-  "Prompt Engineering": MessageSquareText,
-  "AI-Augmented Design": Wand2,
-  // Engineering & Development
-  HTML: FileCode,
-  CSS: Braces,
-  "Bootstrap 5": LayoutGrid,
-  "Drupal 11": Droplets,
-  Git: GitBranch,
+// Tools without a bundled logo get a brand-coloured initials tile (swap in a real mark in brands.tsx).
+const TOOL_TILES: Record<string, { bg: string; fg: string; text: string }> = {
+  ProtoPie: { bg: "#6D3CF5", fg: "#fff", text: "Pp" },
+  Jira: { bg: "#2684FF", fg: "#fff", text: "Ji" },
+  Confluence: { bg: "#1868DB", fg: "#fff", text: "Cf" },
+  Maze: { bg: "#6B4EFF", fg: "#fff", text: "Mz" },
+  Hotjar: { bg: "#FD3A5C", fg: "#fff", text: "Hj" },
+  Miro: { bg: "#FFD02F", fg: "#050038", text: "Mi" },
 };
+
+function ToolGlyph({ name }: { name: string }) {
+  const Brand = BRAND_LOGOS[name];
+  if (Brand) return <Brand className="h-7 w-7 shrink-0" />;
+  const t = TOOL_TILES[name] ?? { bg: "#334155", fg: "#fff", text: name.slice(0, 2) };
+  return (
+    <span
+      aria-hidden="true"
+      style={{ background: t.bg, color: t.fg }}
+      className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-[11px] font-bold leading-none"
+    >
+      {t.text}
+    </span>
+  );
+}
 
 function SkillsAndTools() {
   return (
-    <section id="skills-tools" className="mt-14 sm:mt-24 scroll-mt-24">
-      <SectionHeading eyebrow="Skills & Tools" title="what I work with" />
-      <div className="mt-8">
-        {skillCategories.map((cat) => (
-          <div
-            key={cat.label}
-            className="grid grid-cols-1 gap-2 border-t border-border py-6 sm:grid-cols-[190px_1fr] sm:gap-8"
-          >
-            <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
-              {cat.label}
+    <section id="skills-tools" className="mt-14 scroll-mt-24 sm:mt-24">
+      <p className="font-mono text-[12px] uppercase tracking-[0.2em] text-muted-foreground">
+        // Toolstack
+      </p>
+      <div className="mt-6 grid grid-cols-1 gap-6 bg-[radial-gradient(circle,hsl(var(--border))_1px,transparent_1.5px)] [background-size:9px_9px] sm:grid-cols-2 lg:grid-cols-3">
+        {toolstack.map((group) => (
+          <div key={group.label} className="overflow-hidden rounded-sm border border-border bg-background">
+            <p className="border-b border-border bg-foreground/[0.03] px-4 py-2.5 font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
+              {group.label}
             </p>
-            <div className="flex flex-wrap gap-2">
-              {cat.items.map((item) => {
-                const Brand = BRAND_LOGOS[item];
-                const Icon = SKILL_ICONS[item] ?? Sparkles;
-                return (
-                  <span
-                    key={item}
-                    className="inline-flex cursor-default select-none items-center gap-1.5 rounded-full border border-border bg-foreground/[0.03] px-3 py-1.5 text-[14px] text-foreground/85 transition-all duration-200 ease-out hover:-translate-y-0.5 hover:rotate-[-1.5deg] hover:border-foreground hover:bg-foreground hover:text-background hover:shadow-sm"
-                  >
-                    {Brand ? (
-                      <Brand className="h-4 w-4 shrink-0" />
-                    ) : (
-                      <Icon className="h-3.5 w-3.5 opacity-70" aria-hidden="true" />
-                    )}
-                    {item}
+            <ul className="flex flex-wrap">
+              {group.tools.map((tool) => (
+                <li
+                  key={tool}
+                  className="group relative flex h-16 w-16 items-center justify-center border-r border-border transition-colors duration-200 last:border-r-0 hover:bg-foreground/[0.04]"
+                >
+                  <span className="transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:scale-110">
+                    <ToolGlyph name={tool} />
                   </span>
-                );
-              })}
-            </div>
+                  <span className="sr-only">{tool}</span>
+                  <span
+                    aria-hidden="true"
+                    className="pointer-events-none absolute -top-2 left-1/2 z-10 -translate-x-1/2 -translate-y-full whitespace-nowrap rounded-md bg-foreground px-2 py-1 text-[11px] font-medium text-background opacity-0 shadow-md transition-opacity duration-150 group-hover:opacity-100"
+                  >
+                    {tool}
+                  </span>
+                </li>
+              ))}
+            </ul>
           </div>
         ))}
       </div>

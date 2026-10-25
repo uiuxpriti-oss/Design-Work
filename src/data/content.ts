@@ -1887,6 +1887,20 @@ export const experience: Experience[] = [
   },
 ];
 
+export interface ToolGroup {
+  label: string;
+  /** Tool names. Logos come from BRAND_LOGOS in App.tsx; unknown tools get a coloured initials tile. */
+  tools: string[];
+}
+
+export const toolstack: ToolGroup[] = [
+  { label: "Design & Prototyping", tools: ["Figma", "Figma Make", "Framer", "ProtoPie", "LottieLab"] },
+  { label: "AI Workflow", tools: ["Claude", "Claude Code", "Figma MCP"] },
+  { label: "Collaboration & Handoff", tools: ["Notion", "Jira", "Confluence"] },
+  { label: "Research & Testing", tools: ["Maze", "Hotjar", "Miro"] },
+  { label: "Frontend & Dev", tools: ["HTML", "CSS", "Bootstrap 5", "Drupal 11", "Git"] },
+];
+
 export interface SkillCategory {
   label: string;
   items: string[];
