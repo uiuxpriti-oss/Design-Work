@@ -3,7 +3,6 @@ import {
   useRef,
   useState,
   type ReactNode,
-  type MouseEvent as ReactMouseEvent,
 } from "react";
 import Lenis from "lenis";
 import {
@@ -693,130 +692,244 @@ function SideNav({
   );
 }
 
-function Hero() {
-  const current = experience[0];
-  const cardRef = useRef<HTMLDivElement>(null);
-  const [tilt, setTilt] = useState({ rx: 0, ry: 0, on: false });
-  const [mailCopied, setMailCopied] = useState(false);
-  const copyMail = async () => {
+const GREETINGS = ["Hola", "Bonjour", "नमस्ते", "Ciao", "Konnichiwa", "Hello"];
+const HERO_PHRASES = [
+  "opening Figma.",
+  "sketching a solution.",
+  "assuming what users need.",
+  "designing a single screen.",
+];
+
+type SplashPhase = "show" | "leaving" | "done";
+
+// Start-up window: cycles hello in six languages, then slides away.
+function StartupSplash({ phase, onPhase }: { phase: SplashPhase; onPhase: (p: SplashPhase) => void }) {
+  const [g, setG] = useState(0);
+  useEffect(() => {
+    if (phase !== "show") return;
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let t1 = 0;
+    let t2 = 0;
+    const iv = window.setInterval(() => {
+      setG((cur) => {
+        if (cur + 1 >= GREETINGS.length) {
+          window.clearInterval(iv);
+          t1 = window.setTimeout(() => {
+            onPhase("leaving");
+            t2 = window.setTimeout(() => onPhase("done"), 700);
+          }, 500);
+          return cur;
+        }
+        return cur + 1;
+      });
+    }, reduce ? 160 : 380);
+    return () => {
+      window.clearInterval(iv);
+      window.clearTimeout(t1);
+      window.clearTimeout(t2);
+    };
+  }, [phase, onPhase]);
+  if (phase === "done") return null;
+  return (
+    <div
+      className="hero-root"
+      style={{
+        position: "fixed",
+        inset: 0,
+        zIndex: 120,
+        background: "var(--hr-bg)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        transition: "opacity .7s ease, transform .7s cubic-bezier(.7,0,.2,1)",
+        opacity: phase === "leaving" ? 0 : 1,
+        transform: phase === "leaving" ? "translateY(-4%)" : "none",
+        pointerEvents: phase === "leaving" ? "none" : "auto",
+        fontFamily: "'Manrope', system-ui, sans-serif",
+      }}
+      aria-hidden="true"
+    >
+      <span
+        key={g}
+        style={{
+          display: "inline-block",
+          fontSize: "clamp(40px,6vw,72px)",
+          fontWeight: 500,
+          letterSpacing: "-0.03em",
+          color: "var(--hr-strong)",
+          animation: "heroIn .3s ease-out",
+        }}
+      >
+        {GREETINGS[g]}
+      </span>
+    </div>
+  );
+}
+
+function Hero({ ready }: { ready: boolean }) {
+  const [i, setI] = useState(0);
+  const [copied, setCopied] = useState(false);
+  const [time, setTime] = useState("");
+  const rot = useRef<number | undefined>(undefined);
+  const restart = () => {
+    window.clearInterval(rot.current);
+    if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches)
+      rot.current = window.setInterval(() => setI((n) => (n + 1) % HERO_PHRASES.length), 2800);
+  };
+  useEffect(() => {
+    restart();
+    const tick = () =>
+      setTime(
+        new Date().toLocaleTimeString("en-US", {
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: false,
+          timeZone: "Asia/Kolkata",
+        }) + " local",
+      );
+    tick();
+    const clock = window.setInterval(tick, 30000);
+    return () => {
+      window.clearInterval(rot.current);
+      window.clearInterval(clock);
+    };
+  }, []);
+  const copyEmail = async () => {
     try {
       await navigator.clipboard.writeText(links.emailAddress);
-      setMailCopied(true);
-      window.setTimeout(() => setMailCopied(false), 1600);
     } catch {
       /* clipboard unavailable */
     }
+    setCopied(true);
+    window.setTimeout(() => setCopied(false), 1800);
   };
-  const onMove = (e: ReactMouseEvent<HTMLDivElement>) => {
-    const el = cardRef.current;
-    if (!el || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const r = el.getBoundingClientRect();
-    const px = (e.clientX - r.left) / r.width - 0.5;
-    const py = (e.clientY - r.top) / r.height - 0.5;
-    const MAX = 20;
-    setTilt({ rx: -py * MAX, ry: px * MAX, on: true });
-  };
-  const onLeave = () => setTilt({ rx: 0, ry: 0, on: false });
+  const words = ["Product", "Designer", "who", "asks", "the", "right", "questions", "before", "*"];
+  const started = ready ? "on" : "off";
+  const grad = {
+    background: "var(--hr-grad)",
+    WebkitBackgroundClip: "text",
+    backgroundClip: "text",
+    color: "transparent",
+    display: "inline-block",
+    animation: "heroIn .6s cubic-bezier(.2,.7,.2,1)",
+  } as const;
+  const btn =
+    "flex items-center gap-2.5 rounded-[10px] border border-[var(--hr-border)] bg-[var(--hr-bg)] px-4 py-2.5 text-base text-[var(--hr-link)] transition-all duration-200 ease-out hover:-translate-y-0.5 hover:border-[#A3A3A3] hover:text-[var(--hr-strong)] hover:shadow-[0_6px_16px_rgba(0,0,0,.06)]";
+  const chip = "rounded px-1 py-px text-[13px] text-[var(--hr-chip-text)] bg-[var(--hr-chip)]";
   return (
-    <section id="home" className="scroll-mt-24 pt-8 pb-14 sm:pt-10">
-      <div className="mx-auto max-w-[72rem] px-4 sm:px-6 [perspective:850px]">
-        <div
-          ref={cardRef}
-          onMouseMove={onMove}
-          onMouseLeave={onLeave}
-          style={{
-            transform: `rotateX(${tilt.rx}deg) rotateY(${tilt.ry}deg) scale(${tilt.on ? 1.05 : 1})`,
-            transition: tilt.on
-              ? "transform 80ms ease-out, box-shadow 300ms ease-out"
-              : "transform 500ms ease-out, box-shadow 300ms ease-out",
-          }}
-          className="group relative overflow-hidden rounded-[28px] bg-[#11332a] px-7 py-9 shadow-lg will-change-transform [transform-style:preserve-3d] hover:shadow-2xl sm:px-12 sm:py-12 lg:px-14 lg:py-14"
-        >
-          {/* desktop: full composite with camera + journal stickers */}
-          <img
-            src="hero-card.webp"
-            alt=""
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-0 hidden h-full w-full object-cover object-right lg:block"
-          />
-          {/* mobile: faint grid + journal peeking at the bottom-right */}
-          <div className="pointer-events-none absolute inset-0 lg:hidden" aria-hidden="true">
-            <div className="absolute inset-0 opacity-[0.05] [background-image:linear-gradient(to_right,#fff_1px,transparent_1px),linear-gradient(to_bottom,#fff_1px,transparent_1px)] [background-size:40px_40px]" />
-            <img
-              src="hero-journal.webp"
-              alt=""
-              className="absolute -bottom-7 right-0 w-[50%] max-w-[210px] translate-x-20"
-            />
-          </div>
-          <div className="relative max-w-2xl lg:max-w-[34rem]">
-            <h1 className="text-3xl font-bold tracking-tight text-white sm:text-[2.75rem]">
-              Priti Jani
+    <section
+      id="home"
+      className="hero-root relative flex min-h-screen flex-col justify-center overflow-hidden"
+      style={{
+        background: "var(--hr-bg)",
+        color: "var(--hr-text)",
+        fontFamily: "'Manrope', system-ui, sans-serif",
+        padding: "72px 0",
+      }}
+    >
+      <div className="relative mx-auto flex w-full max-w-[1200px] flex-col px-8" style={{ gap: "clamp(56px,10vh,120px)" }}>
+        <div className="flex flex-wrap items-end justify-between gap-12">
+          <div className="flex max-w-[780px] flex-col gap-8">
+            <p style={{ margin: "0 0 -8px", fontSize: "clamp(20px,2vw,26px)", fontWeight: 500, letterSpacing: "-0.02em", color: "var(--hr-mute)" }}>
+              Hi, I&apos;m <span style={{ color: "var(--hr-strong)" }}>Priti Jani</span>
+            </p>
+            <h1
+              style={{
+                margin: 0,
+                fontSize: "clamp(34px,4.4vw,56px)",
+                fontWeight: 500,
+                lineHeight: 1.3,
+                letterSpacing: "-0.025em",
+                color: "var(--hr-text)",
+                textWrap: "balance",
+              }}
+            >
+              {words.map((w, k) => (
+                <span key={started + k}>
+                  <span
+                    style={{
+                      display: "inline-block",
+                      animation: `heroIn .7s cubic-bezier(.2,.7,.2,1) ${k * 0.08}s both`,
+                    }}
+                  >
+                    {w === "*" ? (
+                      <span
+                        key={i}
+                        onClick={() => {
+                          setI((n) => (n + 1) % HERO_PHRASES.length);
+                          restart();
+                        }}
+                        style={{ ...grad, cursor: "pointer" }}
+                      >
+                        {HERO_PHRASES[i]}
+                      </span>
+                    ) : (
+                      w
+                    )}
+                  </span>
+                  {k < words.length - 1 ? " " : null}
+                </span>
+              ))}
             </h1>
-            <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-2">
-              <p className="text-[17px] font-medium text-[#E3A64A]">Product Designer</p>
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-400/10 px-2.5 py-1 text-xs font-medium text-emerald-300 ring-1 ring-emerald-400/20">
-                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" aria-hidden="true" />
-                Open to work
-              </span>
-            </div>
-            <p className="mt-6 text-[15px] leading-relaxed text-white/75 sm:text-[17px] sm:leading-[1.75]">
-              Product Designer with 4+ years designing enterprise and B2B SaaS
-              products at scale. I turn complex, data-heavy requirements into
-              simple, usable flows — obsessing over the details people
-              don&apos;t notice, but always feel.
+            <p style={{ margin: 0, fontSize: "clamp(18px,1.6vw,22px)", lineHeight: 1.55, color: "var(--hr-soft)", maxWidth: "52ch", textWrap: "pretty" }}>
+              4+ years designing{" "}
+              <span style={{ color: "var(--hr-text)", fontWeight: 500 }}>enterprise and B2B SaaS products</span> at scale. I
+              untangle <span style={{ color: "var(--hr-text)", fontWeight: 500 }}>complex, data-heavy requirements</span> into
+              calm, usable flows — sweating the details people never notice, but always feel.
             </p>
-
-            <p className="mt-7 text-[15px] text-white/55">
-              Reach out via{" "}
-              <button
-                type="button"
-                onClick={copyMail}
-                aria-label={mailCopied ? "Email copied" : "Copy email address"}
-                className="group/mail inline-flex items-center font-medium text-[#E3A64A] underline underline-offset-4 transition-colors hover:text-[#efba63]"
-              >
-                {mailCopied ? "copied" : "mail"}
-                {mailCopied ? (
-                  <Check
-                    className="ml-1 h-3.5 w-3.5 text-emerald-400"
-                    aria-hidden="true"
-                  />
-                ) : (
-                  <Copy
-                    className="ml-0 h-0 w-0 opacity-0 transition-all duration-200 group-hover/mail:ml-1 group-hover/mail:h-3.5 group-hover/mail:w-3.5 group-hover/mail:opacity-100"
-                    aria-hidden="true"
-                  />
-                )}
-              </button>{" "}
-              or on{" "}
-              <a
-                href={links.linkedin}
-                target="_blank"
-                rel="noreferrer"
-                className="group/li inline-flex items-center font-medium text-[#E3A64A] underline underline-offset-4 transition-colors hover:text-[#efba63]"
-              >
-                LinkedIn
-                <ArrowUpRight
-                  className="ml-0 h-0 w-0 opacity-0 transition-all duration-200 group-hover/li:ml-1 group-hover/li:h-3.5 group-hover/li:w-3.5 group-hover/li:opacity-100"
-                  aria-hidden="true"
-                />
-              </a>
-            </p>
-
-            <div className="mt-7 flex flex-col gap-2.5">
-              <div className="flex items-center gap-2.5">
-                <span className="text-[13px] text-white/60">Currently at</span>
-                <span className="grid h-6 w-6 shrink-0 place-items-center overflow-hidden rounded-md bg-white ring-1 ring-white/20">
-                  <img
-                    src={current.logo.src}
-                    alt=""
-                    className="h-full w-full object-contain p-0.5"
-                  />
-                </span>
-                <span className="text-[13px] font-medium text-white/85">
-                  Netlink Software Group America Inc
-                </span>
-              </div>
+          </div>
+          <div className="flex flex-col gap-1.5 text-sm" style={{ color: "var(--hr-mute)" }}>
+            <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 12, letterSpacing: "0.14em", textTransform: "uppercase" }}>
+              Currently at
+            </span>
+            <div className="flex items-center gap-2.5">
+              <img
+                src={assetUrl("logos/netlink.png")}
+                alt=""
+                className="h-8 w-8 rounded-lg border bg-white object-contain"
+                style={{ borderColor: "var(--hr-border)" }}
+              />
+              <span style={{ color: "var(--hr-text)", fontWeight: 600 }}>Netlink Software Group</span>
             </div>
+          </div>
+        </div>
+      </div>
+
+      <p
+        className="relative mx-auto w-full max-w-[1200px] px-8 text-base"
+        style={{ margin: "clamp(64px,12vh,128px) auto 20px", color: "var(--hr-mute)" }}
+      >
+        Feel free to connect - I&rsquo;m always up for a good conversation.
+      </p>
+      <div className="relative">
+        <div className="absolute inset-x-0 top-1/2 h-px" style={{ background: "var(--hr-border)" }} />
+        <div className="relative mx-auto flex max-w-[1200px] flex-wrap items-center justify-between gap-4 px-8">
+          <div className="flex flex-wrap gap-6">
+            <a href={links.linkedin} target="_blank" rel="noreferrer" className={btn}>
+              LinkedIn <span className={chip}>↗</span>
+            </a>
+            <button type="button" onClick={copyEmail} className={`${btn} cursor-pointer`} style={{ font: "inherit", fontSize: 16 }}>
+              {copied ? "Copied to clipboard" : "Copy email"} <span className={chip}>{copied ? "✓" : "⧉"}</span>
+            </button>
+            <a href={links.cv} target="_blank" rel="noreferrer" className={btn}>
+              Resume <span className={chip}>↗</span>
+            </a>
+          </div>
+          <div
+            className="flex items-center gap-2.5 rounded-[10px] border px-5 py-3"
+            style={{
+              background: "var(--hr-bg)",
+              borderColor: "var(--hr-border)",
+              fontFamily: "'JetBrains Mono', monospace",
+              fontSize: 13,
+              letterSpacing: "0.12em",
+              textTransform: "uppercase",
+              color: "var(--hr-mute)",
+            }}
+          >
+            <span style={{ width: 6, height: 6, borderRadius: "50%", background: "var(--hr-green)", animation: "heroPulse 2s infinite" }} />
+            <span style={{ color: "var(--hr-green)", fontWeight: 500 }}>Open to work</span>
+            <span>&middot; Full time &amp; contract &middot; {time}</span>
           </div>
         </div>
       </div>
@@ -3509,6 +3622,8 @@ export default function App() {
     };
   }, []);
   const [route0] = useState(routeFromPath);
+  // The start-up window only plays when the site opens on the home page.
+  const [splash, setSplash] = useState<SplashPhase>(() => (routeFromPath().page === "home" ? "show" : "done"));
   const [page, setPage] = useState<"home" | "projects" | "about" | "case">(
     route0.page,
   );
@@ -3606,6 +3721,7 @@ export default function App() {
   }, [page, caseId]);
   return (
     <div className="isolate min-h-screen bg-background text-foreground antialiased">
+      <StartupSplash phase={splash} onPhase={setSplash} />
       <CursorDots />
       <div>
         <Header
@@ -3618,7 +3734,7 @@ export default function App() {
           <>
             <SideNav />
             <main>
-              <Hero />
+              <Hero ready={splash !== "show"} />
               <FocusAreas />
               <div className="mx-auto max-w-[72rem] px-6">
                 <Work onViewAll={() => openProjects("case")} onOpen={openCase} />

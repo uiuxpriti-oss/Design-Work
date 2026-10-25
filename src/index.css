@@ -2,6 +2,96 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: "Manrope";
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url("/fonts/manrope-latin-ext.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: "Manrope";
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url("/fonts/manrope-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "JetBrains Mono";
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url("/fonts/jetbrains-mono-latin-ext.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: "JetBrains Mono";
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url("/fonts/jetbrains-mono-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* Hero + start-up splash (from the Priti Jani Hero design). Light values are the design's own;
+   dark values keep the same hierarchy on the dark ground. */
+.hero-root {
+  --hr-bg: #ffffff;
+  --hr-text: #262626;
+  --hr-strong: #171717;
+  --hr-mute: #a3a3a3;
+  --hr-soft: #b8b8b8;
+  --hr-border: #ededed;
+  --hr-chip: #f5f5f5;
+  --hr-chip-text: #737373;
+  --hr-link: #525252;
+  --hr-green: #16a34a;
+  --hr-grad: linear-gradient(90deg, #1e3a8a 0%, #2563eb 45%, #60a5fa 80%, #bfdbfe 100%);
+}
+:root.dark .hero-root {
+  --hr-bg: hsl(var(--background));
+  --hr-text: #e5e5e5;
+  --hr-strong: #fafafa;
+  --hr-mute: #8c8c8c;
+  --hr-soft: #707070;
+  --hr-border: #2a2a2a;
+  --hr-chip: #1f1f1f;
+  --hr-chip-text: #a3a3a3;
+  --hr-link: #a3a3a3;
+  --hr-green: #4ade80;
+  --hr-grad: linear-gradient(90deg, #3b82f6 0%, #60a5fa 45%, #93c5fd 80%, #dbeafe 100%);
+}
+@keyframes heroIn {
+  from {
+    opacity: 0;
+    filter: blur(8px);
+    transform: translateY(0.25em);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: none;
+  }
+}
+@keyframes heroPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 8px rgba(22, 163, 74, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(22, 163, 74, 0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-root * {
+    animation: none !important;
+  }
+}
+
 /* Lenis smooth scroll */
 html.lenis,
 html.lenis body {
