@@ -816,38 +816,75 @@ function Hero({ ready }: { ready: boolean }) {
   const btn =
     "flex items-center gap-2.5 rounded-[10px] border border-[var(--hr-border)] bg-[var(--hr-bg)] px-4 py-2.5 text-base text-[var(--hr-link)] md:text-[15px] transition-all duration-200 ease-out hover:-translate-y-0.5 hover:border-[#A3A3A3] hover:text-[var(--hr-strong)] hover:shadow-[0_6px_16px_rgba(0,0,0,.06)]";
   const chip = "rounded px-1 py-px text-[13px] text-[var(--hr-chip-text)] bg-[var(--hr-chip)]";
+  const variantB = new URLSearchParams(window.location.search).get("hero") === "b";
+  const currentlyAt = (
+    <div className="flex items-center gap-2.5 text-sm" style={{ color: "var(--hr-mute)" }}>
+      <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 12, letterSpacing: "0.14em", textTransform: "uppercase" }}>
+        Currently at
+      </span>
+      <img
+        src={assetUrl("logos/netlink.png")}
+        alt=""
+        className="h-7 w-7 rounded-lg border bg-white object-contain"
+        style={{ borderColor: "var(--hr-border)" }}
+      />
+      <span style={{ color: "var(--hr-text)", fontWeight: 600 }}>Netlink Software Group</span>
+    </div>
+  );
+  const status = (
+    <div
+      className="flex items-center gap-2.5 rounded-[10px] border px-5 py-3"
+      style={{
+        background: "var(--hr-bg)",
+        borderColor: "var(--hr-border)",
+        fontFamily: "'JetBrains Mono', monospace",
+        fontSize: "clamp(11px,0.95vw,12px)",
+        letterSpacing: "0.12em",
+        textTransform: "uppercase",
+        color: "var(--hr-mute)",
+      }}
+    >
+      <span style={{ width: 6, height: 6, borderRadius: "50%", background: "var(--hr-green)", animation: "heroPulse 2s infinite" }} />
+      <span style={{ color: "var(--hr-green)", fontWeight: 500 }}>Open to work</span>
+      <span>&middot; Full time &amp; contract &middot; {time}</span>
+    </div>
+  );
   return (
     <section
       id="home"
-      className="hero-root relative flex flex-col overflow-hidden"
+      className="hero-root relative flex flex-col overflow-hidden text-center"
       style={{
         background: "var(--hr-bg)",
         color: "var(--hr-text)",
         fontFamily: "'Manrope', system-ui, sans-serif",
-        padding: "clamp(84px,10vh,96px) 0 64px",
+        padding: "clamp(96px,14vh,140px) 0 72px",
       }}
     >
-      <div className="relative mx-auto flex w-full max-w-[1200px] flex-col px-8" style={{ gap: "clamp(56px,10vh,120px)" }}>
-        <div className="flex flex-wrap items-end justify-between gap-12">
-          <div className="flex max-w-[880px] flex-col gap-8">
-            <p style={{ margin: "0 0 -8px", fontSize: "clamp(20px,1.6vw,22px)", fontWeight: 500, letterSpacing: "-0.02em", color: "var(--hr-mute)" }}>
-              Hi, I&apos;m <span style={{ color: "var(--hr-strong)" }}>Priti Jani</span>
-            </p>
-            <h1
-              style={{
-                margin: 0,
-                fontSize: "clamp(34px,3.2vw,40px)",
-                fontWeight: 500,
-                lineHeight: 1.3,
-                letterSpacing: "-0.025em",
-                color: "var(--hr-text)",
-              }}
-            >
-              {words.map((w, k) =>
-                w === "\n" ? (
-                  // Fixed break so the headline is always two lines on desktop, whichever phrase is showing.
-                  <br key={started + k} className="hidden lg:block" />
-                ) : (
+      <div className="relative mx-auto flex w-full max-w-[1200px] flex-col items-center px-8" style={{ gap: "clamp(32px,5vh,56px)" }}>
+        {variantB && (
+          <div className="rounded-full border px-4 py-2" style={{ borderColor: "var(--hr-border)" }}>
+            {currentlyAt}
+          </div>
+        )}
+        <div className="flex flex-col items-center gap-8">
+          <p style={{ margin: "0 0 -8px", fontSize: "clamp(20px,1.6vw,22px)", fontWeight: 500, letterSpacing: "-0.02em", color: "var(--hr-mute)" }}>
+            Hi, I&apos;m <span style={{ color: "var(--hr-strong)" }}>Priti Jani</span>
+          </p>
+          <h1
+            style={{
+              margin: 0,
+              fontSize: "clamp(34px,3.2vw,40px)",
+              fontWeight: 500,
+              lineHeight: 1.3,
+              letterSpacing: "-0.025em",
+              color: "var(--hr-text)",
+            }}
+          >
+            {words.map((w, k) =>
+              w === "\n" ? (
+                // Fixed break so the headline is always two lines on desktop, whichever phrase is showing.
+                <br key={started + k} className="hidden lg:block" />
+              ) : (
                 <span key={started + k}>
                   <span
                     style={{
@@ -872,43 +909,24 @@ function Hero({ ready }: { ready: boolean }) {
                   </span>
                   {k < words.length - 1 ? " " : null}
                 </span>
-                ),
-              )}
-            </h1>
-            <p style={{ margin: 0, fontSize: "clamp(18px,1.4vw,19px)", lineHeight: 1.55, color: "var(--hr-soft)", maxWidth: "52ch", textWrap: "pretty" }}>
-              4+ years designing{" "}
-              <span style={{ color: "var(--hr-text)", fontWeight: 500 }}>enterprise and B2B SaaS products</span> at scale. I
-              untangle <span style={{ color: "var(--hr-text)", fontWeight: 500 }}>complex, data-heavy requirements</span> into
-              calm, usable flows — sweating the details people never notice, but always feel.
-            </p>
-          </div>
-          <div className="flex flex-col gap-1.5 text-sm" style={{ color: "var(--hr-mute)" }}>
-            <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 12, letterSpacing: "0.14em", textTransform: "uppercase" }}>
-              Currently at
-            </span>
-            <div className="flex items-center gap-2.5">
-              <img
-                src={assetUrl("logos/netlink.png")}
-                alt=""
-                className="h-8 w-8 rounded-lg border bg-white object-contain"
-                style={{ borderColor: "var(--hr-border)" }}
-              />
-              <span style={{ color: "var(--hr-text)", fontWeight: 600 }}>Netlink Software Group</span>
-            </div>
-          </div>
+              ),
+            )}
+          </h1>
         </div>
+        {!variantB && currentlyAt}
       </div>
 
       <p
         className="relative mx-auto w-full max-w-[1200px] px-8 text-base md:text-[15px]"
-        style={{ margin: "clamp(64px,12vh,128px) auto 20px", color: "var(--hr-mute)" }}
+        style={{ margin: "clamp(56px,10vh,96px) auto 20px", color: "var(--hr-mute)" }}
       >
         Feel free to connect - I&rsquo;m always up for a good conversation.
       </p>
-      <div className="relative">
+      <div>
+        <div className="relative">
         <div className="absolute inset-x-0 top-1/2 h-px" style={{ background: "var(--hr-border)" }} />
-        <div className="relative mx-auto flex max-w-[1200px] flex-wrap items-center justify-between gap-4 px-8">
-          <div className="flex flex-wrap gap-6">
+        <div className="relative mx-auto flex max-w-[1200px] flex-wrap items-center justify-center gap-4 px-8">
+          <div className="flex flex-wrap justify-center gap-4 sm:gap-6">
             <a href={links.linkedin} target="_blank" rel="noreferrer" className={btn}>
               LinkedIn <span className={chip}>↗</span>
             </a>
@@ -919,23 +937,10 @@ function Hero({ ready }: { ready: boolean }) {
               Resume <span className={chip}>↗</span>
             </a>
           </div>
-          <div
-            className="flex items-center gap-2.5 rounded-[10px] border px-5 py-3"
-            style={{
-              background: "var(--hr-bg)",
-              borderColor: "var(--hr-border)",
-              fontFamily: "'JetBrains Mono', monospace",
-              fontSize: "clamp(11px,0.95vw,12px)",
-              letterSpacing: "0.12em",
-              textTransform: "uppercase",
-              color: "var(--hr-mute)",
-            }}
-          >
-            <span style={{ width: 6, height: 6, borderRadius: "50%", background: "var(--hr-green)", animation: "heroPulse 2s infinite" }} />
-            <span style={{ color: "var(--hr-green)", fontWeight: 500 }}>Open to work</span>
-            <span>&middot; Full time &amp; contract &middot; {time}</span>
-          </div>
+          {variantB && status}
         </div>
+        </div>
+        {!variantB && <div className="relative mt-6 flex justify-center px-8">{status}</div>}
       </div>
     </section>
   );
