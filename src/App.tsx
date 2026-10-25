@@ -389,7 +389,8 @@ const NAV: { id: string; label: string; icon: LucideIcon }[] = [
 
 // Solid pill for the scrolled nav — opaque so it stays readable over content
 // (glassmorphism washed out against the page cards).
-const NAV_SOLID = "border border-border bg-card shadow-lg";
+const NAV_SOLID =
+  "border border-[#EDEDED] bg-background transition-all duration-200 ease-out dark:border-[#2a2a2a]";
 
 function useActiveSection(ids: string[]) {
   const [active, setActive] = useState(ids[0]);
@@ -518,7 +519,7 @@ function Header({
                 src={assetUrl(avatar)}
                 alt="Priti Jani"
                 onError={() => setAvatarOk(false)}
-                className="block aspect-square h-9 w-9 shrink-0 rounded-full object-cover shadow-lg ring-2 ring-card"
+                className="block aspect-square h-9 w-9 shrink-0 rounded-full object-cover ring-1 ring-border"
               />
             ) : (
               <span className="inline-block h-8 w-8 rounded-full bg-foreground align-middle" />
@@ -545,7 +546,7 @@ function Header({
                   aria-current={isActive ? "page" : undefined}
                   className={`inline-flex items-center gap-1 whitespace-nowrap rounded-full px-3 py-1.5 text-[13px] font-medium leading-none outline-none transition duration-200 ease-out active:scale-[0.96] focus-visible:ring-2 focus-visible:ring-foreground/20 focus-visible:ring-offset-2 focus-visible:ring-offset-background sm:gap-1.5 sm:px-4 sm:py-2 sm:text-[15px] ${
                     isActive
-                      ? "bg-background text-foreground shadow-sm ring-1 ring-black/[0.06] active:bg-background dark:ring-white/10"
+                      ? "bg-foreground/[0.06] text-foreground active:bg-foreground/[0.08]"
                       : "text-foreground/70 hover:bg-foreground/[0.05] hover:text-foreground active:bg-foreground/[0.09]"
                   }`}
                 >
@@ -570,7 +571,7 @@ function Header({
             <div className="hidden sm:block">
               <ContactButton
                 align="right"
-                className="inline-flex items-center gap-1.5 rounded-full bg-primary px-3 py-2 text-sm font-medium text-primary-foreground shadow-sm outline-none transition-all duration-300 ease-out hover:opacity-90 active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-foreground/25 sm:px-3.5"
+                className="inline-flex items-center gap-1.5 rounded-full bg-primary px-3 py-2 text-sm font-medium text-primary-foreground outline-none transition-all duration-300 ease-out hover:opacity-90 active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-foreground/25 sm:px-3.5"
               >
                 <Send className="h-4 w-4" aria-hidden="true" />{" "}
                 <span className="hidden sm:inline">Contact</span>
@@ -844,27 +845,11 @@ function Hero({ ready }: { ready: boolean }) {
     animation: "heroIn .6s cubic-bezier(.2,.7,.2,1)",
   } as const;
   const btn =
-    "flex items-center gap-2.5 rounded-[10px] border border-[var(--hr-border)] bg-[var(--hr-bg)] px-4 py-2.5 text-base text-[var(--hr-link)] md:text-[15px] transition-all duration-200 ease-out hover:-translate-y-0.5 hover:border-[#A3A3A3] hover:text-[var(--hr-strong)] hover:shadow-[0_6px_16px_rgba(0,0,0,.06)]";
+    "flex items-center gap-2.5 rounded-full border border-[var(--hr-border)] bg-[var(--hr-bg)] px-4 py-2.5 text-base text-[var(--hr-link)] md:text-[15px] transition-all duration-200 ease-out hover:-translate-y-0.5 hover:border-[#A3A3A3] hover:text-[var(--hr-strong)] hover:shadow-[0_6px_16px_rgba(0,0,0,.06)]";
   const chip = "rounded px-1 py-px text-[13px] text-[var(--hr-chip-text)] bg-[var(--hr-chip)]";
-  const currentlyAt = (
-    <div className="flex flex-col gap-1.5 text-sm" style={{ color: "var(--hr-mute)" }}>
-      <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 12, letterSpacing: "0.14em", textTransform: "uppercase" }}>
-        Currently at
-      </span>
-      <div className="flex items-center gap-2.5">
-        <img
-          src={assetUrl("logos/netlink.png")}
-          alt=""
-          className="h-8 w-8 rounded-lg border bg-white object-contain"
-          style={{ borderColor: "var(--hr-border)" }}
-        />
-        <span style={{ color: "var(--hr-text)", fontWeight: 600 }}>Netlink Software Group</span>
-      </div>
-    </div>
-  );
   const status = (
     <div
-      className="flex items-center gap-2.5 rounded-[10px] border px-5 py-3"
+      className="flex items-center gap-2.5 rounded-full border px-5 py-3"
       style={{
         background: "var(--hr-bg)",
         borderColor: "var(--hr-border)",
@@ -888,7 +873,7 @@ function Hero({ ready }: { ready: boolean }) {
         background: "var(--hr-bg)",
         color: "var(--hr-text)",
         fontFamily: "'Manrope', system-ui, sans-serif",
-        padding: "clamp(96px,14vh,140px) 0 72px",
+        padding: "clamp(112px,16vh,150px) 0 clamp(72px,10vh,110px)",
       }}
     >
       <div className="relative mx-auto flex w-full max-w-[1200px] flex-wrap items-end justify-between gap-12 px-8">
@@ -939,7 +924,6 @@ function Hero({ ready }: { ready: boolean }) {
             )}
           </h1>
         </div>
-        {currentlyAt}
       </div>
 
       <p
@@ -1054,7 +1038,7 @@ function ProjectCard({
               </p>
             )}
           </div>
-          <span className="inline-flex w-fit items-center gap-2 rounded-full bg-brand-grad px-5 py-2.5 text-sm font-medium text-white dark:bg-foreground dark:text-background dark:[background-image:none]">
+          <span className="inline-flex w-fit items-center gap-2 rounded-full border border-blue-100 bg-blue-50 px-5 py-2.5 text-sm font-medium text-blue-900 transition-colors duration-200 group-hover:bg-blue-100 dark:border-blue-300/25 dark:bg-blue-300/10 dark:text-blue-200 dark:group-hover:bg-blue-300/20">
             {locked && <LockFillIcon className="h-3.5 w-3.5" />}
             {locked ? "Unlock case study" : (project.tag ?? "Case study")}
           </span>
