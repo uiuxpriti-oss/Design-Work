@@ -753,7 +753,7 @@ function StartupSplash({ phase, onPhase }: { phase: SplashPhase; onPhase: (p: Sp
         key={g}
         style={{
           display: "inline-block",
-          fontSize: "clamp(40px,6vw,72px)",
+          fontSize: "clamp(40px,4.6vw,56px)",
           fontWeight: 500,
           letterSpacing: "-0.03em",
           color: "var(--hr-strong)",
@@ -814,7 +814,7 @@ function Hero({ ready }: { ready: boolean }) {
     animation: "heroIn .6s cubic-bezier(.2,.7,.2,1)",
   } as const;
   const btn =
-    "flex items-center gap-2.5 rounded-[10px] border border-[var(--hr-border)] bg-[var(--hr-bg)] px-4 py-2.5 text-base text-[var(--hr-link)] transition-all duration-200 ease-out hover:-translate-y-0.5 hover:border-[#A3A3A3] hover:text-[var(--hr-strong)] hover:shadow-[0_6px_16px_rgba(0,0,0,.06)]";
+    "flex items-center gap-2.5 rounded-[10px] border border-[var(--hr-border)] bg-[var(--hr-bg)] px-4 py-2.5 text-base text-[var(--hr-link)] md:text-[15px] transition-all duration-200 ease-out hover:-translate-y-0.5 hover:border-[#A3A3A3] hover:text-[var(--hr-strong)] hover:shadow-[0_6px_16px_rgba(0,0,0,.06)]";
   const chip = "rounded px-1 py-px text-[13px] text-[var(--hr-chip-text)] bg-[var(--hr-chip)]";
   return (
     <section
@@ -830,13 +830,13 @@ function Hero({ ready }: { ready: boolean }) {
       <div className="relative mx-auto flex w-full max-w-[1200px] flex-col px-8" style={{ gap: "clamp(56px,10vh,120px)" }}>
         <div className="flex flex-wrap items-end justify-between gap-12">
           <div className="flex max-w-[780px] flex-col gap-8">
-            <p style={{ margin: "0 0 -8px", fontSize: "clamp(20px,2vw,26px)", fontWeight: 500, letterSpacing: "-0.02em", color: "var(--hr-mute)" }}>
+            <p style={{ margin: "0 0 -8px", fontSize: "clamp(20px,1.6vw,22px)", fontWeight: 500, letterSpacing: "-0.02em", color: "var(--hr-mute)" }}>
               Hi, I&apos;m <span style={{ color: "var(--hr-strong)" }}>Priti Jani</span>
             </p>
             <h1
               style={{
                 margin: 0,
-                fontSize: "clamp(34px,4.4vw,56px)",
+                fontSize: "clamp(34px,3.7vw,46px)",
                 fontWeight: 500,
                 lineHeight: 1.3,
                 letterSpacing: "-0.025em",
@@ -871,7 +871,7 @@ function Hero({ ready }: { ready: boolean }) {
                 </span>
               ))}
             </h1>
-            <p style={{ margin: 0, fontSize: "clamp(18px,1.6vw,22px)", lineHeight: 1.55, color: "var(--hr-soft)", maxWidth: "52ch", textWrap: "pretty" }}>
+            <p style={{ margin: 0, fontSize: "clamp(18px,1.4vw,19px)", lineHeight: 1.55, color: "var(--hr-soft)", maxWidth: "52ch", textWrap: "pretty" }}>
               4+ years designing{" "}
               <span style={{ color: "var(--hr-text)", fontWeight: 500 }}>enterprise and B2B SaaS products</span> at scale. I
               untangle <span style={{ color: "var(--hr-text)", fontWeight: 500 }}>complex, data-heavy requirements</span> into
@@ -896,7 +896,7 @@ function Hero({ ready }: { ready: boolean }) {
       </div>
 
       <p
-        className="relative mx-auto w-full max-w-[1200px] px-8 text-base"
+        className="relative mx-auto w-full max-w-[1200px] px-8 text-base md:text-[15px]"
         style={{ margin: "clamp(64px,12vh,128px) auto 20px", color: "var(--hr-mute)" }}
       >
         Feel free to connect - I&rsquo;m always up for a good conversation.
@@ -908,7 +908,7 @@ function Hero({ ready }: { ready: boolean }) {
             <a href={links.linkedin} target="_blank" rel="noreferrer" className={btn}>
               LinkedIn <span className={chip}>↗</span>
             </a>
-            <button type="button" onClick={copyEmail} className={`${btn} cursor-pointer`} style={{ font: "inherit", fontSize: 16 }}>
+            <button type="button" onClick={copyEmail} className={`${btn} cursor-pointer`} style={{ font: "inherit" }}>
               {copied ? "Copied to clipboard" : "Copy email"} <span className={chip}>{copied ? "✓" : "⧉"}</span>
             </button>
             <a href={links.cv} target="_blank" rel="noreferrer" className={btn}>
@@ -921,7 +921,7 @@ function Hero({ ready }: { ready: boolean }) {
               background: "var(--hr-bg)",
               borderColor: "var(--hr-border)",
               fontFamily: "'JetBrains Mono', monospace",
-              fontSize: 13,
+              fontSize: "clamp(11px,0.95vw,12px)",
               letterSpacing: "0.12em",
               textTransform: "uppercase",
               color: "var(--hr-mute)",
