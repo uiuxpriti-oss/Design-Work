@@ -44,40 +44,10 @@ import {
   Github,
   Mail,
   type LucideIcon,
-  Frame,
-  Layout,
-  Lightbulb,
-  Smartphone,
-  Megaphone,
-  PenLine,
-  GitBranch,
-  Compass,
-  LayoutGrid,
-  MousePointerClick,
-  Network,
-  ClipboardCheck,
-  MessagesSquare,
-  Plug,
-  Boxes,
-  Braces,
-  Palette,
-  Coins,
-  TrendingUp,
-  Droplets,
-  Framer,
-  GitCompare,
-  ShieldCheck,
-  ListTree,
-  Users,
-  Figma,
-  Type,
-  MessageSquareText,
-  Terminal,
-  Search,
-  Accessibility,
-  Component,
-  FileCode,
-  Presentation,
+  Shapes,
+  BarChart3,
+  SquareTerminal,
+  ClipboardList,
 } from "lucide-react";
 
 // lucide has no Behance glyph — small inline mark.
@@ -91,7 +61,6 @@ function BehanceIcon({ className = "" }: { className?: string }) {
 import {
   projects,
   caseStudies,
-  skillCategories,
   toolstack,
   creatives,
   motionWork,
@@ -2667,70 +2636,6 @@ function Experience() {
 }
 
 // Tools without a bundled logo get a brand-coloured initials tile (swap in a real mark in brands.tsx).
-const SKILL_ICONS: Record<string, LucideIcon> = {
-  // Design & Product Thinking
-  "UX Strategy": Target,
-  "Product Thinking": Lightbulb,
-  "Product Design": Boxes,
-  "UX/UI": Layout,
-  "Interaction Design": MousePointerClick,
-  "Systems Thinking": Network,
-  "User Research": Search,
-  Discovery: Compass,
-  "Information Architecture": ListTree,
-  "Usability Testing": ClipboardCheck,
-  "A/B Testing": GitCompare,
-  Experimentation: FlaskConical,
-  "Conversion Rate Optimisation": TrendingUp,
-  "Journey Mapping": Route,
-  "Data-Informed Decisions": TrendingUp,
-  "Product Positioning": Compass,
-  "UX Copywriting": PenLine,
-  "Design QA": ShieldCheck,
-  "Product Psychology": Users,
-  // Design Systems
-  Tokens: Coins,
-  "Component Libraries": Layers,
-  Governance: ShieldCheck,
-  Documentation: FileText,
-  "Multi-brand Systems": Boxes,
-  // UI & Visual Design
-  "Visual Design": Palette,
-  Typography: Type,
-  "Pitch Deck Design": Presentation,
-  Layout: LayoutGrid,
-  Branding: Palette,
-  "Responsive Design": Smartphone,
-  Accessibility: Accessibility,
-  WCAG: Accessibility,
-  // Collaboration & Leadership
-  "Cross-Functional Collaboration": Users,
-  "Stakeholder Communication": MessagesSquare,
-  "Design-Engineering Handoff": Workflow,
-  "Campaign & Growth Design": Megaphone,
-  // Interaction & Prototyping
-  Wireframing: Frame,
-  Prototyping: MousePointerClick,
-  "User Testing": ClipboardCheck,
-  "Motion & Micro-interactions": Zap,
-  Figma: Figma,
-  "Figma Make": Wand2,
-  Framer: Framer,
-  Protopie: Component,
-  // AI Tools & Workflow
-  Claude: Sparkles,
-  "Claude Code": Terminal,
-  "Figma MCP": Plug,
-  "Prompt Engineering": MessageSquareText,
-  "AI-Augmented Design": Wand2,
-  // Engineering & Development
-  HTML: FileCode,
-  CSS: Braces,
-  "Bootstrap 5": LayoutGrid,
-  "Drupal 11": Droplets,
-  Git: GitBranch,
-};
-
 // Tools without a bundled logo get a brand-coloured initials tile (swap in a real mark in brands.tsx).
 const TOOL_TILES: Record<string, { bg: string; fg: string; text: string }> = {
   ProtoPie: { bg: "#6D3CF5", fg: "#fff", text: "Pp" },
@@ -2804,44 +2709,117 @@ function Toolstack() {
   );
 }
 
+const SKILL_CARDS: { label: string; fact: string; Icon: LucideIcon }[] = [
+  { label: "Product Design", fact: "4+ years in enterprise SaaS, AI and data", Icon: Shapes },
+  { label: "Data & Dashboard Design", fact: "Dashboards, alerts and data workflows", Icon: BarChart3 },
+  { label: "Design Systems", fact: "120+ components, 40% more reuse", Icon: Layers },
+  { label: "Prototyping", fact: "Figma, Framer, ProtoPie", Icon: Play },
+  { label: "AI Workflows", fact: "Ask Me, a GenAI analytics assistant", Icon: Wand2 },
+  { label: "Interaction & Motion", fact: "Micro-interactions that guide", Icon: Zap },
+  { label: "Figma to Code", fact: "Figma MCP and Claude Code", Icon: SquareTerminal },
+  { label: "UX Research", fact: "Usability tests, WCAG audits on 80+ screens", Icon: ClipboardList },
+];
+
+// **bold** marks the words that stay dark; everything else starts light and fills in on scroll.
+const SKILLS_STATEMENT =
+  "I design **decision-centric products** for complex data workflows, work closely with **engineering teams** and obsess over **details that ship.**";
+
+function SkillsStatement() {
+  const ref = useRef<HTMLParagraphElement>(null);
+  const [progress, setProgress] = useState(1);
+  const words = SKILLS_STATEMENT.split(/(\*\*[^*]+\*\*)/)
+    .filter(Boolean)
+    .flatMap((part) =>
+      part.startsWith("**")
+        ? part.slice(2, -2).split(" ").map((w) => ({ w, bold: true }))
+        : part.split(" ").filter(Boolean).map((w) => ({ w, bold: false })),
+    );
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const update = () => {
+      const el = ref.current;
+      if (!el) return;
+      const r = el.getBoundingClientRect();
+      const vh = window.innerHeight;
+      setProgress(Math.min(1, Math.max(0, (vh * 0.9 - r.top) / (vh * 0.45))));
+    };
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    return () => {
+      window.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+    };
+  }, []);
+  return (
+    <p
+      ref={ref}
+      className="text-2xl font-light leading-[1.35] tracking-tight sm:text-4xl"
+    >
+      {words.map((x, i) => {
+        const lit = progress * words.length > i;
+        return (
+          <span
+            key={i}
+            className={`transition-colors duration-300 ${
+              x.bold
+                ? "font-semibold text-foreground"
+                : lit
+                  ? "text-foreground/45"
+                  : "text-foreground/20"
+            }`}
+          >
+            {x.w}{" "}
+          </span>
+        );
+      })}
+    </p>
+  );
+}
+
+function SkillCard({ label, fact, Icon, tall = false }: (typeof SKILL_CARDS)[number] & { tall?: boolean }) {
+  return (
+    <li
+      className={`group relative overflow-hidden rounded-xl bg-background transition-shadow duration-300 hover:shadow-lg ${
+        tall ? "flex flex-col gap-6 p-5" : "flex items-center gap-4 px-5 py-6"
+      }`}
+    >
+      <Icon className="h-7 w-7 shrink-0 text-foreground/55 transition-colors duration-300 group-hover:text-foreground" strokeWidth={1.5} aria-hidden="true" />
+      <span className="text-[16px] font-medium tracking-tight text-foreground">{label}</span>
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 flex items-end bg-foreground p-5 text-[13px] leading-snug text-background opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+      >
+        {fact}
+      </span>
+    </li>
+  );
+}
+
+function SkillsPanel() {
+  return (
+    <div className="grid gap-10 rounded-3xl bg-foreground/[0.035] p-6 sm:p-10 lg:grid-cols-[1fr_1.05fr] lg:gap-14">
+      <SkillsStatement />
+      <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+        {SKILL_CARDS.map((c) => (
+          <SkillCard key={c.label} {...c} />
+        ))}
+      </ul>
+    </div>
+  );
+}
+
 function SkillsAndTools() {
   return (
-    <section id="skills-tools" className="mt-14 sm:mt-24 scroll-mt-24">
-      <SectionHeading eyebrow="Skills & Tools" title="what I work with" />
+    <section id="skills-tools" className="mt-14 scroll-mt-24 sm:mt-24">
+      <SectionHeading eyebrow="Skills" title="What I do" />
       <div className="mt-8">
-        {skillCategories.map((cat) => (
-          <div
-            key={cat.label}
-            className="grid grid-cols-1 gap-2 border-t border-border py-6 sm:grid-cols-[190px_1fr] sm:gap-8"
-          >
-            <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
-              {cat.label}
-            </p>
-            <div className="flex flex-wrap gap-2">
-              {cat.items.map((item) => {
-                const Brand = BRAND_LOGOS[item];
-                const Icon = SKILL_ICONS[item] ?? Sparkles;
-                return (
-                  <span
-                    key={item}
-                    className="inline-flex cursor-default select-none items-center gap-1.5 rounded-full border border-border bg-foreground/[0.03] px-3 py-1.5 text-[14px] text-foreground/85 transition-all duration-200 ease-out hover:-translate-y-0.5 hover:rotate-[-1.5deg] hover:border-foreground hover:bg-foreground hover:text-background hover:shadow-sm"
-                  >
-                    {Brand ? (
-                      <Brand className="h-4 w-4 shrink-0" />
-                    ) : (
-                      <Icon className="h-3.5 w-3.5 opacity-70" aria-hidden="true" />
-                    )}
-                    {item}
-                  </span>
-                );
-              })}
-            </div>
-          </div>
-        ))}
+        <SkillsPanel />
       </div>
     </section>
   );
 }
+
 
 function AwardRow({
   a,
