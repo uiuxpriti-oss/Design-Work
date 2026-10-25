@@ -876,7 +876,7 @@ function Hero({ ready }: { ready: boolean }) {
         padding: "clamp(112px,16vh,150px) 0 clamp(72px,10vh,110px)",
       }}
     >
-      <div className="relative mx-auto flex w-full max-w-[1200px] flex-wrap items-end justify-between gap-12 px-8">
+      <div className="relative mx-auto flex w-full max-w-[72rem] flex-wrap items-end justify-between gap-12 px-4 sm:px-6">
         <div className="flex max-w-[880px] flex-col gap-8">
           <p style={{ margin: "0 0 -8px", fontSize: "clamp(20px,1.6vw,22px)", fontWeight: 500, letterSpacing: "-0.02em", color: "var(--hr-mute)" }}>
             Hi, I&apos;m <span style={{ color: "var(--hr-strong)" }}>Priti Jani</span>
@@ -927,14 +927,14 @@ function Hero({ ready }: { ready: boolean }) {
       </div>
 
       <p
-        className="relative mx-auto w-full max-w-[1200px] px-8 text-base md:text-[15px]"
+        className="relative mx-auto w-full max-w-[72rem] px-4 text-base sm:px-6 md:text-[15px]"
         style={{ margin: "clamp(56px,10vh,96px) auto 20px", color: "var(--hr-mute)" }}
       >
         Feel free to connect - I&rsquo;m always up for a good conversation.
       </p>
       <div className="relative">
         <div className="absolute inset-x-0 top-1/2 h-px" style={{ background: "var(--hr-border)" }} />
-        <div className="relative mx-auto flex max-w-[1200px] flex-wrap items-center justify-between gap-4 px-8">
+        <div className="relative mx-auto flex max-w-[72rem] flex-wrap items-center justify-between gap-4 px-4 sm:px-6">
           <div className="flex flex-wrap gap-4 sm:gap-6">
             <a href={links.linkedin} target="_blank" rel="noreferrer" className={btn}>
               LinkedIn <span className={chip}>↗</span>
