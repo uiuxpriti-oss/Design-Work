@@ -819,12 +819,12 @@ function Hero({ ready }: { ready: boolean }) {
   return (
     <section
       id="home"
-      className="hero-root relative flex min-h-screen flex-col justify-center overflow-hidden"
+      className="hero-root relative flex flex-col overflow-hidden"
       style={{
         background: "var(--hr-bg)",
         color: "var(--hr-text)",
         fontFamily: "'Manrope', system-ui, sans-serif",
-        padding: "72px 0",
+        padding: "clamp(84px,10vh,96px) 0 64px",
       }}
     >
       <div className="relative mx-auto flex w-full max-w-[1200px] flex-col px-8" style={{ gap: "clamp(56px,10vh,120px)" }}>
