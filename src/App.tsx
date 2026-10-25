@@ -2585,7 +2585,7 @@ const SKILL_CARDS: { label: string; fact: string; Icon: LucideIcon }[] = [
 const SKILLS_STATEMENT =
   "I design **decision-centric products** for complex data workflows, work closely with **engineering teams** and obsess over **details that ship.**";
 
-function SkillsStatement({ large = false }: { large?: boolean }) {
+function SkillsStatement() {
   const ref = useRef<HTMLParagraphElement>(null);
   const [progress, setProgress] = useState(1);
   const words = SKILLS_STATEMENT.split(/(\*\*[^*]+\*\*)/)
@@ -2615,9 +2615,7 @@ function SkillsStatement({ large = false }: { large?: boolean }) {
   return (
     <p
       ref={ref}
-      className={`font-light leading-[1.35] tracking-tight ${
-        large ? "text-3xl sm:text-5xl" : "text-2xl sm:text-4xl"
-      }`}
+      className="text-2xl font-light leading-[1.35] tracking-tight sm:text-4xl"
     >
       {words.map((x, i) => {
         const lit = progress * words.length > i;
@@ -2664,7 +2662,7 @@ function SkillsPanel() {
   if (variant === "b") {
     return (
       <div className="rounded-3xl bg-foreground/[0.035] p-6 sm:p-10">
-        <SkillsStatement large />
+        <SkillsStatement />
         <ul className="mt-10 grid grid-cols-2 gap-3 lg:grid-cols-4">
           {SKILL_CARDS.map((c) => (
             <SkillCard key={c.label} {...c} tall />
