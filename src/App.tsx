@@ -958,7 +958,7 @@ function FocusAreas() {
     <section className="mt-6 overflow-hidden py-10">
       {/* Band + text tilt together (width-extended so it bleeds past both edges) → text stays inside the band on every screen width, no scale so it stays crisp */}
       <div className="-ml-[6%] w-[112%] -rotate-2">
-        <div className="marquee-track overflow-hidden border-y border-white/10 bg-[#0F2720] py-4 shadow-lg">
+        <div className="marquee-track overflow-hidden border-y border-white/10 bg-brand-grad py-4 shadow-lg">
           <div className="animate-marquee marquee-anim flex w-max items-center gap-6 [backface-visibility:hidden] [will-change:transform]">
             {row.map((s, i) => (
               <span
@@ -966,7 +966,7 @@ function FocusAreas() {
                 className="flex items-center gap-6 whitespace-nowrap text-[15px] font-medium text-white/85"
               >
                 {s}
-                <span className="text-[#E3A64A]/75" aria-hidden="true">
+                <span className="text-sky-200/80" aria-hidden="true">
                   ✦
                 </span>
               </span>
@@ -1022,7 +1022,7 @@ function ProjectCard({
               </p>
             )}
           </div>
-          <span className="inline-flex w-fit items-center gap-2 rounded-full bg-[#0F2720] px-5 py-2.5 text-sm font-medium text-white dark:bg-foreground dark:text-background">
+          <span className="inline-flex w-fit items-center gap-2 rounded-full bg-brand-grad px-5 py-2.5 text-sm font-medium text-white dark:bg-foreground dark:text-background dark:[background-image:none]">
             {locked && <LockFillIcon className="h-3.5 w-3.5" />}
             {locked ? "Unlock case study" : (project.tag ?? "Case study")}
           </span>
@@ -1051,7 +1051,7 @@ function ProjectCard({
           </div>
           {locked && (
             <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-black/25 text-white">
-              <span className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-white/90 text-[#0F2720] shadow-xl ring-1 ring-black/5 transition-transform duration-300 group-hover/img:scale-105">
+              <span className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-white/90 text-blue-900 shadow-xl ring-1 ring-black/5 transition-transform duration-300 group-hover/img:scale-105">
                 <LockFillIcon className="h-7 w-7" />
               </span>
               <span className="rounded-full bg-black/40 px-3.5 py-1.5 text-[12px] font-medium tracking-wide backdrop-blur-sm">
@@ -1417,7 +1417,7 @@ function CaseSection({
   return (
     <section id={id} className="mt-14 scroll-mt-24 border-t border-border pt-10">
       {eyebrow && (
-        <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#0F2720] dark:text-[#A9C6BA]">
+        <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-blue-800 dark:text-blue-300">
           {eyebrow}
         </p>
       )}
@@ -1474,7 +1474,7 @@ function StudyMedia({
 // Highlighted takeaway callout (the deck's "👉 …" notes).
 function StudyNote({ text }: { text: string }) {
   return (
-    <div className="mt-6 rounded-xl bg-[#0F2720]/[0.05] px-4 py-3 text-[14px] font-medium leading-relaxed text-[#0F2720] ring-1 ring-[#0F2720]/10 dark:bg-[#A9C6BA]/10 dark:text-[#A9C6BA] dark:ring-[#A9C6BA]/20">
+    <div className="mt-6 rounded-xl bg-blue-900/[0.05] px-4 py-3 text-[14px] font-medium leading-relaxed text-blue-900 ring-1 ring-blue-900/10 dark:bg-blue-300/10 dark:text-blue-300 dark:ring-blue-300/20">
       {text}
     </div>
   );
@@ -1562,7 +1562,7 @@ function StudySectionBlock({
           <p className="text-[14px] font-semibold text-foreground">{block.title}</p>
           <div>
             {block.eyebrow && (
-              <p className="mb-3 text-[15px] font-medium text-[#0F2720]/50 dark:text-[#A9C6BA]/70">
+              <p className="mb-3 text-[15px] font-medium text-blue-900/50 dark:text-blue-300/70">
                 {block.eyebrow}
               </p>
             )}
@@ -2127,11 +2127,11 @@ function CaseStudyPage({
 
       <header className="mt-8">
         <div className="flex flex-wrap items-center gap-3">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#0F2720] dark:text-[#A9C6BA]">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-blue-800 dark:text-blue-300">
             {cs.eyebrow}
           </p>
           {cs.inProgress && (
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-[#0F2720]/20 bg-[#0F2720]/[0.06] px-2.5 py-1 text-[11px] font-medium text-[#0F2720] dark:border-[#A9C6BA]/30 dark:bg-[#A9C6BA]/10 dark:text-[#A9C6BA]">
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-blue-900/20 bg-blue-900/[0.06] px-2.5 py-1 text-[11px] font-medium text-blue-900 dark:border-blue-300/30 dark:bg-blue-300/10 dark:text-blue-300">
               <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#2E6B54]" />
               In progress
             </span>
@@ -2168,7 +2168,7 @@ function CaseStudyPage({
 
       <section id="cs-intro" className="mt-12 grid scroll-mt-24 gap-10 border-t border-border pt-10 md:grid-cols-[1fr_240px]">
         <div>
-          <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#0F2720] dark:text-[#A9C6BA]">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-blue-800 dark:text-blue-300">
             Intro
           </p>
           <div className="mt-5 space-y-5 text-[16px] leading-relaxed text-foreground/85">
@@ -2564,12 +2564,12 @@ function ExperienceList() {
               {open && (
                 <div className="mt-4 space-y-4">
                   {job.roles && job.roles.length > 1 && (
-                    <ol className="space-y-0 rounded-xl border border-emerald-200 bg-emerald-50/70 p-3.5 dark:border-emerald-500/25 dark:bg-emerald-500/10">
+                    <ol className="space-y-0 rounded-xl border border-blue-200 bg-blue-50/70 p-3.5 dark:border-blue-400/25 dark:bg-blue-400/10">
                       {job.roles.map((r, ri) => (
                         <li key={r.title} className="flex gap-3">
                           <div className="flex flex-col items-center">
                             <span
-                              className={`mt-1.5 h-2.5 w-2.5 rounded-full ${ri === 0 ? "bg-emerald-500" : "bg-foreground/30"}`}
+                              className={`mt-1.5 h-2.5 w-2.5 rounded-full ${ri === 0 ? "bg-blue-500" : "bg-foreground/30"}`}
                               aria-hidden="true"
                             />
                             {ri < job.roles!.length - 1 && (
@@ -2580,7 +2580,7 @@ function ExperienceList() {
                             <p className="text-[15px] font-medium text-foreground">
                               {r.title}
                               {ri === 0 && (
-                                <span className="ml-2 inline-block rounded-md border border-emerald-300 bg-emerald-100 px-2 py-0.5 align-middle text-[11px] font-medium text-emerald-900 dark:border-emerald-500/30 dark:bg-emerald-500/20 dark:text-emerald-200">
+                                <span className="ml-2 inline-block rounded-md border border-blue-300 bg-blue-100 px-2 py-0.5 align-middle text-[11px] font-medium text-blue-900 dark:border-blue-400/30 dark:bg-blue-400/20 dark:text-blue-200">
                                   Promoted
                                 </span>
                               )}
@@ -3248,7 +3248,7 @@ function AboutNow() {
       <div className="space-y-6">
         <p className="text-[15px] text-foreground/85">
           Senior Product Designer at <span className="font-medium text-foreground">Netlink Software Group</span>
-          <span className="ml-2 inline-block rounded-md border border-emerald-300 bg-emerald-100 px-2 py-0.5 align-middle text-[11px] font-medium text-emerald-900 dark:border-emerald-500/30 dark:bg-emerald-500/20 dark:text-emerald-200">
+          <span className="ml-2 inline-block rounded-md border border-blue-300 bg-blue-100 px-2 py-0.5 align-middle text-[11px] font-medium text-blue-900 dark:border-blue-400/30 dark:bg-blue-400/20 dark:text-blue-200">
             Promoted 2026
           </span>
         </p>
@@ -3377,7 +3377,7 @@ function FooterCTA() {
           <div>
             <h2 className="max-w-md text-3xl font-semibold tracking-tight sm:text-5xl">
               If it&apos;s missing,{" "}
-              <span className="italic text-[#0F2720] dark:text-[#A9C6BA]">
+              <span className="italic text-brand-grad">
                 I&apos;ll build it.
               </span>
             </h2>

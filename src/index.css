@@ -113,7 +113,7 @@ html.lenis body {
     --background: 0 0% 100%;
     --foreground: 24 10% 10%;
     --card: 0 0% 94%; /* #F0F0F0 */
-    --primary: 163 44% 11%; /* brand green #0F2720 */
+    --primary: 226 64% 33%; /* brand blue #1E3A8A */
     --primary-foreground: 0 0% 100%;
     --muted-foreground: 0 0% 44%;
     --border: 0 0% 90%; /* #E6E6E6 */
@@ -152,8 +152,29 @@ html.lenis body {
   }
 }
 
-/* Midnight dark theme extras: indigo glow ground, and the brand green / gold
-   accents re-mapped to deep indigo / lavender / lime. */
+/* Brand blue gradient (the same blues as the hero headline). Used wherever the old green was. */
+:root {
+  --brand-grad: linear-gradient(90deg, #1e3a8a 0%, #2563eb 55%, #3b82f6 100%);
+  --brand-text-grad: linear-gradient(90deg, #1e3a8a 0%, #2563eb 45%, #60a5fa 80%, #bfdbfe 100%);
+}
+:root.dark {
+  --brand-text-grad: linear-gradient(90deg, #3b82f6 0%, #60a5fa 45%, #93c5fd 80%, #dbeafe 100%);
+}
+.bg-brand-grad {
+  background-color: #1e3a8a;
+  background-image: var(--brand-grad);
+}
+:root:not(.dark) .bg-primary {
+  background-image: var(--brand-grad);
+}
+.text-brand-grad {
+  background-image: var(--brand-text-grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Midnight dark theme extras: indigo glow ground. */
 :root.dark body {
   background-image:
     radial-gradient(70rem 40rem at -10% 105%, rgba(54, 38, 200, 0.42), transparent 60%),
