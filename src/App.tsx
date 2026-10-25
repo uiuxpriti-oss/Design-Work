@@ -18,13 +18,9 @@ import {
   Home,
   Menu,
   Sparkles,
-  Shapes,
-  BarChart3,
   Layers,
   Wand2,
   Zap,
-  SquareTerminal,
-  ClipboardList,
   Send,
   Copy,
   Check,
@@ -48,6 +44,40 @@ import {
   Github,
   Mail,
   type LucideIcon,
+  Megaphone,
+  Smartphone,
+  Search,
+  Users,
+  ShieldCheck,
+  Figma,
+  MessageSquareText,
+  MousePointerClick,
+  FileCode,
+  Palette,
+  ListTree,
+  LayoutGrid,
+  Boxes,
+  GitBranch,
+  TrendingUp,
+  Network,
+  Droplets,
+  Coins,
+  ClipboardCheck,
+  Accessibility,
+  Frame,
+  Compass,
+  Type,
+  Lightbulb,
+  Plug,
+  Component,
+  PenLine,
+  Braces,
+  Framer,
+  Terminal,
+  Presentation,
+  GitCompare,
+  MessagesSquare,
+  Layout,
 } from "lucide-react";
 
 // lucide has no Behance glyph — small inline mark.
@@ -61,7 +91,7 @@ function BehanceIcon({ className = "" }: { className?: string }) {
 import {
   projects,
   caseStudies,
-  toolstack,
+  skillCategories,
   creatives,
   motionWork,
   experience,
@@ -2654,190 +2684,102 @@ function Experience() {
 }
 
 // Tools without a bundled logo get a brand-coloured initials tile (swap in a real mark in brands.tsx).
-const TOOL_TILES: Record<string, { bg: string; fg: string; text: string }> = {
-  ProtoPie: { bg: "#6D3CF5", fg: "#fff", text: "Pp" },
-  Jira: { bg: "#2684FF", fg: "#fff", text: "Ji" },
-  Confluence: { bg: "#1868DB", fg: "#fff", text: "Cf" },
-  Maze: { bg: "#6B4EFF", fg: "#fff", text: "Mz" },
-  Hotjar: { bg: "#FD3A5C", fg: "#fff", text: "Hj" },
-  Miro: { bg: "#FFD02F", fg: "#050038", text: "Mi" },
+const SKILL_ICONS: Record<string, LucideIcon> = {
+  // Design & Product Thinking
+  "UX Strategy": Target,
+  "Product Thinking": Lightbulb,
+  "Product Design": Boxes,
+  "UX/UI": Layout,
+  "Interaction Design": MousePointerClick,
+  "Systems Thinking": Network,
+  "User Research": Search,
+  Discovery: Compass,
+  "Information Architecture": ListTree,
+  "Usability Testing": ClipboardCheck,
+  "A/B Testing": GitCompare,
+  Experimentation: FlaskConical,
+  "Conversion Rate Optimisation": TrendingUp,
+  "Journey Mapping": Route,
+  "Data-Informed Decisions": TrendingUp,
+  "Product Positioning": Compass,
+  "UX Copywriting": PenLine,
+  "Design QA": ShieldCheck,
+  "Product Psychology": Users,
+  // Design Systems
+  Tokens: Coins,
+  "Component Libraries": Layers,
+  Governance: ShieldCheck,
+  Documentation: FileText,
+  "Multi-brand Systems": Boxes,
+  // UI & Visual Design
+  "Visual Design": Palette,
+  Typography: Type,
+  "Pitch Deck Design": Presentation,
+  Layout: LayoutGrid,
+  Branding: Palette,
+  "Responsive Design": Smartphone,
+  Accessibility: Accessibility,
+  WCAG: Accessibility,
+  // Collaboration & Leadership
+  "Cross-Functional Collaboration": Users,
+  "Stakeholder Communication": MessagesSquare,
+  "Design-Engineering Handoff": Workflow,
+  "Campaign & Growth Design": Megaphone,
+  // Interaction & Prototyping
+  Wireframing: Frame,
+  Prototyping: MousePointerClick,
+  "User Testing": ClipboardCheck,
+  "Motion & Micro-interactions": Zap,
+  Figma: Figma,
+  "Figma Make": Wand2,
+  Framer: Framer,
+  Protopie: Component,
+  // AI Tools & Workflow
+  Claude: Sparkles,
+  "Claude Code": Terminal,
+  "Figma MCP": Plug,
+  "Prompt Engineering": MessageSquareText,
+  "AI-Augmented Design": Wand2,
+  // Engineering & Development
+  HTML: FileCode,
+  CSS: Braces,
+  "Bootstrap 5": LayoutGrid,
+  "Drupal 11": Droplets,
+  Git: GitBranch,
 };
-
-function ToolGlyph({ name }: { name: string }) {
-  if (name === "Claude Code")
-    return (
-      <span
-        aria-hidden="true"
-        className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[#1f1e1d] text-[12px] font-bold leading-none text-[#d97757]"
-      >
-        &gt;_
-      </span>
-    );
-  const Brand = BRAND_LOGOS[name];
-  if (Brand) return <Brand className="h-7 w-7 shrink-0" />;
-  const t = TOOL_TILES[name] ?? { bg: "#334155", fg: "#fff", text: name.slice(0, 2) };
-  return (
-    <span
-      aria-hidden="true"
-      style={{ background: t.bg, color: t.fg }}
-      className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-[11px] font-bold leading-none"
-    >
-      {t.text}
-    </span>
-  );
-}
-
-const SKILL_CARDS: { label: string; fact: string; Icon: LucideIcon }[] = [
-  { label: "Product Design", fact: "4+ years in enterprise SaaS, AI and data", Icon: Shapes },
-  { label: "Data & Dashboard Design", fact: "Dashboards, alerts and data workflows", Icon: BarChart3 },
-  { label: "Design Systems", fact: "120+ components, 40% more reuse", Icon: Layers },
-  { label: "Prototyping", fact: "Figma, Framer, ProtoPie", Icon: Play },
-  { label: "AI Workflows", fact: "Ask Me, a GenAI analytics assistant", Icon: Wand2 },
-  { label: "Interaction & Motion", fact: "Micro-interactions that guide", Icon: Zap },
-  { label: "Figma to Code", fact: "Figma MCP and Claude Code", Icon: SquareTerminal },
-  { label: "UX Research", fact: "Usability tests, WCAG audits on 80+ screens", Icon: ClipboardList },
-];
-
-// **bold** marks the words that stay dark; everything else starts light and fills in on scroll.
-const SKILLS_STATEMENT =
-  "I design **decision-centric products** for complex data workflows, work closely with **engineering teams** and obsess over **details that ship.**";
-
-function SkillsStatement() {
-  const ref = useRef<HTMLParagraphElement>(null);
-  const [progress, setProgress] = useState(1);
-  const words = SKILLS_STATEMENT.split(/(\*\*[^*]+\*\*)/)
-    .filter(Boolean)
-    .flatMap((part) =>
-      part.startsWith("**")
-        ? part.slice(2, -2).split(" ").map((w) => ({ w, bold: true }))
-        : part.split(" ").filter(Boolean).map((w) => ({ w, bold: false })),
-    );
-  useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const update = () => {
-      const el = ref.current;
-      if (!el) return;
-      const r = el.getBoundingClientRect();
-      const vh = window.innerHeight;
-      setProgress(Math.min(1, Math.max(0, (vh * 0.9 - r.top) / (vh * 0.45))));
-    };
-    update();
-    window.addEventListener("scroll", update, { passive: true });
-    window.addEventListener("resize", update);
-    return () => {
-      window.removeEventListener("scroll", update);
-      window.removeEventListener("resize", update);
-    };
-  }, []);
-  return (
-    <p
-      ref={ref}
-      className="text-2xl font-light leading-[1.35] tracking-tight sm:text-4xl"
-    >
-      {words.map((x, i) => {
-        const lit = progress * words.length > i;
-        return (
-          <span
-            key={i}
-            className={`transition-colors duration-300 ${
-              x.bold
-                ? "font-semibold text-foreground"
-                : lit
-                  ? "text-foreground/45"
-                  : "text-foreground/20"
-            }`}
-          >
-            {x.w}{" "}
-          </span>
-        );
-      })}
-    </p>
-  );
-}
-
-function SkillCard({ label, fact, Icon, tall = false }: (typeof SKILL_CARDS)[number] & { tall?: boolean }) {
-  return (
-    <li
-      className={`group relative overflow-hidden rounded-xl bg-background transition-shadow duration-300 hover:shadow-lg ${
-        tall ? "flex flex-col gap-6 p-5" : "flex items-center gap-4 px-5 py-6"
-      }`}
-    >
-      <Icon className="h-7 w-7 shrink-0 text-foreground/55 transition-colors duration-300 group-hover:text-foreground" strokeWidth={1.5} aria-hidden="true" />
-      <span className="text-[16px] font-medium tracking-tight text-foreground">{label}</span>
-      <span
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 flex items-end bg-foreground p-5 text-[13px] leading-snug text-background opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-      >
-        {fact}
-      </span>
-    </li>
-  );
-}
-
-function SkillsPanel() {
-  const variant = new URLSearchParams(window.location.search).get("skills");
-  if (variant === "b") {
-    return (
-      <div className="rounded-3xl bg-foreground/[0.035] p-6 sm:p-10">
-        <SkillsStatement />
-        <ul className="mt-10 grid grid-cols-2 gap-3 lg:grid-cols-4">
-          {SKILL_CARDS.map((c) => (
-            <SkillCard key={c.label} {...c} tall />
-          ))}
-        </ul>
-      </div>
-    );
-  }
-  return (
-    <div className="grid gap-10 rounded-3xl bg-foreground/[0.035] p-6 sm:p-10 lg:grid-cols-[1fr_1.05fr] lg:gap-14">
-      <SkillsStatement />
-      <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-        {SKILL_CARDS.map((c) => (
-          <SkillCard key={c.label} {...c} />
-        ))}
-      </ul>
-    </div>
-  );
-}
 
 function SkillsAndTools() {
   return (
-    <section id="skills-tools" className="mt-14 scroll-mt-24 sm:mt-24">
-      <SectionHeading eyebrow="Skills" title="What I do" />
+    <section id="skills-tools" className="mt-14 sm:mt-24 scroll-mt-24">
+      <SectionHeading eyebrow="Skills & Tools" title="what I work with" />
       <div className="mt-8">
-        <SkillsPanel />
-      </div>
-      <div className="mt-16 sm:mt-20">
-        <SectionHeading eyebrow="Toolstack" title="What I work with" />
-      </div>
-      <div className="mt-8 flex flex-wrap gap-x-6 gap-y-6 bg-[radial-gradient(circle,hsl(var(--border))_1px,transparent_1.5px)] [background-size:9px_9px] xl:flex-nowrap xl:justify-between">
-        {toolstack.map((group) => (
+        {skillCategories.map((cat) => (
           <div
-            key={group.label}
-            className="max-w-full overflow-hidden rounded-sm border border-border bg-background"
+            key={cat.label}
+            className="grid grid-cols-1 gap-2 border-t border-border py-6 sm:grid-cols-[190px_1fr] sm:gap-8"
           >
-            <p className="whitespace-nowrap border-b border-border bg-foreground/[0.03] px-4 py-2.5 font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
-              {group.label}
+            <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
+              {cat.label}
             </p>
-            <ul className="flex flex-wrap">
-              {group.tools.map((tool) => (
-                <li
-                  key={tool}
-                  className="group relative flex h-14 w-14 items-center justify-center border-r border-border transition-colors duration-200 last:border-r-0 hover:bg-foreground/[0.04]"
-                >
-                  <span className="transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:scale-110">
-                    <ToolGlyph name={tool} />
-                  </span>
-                  <span className="sr-only">{tool}</span>
+            <div className="flex flex-wrap gap-2">
+              {cat.items.map((item) => {
+                const Brand = BRAND_LOGOS[item];
+                const Icon = SKILL_ICONS[item] ?? Sparkles;
+                return (
                   <span
-                    aria-hidden="true"
-                    className="pointer-events-none absolute -top-1 left-1/2 z-10 -translate-x-1/2 -translate-y-full whitespace-nowrap rounded-md bg-foreground px-2 py-1 text-[11px] font-medium text-background opacity-0 shadow-md transition-opacity duration-150 group-hover:opacity-100"
+                    key={item}
+                    className="inline-flex cursor-default select-none items-center gap-1.5 rounded-full border border-border bg-foreground/[0.03] px-3 py-1.5 text-[14px] text-foreground/85 transition-all duration-200 ease-out hover:-translate-y-0.5 hover:rotate-[-1.5deg] hover:border-foreground hover:bg-foreground hover:text-background hover:shadow-sm"
                   >
-                    {tool}
+                    {Brand ? (
+                      <Brand className="h-4 w-4 shrink-0" />
+                    ) : (
+                      <Icon className="h-3.5 w-3.5 opacity-70" aria-hidden="true" />
+                    )}
+                    {item}
                   </span>
-                </li>
-              ))}
-            </ul>
+                );
+              })}
+            </div>
           </div>
         ))}
       </div>
