@@ -19,6 +19,13 @@ import {
   Home,
   Menu,
   Sparkles,
+  Shapes,
+  BarChart3,
+  Layers,
+  Wand2,
+  Zap,
+  SquareTerminal,
+  ClipboardList,
   Send,
   Copy,
   Check,
@@ -2563,10 +2570,131 @@ function ToolGlyph({ name }: { name: string }) {
   );
 }
 
+const SKILL_CARDS: { label: string; fact: string; Icon: LucideIcon }[] = [
+  { label: "Product Design", fact: "4+ years in enterprise SaaS, AI and data", Icon: Shapes },
+  { label: "Data & Dashboard Design", fact: "Dashboards, alerts and data workflows", Icon: BarChart3 },
+  { label: "Design Systems", fact: "120+ components, 40% more reuse", Icon: Layers },
+  { label: "Prototyping", fact: "Figma, Framer, ProtoPie", Icon: Play },
+  { label: "AI Workflows", fact: "Ask Me, a GenAI analytics assistant", Icon: Wand2 },
+  { label: "Interaction & Motion", fact: "Micro-interactions that guide", Icon: Zap },
+  { label: "Figma to Code", fact: "Figma MCP and Claude Code", Icon: SquareTerminal },
+  { label: "UX Research", fact: "Usability tests, WCAG audits on 80+ screens", Icon: ClipboardList },
+];
+
+// **bold** marks the words that stay dark; everything else starts light and fills in on scroll.
+const SKILLS_STATEMENT =
+  "I design **decision-centric products** for complex data workflows, work closely with **engineering teams** and obsess over **details that ship.**";
+
+function SkillsStatement({ large = false }: { large?: boolean }) {
+  const ref = useRef<HTMLParagraphElement>(null);
+  const [progress, setProgress] = useState(1);
+  const words = SKILLS_STATEMENT.split(/(\*\*[^*]+\*\*)/)
+    .filter(Boolean)
+    .flatMap((part) =>
+      part.startsWith("**")
+        ? part.slice(2, -2).split(" ").map((w) => ({ w, bold: true }))
+        : part.split(" ").filter(Boolean).map((w) => ({ w, bold: false })),
+    );
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const update = () => {
+      const el = ref.current;
+      if (!el) return;
+      const r = el.getBoundingClientRect();
+      const vh = window.innerHeight;
+      setProgress(Math.min(1, Math.max(0, (vh * 0.9 - r.top) / (vh * 0.45))));
+    };
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    return () => {
+      window.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+    };
+  }, []);
+  return (
+    <p
+      ref={ref}
+      className={`font-light leading-[1.35] tracking-tight ${
+        large ? "text-3xl sm:text-5xl" : "text-2xl sm:text-4xl"
+      }`}
+    >
+      {words.map((x, i) => {
+        const lit = progress * words.length > i;
+        return (
+          <span
+            key={i}
+            className={`transition-colors duration-300 ${
+              x.bold
+                ? "font-semibold text-foreground"
+                : lit
+                  ? "text-foreground/45"
+                  : "text-foreground/20"
+            }`}
+          >
+            {x.w}{" "}
+          </span>
+        );
+      })}
+    </p>
+  );
+}
+
+function SkillCard({ label, fact, Icon, tall = false }: (typeof SKILL_CARDS)[number] & { tall?: boolean }) {
+  return (
+    <li
+      className={`group relative overflow-hidden rounded-xl bg-background transition-shadow duration-300 hover:shadow-lg ${
+        tall ? "flex flex-col gap-6 p-5" : "flex items-center gap-4 px-5 py-6"
+      }`}
+    >
+      <Icon className="h-7 w-7 shrink-0 text-foreground/55 transition-colors duration-300 group-hover:text-foreground" strokeWidth={1.5} aria-hidden="true" />
+      <span className="text-[16px] font-medium tracking-tight text-foreground">{label}</span>
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 flex items-end bg-foreground p-5 text-[13px] leading-snug text-background opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+      >
+        {fact}
+      </span>
+    </li>
+  );
+}
+
+function SkillsPanel() {
+  const variant = new URLSearchParams(window.location.search).get("skills");
+  if (variant === "b") {
+    return (
+      <div className="rounded-3xl bg-foreground/[0.035] p-6 sm:p-10">
+        <SkillsStatement large />
+        <ul className="mt-10 grid grid-cols-2 gap-3 lg:grid-cols-4">
+          {SKILL_CARDS.map((c) => (
+            <SkillCard key={c.label} {...c} tall />
+          ))}
+        </ul>
+      </div>
+    );
+  }
+  return (
+    <div className="grid gap-10 rounded-3xl bg-foreground/[0.035] p-6 sm:p-10 lg:grid-cols-[1fr_1.05fr] lg:gap-14">
+      <SkillsStatement />
+      <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+        {SKILL_CARDS.map((c) => (
+          <SkillCard key={c.label} {...c} />
+        ))}
+      </ul>
+    </div>
+  );
+}
+
 function SkillsAndTools() {
   return (
     <section id="skills-tools" className="mt-14 scroll-mt-24 sm:mt-24">
-      <SectionHeading eyebrow="Toolstack" title="What I work with" />
+      <SectionHeading eyebrow="Skills" title="What I do" />
+      <div className="mt-8">
+        <SkillsPanel />
+      </div>
+      <div className="mt-16 sm:mt-20">
+        <SectionHeading eyebrow="Toolstack" title="What I work with" />
+      </div>
       <div className="mt-8 flex flex-wrap gap-x-6 gap-y-6 bg-[radial-gradient(circle,hsl(var(--border))_1px,transparent_1.5px)] [background-size:9px_9px] xl:flex-nowrap xl:justify-between">
         {toolstack.map((group) => (
           <div
