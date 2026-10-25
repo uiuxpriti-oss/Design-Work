@@ -2540,6 +2540,15 @@ const TOOL_TILES: Record<string, { bg: string; fg: string; text: string }> = {
 };
 
 function ToolGlyph({ name }: { name: string }) {
+  if (name === "Claude Code")
+    return (
+      <span
+        aria-hidden="true"
+        className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[#1f1e1d] text-[12px] font-bold leading-none text-[#d97757]"
+      >
+        &gt;_
+      </span>
+    );
   const Brand = BRAND_LOGOS[name];
   if (Brand) return <Brand className="h-7 w-7 shrink-0" />;
   const t = TOOL_TILES[name] ?? { bg: "#334155", fg: "#fff", text: name.slice(0, 2) };
@@ -2560,17 +2569,20 @@ function SkillsAndTools() {
       <p className="font-mono text-[12px] uppercase tracking-[0.2em] text-muted-foreground">
         // Toolstack
       </p>
-      <div className="mt-6 grid grid-cols-1 gap-6 bg-[radial-gradient(circle,hsl(var(--border))_1px,transparent_1.5px)] [background-size:9px_9px] sm:grid-cols-2 lg:grid-cols-3">
+      <div className="mt-6 flex flex-wrap gap-x-6 gap-y-6 bg-[radial-gradient(circle,hsl(var(--border))_1px,transparent_1.5px)] [background-size:9px_9px] xl:flex-nowrap xl:justify-between">
         {toolstack.map((group) => (
-          <div key={group.label} className="overflow-hidden rounded-sm border border-border bg-background">
-            <p className="border-b border-border bg-foreground/[0.03] px-4 py-2.5 font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
+          <div
+            key={group.label}
+            className="max-w-full overflow-hidden rounded-sm border border-border bg-background"
+          >
+            <p className="whitespace-nowrap border-b border-border bg-foreground/[0.03] px-4 py-2.5 font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
               {group.label}
             </p>
             <ul className="flex flex-wrap">
               {group.tools.map((tool) => (
                 <li
                   key={tool}
-                  className="group relative flex h-16 w-16 items-center justify-center border-r border-border transition-colors duration-200 last:border-r-0 hover:bg-foreground/[0.04]"
+                  className="group relative flex h-14 w-14 items-center justify-center border-r border-border transition-colors duration-200 last:border-r-0 hover:bg-foreground/[0.04]"
                 >
                   <span className="transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:scale-110">
                     <ToolGlyph name={tool} />
@@ -2578,7 +2590,7 @@ function SkillsAndTools() {
                   <span className="sr-only">{tool}</span>
                   <span
                     aria-hidden="true"
-                    className="pointer-events-none absolute -top-2 left-1/2 z-10 -translate-x-1/2 -translate-y-full whitespace-nowrap rounded-md bg-foreground px-2 py-1 text-[11px] font-medium text-background opacity-0 shadow-md transition-opacity duration-150 group-hover:opacity-100"
+                    className="pointer-events-none absolute -top-1 left-1/2 z-10 -translate-x-1/2 -translate-y-full whitespace-nowrap rounded-md bg-foreground px-2 py-1 text-[11px] font-medium text-background opacity-0 shadow-md transition-opacity duration-150 group-hover:opacity-100"
                   >
                     {tool}
                   </span>

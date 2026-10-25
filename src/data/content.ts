@@ -1894,9 +1894,9 @@ export interface ToolGroup {
 }
 
 export const toolstack: ToolGroup[] = [
-  { label: "Design & Prototyping", tools: ["Figma", "Figma Make", "Framer", "ProtoPie", "LottieLab"] },
-  { label: "AI Workflow", tools: ["Claude", "Claude Code", "Figma MCP"] },
-  { label: "Collaboration & Handoff", tools: ["Notion", "Jira", "Confluence"] },
+  { label: "Design & Prototyping", tools: ["Figma", "Framer", "ProtoPie", "LottieLab"] },
+  { label: "AI Workflow", tools: ["Claude", "Claude Code"] },
+  { label: "Collaboration", tools: ["Notion", "Jira", "Confluence"] },
   { label: "Research & Testing", tools: ["Maze", "Hotjar", "Miro"] },
   { label: "Frontend & Dev", tools: ["HTML", "CSS", "Bootstrap 5", "Drupal 11", "Git"] },
 ];
