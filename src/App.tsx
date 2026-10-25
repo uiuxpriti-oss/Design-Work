@@ -803,7 +803,7 @@ function Hero({ ready }: { ready: boolean }) {
     setCopied(true);
     window.setTimeout(() => setCopied(false), 1800);
   };
-  const words = ["Product", "Designer", "who", "asks", "the", "right", "questions", "before", "*"];
+  const words = ["Product", "Designer", "who", "asks", "the", "right", "questions", "\n", "before", "*"];
   const started = ready ? "on" : "off";
   const grad = {
     background: "var(--hr-grad)",
@@ -829,22 +829,25 @@ function Hero({ ready }: { ready: boolean }) {
     >
       <div className="relative mx-auto flex w-full max-w-[1200px] flex-col px-8" style={{ gap: "clamp(56px,10vh,120px)" }}>
         <div className="flex flex-wrap items-end justify-between gap-12">
-          <div className="flex max-w-[780px] flex-col gap-8">
+          <div className="flex max-w-[880px] flex-col gap-8">
             <p style={{ margin: "0 0 -8px", fontSize: "clamp(20px,1.6vw,22px)", fontWeight: 500, letterSpacing: "-0.02em", color: "var(--hr-mute)" }}>
               Hi, I&apos;m <span style={{ color: "var(--hr-strong)" }}>Priti Jani</span>
             </p>
             <h1
               style={{
                 margin: 0,
-                fontSize: "clamp(34px,3.7vw,46px)",
+                fontSize: "clamp(34px,3.2vw,40px)",
                 fontWeight: 500,
                 lineHeight: 1.3,
                 letterSpacing: "-0.025em",
                 color: "var(--hr-text)",
-                textWrap: "balance",
               }}
             >
-              {words.map((w, k) => (
+              {words.map((w, k) =>
+                w === "\n" ? (
+                  // Fixed break so the headline is always two lines on desktop, whichever phrase is showing.
+                  <br key={started + k} className="hidden lg:block" />
+                ) : (
                 <span key={started + k}>
                   <span
                     style={{
@@ -869,7 +872,8 @@ function Hero({ ready }: { ready: boolean }) {
                   </span>
                   {k < words.length - 1 ? " " : null}
                 </span>
-              ))}
+                ),
+              )}
             </h1>
             <p style={{ margin: 0, fontSize: "clamp(18px,1.4vw,19px)", lineHeight: 1.55, color: "var(--hr-soft)", maxWidth: "52ch", textWrap: "pretty" }}>
               4+ years designing{" "}
