@@ -2566,10 +2566,8 @@ function ToolGlyph({ name }: { name: string }) {
 function SkillsAndTools() {
   return (
     <section id="skills-tools" className="mt-14 scroll-mt-24 sm:mt-24">
-      <p className="font-mono text-[12px] uppercase tracking-[0.2em] text-muted-foreground">
-        // Toolstack
-      </p>
-      <div className="mt-6 flex flex-wrap gap-x-6 gap-y-6 bg-[radial-gradient(circle,hsl(var(--border))_1px,transparent_1.5px)] [background-size:9px_9px] xl:flex-nowrap xl:justify-between">
+      <SectionHeading eyebrow="Toolstack" title="What I work with" />
+      <div className="mt-8 flex flex-wrap gap-x-6 gap-y-6 bg-[radial-gradient(circle,hsl(var(--border))_1px,transparent_1.5px)] [background-size:9px_9px] xl:flex-nowrap xl:justify-between">
         {toolstack.map((group) => (
           <div
             key={group.label}
