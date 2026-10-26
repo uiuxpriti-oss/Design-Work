@@ -3474,8 +3474,153 @@ function FooterLinkRow({
   );
 }
 
+type FooterLink = { href: string; label: string; hint: string; Icon: LucideIcon; mail?: boolean };
+
+function useCopyEmail() {
+  const [copied, setCopied] = useState(false);
+  const copy = async (e: ReactMouseEvent) => {
+    e.preventDefault();
+    try {
+      await navigator.clipboard.writeText(links.emailAddress);
+    } catch {
+      window.location.href = links.email;
+      return;
+    }
+    setCopied(true);
+    window.setTimeout(() => setCopied(false), 1800);
+  };
+  return { copied, copy };
+}
+
+const GLASS =
+  "border border-white/15 bg-white/[0.07] backdrop-blur-md transition-all duration-200 hover:border-white/30 hover:bg-white/[0.13]";
+const BLUE_PILL =
+  "bg-gradient-to-r from-[#1e3a8a] via-[#2563eb] to-[#60a5fa] text-white shadow-[0_8px_30px_rgba(37,99,235,0.35)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_12px_36px_rgba(59,130,246,0.5)]";
+
+// Variant A — frosted pills + one bright primary CTA, big email on top.
+function FooterPills({ list }: { list: FooterLink[] }) {
+  const { copied, copy } = useCopyEmail();
+  const call = list.find((l) => l.label === "Book a call")!;
+  const rest = list.filter((l) => l.label !== "Book a call");
+  return (
+    <div className="mt-12 flex flex-col items-start gap-8 sm:mt-14">
+      <button
+        type="button"
+        onClick={copy}
+        className="group text-left text-2xl font-light tracking-tight text-white/85 transition-colors hover:text-white sm:text-4xl"
+      >
+        {links.emailAddress}
+        <span className="ml-3 inline-flex translate-y-[-2px] items-center rounded-full border border-white/15 px-2.5 py-1 align-middle font-mono text-[10px] uppercase tracking-[0.14em] text-white/55 group-hover:text-white">
+          {copied ? "Copied ✓" : "Copy"}
+        </span>
+      </button>
+      <div className="flex flex-wrap gap-3">
+        <a href={call.href} target="_blank" rel="noreferrer" className={`inline-flex items-center gap-2 rounded-full px-6 py-3 text-[15px] font-medium ${BLUE_PILL}`}>
+          <Calendar className="h-4 w-4" aria-hidden="true" /> Book a call
+        </a>
+        {rest.filter((l) => !l.mail).map(({ href, label, Icon }) => (
+          <a key={label} href={href} target="_blank" rel="noreferrer" className={`inline-flex items-center gap-2 rounded-full px-5 py-3 text-[15px] text-white/80 hover:text-white ${GLASS}`}>
+            <Icon className="h-4 w-4 text-white/55" aria-hidden="true" /> {label} <ArrowUpRight className="h-3.5 w-3.5 text-white/40" aria-hidden="true" />
+          </a>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// Variant B — editorial: huge text rows, gradient text on hover.
+function FooterEditorial({ list }: { list: FooterLink[] }) {
+  const { copied, copy } = useCopyEmail();
+  return (
+    <ul className="mt-12 border-t border-white/10 sm:mt-14">
+      {list.map(({ href, label, hint, mail }, i) => (
+        <li key={label} className="border-b border-white/10">
+          <a
+            href={href}
+            onClick={mail ? copy : undefined}
+            {...(mail ? {} : { target: "_blank", rel: "noreferrer" })}
+            className="footer-ed group flex items-baseline justify-between gap-6 py-4 outline-none sm:py-5"
+          >
+            <span className="flex items-baseline gap-4 sm:gap-6">
+              <span className="font-mono text-[11px] text-white/30">{String(i + 1).padStart(2, "0")}</span>
+              <span className="footer-ed-label text-3xl font-light tracking-tight text-white/75 transition-colors sm:text-5xl">{label}</span>
+            </span>
+            <span className="flex items-center gap-3 text-[12px] text-white/35 transition-colors group-hover:text-white/70">
+              <span className="hidden sm:inline">{mail && copied ? "Copied to clipboard" : hint}</span>
+              <ArrowUpRight className="h-5 w-5 transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-1" aria-hidden="true" />
+            </span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+// Variant C — app-icon tiles in glass.
+function FooterTiles({ list }: { list: FooterLink[] }) {
+  const { copied, copy } = useCopyEmail();
+  return (
+    <div className="mt-12 grid grid-cols-2 gap-3 sm:mt-14 sm:grid-cols-3 lg:grid-cols-6">
+      {list.map(({ href, label, hint, Icon, mail }) => (
+        <a
+          key={label}
+          href={href}
+          onClick={mail ? copy : undefined}
+          {...(mail ? {} : { target: "_blank", rel: "noreferrer" })}
+          className={`group flex aspect-[5/4] flex-col justify-between rounded-3xl p-4 text-white/80 outline-none hover:-translate-y-1 hover:text-white ${GLASS}`}
+        >
+          <span className="flex h-10 w-10 items-center justify-center rounded-2xl bg-white/10 text-white/75 transition-colors group-hover:bg-gradient-to-br group-hover:from-[#2563eb] group-hover:to-[#60a5fa] group-hover:text-white">
+            <Icon className="h-5 w-5" aria-hidden="true" />
+          </span>
+          <span>
+            <span className="flex items-center justify-between text-[15px]">
+              {label}
+              <ArrowUpRight className="h-4 w-4 text-white/35 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" aria-hidden="true" />
+            </span>
+            <span className="mt-1 block text-[11px] leading-snug text-white/40">{mail && copied ? "Copied ✓" : hint}</span>
+          </span>
+        </a>
+      ))}
+    </div>
+  );
+}
+
+// Variant D — one big CTA plus a drifting row of glass pills.
+function FooterMarquee({ list }: { list: FooterLink[] }) {
+  const call = list.find((l) => l.label === "Book a call")!;
+  const rest = list.filter((l) => l.label !== "Book a call");
+  const line = [...rest, ...rest, ...rest, ...rest];
+  return (
+    <div className="mt-12 sm:mt-14">
+      <a
+        href={call.href}
+        target="_blank"
+        rel="noreferrer"
+        className={`group flex w-full items-center justify-between gap-4 rounded-[28px] px-6 py-7 text-white sm:px-10 sm:py-10 ${BLUE_PILL}`}
+      >
+        <span className="flex flex-col">
+          <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-white/65">30 minutes, free</span>
+          <span className="mt-2 text-3xl font-light tracking-tight sm:text-5xl">Book a call</span>
+        </span>
+        <span className="flex h-14 w-14 items-center justify-center rounded-full bg-white/15 transition-transform duration-300 group-hover:rotate-45 sm:h-16 sm:w-16">
+          <ArrowRight className="h-6 w-6" aria-hidden="true" />
+        </span>
+      </a>
+      <div className="marquee-track mt-6 -mx-4 overflow-hidden sm:-mx-6">
+        <div className="animate-marquee marquee-anim flex w-max items-center gap-3 px-4" style={{ ["--marquee-duration" as string]: "40s" }}>
+          {line.map(({ href, label, Icon }, i) => (
+            <a key={label + i} href={href} target={label === "Email" ? undefined : "_blank"} rel="noreferrer" className={`inline-flex items-center gap-2 whitespace-nowrap rounded-full px-5 py-2.5 text-[14px] text-white/75 hover:text-white ${GLASS}`}>
+              <Icon className="h-4 w-4 text-white/50" aria-hidden="true" /> {label}
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function SiteFooter() {
-  const link = [
+  const link: FooterLink[] = [
     { href: links.linkedin, label: "LinkedIn", hint: "Say hi, or follow my work", Icon: Linkedin },
     { href: links.cv, label: "Resume", hint: "PDF, 2 pages", Icon: FileText },
     { href: links.behance, label: "Behance", hint: "Case studies and creatives", Icon: Layers },
@@ -3500,11 +3645,20 @@ function SiteFooter() {
           Let&rsquo;s turn <span className="italic text-white/55">&ldquo;huh?&rdquo;</span> into{" "}
           <span className="footer-grad-text">&ldquo;oh, nice.&rdquo;</span>
         </h2>
+        {(() => {
+          const v = new URLSearchParams(window.location.search).get("footer");
+          if (v === "a") return <FooterPills list={link} />;
+          if (v === "b") return <FooterEditorial list={link} />;
+          if (v === "c") return <FooterTiles list={link} />;
+          if (v === "d") return <FooterMarquee list={link} />;
+          return (
         <div className="mt-12 grid grid-cols-1 border-l border-t border-white/10 sm:grid-cols-2 sm:mt-14">
           {link.map((l) => (
             <FooterLinkRow key={l.label} {...l} />
           ))}
-        </div>
+          </div>
+          );
+        })()}
         <div className="mt-24 flex flex-wrap items-end justify-between gap-4 sm:mt-32">
           <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-white/45">
             &copy;2026 / Priti Jani &middot; All rights reserved
