@@ -3057,7 +3057,7 @@ function Creatives({ onViewAll }: { onViewAll: () => void }) {
 
 
 const ABOUT_GRAD =
-  "bg-gradient-to-r from-[#2346c7] via-[#3b6cf6] to-[#9cc0ff] bg-clip-text text-transparent";
+  "bg-gradient-to-r from-[#1e3a8a] via-[#2563eb] to-[#60a5fa] bg-clip-text text-transparent";
 const ABOUT_WASH =
   "bg-[radial-gradient(60%_90%_at_0%_0%,#dbe7ff_0%,transparent_60%),radial-gradient(55%_90%_at_100%_100%,#d6ecff_0%,transparent_60%)] bg-[#eef3ff] dark:bg-[radial-gradient(60%_90%_at_0%_0%,rgba(59,108,246,0.22)_0%,transparent_60%),radial-gradient(55%_90%_at_100%_100%,rgba(96,165,250,0.12)_0%,transparent_60%)] dark:bg-white/[0.04]";
 const ABOUT_BLUE_BTN =
@@ -3190,7 +3190,7 @@ function AboutStat({ pre, n, suf, label, run }: { pre: string; n: number; suf: s
   );
 }
 
-function AboutHero({ onJourney }: { onJourney: () => void }) {
+function AboutHero() {
   const [slide, setSlide] = useState(0);
   const [run, setRun] = useState(false);
   const statsRef = useRef<HTMLDivElement>(null);
@@ -3219,7 +3219,7 @@ function AboutHero({ onJourney }: { onJourney: () => void }) {
   return (
     <section className="flex flex-col gap-10 pb-16 pt-14 sm:gap-12 sm:pb-20 sm:pt-20">
       <div className="flex flex-col gap-6">
-        <h1 className="max-w-[62rem] text-balance text-[clamp(38px,6vw,68px)] font-medium leading-[1.12] tracking-[-0.04em]">
+        <h1 className="max-w-[55rem] text-[clamp(34px,3.2vw,40px)] font-medium leading-[1.3] tracking-[-0.025em] text-[#262626] dark:text-[#e5e5e5]">
           {words.map((w, i) => (
             <span key={i}>
               <span
@@ -3234,7 +3234,7 @@ function AboutHero({ onJourney }: { onJourney: () => void }) {
             </span>
           ))}
         </h1>
-        <p className="about-rise max-w-[37.5rem] text-pretty text-[17px] leading-[1.65] text-muted-foreground sm:text-[18px]" style={{ animationDelay: "0.75s" }}>
+        <p className="about-rise max-w-[34rem] text-pretty text-base leading-[1.7] text-[#a3a3a3] md:text-[15px]" style={{ animationDelay: "0.75s" }}>
           Four years across enterprise SaaS, AI and data. Today I shape Lumenore — from Ask Me, a
           GenAI analytics assistant, to dashboards and data workflows.
         </p>
@@ -3244,22 +3244,6 @@ function AboutHero({ onJourney }: { onJourney: () => void }) {
           <AboutStat pre="↓" n={50} suf="%" label="Task time" run={run} />
           <AboutStat pre="↓" n={32} suf="%" label="Drop-off" run={run} />
           <AboutStat pre="" n={5000} suf="+" label="Users" run={run} />
-        </div>
-        <div className="about-rise flex flex-wrap gap-2.5" style={{ animationDelay: "1s" }}>
-          <button
-            type="button"
-            onClick={onJourney}
-            className="inline-flex h-[46px] items-center gap-3.5 rounded-full border border-border bg-background pl-[18px] pr-2 text-[15px] font-medium text-foreground/80 outline-none transition-colors hover:border-[#c5d5ff] hover:text-[#2346c7] focus-visible:ring-2 focus-visible:ring-foreground/25"
-          >
-            My journey
-            <span className="grid h-[30px] w-[30px] place-items-center rounded-lg bg-foreground/[0.06]">↓</span>
-          </button>
-          <ContactButton
-            align="right"
-            className={`inline-flex h-[46px] items-center gap-2 rounded-full px-[22px] text-[15px] font-semibold outline-none transition-shadow hover:shadow-[0_12px_26px_-8px_rgba(47,91,232,0.85)] focus-visible:ring-2 focus-visible:ring-foreground/25 ${ABOUT_BLUE_BTN}`}
-          >
-            <Send className="h-3.5 w-3.5" aria-hidden="true" /> Say hello
-          </ContactButton>
         </div>
       </div>
       <div className={`about-rise relative flex min-h-[320px] flex-col justify-between gap-9 overflow-hidden rounded-[28px] p-6 sm:p-10 ${ABOUT_WASH}`} style={{ animationDelay: "1.15s" }}>
@@ -3349,10 +3333,10 @@ function AboutTraits() {
   );
 }
 
-function AboutJourney({ sectionRef }: { sectionRef: React.RefObject<HTMLElement> }) {
+function AboutJourney() {
   const [sel, setSel] = useState(0);
   return (
-    <section ref={sectionRef} className="flex scroll-mt-24 flex-col gap-7">
+    <section className="flex scroll-mt-24 flex-col gap-7">
       <div className="flex flex-col gap-2.5">
         <h2 className="text-[34px] font-bold italic tracking-[-0.04em] sm:text-[44px]">So Far, So Good</h2>
         <span className="text-[15px] text-muted-foreground sm:text-[16px]">
@@ -3408,11 +3392,6 @@ function AboutJourney({ sectionRef }: { sectionRef: React.RefObject<HTMLElement>
 }
 
 function AboutPage({ onBack }: { onBack: () => void }) {
-  const journeyRef = useRef<HTMLElement>(null);
-  const toJourney = () => {
-    const el = journeyRef.current;
-    if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 80, behavior: "smooth" });
-  };
   return (
     <main className="mx-auto max-w-[72rem] px-6">
       <button
@@ -3422,9 +3401,9 @@ function AboutPage({ onBack }: { onBack: () => void }) {
       >
         <ArrowLeft className="h-4 w-4" aria-hidden="true" /> Back
       </button>
-      <AboutHero onJourney={toJourney} />
+      <AboutHero />
       <AboutTraits />
-      <AboutJourney sectionRef={journeyRef} />
+      <AboutJourney />
     </main>
   );
 }
