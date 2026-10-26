@@ -2629,15 +2629,13 @@ function Experience() {
 const TOOL_TILES: Record<string, { bg: string; src?: string; text?: string; fg?: string; pad?: number }> = {
   Claude: { bg: "#D97757", src: "tools/claude.svg" },
   ChatGPT: { bg: "#000000", src: "tools/openai.svg" },
-  Cursor: { bg: "#26251E", src: "tools/cursor.svg" },
   Lovable: { bg: "#0B0B12", src: "tools/lovable.svg" },
-  Replit: { bg: "#0E1525", src: "tools/replit.svg" },
   Jira: { bg: "#0052CC", src: "tools/jira.svg" },
   Confluence: { bg: "#1868DB", src: "tools/confluence.svg" },
   Maze: { bg: "#2B5BFF", src: "tools/maze.svg" },
   Hotjar: { bg: "#FF3C00", src: "tools/hotjar.svg" },
+  LottieLab: { bg: "transparent", src: "tools/lottielab.svg", pad: 0 },
   Miro: { bg: "#FFD02F", src: "tools/miro.svg" },
-  ProtoPie: { bg: "#6D3CF5", text: "Pp", fg: "#fff" },
 };
 
 function ToolGlyph({ name }: { name: string }) {
@@ -2658,7 +2656,7 @@ function ToolGlyph({ name }: { name: string }) {
         style={{ background: t.bg, color: t.fg }}
         className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[10px] text-[11px] font-bold leading-none"
       >
-        {t.src ? <img src={assetUrl(t.src)} alt="" className="h-[18px] w-[18px]" draggable={false} /> : t.text}
+        {t.src ? <img src={assetUrl(t.src)} alt="" className={t.pad === 0 ? "h-8 w-8 rounded-[10px]" : "h-[18px] w-[18px]"} draggable={false} /> : t.text}
       </span>
     );
   }
