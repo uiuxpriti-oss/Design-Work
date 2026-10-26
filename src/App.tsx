@@ -3289,12 +3289,25 @@ function AboutHero() {
   );
 }
 
-function AboutTraitCard({ t }: { t: (typeof ABOUT_TRAITS)[number] }) {
+// Alternating tilt and a staggered vertical drift so the row reads as a wave, not a rigid strip.
+const ABOUT_TILT = [-3, 2.5, -2, 3, -2.5, 2];
+const ABOUT_DROP = [0, 22, 6, 26, 2, 20];
+const ABOUT_QUIP = [
+  "-right-2 bottom-[26px] -rotate-3",
+  "-right-2 bottom-[26px] rotate-2",
+  "-left-3 -top-3 -rotate-2",
+  "-right-2 bottom-[26px] rotate-3",
+  "-right-2 bottom-[26px] -rotate-2",
+  "-left-3 bottom-[40px] rotate-2",
+];
+
+function AboutTraitCard({ t, i }: { t: (typeof ABOUT_TRAITS)[number]; i: number }) {
+  const k = i % ABOUT_TRAITS.length;
   return (
-    <div className="w-[300px] flex-none py-[30px] sm:w-[340px]" aria-hidden={undefined}>
+    <div className="w-[300px] flex-none pb-[50px] pt-5 sm:w-[360px]" style={{ paddingTop: 20 + ABOUT_DROP[k] }}>
       <div
-        className="relative h-[450px] -rotate-[4deg] rounded-[30px] p-3 shadow-[0_26px_40px_-30px_rgba(35,70,199,0.55)] transition-[transform,box-shadow] duration-500 ease-out hover:-translate-y-3.5 hover:rotate-0 hover:scale-[1.04] hover:shadow-[0_40px_60px_-30px_rgba(35,70,199,0.65)] dark:shadow-[0_26px_40px_-30px_rgba(0,0,0,0.8)] sm:h-[470px]"
-        style={{ background: `linear-gradient(105deg, ${t.bg} 0%, ${t.bg} 55%, #f4f7ff 115%)` }}
+        className="relative h-[450px] rounded-[30px] p-3 shadow-[0_26px_40px_-30px_rgba(35,70,199,0.55)] transition-[transform,box-shadow] duration-500 ease-out [transform:rotate(var(--r))] hover:shadow-[0_40px_60px_-30px_rgba(35,70,199,0.65)] hover:[transform:translateY(-14px)_scale(1.04)] dark:shadow-[0_26px_40px_-30px_rgba(0,0,0,0.8)] sm:h-[480px]"
+        style={{ ["--r" as string]: `${ABOUT_TILT[k]}deg`, background: `linear-gradient(105deg, ${t.bg} 0%, ${t.bg} 55%, #f4f7ff 115%)` }}
       >
         <div className="relative flex h-full flex-col gap-3.5 overflow-hidden rounded-[22px] border-[1.5px] border-dashed border-white/90 px-[22px] pt-[26px]">
           <span className="text-[25px] font-bold tracking-[-0.025em]" style={{ color: t.fg }}>{t.title}</span>
@@ -3304,7 +3317,7 @@ function AboutTraitCard({ t }: { t: (typeof ABOUT_TRAITS)[number] }) {
             <div className="absolute inset-x-[26px] bottom-0 top-7 overflow-hidden rounded-t-full bg-white">
               <img src={assetUrl(`about/traits/${t.img}.webp`)} alt="" loading="lazy" draggable={false} className="h-full w-full object-cover" />
             </div>
-            <span className="pointer-events-none absolute -right-2 bottom-[26px] max-w-[175px] -rotate-3 rounded-[14px] bg-white px-3.5 py-2.5 text-[13px] font-bold leading-[1.35] text-[#1a1a1f] shadow-[0_10px_22px_-10px_rgba(0,0,0,0.35)]">
+            <span className={`pointer-events-none absolute max-w-[175px] ${ABOUT_QUIP[k]} rounded-[14px] bg-white px-3.5 py-2.5 text-[13px] font-bold leading-[1.35] text-[#1a1a1f] shadow-[0_10px_22px_-10px_rgba(0,0,0,0.35)]`}>
               {t.quip}
             </span>
           </div>
@@ -3316,16 +3329,14 @@ function AboutTraitCard({ t }: { t: (typeof ABOUT_TRAITS)[number] }) {
 
 function AboutTraits() {
   return (
-    <section className="flex flex-col gap-4 pb-24 sm:pb-28">
-      <h2 className="text-[34px] font-semibold leading-[1.08] tracking-[-0.04em] sm:text-[44px]">
-        How I am as
-        <br />
-        <span className={ABOUT_GRAD}>a Designer</span>
+    <section className="flex flex-col gap-4 pb-12 sm:pb-16">
+      <h2 className="text-[30px] font-semibold leading-[1.08] tracking-[-0.04em] sm:text-[44px]">
+        How I am as <span className={ABOUT_GRAD}>a Designer</span>
       </h2>
       <div className="relative -mx-6 overflow-hidden [mask-image:linear-gradient(90deg,transparent_0,#000_6%,#000_94%,transparent_100%)] sm:mx-[calc(50%-50vw)]">
-        <div className="about-track flex w-max gap-9 px-[18px]">
+        <div className="about-track flex w-max items-start gap-9 px-[18px]">
           {[...ABOUT_TRAITS, ...ABOUT_TRAITS].map((t, i) => (
-            <AboutTraitCard key={i} t={t} />
+            <AboutTraitCard key={i} t={t} i={i} />
           ))}
         </div>
       </div>
