@@ -3,6 +3,7 @@ import {
   useRef,
   useState,
   type ReactNode,
+  type MouseEvent as ReactMouseEvent,
 } from "react";
 import Lenis from "lenis";
 import Matter from "matter-js";
@@ -39,6 +40,11 @@ import {
   Code2,
   BookOpen,
   type LucideIcon,
+  Calendar,
+  Layers,
+  Mail,
+  Github,
+  Linkedin,
 } from "lucide-react";
 
 import {
@@ -3413,14 +3419,69 @@ function FloatingAsk() {
   );
 }
 
+function FooterLinkRow({
+  href,
+  label,
+  hint,
+  Icon,
+  mail,
+}: {
+  href: string;
+  label: string;
+  hint: string;
+  Icon: LucideIcon;
+  mail?: boolean;
+}) {
+  const [copied, setCopied] = useState(false);
+  const onClick = async (e: ReactMouseEvent<HTMLAnchorElement>) => {
+    if (!mail) return;
+    e.preventDefault();
+    try {
+      await navigator.clipboard.writeText(links.emailAddress);
+    } catch {
+      window.location.href = links.email;
+      return;
+    }
+    setCopied(true);
+    window.setTimeout(() => setCopied(false), 1800);
+  };
+  return (
+    <a
+      href={href}
+      onClick={onClick}
+      {...(mail ? {} : { target: "_blank", rel: "noreferrer" })}
+      className="footer-row group relative flex items-center justify-between gap-4 overflow-hidden border-b border-r border-white/10 px-5 py-6 text-white/70 outline-none transition-colors duration-200 hover:text-white focus-visible:text-white"
+    >
+      <span aria-hidden="true" className="footer-row-glow" />
+      <span className="relative flex items-center gap-4">
+        <Icon className="h-[18px] w-[18px] text-white/45 transition-colors duration-200 group-hover:text-sky-300" aria-hidden="true" />
+        <span className="flex flex-col">
+          <span className="text-[16px] leading-tight">{label}</span>
+          <span className="mt-1 text-[12px] leading-none text-white/35 transition-colors duration-200 group-hover:text-white/60">
+            {copied ? "Copied to clipboard" : hint}
+          </span>
+        </span>
+      </span>
+      {copied ? (
+        <Check className="relative h-4 w-4 text-emerald-300" aria-hidden="true" />
+      ) : (
+        <ArrowUpRight
+          className="relative h-4 w-4 text-white/40 transition-all duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-sky-300"
+          aria-hidden="true"
+        />
+      )}
+    </a>
+  );
+}
+
 function SiteFooter() {
   const link = [
-    { href: links.linkedin, label: "LinkedIn" },
-    { href: links.cv, label: "Resume" },
-    { href: links.behance, label: "Behance" },
-    { href: links.github, label: "GitHub" },
-    { href: links.email, label: "Email", mail: true },
-    { href: links.cal, label: "Book a call" },
+    { href: links.linkedin, label: "LinkedIn", hint: "Say hi, or follow my work", Icon: Linkedin },
+    { href: links.cv, label: "Resume", hint: "PDF, 2 pages", Icon: FileText },
+    { href: links.behance, label: "Behance", hint: "Case studies and creatives", Icon: Layers },
+    { href: links.github, label: "GitHub", hint: "Code and experiments", Icon: Github },
+    { href: links.email, label: "Email", hint: "Click to copy my address", Icon: Mail, mail: true },
+    { href: links.cal, label: "Book a call", hint: "30 minutes, free", Icon: Calendar },
   ];
   return (
     <footer id="contact" className="footer-dark relative mt-16 scroll-mt-24 overflow-hidden bg-[#05060b] text-white sm:mt-24">
@@ -3440,19 +3501,8 @@ function SiteFooter() {
           <span className="footer-grad-text">&ldquo;oh, nice.&rdquo;</span>
         </h2>
         <div className="mt-12 grid grid-cols-1 border-l border-t border-white/10 sm:grid-cols-2 sm:mt-14">
-          {link.map(({ href, label, mail }) => (
-            <a
-              key={label}
-              href={href}
-              {...(mail ? {} : { target: "_blank", rel: "noreferrer" })}
-              className="group flex items-center justify-between gap-4 border-b border-r border-white/10 px-5 py-6 text-[16px] text-white/70 outline-none transition-colors duration-200 hover:bg-white/[0.04] hover:text-white focus-visible:bg-white/[0.06] focus-visible:text-white"
-            >
-              {label}
-              <ArrowUpRight
-                className="h-4 w-4 text-white/40 transition-all duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-sky-300"
-                aria-hidden="true"
-              />
-            </a>
+          {link.map((l) => (
+            <FooterLinkRow key={l.label} {...l} />
           ))}
         </div>
         <div className="mt-24 flex flex-wrap items-end justify-between gap-4 sm:mt-32">

@@ -491,3 +491,42 @@ html.lenis body {
     animation: none;
   }
 }
+
+/* Footer link rows: a blue gradient that keeps moving across the row while hovered. */
+.footer-row-glow {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  background-image: linear-gradient(
+    100deg,
+    rgba(30, 58, 138, 0) 0%,
+    rgba(37, 99, 235, 0.38) 22%,
+    rgba(96, 165, 250, 0.5) 40%,
+    rgba(37, 99, 235, 0.38) 58%,
+    rgba(30, 58, 138, 0) 80%,
+    rgba(30, 58, 138, 0) 100%
+  );
+  background-size: 240% 100%;
+  background-position: 120% 0;
+}
+.footer-row:hover .footer-row-glow,
+.footer-row:focus-visible .footer-row-glow {
+  opacity: 1;
+  animation: footerRowSweep 2.6s linear infinite;
+}
+@keyframes footerRowSweep {
+  from {
+    background-position: 140% 0;
+  }
+  to {
+    background-position: -60% 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .footer-row:hover .footer-row-glow,
+  .footer-row:focus-visible .footer-row-glow {
+    animation: none;
+    background-position: 50% 0;
+  }
+}
