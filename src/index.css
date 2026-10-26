@@ -112,7 +112,7 @@ html.lenis body {
     /* Minimal light theme on a pure white ground with neutral greys */
     --background: 0 0% 100%;
     --foreground: 24 10% 10%;
-    --card: 0 0% 94%; /* #F0F0F0 */
+    --card: 210 33% 98%; /* #FAFBFC */
     --primary: 226 64% 33%; /* brand blue #1E3A8A */
     --primary-foreground: 0 0% 100%;
     --muted-foreground: 0 0% 44%;

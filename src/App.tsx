@@ -992,7 +992,7 @@ function ProjectCard({
         type="button"
         onClick={() => onOpen(project.id)}
         aria-label={`Open ${project.title} case study`}
-        className="group grid w-full gap-2.5 rounded-[32px] bg-foreground/[0.05] p-2.5 text-left outline-none transition-colors focus-visible:ring-2 focus-visible:ring-foreground/25 focus-visible:ring-offset-4 focus-visible:ring-offset-background md:grid-cols-2 dark:bg-white/[0.05]"
+        className="group grid w-full gap-2.5 rounded-[32px] bg-[#FAFBFC] p-2.5 text-left dark:bg-white/[0.05] outline-none transition-colors focus-visible:ring-2 focus-visible:ring-foreground/25 focus-visible:ring-offset-4 focus-visible:ring-offset-background md:grid-cols-2 dark:bg-white/[0.05]"
       >
         {/* Left panel — title, headline, description and tag */}
         <div className="flex flex-col justify-between gap-8 rounded-[24px] bg-white p-7 sm:p-9 dark:bg-card">
@@ -1212,7 +1212,7 @@ function MotionGrid() {
   const paired = videos.length === 2 && videos.filter((v) => v.vertical).length === 1;
 
   const videoCard = (m: (typeof motionWork)[number]) => (
-    <figure key={m.title} className="flex flex-col overflow-hidden rounded-3xl bg-foreground/[0.05] p-2.5">
+    <figure key={m.title} className="flex flex-col overflow-hidden rounded-3xl bg-[#FAFBFC] p-2.5 dark:bg-white/[0.05]">
       <div
         className={`overflow-hidden rounded-[20px] bg-black ${
           m.vertical
@@ -1324,7 +1324,7 @@ function ProjectsPage({
           <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
             All Work
           </p>
-          <div className="mt-6 inline-flex items-center gap-1 rounded-full bg-foreground/[0.06] p-1 text-sm">
+          <div className="mt-6 inline-flex items-center gap-1 rounded-full bg-[#FAFBFC] p-1 text-sm dark:bg-foreground/[0.06]">
             {TABS.map((t) => (
               <button
                 key={t.id}
@@ -2789,7 +2789,7 @@ function SkillCard({ label, Icon }: (typeof SKILL_CARDS)[number]) {
 
 function SkillsPanel() {
   return (
-    <div className="rounded-[32px] bg-foreground/[0.05] p-6 sm:pb-2 sm:pl-10 sm:pr-2 sm:pt-10 dark:bg-white/[0.05]">
+    <div className="rounded-[32px] bg-[#FAFBFC] p-6 sm:pb-2 sm:pl-10 sm:pr-2 sm:pt-10 dark:bg-white/[0.05]">
       <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">Skills</p>
       <div className="mt-5 grid gap-10 lg:grid-cols-[1fr_1.25fr] lg:gap-8">
         <div className="max-w-[34rem]">
