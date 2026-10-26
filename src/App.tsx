@@ -828,7 +828,7 @@ function Hero({ ready }: { ready: boolean }) {
   return (
     <section
       id="home"
-      className="hero-root relative flex flex-col overflow-hidden pb-14 pt-[88px] sm:pb-[clamp(72px,10vh,110px)] sm:pt-[clamp(112px,16vh,150px)]"
+      className="hero-root relative flex flex-col overflow-hidden pb-6 pt-8 sm:pb-[clamp(72px,10vh,110px)] sm:pt-[clamp(112px,16vh,150px)]"
       style={{
         background: "var(--hr-bg)",
         color: "var(--hr-text)",
@@ -836,7 +836,7 @@ function Hero({ ready }: { ready: boolean }) {
       }}
     >
       <div className="relative mx-auto flex w-full max-w-[72rem] flex-wrap items-end justify-between gap-12 px-4 sm:px-6">
-        <div className="flex max-w-[880px] flex-col gap-8">
+        <div className="flex max-w-[880px] flex-col gap-5 sm:gap-8">
           <p style={{ margin: "0 0 -8px", fontSize: "clamp(20px,1.6vw,22px)", fontWeight: 500, letterSpacing: "-0.02em", color: "var(--hr-mute)" }}>
             Hi, I&apos;m <span style={{ color: "var(--hr-strong)" }}>Priti Jani</span>
           </p>
@@ -886,7 +886,7 @@ function Hero({ ready }: { ready: boolean }) {
       </div>
 
       <p
-        className="relative mx-auto mb-5 mt-8 w-full max-w-[72rem] px-4 text-base sm:mt-[clamp(56px,10vh,96px)] sm:px-6 md:text-[15px]"
+        className="relative mx-auto mb-4 mt-8 w-full max-w-[72rem] px-4 text-base sm:mb-5 sm:mt-[clamp(56px,10vh,96px)] sm:px-6 md:text-[15px]"
         style={{ color: "var(--hr-mute)" }}
       >
         Feel free to connect - I&rsquo;m always up for a good conversation.
