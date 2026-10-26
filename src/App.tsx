@@ -2876,7 +2876,7 @@ function SkillsPanel() {
           </div>
           <ToolPile />
         </div>
-        <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:mt-20">
+        <ul className="grid grid-cols-1 gap-1 sm:grid-cols-2 lg:mt-20">
           {SKILL_CARDS.map((c) => (
             <SkillCard key={c.label} {...c} />
           ))}
