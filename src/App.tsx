@@ -2673,9 +2673,9 @@ function ToolGlyph({ name }: { name: string }) {
 
 function Toolstack() {
   return (
-    <section id="toolstack" className="mt-14 scroll-mt-24 sm:mt-24">
-      <SkillsHeading eyebrow="Toolstack" title="What I work with" />
-      <div className="mt-8 flex flex-wrap gap-x-6 gap-y-6 bg-[radial-gradient(circle,hsl(var(--border))_1px,transparent_1.5px)] [background-size:9px_9px] xl:flex-nowrap xl:justify-between xl:gap-x-3">
+    <section id="toolstack" className="mt-14 scroll-mt-24 sm:mt-20">
+      <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">Toolstack</p>
+      <div className="mt-5 flex flex-wrap gap-x-6 gap-y-6 bg-[radial-gradient(circle,hsl(var(--border))_1px,transparent_1.5px)] [background-size:9px_9px] xl:flex-nowrap xl:justify-between xl:gap-x-3">
         {toolstack.map((group) => (
           <div
             key={group.label}
@@ -2707,15 +2707,6 @@ function Toolstack() {
         ))}
       </div>
     </section>
-  );
-}
-
-function SkillsHeading({ eyebrow, title }: { eyebrow: string; title: string }) {
-  return (
-    <div>
-      <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">{eyebrow}</p>
-      <h2 className="mt-2 text-2xl font-medium tracking-tight sm:text-[28px]">{title}</h2>
-    </div>
   );
 }
 
@@ -2764,7 +2755,7 @@ function SkillsStatement() {
   return (
     <p
       ref={ref}
-      className="text-xl font-light leading-[1.5] tracking-tight sm:text-[26px]"
+      className="text-lg font-light leading-[1.6] tracking-tight sm:text-[22px]"
     >
       {words.map((x, i) => {
         const lit = progress * words.length > i;
@@ -2773,7 +2764,7 @@ function SkillsStatement() {
             key={i}
             className={`transition-colors duration-300 ${
               x.bold
-                ? "font-medium text-foreground"
+                ? "font-semibold text-foreground"
                 : lit
                   ? "text-foreground/45"
                   : "text-foreground/20"
@@ -2787,34 +2778,29 @@ function SkillsStatement() {
   );
 }
 
-function SkillCard({ label, fact, Icon, tall = false }: (typeof SKILL_CARDS)[number] & { tall?: boolean }) {
+function SkillCard({ label, Icon }: (typeof SKILL_CARDS)[number]) {
   return (
-    <li
-      className={`group relative overflow-hidden rounded-xl bg-background transition-shadow duration-300 hover:shadow-lg ${
-        tall ? "flex flex-col gap-6 p-5" : "flex items-center gap-3.5 px-4 py-4"
-      }`}
-    >
-      <Icon className="h-7 w-7 shrink-0 text-foreground/80 transition-colors duration-300" />
-      <span className="text-[14px] font-normal tracking-tight text-foreground">{label}</span>
-      <span
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 flex items-end bg-foreground p-5 text-[13px] leading-snug text-background opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-      >
-        {fact}
-      </span>
+    <li className="skill-card group flex cursor-default items-center gap-4 rounded-sm bg-background px-5 py-6 transition-shadow duration-300 hover:shadow-[0_6px_20px_rgba(0,0,0,0.05)]">
+      <Icon className="skill-icon h-7 w-7 shrink-0 text-foreground/80 transition-colors duration-300" />
+      <span className="skill-label text-[15px] font-medium tracking-tight text-foreground">{label}</span>
     </li>
   );
 }
 
 function SkillsPanel() {
   return (
-    <div className="grid gap-10 rounded-3xl bg-foreground/[0.035] p-6 sm:p-8 lg:grid-cols-[1fr_1.05fr] lg:gap-12">
-      <SkillsStatement />
-      <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-        {SKILL_CARDS.map((c) => (
-          <SkillCard key={c.label} {...c} />
-        ))}
-      </ul>
+    <div className="rounded-sm border border-foreground/[0.05] bg-foreground/[0.025] p-6 sm:p-10">
+      <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">Skills</p>
+      <div className="mt-5 grid gap-10 lg:grid-cols-[1fr_1.25fr] lg:gap-8">
+        <div className="max-w-[34rem]">
+          <SkillsStatement />
+        </div>
+        <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:mt-20">
+          {SKILL_CARDS.map((c) => (
+            <SkillCard key={c.label} {...c} />
+          ))}
+        </ul>
+      </div>
     </div>
   );
 }
@@ -2822,14 +2808,10 @@ function SkillsPanel() {
 function SkillsAndTools() {
   return (
     <section id="skills-tools" className="mt-14 scroll-mt-24 sm:mt-24">
-      <SkillsHeading eyebrow="Skills" title="What I do" />
-      <div className="mt-8">
-        <SkillsPanel />
-      </div>
+      <SkillsPanel />
     </section>
   );
 }
-
 
 function AwardRow({
   a,

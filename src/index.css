@@ -402,3 +402,17 @@ html.lenis body {
     }
   }
 }
+
+/* Skill cards: on hover the label and icon take the brand blue gradient. */
+.skill-card:hover .skill-label {
+  background-image: var(--brand-text-grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.skill-card:hover .skill-icon {
+  color: #2563eb;
+}
+:root.dark .skill-card:hover .skill-icon {
+  color: #60a5fa;
+}
