@@ -12,33 +12,25 @@ import {
   ArrowRight,
   ArrowLeft,
   ArrowUp,
-  ChevronDown,
   ChevronLeft,
   ChevronRight,
   Inbox,
   CircleUserRound,
   Home,
   Menu,
-  Sparkles,
   Send,
   Copy,
   Check,
   ExternalLink,
   X,
-  Target,
   Route,
   FileText,
-  Workflow,
-  FlaskConical,
   Sun,
   Moon,
   Award,
   Image as ImageIcon,
   Play,
   Lock,
-  Brain,
-  Code2,
-  BookOpen,
   type LucideIcon,
   Calendar,
   Layers,
@@ -53,10 +45,8 @@ import {
   toolstack,
   creatives,
   motionWork,
-  experience,
   awards,
   links,
-  learning,
 } from "./data/content";
 import type { StudyBlock } from "./data/content";
 
@@ -2458,182 +2448,6 @@ function CaseStudyPage({
   );
 }
 
-function ContactBadge() {
-  return (
-    <div className="mt-10 flex justify-center">
-      <div className="inline-flex max-w-xl flex-wrap items-center justify-center gap-x-1.5 gap-y-1 rounded-full border border-border bg-card px-5 py-3 text-sm text-muted-foreground shadow-sm">
-        <span className="animate-wave mr-1 text-base" aria-hidden="true">
-          👋
-        </span>
-        <span>Always happy to talk — reach out on</span>
-        <a
-          href={links.linkedin}
-          target="_blank"
-          rel="noreferrer"
-          className="font-medium text-foreground underline decoration-foreground/30 underline-offset-2 transition-colors hover:decoration-foreground"
-        >
-          LinkedIn
-        </a>
-        <span>or at</span>
-        <a
-          href="mailto:uiuxpriti@gmail.com"
-          className="font-medium text-foreground underline decoration-foreground/30 underline-offset-2 transition-colors hover:decoration-foreground"
-        >
-          uiuxpriti@gmail.com
-        </a>
-      </div>
-    </div>
-  );
-}
-
-function ExperienceLogo({ job }: { job: (typeof experience)[number] }) {
-  const [ok, setOk] = useState(true);
-  return (
-    <div className="relative z-10 h-12 w-12 shrink-0">
-      {job.logo.src && ok ? (
-        <img
-          src={job.logo.src}
-          alt={job.company}
-          onError={() => setOk(false)}
-          className="h-12 w-12 rounded-2xl bg-white object-contain p-1 ring-1 ring-border"
-        />
-      ) : (
-        <div
-          className={`flex h-12 w-12 items-center justify-center rounded-2xl text-[13px] font-bold ${job.logo.className}`}
-        >
-          {job.logo.text}
-        </div>
-      )}
-      {job.present && (
-        <span className="absolute -right-0.5 -top-0.5 h-3 w-3 rounded-full border-2 border-background bg-emerald-500" />
-      )}
-    </div>
-  );
-}
-
-function ExperienceList() {
-  const [openIdx, setOpenIdx] = useState(-1);
-  return (
-    <ul>
-      {experience.map((job, i) => {
-        const open = openIdx === i;
-        return (
-          <li key={i} className="flex gap-4 sm:gap-5">
-            <div className="flex flex-col items-center">
-              <ExperienceLogo job={job} />
-              {i < experience.length - 1 && (
-                <span className="mt-1 w-px flex-1 bg-border" />
-              )}
-            </div>
-            <div className="flex-1 pb-8">
-              <button
-                type="button"
-                onClick={() => setOpenIdx(open ? -1 : i)}
-                className="flex w-full items-start justify-between gap-4 rounded-md text-left outline-none focus-visible:ring-2 focus-visible:ring-foreground/20"
-              >
-                <div>
-                  <p className="text-lg font-medium text-foreground">{job.company}</p>
-                  <p className="text-muted-foreground">{job.role}</p>
-                </div>
-                <div className="flex shrink-0 items-center gap-2 pt-1 font-mono text-[13px] text-muted-foreground">
-                  <span className="hidden sm:inline">{job.period}</span>
-                  <ChevronDown
-                    className={`h-4 w-4 transition-transform duration-200 ${open ? "rotate-180" : ""}`}
-                    aria-hidden="true"
-                  />
-                </div>
-              </button>
-              <p className="mt-1 font-mono text-[12px] text-muted-foreground sm:hidden">
-                {job.period}
-              </p>
-              {open && (
-                <div className="mt-4 space-y-4">
-                  {job.roles && job.roles.length > 1 && (
-                    <ol className="space-y-0 rounded-xl border border-blue-200 bg-blue-50/70 p-3.5 dark:border-blue-400/25 dark:bg-blue-400/10">
-                      {job.roles.map((r, ri) => (
-                        <li key={r.title} className="flex gap-3">
-                          <div className="flex flex-col items-center">
-                            <span
-                              className={`mt-1.5 h-2.5 w-2.5 rounded-full ${ri === 0 ? "bg-blue-500" : "bg-foreground/30"}`}
-                              aria-hidden="true"
-                            />
-                            {ri < job.roles!.length - 1 && (
-                              <span className="w-px flex-1 bg-foreground/15" aria-hidden="true" />
-                            )}
-                          </div>
-                          <div className="flex flex-1 flex-wrap items-baseline justify-between gap-x-3 pb-3 last:pb-0">
-                            <p className="text-[15px] font-medium text-foreground">
-                              {r.title}
-                              {ri === 0 && (
-                                <span className="ml-2 inline-block rounded-md border border-blue-300 bg-blue-100 px-2 py-0.5 align-middle text-[11px] font-medium text-blue-900 dark:border-blue-400/30 dark:bg-blue-400/20 dark:text-blue-200">
-                                  Promoted
-                                </span>
-                              )}
-                            </p>
-                            <span className="font-mono text-[12px] text-muted-foreground">{r.period}</span>
-                          </div>
-                        </li>
-                      ))}
-                    </ol>
-                  )}
-                  <p className="text-[15px] leading-relaxed text-foreground/85">
-                    {job.description}
-                  </p>
-                  {job.highlight && (
-                    <div className="rounded-xl border border-violet-200 bg-violet-50/70 p-3.5 dark:border-violet-500/25 dark:bg-violet-500/10">
-                      <span className="inline-block rounded-md border border-violet-200 bg-violet-100 px-2 py-0.5 text-[12px] font-medium text-violet-900 dark:border-violet-500/30 dark:bg-violet-500/20 dark:text-violet-200">
-                        Featured · {job.highlight.label}
-                      </span>
-                      <p className="mt-2 text-[15px] leading-relaxed text-foreground/85">
-                        {job.highlight.text}
-                      </p>
-                    </div>
-                  )}
-                  {job.bullets && job.bullets.length > 0 && (
-                    <ul className="space-y-2">
-                      {job.bullets.map((bullet, bi) => (
-                        <li
-                          key={bi}
-                          className="flex gap-2.5 text-[15px] leading-relaxed text-foreground/85"
-                        >
-                          <span
-                            className="mt-[9px] h-1 w-1 shrink-0 rounded-full bg-foreground/40"
-                            aria-hidden="true"
-                          />
-                          <span>{bullet}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                  <p className="text-sm text-muted-foreground">{job.location}</p>
-                </div>
-              )}
-            </div>
-          </li>
-        );
-      })}
-    </ul>
-  );
-}
-
-function Experience() {
-  return (
-    <section id="experience" className="mt-12 scroll-mt-24 border-t border-border pt-8 sm:mt-16">
-      <h2 className="text-2xl font-semibold italic tracking-tight sm:text-3xl">
-        So Far, So Good
-      </h2>
-      <span className="mt-3 block h-px w-40 bg-border" aria-hidden="true" />
-      <p className="mt-4 text-[15px] text-muted-foreground">
-        4+ years experience in design <span className="text-foreground/30">|</span> 3+
-        years working with startups
-      </p>
-      <div className="mt-10">
-        <ExperienceList />
-      </div>
-    </section>
-  );
-}
-
 // Real brand marks (SVG files in /public/tools) sit on a brand-coloured tile.
 // Tools with a bundled inline logo (Figma, Framer, Notion, HTML…) use BRAND_LOGOS instead.
 const TOOL_TILES: Record<string, { bg: string; src?: string; text?: string; fg?: string; pad?: number }> = {
@@ -3241,145 +3055,377 @@ function Creatives({ onViewAll }: { onViewAll: () => void }) {
   );
 }
 
-const LEARNING_ICONS: LucideIcon[] = [Sparkles, FlaskConical, BookOpen, Code2, Brain, Workflow, Target];
 
-const INTRO_BTN_PRIMARY =
-  "inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground shadow-sm outline-none transition-all hover:opacity-90 active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-foreground/25";
-const INTRO_BTN_GHOST =
-  "inline-flex items-center gap-2 rounded-full border border-border bg-background/70 px-5 py-2.5 text-sm font-medium text-foreground outline-none transition-colors hover:bg-card focus-visible:ring-2 focus-visible:ring-foreground/25";
+const ABOUT_GRAD =
+  "bg-gradient-to-r from-[#2346c7] via-[#3b6cf6] to-[#9cc0ff] bg-clip-text text-transparent";
+const ABOUT_WASH =
+  "bg-[radial-gradient(60%_90%_at_0%_0%,#dbe7ff_0%,transparent_60%),radial-gradient(55%_90%_at_100%_100%,#d6ecff_0%,transparent_60%)] bg-[#eef3ff] dark:bg-[radial-gradient(60%_90%_at_0%_0%,rgba(59,108,246,0.22)_0%,transparent_60%),radial-gradient(55%_90%_at_100%_100%,rgba(96,165,250,0.12)_0%,transparent_60%)] dark:bg-white/[0.04]";
+const ABOUT_BLUE_BTN =
+  "bg-gradient-to-b from-[#3b6cf6] to-[#2346c7] text-white shadow-[0_8px_20px_-8px_rgba(47,91,232,0.7)]";
 
-// About intro — centered, airy, soft gradient wash with a glass stats bar.
-function AboutIntro() {
+const ABOUT_SLIDES = [
+  {
+    label: "Philosophy",
+    text: "Design is the bridge between complex technology and human emotion — beyond pixels.",
+    facts: [] as string[],
+  },
+  {
+    label: "Currently learning",
+    text: "Seven things on the bench right now.",
+    facts: [
+      "Shipping AI products at Lumenore",
+      "Prototyping with AI more than I expected",
+      "Reading more books",
+      "Learning development to build what I design",
+      "Psychology",
+      "Service design",
+      "Trying to keep the promises I make to myself",
+    ],
+  },
+];
+
+const ABOUT_TRAITS = [
+  { title: "Problem Solver", img: "problem", bg: "#cfdcff", fg: "#1f3a9e", quip: "Solving problem. Oh solved it!", text: "Before I call something a 'problem,' I always ask myself — does this really need a solution? My curiosity helps me find a better one when it turns out to be a real issue." },
+  { title: "Calm & Compose", img: "calm", bg: "#dcd6ff", fg: "#3b2b9e", quip: "I bring peace", text: "Deadlines move, scope shifts — I stay steady and keep the team moving." },
+  { title: "Detail-Oriented", img: "detail", bg: "#cbe4ff", fg: "#124e8a", quip: "After 52 attempts, now all details are covered.", text: "Because that one flow gap always gives a headache." },
+  { title: "UX Researcher", img: "research", bg: "#c4d0ff", fg: "#1f2f8f", quip: "I want to know everything.", text: "I always love to dig deep to truly understand the core of the requirement." },
+  { title: "Well Organized", img: "organized", bg: "#d3dbf5", fg: "#22306e", quip: "Not just perfect. Monica perfect!", text: "Actually a Designer OCD. Just to make everything in my way, perfect!! Like Monica (FRIENDS) hah! I knowwwww!" },
+  { title: "Empathetic Listener", img: "listener", bg: "#dcd9ff", fg: "#3a2a8c", quip: "Yeah, I'm listening", text: "Oh, I'm really great at this, clients just love how well I listen and this helps me to empathise with them to get what they want." },
+];
+
+type AboutJob = {
+  company: string;
+  role: string;
+  logo: string;
+  location: string;
+  dates: string;
+  s: number;
+  e: number;
+  desc: string;
+  roles?: { title: string; period: string }[];
+  highlight?: { label: string; text: string };
+  metrics?: { v: string; l: string }[];
+  bullets?: string[];
+};
+
+const ABOUT_JOBS: AboutJob[] = [
+  {
+    company: "Netlink Software Group", role: "Senior Product Designer", logo: "logos/netlink.png",
+    location: "Bhopal, India", dates: "Jul 2024 – Present", s: 42, e: 70,
+    desc: "Promoted from Associate UI/UX Designer to Senior Product Designer in 2026. Designing Lumenore, a BI & AI platform spanning conversational analytics, data management, dashboards, and enterprise workflows.",
+    roles: [{ title: "Senior Product Designer", period: "2026 – Present" }, { title: "Associate UI/UX Designer", period: "Jul 2024 – 2026" }],
+    highlight: { label: "ASK ME", text: "Designed Lumenore Ask Me, a GenAI conversational analytics assistant (agentic RAG, MCP integrations): natural language querying, streaming answer states, uncertainty and error handling, and confirmation before users act on model output." },
+    metrics: [{ v: "↓50%", l: "task completion time" }, { v: "↓32%", l: "onboarding drop-off" }, { v: "5,000+", l: "active users" }, { v: "120+", l: "design-system components" }, { v: "+40%", l: "component reuse" }, { v: "80+", l: "screens audited, WCAG 2.1 AA" }],
+    bullets: [
+      "Own end-to-end design across Ask Me, Data Magnet, dashboards, alerts, scheduler, and data-management workflows, from discovery through design QA and release.",
+      "Run user testing sessions with enterprise customers, including moderated walkthroughs, task-based scenarios, and post-release follow-ups.",
+      "Reduced task completion time by up to 50% by simplifying complex analytics workflows for non-technical users.",
+      "Shipped 3 major features, reducing onboarding drop-off by 32% and support queries by 20%, reaching 5,000+ active users.",
+      "Built and governed a design system of 120+ components, variants, states, and tokens, increasing reuse by 40%.",
+      "Ran usability studies and WCAG 2.1 AA audits across 80+ screens; mobile-first validation improved task completion by 25%.",
+      "Partner with product, engineering, QA, and business stakeholders to align design with OKRs, KPIs, and technical constraints.",
+    ],
+  },
+  {
+    company: "Shanti Infosoft LLP", role: "UI/UX Designer", logo: "logos/shanti.png",
+    location: "Indore, India", dates: "Jul 2023 – Jun 2024", s: 30, e: 42,
+    desc: "Owned product design across SaaS, B2C, healthcare, and audit products, from discovery through live release.",
+    metrics: [{ v: "6", l: "products shipped end to end" }, { v: "+35%", l: "task success (Maze)" }, { v: "↓30%", l: "dev clarification time" }, { v: "↓20%", l: "user errors" }],
+    bullets: [
+      "Shipped 6 end-to-end products across web, mobile, and tablet, covering research, flows, interaction design, prototyping, and developer handoff.",
+      "Validated mobile-first healthcare and audit workflows through Maze studies, improving task success by 35%.",
+      "Created reusable Figma systems and clearer specs, cutting developer clarification time by 30% and reducing user errors by 20%.",
+    ],
+  },
+  {
+    company: "Incscale Technologies", role: "UI/UX & Graphic Designer", logo: "logos/incscale.png",
+    location: "Indore, India", dates: "Aug 2022 – Jun 2023", s: 19, e: 30,
+    desc: "Designed mobile-first B2C applications, e-commerce journeys, landing pages, and responsive websites.",
+    metrics: [{ v: "↓15%", l: "bounce rate" }, { v: "↓25%", l: "design review cycles" }],
+    bullets: [
+      "Used Hotjar insights to reduce bounce rate by 15%; interactive prototypes cut design review cycles by 25%.",
+      "Created wireframes, user flows, and high-fidelity prototypes for client validation and development handoff; supported AI-assisted front-end prototyping.",
+    ],
+  },
+  {
+    company: "Aashman Foundation", role: "Graphic Designer (Volunteer)", logo: "logos/aashman.png",
+    location: "Remote", dates: "2021 – 2022", s: 0, e: 24,
+    desc: "Designed campaign and social media creatives supporting outreach programs for underprivileged communities.",
+  },
+];
+
+const ABOUT_YEARS = ["2021", "2022", "2023", "2024", "2025", "2026"];
+
+const ABOUT_ARROW_BTN =
+  "grid h-9 w-9 place-items-center rounded-full text-sm outline-none transition-colors focus-visible:ring-2 focus-visible:ring-foreground/25";
+
+function AboutStat({ pre, n, suf, label, run }: { pre: string; n: number; suf: string; label: string; run: boolean }) {
+  const [p, setP] = useState(0);
+  useEffect(() => {
+    if (!run) return;
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduce) {
+      setP(1);
+      return;
+    }
+    const t0 = performance.now();
+    let raf = 0;
+    const tick = (t: number) => {
+      const k = Math.min(1, (t - t0) / 1600);
+      setP(1 - Math.pow(1 - k, 3));
+      if (k < 1) raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [run]);
   return (
-    <section className="pt-8 sm:pt-12">
-      <div className="relative rounded-[2rem] px-6 py-14 text-center sm:py-20">
-        {/* Decorative wash — clipped on its own so popovers inside can overflow the card */}
-        <div aria-hidden="true" className="absolute inset-0 overflow-hidden rounded-[2rem]">
-          <span className="absolute inset-0 bg-gradient-to-b from-violet-100 via-fuchsia-50/60 to-transparent dark:from-violet-500/20 dark:via-indigo-500/10 dark:to-transparent" />
-          <span className="absolute -left-16 top-10 h-56 w-56 rounded-full bg-sky-200/60 blur-3xl dark:bg-sky-500/15" />
-          <span className="absolute -right-10 top-24 h-64 w-64 rounded-full bg-pink-200/50 blur-3xl dark:bg-fuchsia-500/10" />
-        </div>
-        <div className="relative z-10">
-        <img
-          src={assetUrl("logo.png")}
-          alt="Priti Jani"
-          className="mx-auto h-20 w-20 rounded-full object-cover ring-4 ring-white/80 shadow-xl dark:ring-white/10"
-        />
-        <p className="mt-6 text-[11px] font-medium uppercase tracking-[0.2em] text-muted-foreground">
-          Senior Product Designer · Netlink
-        </p>
-        <h1 className="mx-auto mt-5 max-w-3xl text-4xl font-light leading-[1.1] tracking-tight sm:text-6xl">
-          I turn complex data into decisions people can{" "}
-          <span className="font-semibold italic">trust.</span>
+    <div className="flex flex-col gap-1">
+      <span className="text-[34px] font-medium tabular-nums tracking-[-0.04em] sm:text-[40px]">
+        {pre}
+        {Math.round(n * p).toLocaleString("en-US")}
+        {suf}
+      </span>
+      <span className="text-[10px] font-medium uppercase tracking-[0.2em] text-muted-foreground">{label}</span>
+    </div>
+  );
+}
+
+function AboutHero({ onJourney }: { onJourney: () => void }) {
+  const [slide, setSlide] = useState(0);
+  const [run, setRun] = useState(false);
+  const statsRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const el = statsRef.current;
+    if (!el || !("IntersectionObserver" in window)) {
+      setRun(true);
+      return;
+    }
+    let t = 0;
+    const io = new IntersectionObserver((es) => {
+      if (es.some((e) => e.isIntersecting)) {
+        t = window.setTimeout(() => setRun(true), 700);
+        io.disconnect();
+      }
+    }, { threshold: 0.4 });
+    io.observe(el);
+    return () => {
+      io.disconnect();
+      clearTimeout(t);
+    };
+  }, []);
+  const n = ABOUT_SLIDES.length;
+  const s = ABOUT_SLIDES[slide];
+  const words = ["I", "turn", "complex", "data", "into", "decisions", "people", "can", "trust."];
+  return (
+    <section className="flex flex-col gap-10 pb-16 pt-14 sm:gap-12 sm:pb-20 sm:pt-20">
+      <div className="flex flex-col gap-6">
+        <h1 className="max-w-[62rem] text-balance text-[clamp(38px,6vw,68px)] font-medium leading-[1.12] tracking-[-0.04em]">
+          {words.map((w, i) => (
+            <span key={i}>
+              <span
+                className={`about-rise inline-block ${i >= 6 ? ABOUT_GRAD : ""}`}
+                style={{
+                  animationDelay: `${0.1 + i * 0.07}s`,
+                  ...(i >= 6 ? { backgroundSize: "300% 100%", backgroundPosition: `${(i - 6) * 50}% 0` } : null),
+                }}
+              >
+                {w}
+              </span>{" "}
+            </span>
+          ))}
         </h1>
-        <p className="mx-auto mt-6 max-w-xl text-[16px] leading-[1.8] text-foreground/70">
+        <p className="about-rise max-w-[37.5rem] text-pretty text-[17px] leading-[1.65] text-muted-foreground sm:text-[18px]" style={{ animationDelay: "0.75s" }}>
           Four years across enterprise SaaS, AI and data. Today I shape Lumenore — from Ask Me, a
           GenAI analytics assistant, to dashboards and data workflows.
         </p>
-        <dl className="mx-auto mt-10 grid max-w-xl grid-cols-3 divide-x divide-foreground/10 rounded-2xl border border-white/60 bg-white/60 py-5 shadow-sm backdrop-blur-md dark:border-white/10 dark:bg-white/[0.05]">
-          {[
-            ["↓50%", "task time"],
-            ["↓32%", "drop-off"],
-            ["5,000+", "users"],
-          ].map(([v, l]) => (
-            <div key={v} className="px-3">
-              <dt className="text-2xl font-medium tracking-tight sm:text-3xl">{v}</dt>
-              <dd className="mt-1 text-[12px] text-muted-foreground">{l}</dd>
-            </div>
-          ))}
-        </dl>
-        <div className="mt-8 flex flex-wrap justify-center gap-3">
-          <a href={links.cv} target="_blank" rel="noreferrer" className={INTRO_BTN_PRIMARY}>
-            <FileText className="h-4 w-4" aria-hidden="true" /> Resume
-          </a>
-          <ContactButton align="left" className={INTRO_BTN_GHOST}>
-            <Send className="h-4 w-4" aria-hidden="true" /> Say hello
+      </div>
+      <div className="flex flex-wrap items-center justify-between gap-7">
+        <div ref={statsRef} className="about-rise flex flex-wrap gap-x-10 gap-y-5" style={{ animationDelay: "0.9s" }}>
+          <AboutStat pre="↓" n={50} suf="%" label="Task time" run={run} />
+          <AboutStat pre="↓" n={32} suf="%" label="Drop-off" run={run} />
+          <AboutStat pre="" n={5000} suf="+" label="Users" run={run} />
+        </div>
+        <div className="about-rise flex flex-wrap gap-2.5" style={{ animationDelay: "1s" }}>
+          <button
+            type="button"
+            onClick={onJourney}
+            className="inline-flex h-[46px] items-center gap-3.5 rounded-full border border-border bg-background pl-[18px] pr-2 text-[15px] font-medium text-foreground/80 outline-none transition-colors hover:border-[#c5d5ff] hover:text-[#2346c7] focus-visible:ring-2 focus-visible:ring-foreground/25"
+          >
+            My journey
+            <span className="grid h-[30px] w-[30px] place-items-center rounded-lg bg-foreground/[0.06]">↓</span>
+          </button>
+          <ContactButton
+            align="right"
+            className={`inline-flex h-[46px] items-center gap-2 rounded-full px-[22px] text-[15px] font-semibold outline-none transition-shadow hover:shadow-[0_12px_26px_-8px_rgba(47,91,232,0.85)] focus-visible:ring-2 focus-visible:ring-foreground/25 ${ABOUT_BLUE_BTN}`}
+          >
+            <Send className="h-3.5 w-3.5" aria-hidden="true" /> Say hello
           </ContactButton>
         </div>
-        </div>
       </div>
-    </section>
-  );
-}
-
-function AboutNow() {
-  return (
-    <section className="mt-12 grid gap-8 border-t border-border pt-8 sm:mt-16 md:grid-cols-[10rem_1fr]">
-      <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
-        Now
-      </p>
-      <div className="space-y-6">
-        <p className="text-[15px] text-foreground/85">
-          Senior Product Designer at <span className="font-medium text-foreground">Netlink Software Group</span>
-          <span className="ml-2 inline-block rounded-md border border-blue-300 bg-blue-100 px-2 py-0.5 align-middle text-[11px] font-medium text-blue-900 dark:border-blue-400/30 dark:bg-blue-400/20 dark:text-blue-200">
-            Promoted 2026
-          </span>
-        </p>
-        <div>
-          <p className="text-[13px] text-muted-foreground">Learning</p>
-          <ul className="mt-3 flex flex-wrap gap-2">
-            {learning.map((l, i) => {
-              const Icon = LEARNING_ICONS[i % LEARNING_ICONS.length];
-              return (
-                <li
-                  key={l}
-                  className="inline-flex items-center gap-2 rounded-full border border-border px-3.5 py-1.5 text-[13.5px] text-foreground/85"
-                >
-                  <Icon className="h-3.5 w-3.5 text-muted-foreground" aria-hidden="true" />
-                  {l.replace(/\s+—.*$/, "").replace(/\.$/, "")}
+      <div className={`about-rise relative flex min-h-[320px] flex-col justify-between gap-9 overflow-hidden rounded-[28px] p-6 sm:p-10 ${ABOUT_WASH}`} style={{ animationDelay: "1.15s" }}>
+        <span aria-hidden="true" className="pointer-events-none absolute -bottom-[70px] -right-2.5 select-none text-[240px] font-bold leading-none tracking-[-0.06em] text-white/60 dark:text-white/[0.05]">
+          {String(slide + 1).padStart(2, "0")}
+        </span>
+        <div className="relative flex items-center justify-between gap-4">
+          <div className="flex flex-wrap gap-1.5">
+            {ABOUT_SLIDES.map((x, i) => (
+              <button
+                key={x.label}
+                type="button"
+                onClick={() => setSlide(i)}
+                aria-pressed={i === slide}
+                className={`h-8 rounded-full border border-white px-3.5 text-[11px] font-medium uppercase tracking-[0.18em] outline-none transition-all focus-visible:ring-2 focus-visible:ring-foreground/25 dark:border-white/10 ${
+                  i === slide ? "bg-white text-[#2346c7] dark:bg-white/15 dark:text-blue-200" : "bg-white/45 text-muted-foreground dark:bg-white/[0.05]"
+                }`}
+              >
+                {x.label}
+              </button>
+            ))}
+          </div>
+          <div className="flex gap-1.5">
+            <button type="button" aria-label="Previous" onClick={() => setSlide((slide + n - 1) % n)} className={`${ABOUT_ARROW_BTN} border border-white bg-white/85 text-foreground hover:bg-white dark:border-white/10 dark:bg-white/10 dark:hover:bg-white/15`}>←</button>
+            <button type="button" aria-label="Next" onClick={() => setSlide((slide + 1) % n)} className={`${ABOUT_ARROW_BTN} ${ABOUT_BLUE_BTN}`}>→</button>
+          </div>
+        </div>
+        <div key={slide} className="about-rise relative flex flex-col gap-6" style={{ animationDuration: "0.5s" }}>
+          <p className="max-w-[51rem] text-pretty text-[clamp(22px,3vw,34px)] font-medium leading-[1.3] tracking-[-0.03em]">{s.text}</p>
+          {s.facts.length > 0 && (
+            <ul className="flex flex-wrap gap-2">
+              {s.facts.map((f, i) => (
+                <li key={f} className="flex items-center gap-2 rounded-full border border-white bg-white/90 px-4 py-2.5 text-[14px] text-foreground/80 dark:border-white/10 dark:bg-white/[0.08] sm:text-[15px]">
+                  <span className="text-[12px] font-semibold text-[#2f5be8]">{String(i + 1).padStart(2, "0")}</span>
+                  {f}
                 </li>
-              );
-            })}
-          </ul>
+              ))}
+            </ul>
+          )}
         </div>
       </div>
     </section>
   );
 }
 
-function AboutPhilosophy() {
+function AboutTraitCard({ t }: { t: (typeof ABOUT_TRAITS)[number] }) {
   return (
-    <section className="mt-12 grid gap-8 border-t border-border pt-8 sm:mt-16 md:grid-cols-[10rem_1fr]">
-      <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
-        Philosophy
-      </p>
-      <div>
-        <p className="max-w-2xl text-xl font-semibold leading-snug tracking-tight sm:text-2xl">
-          Design is the bridge between complex technology and human emotion —{" "}
-          <span className="italic text-muted-foreground">beyond pixels.</span>
-        </p>
-        <ul className="mt-5 flex flex-wrap gap-2">
-          {["Research", "Rapid iteration with AI", "Micro-interactions"].map((t) => (
-            <li key={t} className="rounded-full bg-foreground/[0.06] px-3.5 py-1.5 text-[13.5px] text-foreground/85">
-              {t}
-            </li>
+    <div className="w-[300px] flex-none py-[30px] sm:w-[340px]" aria-hidden={undefined}>
+      <div
+        className="relative h-[450px] -rotate-[4deg] rounded-[30px] p-3 shadow-[0_26px_40px_-30px_rgba(35,70,199,0.55)] transition-[transform,box-shadow] duration-500 ease-out hover:-translate-y-3.5 hover:rotate-0 hover:scale-[1.04] hover:shadow-[0_40px_60px_-30px_rgba(35,70,199,0.65)] dark:shadow-[0_26px_40px_-30px_rgba(0,0,0,0.8)] sm:h-[470px]"
+        style={{ background: `linear-gradient(105deg, ${t.bg} 0%, ${t.bg} 55%, #f4f7ff 115%)` }}
+      >
+        <div className="relative flex h-full flex-col gap-3.5 overflow-hidden rounded-[22px] border-[1.5px] border-dashed border-white/90 px-[22px] pt-[26px]">
+          <span className="text-[25px] font-bold tracking-[-0.025em]" style={{ color: t.fg }}>{t.title}</span>
+          <p className="text-pretty text-[15px] leading-[1.6] text-[#2a2a35]">{t.text}</p>
+          <div className="relative mx-auto mt-auto h-[220px] w-[230px]">
+            <div className="absolute inset-0 rounded-t-full bg-white/45" />
+            <div className="absolute inset-x-[26px] bottom-0 top-7 overflow-hidden rounded-t-full bg-white">
+              <img src={assetUrl(`about/traits/${t.img}.webp`)} alt="" loading="lazy" draggable={false} className="h-full w-full object-cover" />
+            </div>
+            <span className="pointer-events-none absolute -right-2 bottom-[26px] max-w-[175px] -rotate-3 rounded-[14px] bg-white px-3.5 py-2.5 text-[13px] font-bold leading-[1.35] text-[#1a1a1f] shadow-[0_10px_22px_-10px_rgba(0,0,0,0.35)]">
+              {t.quip}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function AboutTraits() {
+  return (
+    <section className="flex flex-col gap-4 pb-24 sm:pb-28">
+      <h2 className="text-[34px] font-semibold leading-[1.08] tracking-[-0.04em] sm:text-[44px]">
+        How I am as
+        <br />
+        <span className={ABOUT_GRAD}>a Designer</span>
+      </h2>
+      <div className="relative -mx-6 overflow-hidden [mask-image:linear-gradient(90deg,transparent_0,#000_6%,#000_94%,transparent_100%)] sm:mx-[calc(50%-50vw)]">
+        <div className="about-track flex w-max gap-9 px-[18px]">
+          {[...ABOUT_TRAITS, ...ABOUT_TRAITS].map((t, i) => (
+            <AboutTraitCard key={i} t={t} />
           ))}
-        </ul>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function AboutJourney({ sectionRef }: { sectionRef: React.RefObject<HTMLElement> }) {
+  const [sel, setSel] = useState(0);
+  return (
+    <section ref={sectionRef} className="flex scroll-mt-24 flex-col gap-7">
+      <div className="flex flex-col gap-2.5">
+        <h2 className="text-[34px] font-bold italic tracking-[-0.04em] sm:text-[44px]">So Far, So Good</h2>
+        <span className="text-[15px] text-muted-foreground sm:text-[16px]">
+          4+ years experience in design · 3+ years working with startups
+        </span>
+      </div>
+
+      <div className="flex flex-col overflow-x-auto rounded-3xl border border-border px-5 pb-3 pt-5">
+        <div className="grid min-w-[620px] grid-cols-[minmax(200px,260px)_minmax(380px,1fr)] gap-4 px-1.5 pb-2.5">
+          <span />
+          <div className="grid grid-cols-6 text-[11px] font-medium text-muted-foreground/70">
+            {ABOUT_YEARS.map((y) => (
+              <span key={y} className="border-l border-border pl-1.5">{y}</span>
+            ))}
+          </div>
+        </div>
+        {ABOUT_JOBS.map((j, i) => (
+          <button
+            key={j.company}
+            type="button"
+            onClick={() => setSel(i)}
+            onMouseEnter={() => setSel(i)}
+            aria-pressed={i === sel}
+            className={`grid min-w-[620px] grid-cols-[minmax(200px,260px)_minmax(380px,1fr)] items-center gap-4 rounded-xl border-0 border-t border-border/60 px-1.5 py-3 text-left outline-none transition-colors focus-visible:ring-2 focus-visible:ring-foreground/25 ${
+              i === sel ? "bg-[#fafaff] dark:bg-white/[0.04]" : "bg-transparent"
+            }`}
+          >
+            <div className="flex min-w-0 items-center gap-3">
+              <span className="grid h-9 w-9 flex-none place-items-center overflow-hidden rounded-[10px] border border-border bg-white p-1">
+                <img src={assetUrl(j.logo)} alt="" className="h-full w-full object-contain" />
+              </span>
+              <span className="flex min-w-0 flex-col">
+                <span className="text-[15px] font-semibold">{j.company}</span>
+                <span className="text-[13px] text-muted-foreground">{j.role}</span>
+              </span>
+            </div>
+            <div
+              className="relative h-8"
+              style={{ background: "repeating-linear-gradient(90deg, transparent 0, transparent calc(16.666% - 1px), hsl(var(--border) / 0.6) calc(16.666% - 1px), hsl(var(--border) / 0.6) 16.666%)" }}
+            >
+              <div
+                className={`absolute bottom-[5px] top-[5px] rounded-full transition-all duration-300 ${
+                  i === sel ? "bg-gradient-to-r from-[#3b6cf6] to-[#2346c7] shadow-[0_6px_16px_-6px_rgba(47,91,232,0.6)]" : "bg-[#dfe3ee] dark:bg-[#2a3042]"
+                }`}
+                style={{ left: `${(j.s / 72) * 100}%`, width: `${((j.e - j.s) / 72) * 100}%` }}
+              />
+            </div>
+          </button>
+        ))}
       </div>
     </section>
   );
 }
 
 function AboutPage({ onBack }: { onBack: () => void }) {
+  const journeyRef = useRef<HTMLElement>(null);
+  const toJourney = () => {
+    const el = journeyRef.current;
+    if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 80, behavior: "smooth" });
+  };
   return (
-    <>
-      <main className="mx-auto max-w-[72rem] px-6 pb-14 sm:pb-32">
-        <button
-          type="button"
-          onClick={onBack}
-          className="mt-6 inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground sm:hidden"
-        >
-          <ArrowLeft className="h-4 w-4" aria-hidden="true" /> Back
-        </button>
-        <AboutIntro />
-        <AboutNow />
-        <AboutPhilosophy />
-        <Experience />
-        <div className="mt-16">
-          <ContactBadge />
-        </div>
-      </main>
-    </>
+    <main className="mx-auto max-w-[72rem] px-6">
+      <button
+        type="button"
+        onClick={onBack}
+        className="mt-6 inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground sm:hidden"
+      >
+        <ArrowLeft className="h-4 w-4" aria-hidden="true" /> Back
+      </button>
+      <AboutHero onJourney={toJourney} />
+      <AboutTraits />
+      <AboutJourney sectionRef={journeyRef} />
+    </main>
   );
 }
 
