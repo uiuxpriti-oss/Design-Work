@@ -517,8 +517,8 @@ function Header({
                   aria-current={isActive ? "page" : undefined}
                   className={`inline-flex items-center gap-1 whitespace-nowrap rounded-full px-3 py-1.5 text-[13px] font-medium leading-none outline-none transition duration-200 ease-out active:scale-[0.96] focus-visible:ring-2 focus-visible:ring-foreground/20 focus-visible:ring-offset-2 focus-visible:ring-offset-background sm:gap-1.5 sm:px-4 sm:py-2 sm:text-[15px] ${
                     isActive
-                      ? "bg-foreground/[0.06] text-foreground active:bg-foreground/[0.08]"
-                      : "text-foreground/70 hover:bg-foreground/[0.05] hover:text-foreground active:bg-foreground/[0.09]"
+                      ? "bg-[#FAFBFC] text-foreground shadow-[inset_0_0_0_1px_rgba(0,0,0,0.04)] active:bg-[#FAFBFC] dark:bg-foreground/[0.08] dark:shadow-none"
+                      : "text-foreground/70 hover:bg-[#FAFBFC] hover:text-foreground active:bg-[#FAFBFC] dark:hover:bg-foreground/[0.06]"
                   }`}
                 >
                   {isActive && <Icon className="h-4 w-4" aria-hidden="true" />}
@@ -584,8 +584,8 @@ function Header({
                       aria-current={isActive ? "page" : undefined}
                       className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-[15px] font-medium transition-colors ${
                         isActive
-                          ? "bg-foreground/[0.06] text-foreground"
-                          : "text-foreground/70 hover:bg-foreground/[0.04]"
+                          ? "bg-[#FAFBFC] text-foreground dark:bg-foreground/[0.06]"
+                          : "text-foreground/70 hover:bg-[#FAFBFC] dark:hover:bg-foreground/[0.04]"
                       }`}
                     >
                       <Icon className="h-[18px] w-[18px]" aria-hidden="true" />
