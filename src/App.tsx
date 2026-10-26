@@ -2624,15 +2624,20 @@ function Experience() {
   );
 }
 
-// Tools without a bundled logo get a brand-coloured initials tile (swap in a real mark in brands.tsx).
-// Tools without a bundled logo get a brand-coloured initials tile (swap in a real mark in brands.tsx).
-const TOOL_TILES: Record<string, { bg: string; fg: string; text: string }> = {
-  ProtoPie: { bg: "#6D3CF5", fg: "#fff", text: "Pp" },
-  Jira: { bg: "#2684FF", fg: "#fff", text: "Ji" },
-  Confluence: { bg: "#1868DB", fg: "#fff", text: "Cf" },
-  Maze: { bg: "#6B4EFF", fg: "#fff", text: "Mz" },
-  Hotjar: { bg: "#FD3A5C", fg: "#fff", text: "Hj" },
-  Miro: { bg: "#FFD02F", fg: "#050038", text: "Mi" },
+// Real brand marks (SVG files in /public/tools) sit on a brand-coloured tile.
+// Tools with a bundled inline logo (Figma, Framer, Notion, HTML…) use BRAND_LOGOS instead.
+const TOOL_TILES: Record<string, { bg: string; src?: string; text?: string; fg?: string; pad?: number }> = {
+  Claude: { bg: "#D97757", src: "tools/claude.svg" },
+  ChatGPT: { bg: "#000000", src: "tools/openai.svg" },
+  Cursor: { bg: "#26251E", src: "tools/cursor.svg" },
+  Lovable: { bg: "#0B0B12", src: "tools/lovable.svg" },
+  Replit: { bg: "#0E1525", src: "tools/replit.svg" },
+  Jira: { bg: "#0052CC", src: "tools/jira.svg" },
+  Confluence: { bg: "#1868DB", src: "tools/confluence.svg" },
+  Maze: { bg: "#2B5BFF", src: "tools/maze.svg" },
+  Hotjar: { bg: "#FF3C00", src: "tools/hotjar.svg" },
+  Miro: { bg: "#FFD02F", src: "tools/miro.svg" },
+  ProtoPie: { bg: "#6D3CF5", text: "Pp", fg: "#fff" },
 };
 
 function ToolGlyph({ name }: { name: string }) {
@@ -2645,16 +2650,26 @@ function ToolGlyph({ name }: { name: string }) {
         &gt;_
       </span>
     );
+  const t = TOOL_TILES[name];
+  if (t) {
+    return (
+      <span
+        aria-hidden="true"
+        style={{ background: t.bg, color: t.fg }}
+        className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[10px] text-[11px] font-bold leading-none"
+      >
+        {t.src ? <img src={assetUrl(t.src)} alt="" className="h-[18px] w-[18px]" draggable={false} /> : t.text}
+      </span>
+    );
+  }
   const Brand = BRAND_LOGOS[name];
   if (Brand) return <Brand className="h-8 w-8 shrink-0" />;
-  const t = TOOL_TILES[name] ?? { bg: "#334155", fg: "#fff", text: name.slice(0, 2) };
   return (
     <span
       aria-hidden="true"
-      style={{ background: t.bg, color: t.fg }}
-      className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[10px] text-[11px] font-bold leading-none"
+      className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[10px] bg-slate-700 text-[11px] font-bold leading-none text-white"
     >
-      {t.text}
+      {name.slice(0, 2)}
     </span>
   );
 }
@@ -2663,11 +2678,11 @@ function Toolstack() {
   return (
     <section id="toolstack" className="mt-14 scroll-mt-24 sm:mt-20">
       <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">Toolstack</p>
-      <div className="mt-5 flex flex-wrap gap-x-6 gap-y-6 bg-[radial-gradient(circle,hsl(var(--border))_1px,transparent_1.5px)] [background-size:9px_9px] xl:flex-nowrap xl:justify-between xl:gap-x-3">
+      <div className="mt-5 flex flex-wrap gap-x-6 gap-y-6 bg-[radial-gradient(circle,hsl(var(--border))_1px,transparent_1.5px)] [background-size:9px_9px] 2xl:flex-nowrap 2xl:justify-between 2xl:gap-x-3">
         {toolstack.map((group) => (
           <div
             key={group.label}
-            className="max-w-full overflow-hidden rounded-2xl border border-black/[0.07] bg-background dark:border-white/10 xl:shrink-0"
+            className="max-w-full overflow-hidden rounded-2xl border border-black/[0.07] bg-background dark:border-white/10 2xl:shrink-0"
           >
             <p className="whitespace-nowrap border-b border-black/[0.06] bg-foreground/[0.03] px-4 py-2.5 font-mono text-[10.5px] uppercase tracking-[0.14em] text-muted-foreground dark:border-white/10">
               {group.label}
@@ -2676,7 +2691,7 @@ function Toolstack() {
               {group.tools.map((tool) => (
                 <li
                   key={tool}
-                  className="group relative flex h-16 w-16 items-center justify-center xl:h-14 xl:w-14 border-r border-black/[0.06] transition-colors duration-200 last:border-r-0 hover:bg-foreground/[0.04] dark:border-white/10"
+                  className="group relative flex h-16 w-16 items-center justify-center border-r border-black/[0.06] transition-colors duration-200 last:border-r-0 hover:bg-foreground/[0.04] dark:border-white/10"
                 >
                   <span className="transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:scale-110">
                     <ToolGlyph name={tool} />
