@@ -32,25 +32,14 @@ import {
   Moon,
   Award,
   Image as ImageIcon,
-  Linkedin,
   Play,
   Lock,
   Brain,
   Code2,
   BookOpen,
-  Github,
-  Mail,
   type LucideIcon,
 } from "lucide-react";
 
-// lucide has no Behance glyph — small inline mark.
-function BehanceIcon({ className = "" }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className={className}>
-      <path d="M8.2 6.8c.8 0 1.5.07 2.13.22.63.14 1.16.37 1.6.68.44.31.78.72 1.02 1.24.24.51.36 1.15.36 1.9 0 .82-.19 1.5-.56 2.05-.37.54-.93.99-1.66 1.33.99.28 1.73.78 2.22 1.48.49.71.73 1.56.73 2.55 0 .8-.16 1.5-.47 2.08-.31.59-.73 1.07-1.26 1.44-.53.37-1.14.64-1.83.82-.68.17-1.39.26-2.11.26H1V6.8h7.2zM7.8 12.02c.66 0 1.2-.16 1.63-.47.42-.31.63-.82.63-1.53 0-.39-.07-.72-.21-.97-.14-.25-.33-.44-.57-.58-.24-.14-.51-.23-.82-.28-.31-.05-.63-.08-.96-.08H4.2v3.9h3.6zm.2 6.48c.37 0 .71-.04 1.04-.11.33-.07.62-.19.87-.36.25-.16.45-.39.6-.68.15-.29.22-.66.22-1.1 0-.87-.25-1.49-.74-1.86-.49-.37-1.15-.56-1.96-.56H4.2v4.67h3.8zM17.1 18.36c.44.43 1.08.65 1.9.65.6 0 1.11-.15 1.54-.45.43-.3.69-.62.79-.95h2.35c-.38 1.17-.95 2-1.72 2.51-.77.5-1.71.76-2.8.76-.76 0-1.45-.12-2.06-.37-.61-.24-1.13-.59-1.55-1.04-.42-.45-.75-.99-.97-1.61-.22-.62-.34-1.31-.34-2.05 0-.72.11-1.39.34-2.01.23-.63.55-1.17.97-1.63.42-.46.93-.82 1.51-1.08.59-.26 1.24-.39 1.95-.39.79 0 1.49.15 2.09.46.6.31 1.09.72 1.47 1.24.38.52.65 1.11.81 1.78.16.67.22 1.37.17 2.1h-6.87c0 .75.24 1.35.68 1.78zM20.8 13.6c-.35-.38-.92-.59-1.63-.59-.46 0-.85.08-1.15.24-.31.16-.55.35-.73.58-.18.23-.31.47-.38.72-.07.25-.11.47-.12.66h4.24c-.06-.68-.28-1.23-.63-1.61zM15.1 8.2h5.3v1.29h-5.3V8.2z" />
-    </svg>
-  );
-}
 import {
   projects,
   caseStudies,
@@ -59,7 +48,6 @@ import {
   motionWork,
   experience,
   awards,
-  quotes,
   links,
   learning,
 } from "./data/content";
@@ -3332,123 +3320,55 @@ function FloatingAsk() {
   );
 }
 
-function FooterCTA() {
-  const socials = [
-    { href: links.cv, label: "Resume", Icon: FileText },
-    { href: links.linkedin, label: "LinkedIn", Icon: Linkedin },
-    { href: links.behance, label: "Behance", Icon: BehanceIcon },
-    { href: links.github, label: "GitHub", Icon: Github },
+function SiteFooter() {
+  const link = [
+    { href: links.linkedin, label: "LinkedIn" },
+    { href: links.cv, label: "Resume" },
+    { href: links.behance, label: "Behance" },
+    { href: links.github, label: "GitHub" },
+    { href: links.email, label: "Email", mail: true },
+    { href: links.cal, label: "Book a call" },
   ];
   return (
-    <section id="contact" className="mt-16 scroll-mt-24 border-t border-border sm:mt-24">
-      <div className="mx-auto max-w-[72rem] px-6 py-16 sm:py-24">
-        <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-muted-foreground">
-          Contact
-        </p>
-        <div className="mt-6 grid gap-10 md:grid-cols-[1fr_16rem] md:items-start">
-          <div>
-            <h2 className="max-w-md text-3xl font-semibold tracking-tight sm:text-5xl">
-              If it&apos;s missing,{" "}
-              <span className="italic text-brand-grad">
-                I&apos;ll build it.
-              </span>
-            </h2>
-            <p className="mt-5 max-w-md text-[15px] leading-relaxed text-muted-foreground">
-              I&apos;m open to Senior, Lead, and Staff product design roles, and
-              selective consulting — BI, AI-assisted UX, complex enterprise tools,
-              and teams that need more than screens.
-            </p>
-            <a
-              href={links.email}
-              className="group mt-8 inline-flex items-center gap-2.5 text-lg font-medium text-foreground outline-none focus-visible:ring-2 focus-visible:ring-foreground/25"
-            >
-              <Mail className="h-5 w-5 text-muted-foreground" aria-hidden="true" />
-              {links.emailAddress}
-              <ArrowUpRight
-                className="h-4 w-4 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                aria-hidden="true"
-              />
-            </a>
-          </div>
-          <div className="md:pt-1">
-            {socials.map(({ href, label, Icon }, i) => (
-              <a
-                key={label}
-                href={href}
-                target="_blank"
-                rel="noreferrer"
-                className={`group flex items-center justify-between gap-4 border-b border-border py-4 text-[15px] font-medium text-foreground outline-none transition-colors hover:text-foreground/70 focus-visible:text-foreground/70 ${
-                  i === 0 ? "border-t" : ""
-                }`}
-              >
-                <span className="flex items-center gap-3">
-                  <Icon className="h-[18px] w-[18px] text-muted-foreground" aria-hidden="true" />
-                  {label}
-                </span>
-                <ArrowUpRight
-                  className="h-4 w-4 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                  aria-hidden="true"
-                />
-              </a>
-            ))}
-          </div>
-        </div>
+    <footer id="contact" className="footer-dark relative mt-16 scroll-mt-24 overflow-hidden bg-[#05060b] text-white sm:mt-24">
+      {/* Moving blue gradient — slow, blurred blobs plus a fine grain */}
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0">
+        <span className="footer-blob footer-blob-a" />
+        <span className="footer-blob footer-blob-b" />
+        <span className="footer-blob footer-blob-c" />
+        <span className="footer-grain absolute inset-0" />
       </div>
-    </section>
-  );
-}
-
-function Footer() {
-  const line = [...quotes, ...quotes];
-  return (
-    <footer>
-      <div className="marquee-track overflow-hidden border-y border-border py-4">
-        <div className="animate-marquee marquee-anim flex w-max items-center gap-6">
-          {line.map((quote, i) => (
-            <span
-              key={i}
-              className="flex items-center gap-6 whitespace-nowrap text-[15px] italic text-foreground/55"
-            >
-              {quote}
-              <span className="not-italic text-foreground/25">✳</span>
-            </span>
-          ))}
-        </div>
-      </div>
-      <div className="mx-auto flex max-w-[72rem] flex-col items-center gap-4 px-6 pt-10 pb-28 text-center text-sm text-muted-foreground sm:flex-row sm:items-start sm:justify-between sm:pb-10 sm:text-left">
-        <div className="space-y-1">
-          <p className="whitespace-nowrap text-[13px]">
-            © 2026. Made by{" "}
-            <a
-              href={links.linkedin}
-              target="_blank"
-              rel="noreferrer"
-              className="font-medium text-primary hover:underline"
-            >
-              Priti Jani
-            </a>
+      <div className="relative mx-auto max-w-[72rem] px-4 pb-10 pt-16 sm:px-6 sm:pt-24">
+        <div className="flex flex-wrap items-baseline justify-between gap-x-8 gap-y-2">
+          <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-white/45">Let&apos;s connect</p>
+          <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-white/45">
+            <span className="text-emerald-400">Available</span> for full time &amp; contract opportunities
           </p>
-          <p className="text-[13px]">Designed, built &amp; deployed end to end — by me. 🛠️</p>
         </div>
-        <div className="flex items-center gap-2.5">
-          {[
-            { href: links.linkedin, label: "LinkedIn", ext: true, Icon: Linkedin },
-            { href: links.behance, label: "Behance", ext: true, Icon: BehanceIcon },
-            { href: links.github, label: "GitHub", ext: true, Icon: Github },
-            { href: links.email, label: "Email", ext: false, Icon: Mail },
-            { href: links.cv, label: "Resume", ext: true, Icon: FileText },
-          ].map(({ href, label, ext, Icon }) => (
+        <h2 className="mt-4 max-w-3xl text-3xl font-medium tracking-tight text-white/90 sm:text-5xl">
+          Have an idea? Let&rsquo;s <span className="footer-grad-text">build it.</span>
+        </h2>
+        <div className="mt-12 grid grid-cols-1 border-l border-t border-white/10 sm:grid-cols-2 sm:mt-14">
+          {link.map(({ href, label, mail }) => (
             <a
               key={label}
               href={href}
-              aria-label={label}
-              title={label}
-              {...(ext ? { target: "_blank", rel: "noreferrer" } : {})}
-              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border text-muted-foreground outline-none transition-colors hover:border-foreground/30 hover:bg-card hover:text-foreground focus-visible:ring-2 focus-visible:ring-foreground/25"
+              {...(mail ? {} : { target: "_blank", rel: "noreferrer" })}
+              className="group flex items-center justify-between gap-4 border-b border-r border-white/10 px-5 py-6 text-[16px] text-white/70 outline-none transition-colors duration-200 hover:bg-white/[0.04] hover:text-white focus-visible:bg-white/[0.06] focus-visible:text-white"
             >
-              <Icon className="h-[18px] w-[18px]" />
+              {label}
+              <ArrowUpRight
+                className="h-4 w-4 text-white/40 transition-all duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-sky-300"
+                aria-hidden="true"
+              />
             </a>
           ))}
+        </div>
+        <div className="mt-24 flex flex-wrap items-end justify-between gap-4 sm:mt-32">
+          <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-white/45">
+            &copy;2026 / Priti Jani &middot; All rights reserved
+          </p>
+          <p className="text-[12px] text-white/40">Designed, built &amp; deployed end to end &mdash; by me.</p>
         </div>
       </div>
     </footer>
@@ -3728,8 +3648,7 @@ export default function App() {
         ) : (
           <AboutPage onBack={goHome} />
         )}
-        <FooterCTA />
-        <Footer />
+        <SiteFooter />
       </div>
       <FloatingAsk />
     </div>
