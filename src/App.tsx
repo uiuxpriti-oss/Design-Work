@@ -1916,6 +1916,10 @@ const PROTECTED_CASES: Record<string, string> = {
   "project-tabnet-security": CASE_PASSWORD_HASH,
   "project-baladi-express": CASE_PASSWORD_HASH,
   "project-leadsdemos": CASE_PASSWORD_HASH,
+  "project-ask-me": CASE_PASSWORD_HASH,
+  "project-capitalfi": CASE_PASSWORD_HASH,
+  "project-cakes-celebrations": CASE_PASSWORD_HASH,
+  "project-audio-transcript-analysis": CASE_PASSWORD_HASH,
 };
 
 async function sha256Hex(text: string) {
