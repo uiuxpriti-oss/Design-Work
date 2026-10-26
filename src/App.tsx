@@ -2743,7 +2743,7 @@ function SkillsStatement() {
 
 function SkillCard({ label, Icon }: (typeof SKILL_CARDS)[number]) {
   return (
-    <li className="skill-card group flex cursor-default items-center gap-4 rounded-none bg-white px-5 py-6 dark:bg-card transition-shadow duration-300 hover:shadow-[0_6px_20px_rgba(0,0,0,0.05)]">
+    <li className="skill-card group flex cursor-default items-center gap-4 rounded-[2px] bg-white px-5 py-6 sm:last:rounded-br-[24px] dark:bg-card transition-shadow duration-300 hover:shadow-[0_6px_20px_rgba(0,0,0,0.05)]">
       <Icon className="skill-icon h-7 w-7 shrink-0 text-foreground/80 transition-colors duration-300" />
       <span className="skill-label text-[15px] font-medium tracking-tight text-foreground">{label}</span>
     </li>
