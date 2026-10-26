@@ -18,9 +18,6 @@ import {
   Home,
   Menu,
   Sparkles,
-  Layers,
-  Wand2,
-  Zap,
   Send,
   Copy,
   Check,
@@ -44,10 +41,6 @@ import {
   Github,
   Mail,
   type LucideIcon,
-  Shapes,
-  BarChart3,
-  SquareTerminal,
-  ClipboardList,
 } from "lucide-react";
 
 // lucide has no Behance glyph — small inline mark.
@@ -88,6 +81,14 @@ import {
   ClaudeLogo,
   NotionLogo,
   LottieLabLogo,
+  SkProductDesign,
+  SkDataDriven,
+  SkDesignSystems,
+  SkPrototyping,
+  SkAiWorkflows,
+  SkInteraction,
+  SkFigmaToCode,
+  SkUxResearch,
 } from "./brands";
 
 type BrandLogo = (props: { className?: string }) => JSX.Element;
@@ -2718,15 +2719,15 @@ function SkillsHeading({ eyebrow, title }: { eyebrow: string; title: string }) {
   );
 }
 
-const SKILL_CARDS: { label: string; fact: string; Icon: LucideIcon }[] = [
-  { label: "Product Design", fact: "4+ years in enterprise SaaS, AI and data", Icon: Shapes },
-  { label: "Data & Dashboard Design", fact: "Dashboards, alerts and data workflows", Icon: BarChart3 },
-  { label: "Design Systems", fact: "120+ components, 40% more reuse", Icon: Layers },
-  { label: "Prototyping", fact: "Figma, Framer, ProtoPie", Icon: Play },
-  { label: "AI Workflows", fact: "Ask Me, a GenAI analytics assistant", Icon: Wand2 },
-  { label: "Interaction & Motion", fact: "Micro-interactions that guide", Icon: Zap },
-  { label: "Figma to Code", fact: "Figma MCP and Claude Code", Icon: SquareTerminal },
-  { label: "UX Research", fact: "Usability tests, WCAG audits on 80+ screens", Icon: ClipboardList },
+const SKILL_CARDS: { label: string; fact: string; Icon: (p: { className?: string }) => ReactNode }[] = [
+  { label: "Product Design", fact: "4+ years in enterprise SaaS, AI and data", Icon: SkProductDesign },
+  { label: "Data-driven Design", fact: "Dashboards, alerts and data workflows", Icon: SkDataDriven },
+  { label: "Design Systems", fact: "120+ components, 40% more reuse", Icon: SkDesignSystems },
+  { label: "Prototyping", fact: "Figma, Framer, ProtoPie", Icon: SkPrototyping },
+  { label: "AI Workflows", fact: "Ask Me, a GenAI analytics assistant", Icon: SkAiWorkflows },
+  { label: "Interaction Design", fact: "Micro-interactions that guide", Icon: SkInteraction },
+  { label: "Figma to Code", fact: "Figma MCP and Claude Code", Icon: SkFigmaToCode },
+  { label: "UX Research", fact: "Usability tests, WCAG audits on 80+ screens", Icon: SkUxResearch },
 ];
 
 // **bold** marks the words that stay dark; everything else starts light and fills in on scroll.
@@ -2793,7 +2794,7 @@ function SkillCard({ label, fact, Icon, tall = false }: (typeof SKILL_CARDS)[num
         tall ? "flex flex-col gap-6 p-5" : "flex items-center gap-3.5 px-4 py-4"
       }`}
     >
-      <Icon className="h-6 w-6 shrink-0 text-foreground/55 transition-colors duration-300 group-hover:text-foreground" strokeWidth={1.5} aria-hidden="true" />
+      <Icon className="h-7 w-7 shrink-0 text-foreground/80 transition-colors duration-300" />
       <span className="text-[14px] font-normal tracking-tight text-foreground">{label}</span>
       <span
         aria-hidden="true"

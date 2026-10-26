@@ -135,3 +135,94 @@ export function ClaudeLogo({ className = box }: P) {
     </svg>
   );
 }
+
+// Two-tone skill icons: the main shape uses currentColor, the secondary shape the same colour at lower opacity.
+const L = 0.38;
+type SP = { className?: string };
+const sk = (className = "h-6 w-6") => ({ viewBox: "0 0 24 24", className, "aria-hidden": true as const });
+
+export function SkProductDesign({ className }: SP) {
+  return (
+    <svg {...sk(className)} fill="currentColor">
+      <circle cx="3.5" cy="12" r="1.8" />
+      <circle cx="12" cy="3.5" r="1.8" />
+      <circle cx="20.5" cy="12" r="1.8" />
+      <path d="M4.6 10.8 12 4.6l7.4 6.2" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M12 9.2l4.3 4.3-4.3 4.3-4.3-4.3z" opacity={L} />
+      <rect x="10" y="19.2" width="4" height="2.4" rx="1" />
+    </svg>
+  );
+}
+export function SkDataDriven({ className }: SP) {
+  return (
+    <svg {...sk(className)} fill="currentColor">
+      <circle cx="4.5" cy="4.5" r="2" />
+      <circle cx="19.5" cy="19.5" r="2" />
+      <path d="M4.5 7v7.5a2.5 2.5 0 0 0 2.5 2.5h3.2" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" opacity={L} />
+      <path d="M8.6 14.6 11 17l-2.4 2.4" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" opacity={L} />
+      <path d="M19.5 17V9.5A2.5 2.5 0 0 0 17 7h-3.2" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" opacity={L} />
+      <path d="M15.4 9.4 13 7l2.4-2.4" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" opacity={L} />
+    </svg>
+  );
+}
+export function SkDesignSystems({ className }: SP) {
+  return (
+    <svg {...sk(className)} fill="currentColor">
+      <rect x="3" y="2.5" width="7.5" height="19" rx="2.2" />
+      <circle cx="6.75" cy="18" r="1" fill="#fff" />
+      <path d="M12.6 8.2 15.4 7a1.6 1.6 0 0 1 2.1.9l3.3 7.8a1.6 1.6 0 0 1-.9 2.1l-2.7 1.1z" opacity={L} />
+      <path d="M12.6 14.5h6.2a2.4 2.4 0 0 1 2.4 2.4V19a2.5 2.5 0 0 1-2.5 2.5h-6.1z" opacity={L + 0.1} />
+    </svg>
+  );
+}
+export function SkPrototyping({ className }: SP) {
+  return (
+    <svg {...sk(className)} fill="currentColor">
+      <path d="M5.2 3.8a1.6 1.6 0 0 1 2.4-1.4l10.7 6.2a1.6 1.6 0 0 1 0 2.8L7.6 17.6a1.6 1.6 0 0 1-2.4-1.4z" />
+      <path d="M9 17.4l9.4-5.4c.7-.4 1.6-.2 2.1.4a1.6 1.6 0 0 1-.5 2.3l-9.2 5.4a3.3 3.3 0 0 1-3.3 0 1.6 1.6 0 0 1 .5-2.7z" opacity={L} />
+    </svg>
+  );
+}
+export function SkAiWorkflows({ className }: SP) {
+  return (
+    <svg {...sk(className)} fill="currentColor">
+      <path d="M9.2 9.2 20.6 20.6a1.5 1.5 0 0 1-2.1 2.1L7.1 11.3z" opacity={L + 0.1} transform="translate(-0.5 -1)" />
+      <path d="M17 4.5l.8 1.9 1.9.8-1.9.8-.8 1.9-.8-1.9-1.9-.8 1.9-.8z" />
+      <path d="M5.2 3.5l.6 1.4 1.4.6-1.4.6-.6 1.4-.6-1.4-1.4-.6 1.4-.6z" />
+      <path d="M5 13.2l.6 1.4 1.4.6-1.4.6L5 17.2l-.6-1.4-1.4-.6 1.4-.6z" />
+      <path d="M21 9.8l.5 1.1 1.1.5-1.1.5-.5 1.1-.5-1.1-1.1-.5 1.1-.5z" />
+    </svg>
+  );
+}
+export function SkInteraction({ className }: SP) {
+  return (
+    <svg {...sk(className)} fill="currentColor">
+      <rect x="3.2" y="9.2" width="9.6" height="9.6" rx="2.6" opacity={L} />
+      <rect x="8.6" y="5" width="9.6" height="9.6" rx="2.6" opacity={L + 0.12} />
+      <path d="M5.2 8.2A8 8 0 0 1 12 3.5" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
+      <path d="M9.6 1.6 12 3.5 9.7 5.6" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M18.8 15.8A8 8 0 0 1 12 20.5" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
+      <path d="M14.4 22.4 12 20.5l2.3-2.1" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+export function SkFigmaToCode({ className }: SP) {
+  return (
+    <svg {...sk(className)} fill="currentColor">
+      <rect x="2.8" y="2.8" width="18.4" height="18.4" rx="4.6" opacity={L} />
+      <path d="M7.4 8.6l3.2 3.4-3.2 3.4" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M12.6 16h4.2" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" />
+    </svg>
+  );
+}
+export function SkUxResearch({ className }: SP) {
+  return (
+    <svg {...sk(className)} fill="currentColor">
+      <path d="M6 4.2h12A2.8 2.8 0 0 1 20.8 7v7.6a2.4 2.4 0 0 1-.7 1.7l-3.8 3.8a2.4 2.4 0 0 1-1.7.7H6A2.8 2.8 0 0 1 3.2 18V7A2.8 2.8 0 0 1 6 4.2z" opacity={L} />
+      <path d="M16 20.6V18a2 2 0 0 1 2-2h2.8z" />
+      <rect x="7" y="2" width="2" height="4" rx="1" />
+      <rect x="15" y="2" width="2" height="4" rx="1" />
+      <path d="M7.4 11h8M7.4 14.4h5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+    </svg>
+  );
+}
