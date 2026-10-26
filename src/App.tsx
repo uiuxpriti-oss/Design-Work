@@ -3320,13 +3320,76 @@ function AboutTraitCard({ t, i }: { t: (typeof ABOUT_TRAITS)[number]; i: number 
 }
 
 function AboutTraits() {
+  const ref = useRef<HTMLDivElement>(null);
+  const pos = useRef(0);
+  const hold = useRef(false);
+  const drag = useRef<{ x: number; left: number } | null>(null);
+  const resume = useRef(0);
+
+  // Slow auto-drift that stops while the pointer is over the row or a finger is on it.
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    let raf = 0;
+    const tick = () => {
+      if (!hold.current) {
+        pos.current += 0.6;
+        el.scrollLeft = pos.current;
+      }
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => {
+      cancelAnimationFrame(raf);
+      clearTimeout(resume.current);
+    };
+  }, []);
+
+  // Keep the loop seamless in both directions and track manual scrolling.
+  const onScroll = () => {
+    const el = ref.current;
+    if (!el) return;
+    const half = el.scrollWidth / 2;
+    if (el.scrollLeft >= half) el.scrollLeft -= half;
+    else if (el.scrollLeft <= 0) el.scrollLeft += half;
+    if (hold.current) pos.current = el.scrollLeft;
+    else pos.current = Math.max(pos.current % half, 0);
+  };
+
+  const touchHold = (on: boolean) => {
+    clearTimeout(resume.current);
+    if (on) hold.current = true;
+    else resume.current = window.setTimeout(() => (hold.current = false), 1800);
+  };
+
   return (
     <section className="flex flex-col gap-6 pb-24 sm:gap-8 sm:pb-32">
       <h2 className="text-[30px] font-semibold leading-[1.08] tracking-[-0.04em] sm:text-[44px]">
         How I am as <span className={ABOUT_GRAD}>a Designer</span>
       </h2>
-      <div className="relative -mx-6 overflow-hidden [mask-image:linear-gradient(90deg,transparent_0,#000_6%,#000_94%,transparent_100%)] sm:mx-[calc(50%-50vw)]">
-        <div className="about-track flex w-max items-start gap-9 px-[18px]">
+      <div
+        ref={ref}
+        onScroll={onScroll}
+        onMouseEnter={() => (hold.current = true)}
+        onMouseLeave={() => {
+          if (!drag.current) hold.current = false;
+        }}
+        onTouchStart={() => touchHold(true)}
+        onTouchEnd={() => touchHold(false)}
+        onPointerDown={(e) => {
+          if (e.pointerType !== "mouse") return;
+          drag.current = { x: e.clientX, left: e.currentTarget.scrollLeft };
+          e.currentTarget.setPointerCapture(e.pointerId);
+        }}
+        onPointerMove={(e) => {
+          if (!drag.current) return;
+          e.currentTarget.scrollLeft = drag.current.left - (e.clientX - drag.current.x);
+        }}
+        onPointerUp={() => (drag.current = null)}
+        onPointerCancel={() => (drag.current = null)}
+        className="relative -mx-6 cursor-grab select-none overflow-x-auto overscroll-x-contain [-ms-overflow-style:none] [scrollbar-width:none] [mask-image:linear-gradient(90deg,transparent_0,#000_6%,#000_94%,transparent_100%)] active:cursor-grabbing sm:mx-[calc(50%-50vw)] [&::-webkit-scrollbar]:hidden"
+      >
+        <div className="flex w-max items-start gap-9 px-[18px]">
           {[...ABOUT_TRAITS, ...ABOUT_TRAITS].map((t, i) => (
             <AboutTraitCard key={i} t={t} i={i} />
           ))}
@@ -3347,7 +3410,38 @@ function AboutJourney() {
         </span>
       </div>
 
-      <div className="flex flex-col overflow-x-auto rounded-3xl border border-border px-5 pb-3 pt-5">
+      <ol className="flex flex-col gap-3 md:hidden">
+        {ABOUT_JOBS.map((j) => (
+          <li key={j.company} className="rounded-3xl border border-border p-4">
+            <div className="flex items-start gap-3">
+              <span className="grid h-10 w-10 flex-none place-items-center overflow-hidden rounded-xl border border-border bg-white p-1">
+                <img src={assetUrl(j.logo)} alt="" className="h-full w-full object-contain" />
+              </span>
+              <div className="min-w-0 flex-1">
+                <p className="text-[15px] font-semibold leading-snug">{j.company}</p>
+                <p className="text-[13px] text-muted-foreground">{j.role}</p>
+                <p className="mt-1 text-[12px] text-muted-foreground/80">{j.dates}</p>
+              </div>
+            </div>
+            <div
+              className="relative mt-4 h-2 rounded-full bg-foreground/[0.06]"
+              aria-hidden="true"
+            >
+              <span
+                className="absolute inset-y-0 rounded-full bg-gradient-to-r from-[#3b6cf6] to-[#2346c7]"
+                style={{ left: `${(j.s / 72) * 100}%`, width: `${((j.e - j.s) / 72) * 100}%` }}
+              />
+            </div>
+            <div className="mt-1.5 flex justify-between text-[10px] text-muted-foreground/70" aria-hidden="true">
+              {ABOUT_YEARS.map((y) => (
+                <span key={y}>{y}</span>
+              ))}
+            </div>
+          </li>
+        ))}
+      </ol>
+
+      <div className="hidden flex-col overflow-x-auto rounded-3xl border border-border px-5 pb-3 pt-5 md:flex">
         <div className="grid min-w-[620px] grid-cols-[minmax(200px,260px)_minmax(380px,1fr)] gap-4 px-1.5 pb-2.5">
           <span />
           <div className="grid grid-cols-6 text-[11px] font-medium text-muted-foreground/70">
