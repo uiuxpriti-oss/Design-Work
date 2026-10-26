@@ -3343,7 +3343,8 @@ function SiteFooter() {
           <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-white/45">Let&apos;s connect</p>
         </div>
         <h2 className="mt-4 max-w-3xl text-3xl font-medium tracking-tight text-white/90 sm:text-5xl">
-          Have an idea? Let&rsquo;s <span className="footer-grad-text">build it.</span>
+          Let&rsquo;s turn <span className="italic text-white/55">&ldquo;huh?&rdquo;</span> into{" "}
+          <span className="footer-grad-text">&ldquo;oh, nice.&rdquo;</span>
         </h2>
         <div className="mt-12 grid grid-cols-1 border-l border-t border-white/10 sm:grid-cols-2 sm:mt-14">
           {link.map(({ href, label, mail }) => (
