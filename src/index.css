@@ -551,3 +551,26 @@ html.lenis body {
     animation: none;
   }
 }
+
+.footer-spin {
+  animation: footerSpin 18s linear infinite;
+}
+@keyframes footerSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.footer-cursor {
+  animation: footerBlink 1.1s steps(2, start) infinite;
+}
+@keyframes footerBlink {
+  to {
+    visibility: hidden;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .footer-spin,
+  .footer-cursor {
+    animation: none;
+  }
+}

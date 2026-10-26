@@ -3619,6 +3619,145 @@ function FooterMarquee({ list }: { list: FooterLink[] }) {
   );
 }
 
+// Variant E — one glass contact card: status, big email, round icon buttons.
+function FooterCard({ list }: { list: FooterLink[] }) {
+  const { copied, copy } = useCopyEmail();
+  const call = list.find((l) => l.label === "Book a call")!;
+  const icons = list.filter((l) => !l.mail && l.label !== "Book a call");
+  return (
+    <div className={`mt-12 flex flex-col gap-8 rounded-[32px] p-6 sm:mt-14 sm:flex-row sm:items-center sm:justify-between sm:p-10 ${GLASS} hover:bg-white/[0.07]`}>
+      <div>
+        <span className="inline-flex items-center gap-2 rounded-full border border-white/15 px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.14em] text-white/60">
+          <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" style={{ animation: "heroPulse 2s infinite" }} /> Open to work
+        </span>
+        <button type="button" onClick={copy} className="mt-5 block text-left text-2xl font-light tracking-tight text-white/90 hover:text-white sm:text-4xl">
+          {copied ? "Copied to clipboard ✓" : links.emailAddress}
+        </button>
+        <p className="mt-2 text-[13px] text-white/40">Click the address to copy it</p>
+      </div>
+      <div className="flex flex-wrap items-center gap-3">
+        {icons.map(({ href, label, Icon }) => (
+          <a key={label} href={href} target="_blank" rel="noreferrer" aria-label={label} title={label} className={`flex h-12 w-12 items-center justify-center rounded-full text-white/75 hover:-translate-y-0.5 hover:text-white ${GLASS}`}>
+            <Icon className="h-5 w-5" aria-hidden="true" />
+          </a>
+        ))}
+        <a href={call.href} target="_blank" rel="noreferrer" className={`inline-flex items-center gap-2 rounded-full px-6 py-3.5 text-[15px] font-medium ${BLUE_PILL}`}>
+          Book a call <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+        </a>
+      </div>
+    </div>
+  );
+}
+
+// Variant F — terminal: mono command lines with a blinking cursor.
+function FooterTerminal({ list }: { list: FooterLink[] }) {
+  const { copied, copy } = useCopyEmail();
+  return (
+    <div className="mt-12 overflow-hidden rounded-2xl border border-white/[0.12] bg-black/35 font-mono backdrop-blur-md sm:mt-14">
+      <div className="flex items-center gap-2 border-b border-white/10 px-4 py-3">
+        <span className="h-2.5 w-2.5 rounded-full bg-white/20" />
+        <span className="h-2.5 w-2.5 rounded-full bg-white/20" />
+        <span className="h-2.5 w-2.5 rounded-full bg-white/20" />
+        <span className="ml-3 text-[11px] uppercase tracking-[0.14em] text-white/35">connect — priti-jani</span>
+      </div>
+      <ul className="px-4 py-3 sm:px-6 sm:py-5">
+        {list.map(({ href, label, hint, mail }) => (
+          <li key={label}>
+            <a
+              href={href}
+              onClick={mail ? copy : undefined}
+              {...(mail ? {} : { target: "_blank", rel: "noreferrer" })}
+              className="footer-term group flex items-center gap-3 rounded-md px-2 py-2.5 text-[14px] text-white/65 outline-none transition-colors hover:bg-white/[0.06] hover:text-white sm:text-[15px]"
+            >
+              <span className="text-sky-400">&rsaquo;</span>
+              <span className="w-28 shrink-0 sm:w-36">{label.toLowerCase().replace(/ /g, "-")}</span>
+              <span className="hidden flex-1 truncate text-white/30 sm:block"># {mail && copied ? "copied!" : hint.toLowerCase()}</span>
+              <span className="ml-auto text-white/35 transition-all group-hover:translate-x-1 group-hover:text-sky-300">&rarr;</span>
+            </a>
+          </li>
+        ))}
+        <li className="flex items-center gap-3 px-2 pt-3 text-[14px] text-white/45">
+          <span className="text-sky-400">&rsaquo;</span>
+          <span className="footer-cursor inline-block h-4 w-2 bg-sky-400/80" />
+        </li>
+      </ul>
+    </div>
+  );
+}
+
+// Variant G — tall rounded bars; each fills with the moving blue gradient on hover.
+function FooterBars({ list }: { list: FooterLink[] }) {
+  const { copied, copy } = useCopyEmail();
+  return (
+    <div className="mt-12 grid gap-3 sm:mt-14 sm:grid-cols-2">
+      {list.map(({ href, label, hint, Icon, mail }) => (
+        <a
+          key={label}
+          href={href}
+          onClick={mail ? copy : undefined}
+          {...(mail ? {} : { target: "_blank", rel: "noreferrer" })}
+          className="footer-row group relative flex items-center justify-between gap-4 overflow-hidden rounded-[28px] border border-white/[0.12] bg-white/[0.04] px-6 py-7 text-white/80 outline-none transition-colors hover:border-white/25 hover:text-white sm:py-9"
+        >
+          <span aria-hidden="true" className="footer-row-glow" />
+          <span className="relative flex items-center gap-4">
+            <span className="flex h-11 w-11 items-center justify-center rounded-full bg-white/10">
+              <Icon className="h-5 w-5" aria-hidden="true" />
+            </span>
+            <span>
+              <span className="block text-xl font-light tracking-tight sm:text-2xl">{label}</span>
+              <span className="mt-0.5 block text-[12px] text-white/40 group-hover:text-white/70">{mail && copied ? "Copied to clipboard" : hint}</span>
+            </span>
+          </span>
+          <ArrowUpRight className="relative h-5 w-5 text-white/40 transition-transform duration-200 group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-white" aria-hidden="true" />
+        </a>
+      ))}
+    </div>
+  );
+}
+
+// Variant H — a round "say hi" badge with rotating text, flanked by icon circles.
+function FooterBadge({ list }: { list: FooterLink[] }) {
+  const { copied, copy } = useCopyEmail();
+  const call = list.find((l) => l.label === "Book a call")!;
+  const rest = list.filter((l) => l.label !== "Book a call");
+  return (
+    <div className="mt-12 flex flex-col items-center gap-10 sm:mt-14 sm:flex-row sm:justify-between">
+      <a href={call.href} target="_blank" rel="noreferrer" className="group relative flex h-44 w-44 shrink-0 items-center justify-center sm:h-52 sm:w-52" aria-label="Book a call">
+        <svg viewBox="0 0 200 200" className="footer-spin absolute inset-0 h-full w-full text-white/60" aria-hidden="true">
+          <defs>
+            <path id="ftr-circle" d="M100,100 m-82,0 a82,82 0 1,1 164,0 a82,82 0 1,1 -164,0" />
+          </defs>
+          <text fontSize="12" fill="currentColor" fontFamily="'JetBrains Mono', monospace">
+            <textPath href="#ftr-circle" textLength="506" lengthAdjust="spacing">BOOK A CALL • SAY HELLO • LET'S TALK • </textPath>
+          </text>
+        </svg>
+        <span className={`flex h-24 w-24 items-center justify-center rounded-full transition-transform duration-300 group-hover:scale-110 sm:h-28 sm:w-28 ${BLUE_PILL}`}>
+          <ArrowUpRight className="h-8 w-8" aria-hidden="true" />
+        </span>
+      </a>
+      <div className="flex w-full flex-col gap-3 sm:max-w-xl">
+        {rest.map(({ href, label, hint, Icon, mail }) => (
+          <a
+            key={label}
+            href={href}
+            onClick={mail ? copy : undefined}
+            {...(mail ? {} : { target: "_blank", rel: "noreferrer" })}
+            className={`group flex items-center justify-between gap-4 rounded-full py-2.5 pl-2.5 pr-6 text-white/80 hover:text-white ${GLASS}`}
+          >
+            <span className="flex items-center gap-4">
+              <span className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 transition-colors group-hover:bg-gradient-to-br group-hover:from-[#2563eb] group-hover:to-[#60a5fa]">
+                <Icon className="h-[18px] w-[18px]" aria-hidden="true" />
+              </span>
+              <span className="text-[15px]">{label}</span>
+            </span>
+            <span className="text-[12px] text-white/35 group-hover:text-white/65">{mail && copied ? "Copied ✓" : hint}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function SiteFooter() {
   const link: FooterLink[] = [
     { href: links.linkedin, label: "LinkedIn", hint: "Say hi, or follow my work", Icon: Linkedin },
@@ -3651,6 +3790,10 @@ function SiteFooter() {
           if (v === "b") return <FooterEditorial list={link} />;
           if (v === "c") return <FooterTiles list={link} />;
           if (v === "d") return <FooterMarquee list={link} />;
+          if (v === "e") return <FooterCard list={link} />;
+          if (v === "f") return <FooterTerminal list={link} />;
+          if (v === "g") return <FooterBars list={link} />;
+          if (v === "h") return <FooterBadge list={link} />;
           return (
         <div className="mt-12 grid grid-cols-1 border-l border-t border-white/10 sm:grid-cols-2 sm:mt-14">
           {link.map((l) => (
