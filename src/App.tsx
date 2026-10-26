@@ -5,6 +5,7 @@ import {
   type ReactNode,
 } from "react";
 import Lenis from "lenis";
+import Matter from "matter-js";
 import {
   ArrowUpRight,
   ArrowRight,
@@ -2672,45 +2673,6 @@ function ToolGlyph({ name }: { name: string }) {
   );
 }
 
-function Toolstack() {
-  return (
-    <section id="toolstack" className="mt-14 scroll-mt-24 sm:mt-20">
-      <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">Toolstack</p>
-      <div className="mt-5 flex flex-wrap gap-x-6 gap-y-6 bg-[radial-gradient(circle,hsl(var(--border))_1px,transparent_1.5px)] [background-size:9px_9px] 2xl:flex-nowrap 2xl:justify-between 2xl:gap-x-3">
-        {toolstack.map((group) => (
-          <div
-            key={group.label}
-            className="max-w-full overflow-hidden rounded-2xl border border-black/[0.07] bg-background dark:border-white/10 2xl:shrink-0"
-          >
-            <p className="whitespace-nowrap border-b border-black/[0.06] bg-foreground/[0.03] px-4 py-2.5 font-mono text-[10.5px] uppercase tracking-[0.14em] text-muted-foreground dark:border-white/10">
-              {group.label}
-            </p>
-            <ul className="flex flex-wrap">
-              {group.tools.map((tool) => (
-                <li
-                  key={tool}
-                  className="group relative flex h-16 w-16 items-center justify-center border-r border-black/[0.06] transition-colors duration-200 last:border-r-0 hover:bg-foreground/[0.04] dark:border-white/10"
-                >
-                  <span className="transition-transform duration-200 group-hover:-translate-y-0.5 group-hover:scale-110">
-                    <ToolGlyph name={tool} />
-                  </span>
-                  <span className="sr-only">{tool}</span>
-                  <span
-                    aria-hidden="true"
-                    className="pointer-events-none absolute -top-1 left-1/2 z-10 -translate-x-1/2 -translate-y-full whitespace-nowrap rounded-md bg-foreground px-2 py-1 text-[11px] font-medium text-background opacity-0 shadow-md transition-opacity duration-150 group-hover:opacity-100"
-                  >
-                    {tool}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
-      </div>
-    </section>
-  );
-}
-
 const SKILL_CARDS: { label: string; fact: string; Icon: (p: { className?: string }) => ReactNode }[] = [
   { label: "Product Design", fact: "4+ years in enterprise SaaS, AI and data", Icon: SkProductDesign },
   { label: "Data-driven Design", fact: "Dashboards, alerts and data workflows", Icon: SkDataDriven },
@@ -2788,13 +2750,131 @@ function SkillCard({ label, Icon }: (typeof SKILL_CARDS)[number]) {
   );
 }
 
+// Tool logos that drop into the empty space of the Skills panel and pile up (physics via matter-js).
+const PILE_TOOLS = toolstack.flatMap((g) => g.tools);
+
+function ToolPile() {
+  const wrap = useRef<HTMLDivElement>(null);
+  const [started, setStarted] = useState(false);
+  const [size, setSize] = useState({ w: 0, h: 0 });
+  const els = useRef<(HTMLDivElement | null)[]>([]);
+
+  useEffect(() => {
+    const el = wrap.current;
+    if (!el) return;
+    const measure = () => setSize({ w: el.clientWidth, h: el.clientHeight });
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (e.isIntersecting) {
+          setStarted(true);
+          io.disconnect();
+        }
+      },
+      { threshold: 0.35 },
+    );
+    io.observe(el);
+    return () => {
+      ro.disconnect();
+      io.disconnect();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!started || size.w < 120 || size.h < 120) return;
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const tile = size.w < 360 ? 46 : 54;
+    const { Engine, Bodies, Body, Composite } = Matter;
+    const engine = Engine.create({ enableSleeping: true });
+    engine.gravity.y = 1.1;
+    const wall = { isStatic: true, friction: 0.6 } as const;
+    const t = 80;
+    Composite.add(engine.world, [
+      Bodies.rectangle(size.w / 2, size.h + t / 2, size.w + t * 2, t, wall),
+      Bodies.rectangle(-t / 2, size.h / 2, t, size.h * 4, wall),
+      Bodies.rectangle(size.w + t / 2, size.h / 2, t, size.h * 4, wall),
+    ]);
+    const bodies: Matter.Body[] = [];
+    const timers: number[] = [];
+    let raf = 0;
+    let last = performance.now();
+    let running = true;
+    const draw = () => {
+      bodies.forEach((b, i) => {
+        const node = els.current[i];
+        if (node) node.style.transform = `translate(${b.position.x - tile / 2}px, ${b.position.y - tile / 2}px) rotate(${b.angle}rad)`;
+      });
+    };
+    const loop = (now: number) => {
+      if (!running) return;
+      Engine.update(engine, Math.min(32, now - last));
+      last = now;
+      draw();
+      raf = requestAnimationFrame(loop);
+    };
+    PILE_TOOLS.forEach((_, i) => {
+      const x = tile / 2 + 8 + Math.random() * Math.max(10, size.w - tile - 16);
+      const b = Bodies.rectangle(x, reduce ? size.h - tile / 2 - (i % 6) * tile : -tile - 10, tile, tile, {
+        chamfer: { radius: 14 },
+        restitution: 0.28,
+        friction: 0.5,
+        frictionAir: 0.01,
+        angle: (Math.random() - 0.5) * 0.7,
+      });
+      bodies.push(b);
+      const add = () => {
+        Composite.add(engine.world, b);
+        Body.setVelocity(b, { x: (Math.random() - 0.5) * 2, y: 2 });
+      };
+      if (reduce) add();
+      else timers.push(window.setTimeout(add, 120 + i * 110));
+    });
+    if (reduce) {
+      for (let k = 0; k < 120; k++) Engine.update(engine, 16);
+      draw();
+    } else {
+      raf = requestAnimationFrame(loop);
+    }
+    return () => {
+      running = false;
+      cancelAnimationFrame(raf);
+      timers.forEach(clearTimeout);
+      Composite.clear(engine.world, false);
+      Engine.clear(engine);
+    };
+  }, [started, size.w, size.h]);
+
+  return (
+    <div ref={wrap} className="relative mt-8 min-h-[15rem] flex-1 overflow-hidden lg:mt-4" aria-label="Tools I use">
+      {PILE_TOOLS.map((name, i) => (
+        <div
+          key={name}
+          ref={(n) => {
+            els.current[i] = n;
+          }}
+          title={name}
+          className="absolute left-0 top-0 flex h-[54px] w-[54px] items-center justify-center rounded-[14px] bg-white shadow-[0_1px_2px_rgba(0,0,0,0.06),0_4px_12px_rgba(0,0,0,0.05)] dark:bg-card"
+          style={{ transform: "translate(-200px,-200px)", willChange: "transform" }}
+        >
+          <ToolGlyph name={name} />
+        </div>
+      ))}
+    </div>
+  );
+}
+
 function SkillsPanel() {
   return (
     <div className="rounded-[32px] bg-[#FAFBFC] p-6 sm:pb-2 sm:pl-10 sm:pr-2 sm:pt-10 dark:bg-white/[0.05]">
       <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">Skills</p>
       <div className="mt-5 grid gap-10 lg:grid-cols-[1fr_1.25fr] lg:gap-8">
-        <div className="max-w-[34rem]">
-          <SkillsStatement />
+        <div className="flex max-w-[34rem] flex-col lg:max-w-none lg:pr-6">
+          <div className="max-w-[34rem]">
+            <SkillsStatement />
+          </div>
+          <ToolPile />
         </div>
         <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:mt-20">
           {SKILL_CARDS.map((c) => (
@@ -3642,7 +3722,6 @@ export default function App() {
               <div className="mx-auto max-w-[72rem] px-6">
                 <Work onViewAll={() => openProjects("case")} onOpen={openCase} />
                 <SkillsAndTools />
-                <Toolstack />
                 <Awards />
               </div>
             </main>
