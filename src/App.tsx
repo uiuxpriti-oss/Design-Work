@@ -3341,9 +3341,6 @@ function SiteFooter() {
       <div className="relative mx-auto max-w-[72rem] px-4 pb-10 pt-16 sm:px-6 sm:pt-24">
         <div className="flex flex-wrap items-baseline justify-between gap-x-8 gap-y-2">
           <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-white/45">Let&apos;s connect</p>
-          <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-white/45">
-            <span className="text-emerald-400">Available</span> for full time &amp; contract opportunities
-          </p>
         </div>
         <h2 className="mt-4 max-w-3xl text-3xl font-medium tracking-tight text-white/90 sm:text-5xl">
           Have an idea? Let&rsquo;s <span className="footer-grad-text">build it.</span>
