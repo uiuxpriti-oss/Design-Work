@@ -3285,12 +3285,12 @@ function AboutHero() {
 const ABOUT_TILT = [-3, 2.5, -2, 3, -2.5, 2];
 const ABOUT_DROP = [0, 22, 6, 26, 2, 20];
 const ABOUT_QUIP = [
-  "-right-2 bottom-[26px] -rotate-3",
-  "-right-2 bottom-[26px] rotate-2",
-  "-left-3 -top-3 -rotate-2",
-  "-right-2 bottom-[26px] rotate-3",
-  "-right-2 bottom-[26px] -rotate-2",
-  "-left-3 bottom-[40px] rotate-2",
+  "-top-12 right-0 -rotate-3",
+  "-top-12 left-0 rotate-2",
+  "-top-12 right-0 rotate-2",
+  "-top-12 left-0 -rotate-2",
+  "-top-12 right-0 -rotate-2",
+  "-top-12 left-0 rotate-3",
 ];
 
 function AboutTraitCard({ t, i }: { t: (typeof ABOUT_TRAITS)[number]; i: number }) {
