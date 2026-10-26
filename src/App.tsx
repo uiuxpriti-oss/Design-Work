@@ -2773,7 +2773,7 @@ function ToolPile() {
           io.disconnect();
         }
       },
-      { threshold: 0.35 },
+      { threshold: 0.5 },
     );
     io.observe(el);
     return () => {
@@ -2788,7 +2788,7 @@ function ToolPile() {
     const tile = size.w < 360 ? 46 : 54;
     const { Engine, Bodies, Body, Composite } = Matter;
     const engine = Engine.create({ enableSleeping: true });
-    engine.gravity.y = 1.1;
+    engine.gravity.y = 0.7;
     const wall = { isStatic: true, friction: 0.6 } as const;
     const t = 80;
     Composite.add(engine.world, [
@@ -2826,10 +2826,10 @@ function ToolPile() {
       bodies.push(b);
       const add = () => {
         Composite.add(engine.world, b);
-        Body.setVelocity(b, { x: (Math.random() - 0.5) * 2, y: 2 });
+        Body.setVelocity(b, { x: (Math.random() - 0.5) * 2, y: 1 });
       };
       if (reduce) add();
-      else timers.push(window.setTimeout(add, 120 + i * 110));
+      else timers.push(window.setTimeout(add, 250 + i * 150));
     });
     if (reduce) {
       for (let k = 0; k < 120; k++) Engine.update(engine, 16);
@@ -2847,7 +2847,7 @@ function ToolPile() {
   }, [started, size.w, size.h]);
 
   return (
-    <div ref={wrap} className="relative mt-8 min-h-[15rem] flex-1 overflow-hidden lg:mt-4" aria-label="Tools I use">
+    <div ref={wrap} className="pointer-events-none absolute inset-0 overflow-hidden" aria-label="Tools I use">
       {PILE_TOOLS.map((name, i) => (
         <div
           key={name}
@@ -2855,7 +2855,7 @@ function ToolPile() {
             els.current[i] = n;
           }}
           title={name}
-          className="absolute left-0 top-0 flex h-[54px] w-[54px] items-center justify-center rounded-[14px] bg-white shadow-[0_1px_2px_rgba(0,0,0,0.06),0_4px_12px_rgba(0,0,0,0.05)] dark:bg-card"
+          className="pointer-events-auto absolute left-0 top-0 flex h-[54px] w-[54px] items-center justify-center rounded-[14px] bg-white shadow-[0_1px_2px_rgba(0,0,0,0.06),0_4px_12px_rgba(0,0,0,0.05)] dark:bg-card"
           style={{ transform: "translate(-200px,-200px)", willChange: "transform" }}
         >
           <ToolGlyph name={name} />
@@ -2870,11 +2870,12 @@ function SkillsPanel() {
     <div className="rounded-[32px] bg-[#FAFBFC] p-6 sm:pb-2 sm:pl-10 sm:pr-2 sm:pt-10 dark:bg-white/[0.05]">
       <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">Skills</p>
       <div className="mt-5 grid gap-10 lg:grid-cols-[1fr_1.25fr] lg:gap-8">
-        <div className="flex max-w-[34rem] flex-col lg:max-w-none lg:pr-6">
-          <div className="max-w-[34rem]">
+        <div className="relative flex max-w-[34rem] flex-col lg:max-w-none lg:pr-6">
+          <ToolPile />
+          <div className="relative z-10 max-w-[34rem]">
             <SkillsStatement />
           </div>
-          <ToolPile />
+          <div aria-hidden="true" className="min-h-[15rem] flex-1" />
         </div>
         <ul className="grid grid-cols-1 gap-1 sm:grid-cols-2 lg:mt-20">
           {SKILL_CARDS.map((c) => (
