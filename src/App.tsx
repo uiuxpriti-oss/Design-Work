@@ -814,7 +814,7 @@ function Hero({ ready }: { ready: boolean }) {
         background: "var(--hr-bg)",
         borderColor: "var(--hr-border)",
         fontFamily: "'JetBrains Mono', monospace",
-        fontSize: "clamp(11px,0.95vw,12px)",
+        fontSize: "clamp(10px,0.95vw,12px)",
         letterSpacing: "0.12em",
         textTransform: "uppercase",
         color: "var(--hr-mute)",
@@ -828,12 +828,11 @@ function Hero({ ready }: { ready: boolean }) {
   return (
     <section
       id="home"
-      className="hero-root relative flex flex-col overflow-hidden"
+      className="hero-root relative flex flex-col overflow-hidden pb-14 pt-[88px] sm:pb-[clamp(72px,10vh,110px)] sm:pt-[clamp(112px,16vh,150px)]"
       style={{
         background: "var(--hr-bg)",
         color: "var(--hr-text)",
         fontFamily: "'Manrope', system-ui, sans-serif",
-        padding: "clamp(112px,16vh,150px) 0 clamp(72px,10vh,110px)",
       }}
     >
       <div className="relative mx-auto flex w-full max-w-[72rem] flex-wrap items-end justify-between gap-12 px-4 sm:px-6">
@@ -887,13 +886,13 @@ function Hero({ ready }: { ready: boolean }) {
       </div>
 
       <p
-        className="relative mx-auto w-full max-w-[72rem] px-4 text-base sm:px-6 md:text-[15px]"
-        style={{ margin: "clamp(56px,10vh,96px) auto 20px", color: "var(--hr-mute)" }}
+        className="relative mx-auto mb-5 mt-8 w-full max-w-[72rem] px-4 text-base sm:mt-[clamp(56px,10vh,96px)] sm:px-6 md:text-[15px]"
+        style={{ color: "var(--hr-mute)" }}
       >
         Feel free to connect - I&rsquo;m always up for a good conversation.
       </p>
       <div className="relative">
-        <div className="absolute inset-x-0 top-1/2 h-px" style={{ background: "var(--hr-border)" }} />
+        <div className="absolute inset-x-0 top-1/2 hidden h-px sm:block" style={{ background: "var(--hr-border)" }} />
         <div className="relative mx-auto flex max-w-[72rem] flex-wrap items-center justify-between gap-4 px-4 sm:px-6">
           <div className="flex flex-wrap gap-4 sm:gap-6">
             <a href={links.linkedin} target="_blank" rel="noreferrer" className={btn}>
