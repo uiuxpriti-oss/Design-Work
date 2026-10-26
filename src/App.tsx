@@ -3065,11 +3065,6 @@ const ABOUT_BLUE_BTN =
 
 const ABOUT_SLIDES = [
   {
-    label: "Philosophy",
-    text: "Design is the bridge between complex technology and human emotion — beyond pixels.",
-    facts: [] as string[],
-  },
-  {
     label: "Currently learning",
     text: "Seven things on the bench right now.",
     facts: [
@@ -3217,7 +3212,7 @@ function AboutHero() {
   const s = ABOUT_SLIDES[slide];
   const words = ["I", "turn", "complex", "data", "into", "decisions", "people", "can", "trust."];
   return (
-    <section className="flex flex-col gap-10 pb-16 pt-14 sm:gap-12 sm:pb-20 sm:pt-20">
+    <section className="flex flex-col gap-12 pb-24 pt-14 sm:gap-16 sm:pb-32 sm:pt-20">
       <div className="flex flex-col gap-6">
         <h1 className="max-w-[55rem] text-[clamp(34px,3.2vw,40px)] font-medium leading-[1.3] tracking-[-0.025em] text-[#262626] dark:text-[#e5e5e5]">
           {words.map((w, i) => (
@@ -3247,9 +3242,6 @@ function AboutHero() {
         </div>
       </div>
       <div className={`about-rise relative flex min-h-[320px] flex-col justify-between gap-9 overflow-hidden rounded-[28px] p-6 sm:p-10 ${ABOUT_WASH}`} style={{ animationDelay: "1.15s" }}>
-        <span aria-hidden="true" className="pointer-events-none absolute -bottom-[70px] -right-2.5 select-none text-[240px] font-bold leading-none tracking-[-0.06em] text-white/60 dark:text-white/[0.05]">
-          {String(slide + 1).padStart(2, "0")}
-        </span>
         <div className="relative flex items-center justify-between gap-4">
           <div className="flex flex-wrap gap-1.5">
             {ABOUT_SLIDES.map((x, i) => (
@@ -3266,10 +3258,10 @@ function AboutHero() {
               </button>
             ))}
           </div>
-          <div className="flex gap-1.5">
+          {n > 1 && <div className="flex gap-1.5">
             <button type="button" aria-label="Previous" onClick={() => setSlide((slide + n - 1) % n)} className={`${ABOUT_ARROW_BTN} border border-white bg-white/85 text-foreground hover:bg-white dark:border-white/10 dark:bg-white/10 dark:hover:bg-white/15`}>←</button>
             <button type="button" aria-label="Next" onClick={() => setSlide((slide + 1) % n)} className={`${ABOUT_ARROW_BTN} ${ABOUT_BLUE_BTN}`}>→</button>
-          </div>
+          </div>}
         </div>
         <div key={slide} className="about-rise relative flex flex-col gap-6" style={{ animationDuration: "0.5s" }}>
           <p className="max-w-[51rem] text-pretty text-[clamp(22px,3vw,34px)] font-medium leading-[1.3] tracking-[-0.03em]">{s.text}</p>
@@ -3329,7 +3321,7 @@ function AboutTraitCard({ t, i }: { t: (typeof ABOUT_TRAITS)[number]; i: number 
 
 function AboutTraits() {
   return (
-    <section className="flex flex-col gap-4 pb-12 sm:pb-16">
+    <section className="flex flex-col gap-6 pb-24 sm:gap-8 sm:pb-32">
       <h2 className="text-[30px] font-semibold leading-[1.08] tracking-[-0.04em] sm:text-[44px]">
         How I am as <span className={ABOUT_GRAD}>a Designer</span>
       </h2>
@@ -3347,7 +3339,7 @@ function AboutTraits() {
 function AboutJourney() {
   const [sel, setSel] = useState(0);
   return (
-    <section className="flex scroll-mt-24 flex-col gap-7">
+    <section className="flex scroll-mt-24 flex-col gap-8 sm:gap-10">
       <div className="flex flex-col gap-2.5">
         <h2 className="text-[34px] font-bold italic tracking-[-0.04em] sm:text-[44px]">So Far, So Good</h2>
         <span className="text-[15px] text-muted-foreground sm:text-[16px]">
