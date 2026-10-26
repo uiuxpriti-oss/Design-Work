@@ -2673,7 +2673,7 @@ function ToolGlyph({ name }: { name: string }) {
 function Toolstack() {
   return (
     <section id="toolstack" className="mt-14 scroll-mt-24 sm:mt-24">
-      <SectionHeading eyebrow="Toolstack" title="What I work with" />
+      <SkillsHeading eyebrow="Toolstack" title="What I work with" />
       <div className="mt-8 flex flex-wrap gap-x-6 gap-y-6 bg-[radial-gradient(circle,hsl(var(--border))_1px,transparent_1.5px)] [background-size:9px_9px] xl:flex-nowrap xl:justify-between xl:gap-x-3">
         {toolstack.map((group) => (
           <div
@@ -2706,6 +2706,15 @@ function Toolstack() {
         ))}
       </div>
     </section>
+  );
+}
+
+function SkillsHeading({ eyebrow, title }: { eyebrow: string; title: string }) {
+  return (
+    <div>
+      <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">{eyebrow}</p>
+      <h2 className="mt-2 text-2xl font-medium tracking-tight sm:text-[28px]">{title}</h2>
+    </div>
   );
 }
 
@@ -2754,7 +2763,7 @@ function SkillsStatement() {
   return (
     <p
       ref={ref}
-      className="text-2xl font-light leading-[1.35] tracking-tight sm:text-4xl"
+      className="text-xl font-light leading-[1.5] tracking-tight sm:text-[26px]"
     >
       {words.map((x, i) => {
         const lit = progress * words.length > i;
@@ -2763,7 +2772,7 @@ function SkillsStatement() {
             key={i}
             className={`transition-colors duration-300 ${
               x.bold
-                ? "font-semibold text-foreground"
+                ? "font-medium text-foreground"
                 : lit
                   ? "text-foreground/45"
                   : "text-foreground/20"
@@ -2781,11 +2790,11 @@ function SkillCard({ label, fact, Icon, tall = false }: (typeof SKILL_CARDS)[num
   return (
     <li
       className={`group relative overflow-hidden rounded-xl bg-background transition-shadow duration-300 hover:shadow-lg ${
-        tall ? "flex flex-col gap-6 p-5" : "flex items-center gap-4 px-5 py-6"
+        tall ? "flex flex-col gap-6 p-5" : "flex items-center gap-3.5 px-4 py-4"
       }`}
     >
-      <Icon className="h-7 w-7 shrink-0 text-foreground/55 transition-colors duration-300 group-hover:text-foreground" strokeWidth={1.5} aria-hidden="true" />
-      <span className="text-[16px] font-medium tracking-tight text-foreground">{label}</span>
+      <Icon className="h-6 w-6 shrink-0 text-foreground/55 transition-colors duration-300 group-hover:text-foreground" strokeWidth={1.5} aria-hidden="true" />
+      <span className="text-[14px] font-normal tracking-tight text-foreground">{label}</span>
       <span
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 flex items-end bg-foreground p-5 text-[13px] leading-snug text-background opacity-0 transition-opacity duration-300 group-hover:opacity-100"
@@ -2798,7 +2807,7 @@ function SkillCard({ label, fact, Icon, tall = false }: (typeof SKILL_CARDS)[num
 
 function SkillsPanel() {
   return (
-    <div className="grid gap-10 rounded-3xl bg-foreground/[0.035] p-6 sm:p-10 lg:grid-cols-[1fr_1.05fr] lg:gap-14">
+    <div className="grid gap-10 rounded-3xl bg-foreground/[0.035] p-6 sm:p-8 lg:grid-cols-[1fr_1.05fr] lg:gap-12">
       <SkillsStatement />
       <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         {SKILL_CARDS.map((c) => (
@@ -2812,7 +2821,7 @@ function SkillsPanel() {
 function SkillsAndTools() {
   return (
     <section id="skills-tools" className="mt-14 scroll-mt-24 sm:mt-24">
-      <SectionHeading eyebrow="Skills" title="What I do" />
+      <SkillsHeading eyebrow="Skills" title="What I do" />
       <div className="mt-8">
         <SkillsPanel />
       </div>
