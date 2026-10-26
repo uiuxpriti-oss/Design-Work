@@ -2780,7 +2780,7 @@ function SkillsStatement() {
 
 function SkillCard({ label, Icon }: (typeof SKILL_CARDS)[number]) {
   return (
-    <li className="skill-card group flex cursor-default items-center gap-4 rounded-sm bg-background px-5 py-6 transition-shadow duration-300 hover:shadow-[0_6px_20px_rgba(0,0,0,0.05)]">
+    <li className="skill-card group flex cursor-default items-center gap-4 rounded-[20px] bg-white px-5 py-6 dark:bg-card transition-shadow duration-300 hover:shadow-[0_6px_20px_rgba(0,0,0,0.05)]">
       <Icon className="skill-icon h-7 w-7 shrink-0 text-foreground/80 transition-colors duration-300" />
       <span className="skill-label text-[15px] font-medium tracking-tight text-foreground">{label}</span>
     </li>
@@ -2789,7 +2789,7 @@ function SkillCard({ label, Icon }: (typeof SKILL_CARDS)[number]) {
 
 function SkillsPanel() {
   return (
-    <div className="rounded-sm border border-foreground/[0.05] bg-foreground/[0.025] p-6 sm:p-10">
+    <div className="rounded-[32px] bg-foreground/[0.05] p-6 sm:p-10 dark:bg-white/[0.05]">
       <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">Skills</p>
       <div className="mt-5 grid gap-10 lg:grid-cols-[1fr_1.25fr] lg:gap-8">
         <div className="max-w-[34rem]">
