@@ -818,7 +818,7 @@ function Hero({ ready }: { ready: boolean }) {
     >
       <span style={{ width: 6, height: 6, borderRadius: "50%", background: "var(--hr-green)", animation: "heroPulse 2s infinite" }} />
       <span style={{ color: "var(--hr-green)", fontWeight: 500 }}>Open to work</span>
-      <span>&middot; Full time &amp; contract &middot; {time}</span>
+      <span>&middot; For new opportunities &middot; {time}</span>
     </div>
   );
   return (
@@ -2771,6 +2771,7 @@ function AwardRow({
               src={assetUrl(a.certificate ?? "")}
               alt={`${a.title} certificate`}
               onError={() => setImgOk(false)}
+              loading="lazy"
               decoding="async"
               className="h-full w-full object-cover object-top"
             />
@@ -3637,6 +3638,10 @@ function SiteFooter() {
           Let&rsquo;s turn <span className="italic text-white/55">&ldquo;huh?&rdquo;</span> into{" "}
           <span className="footer-grad-text">&ldquo;oh, nice.&rdquo;</span>
         </h2>
+        <p className="mt-5 max-w-2xl text-[15px] leading-[1.7] text-white/55">
+          I&rsquo;m open to Mid, Senior design roles, and selective consulting: BI, AI-assisted UX, complex
+          enterprise tools, and teams that need more than screens.
+        </p>
         <FooterBadge list={link} />
         <div className="mt-24 flex flex-wrap items-end justify-between gap-4 sm:mt-32">
           <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-white/45">

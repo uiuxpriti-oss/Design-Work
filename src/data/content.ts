@@ -2222,7 +2222,7 @@ export const awards: Award[] = [
     year: "2022",
     description:
       "Certificate of Achievement for completing 'Digital Skills: User Experience' — an introduction to UX and why it matters in an ever-evolving digital world.",
-    certificate: "awards/accenture-ux.png",
+    certificate: "awards/accenture-ux.webp",
     gradient: "from-fuchsia-200 via-pink-100 to-rose-100",
   },
   {
@@ -2231,7 +2231,7 @@ export const awards: Award[] = [
     year: "2022",
     description:
       "Certificate of Completion for 'User Experience Design Essentials – Adobe XD UI UX Design' (9.5 hours) by Daniel Walter Scott.",
-    certificate: "awards/udemy-ux-adobe-xd.png",
+    certificate: "awards/udemy-ux-adobe-xd.webp",
     gradient: "from-violet-200 via-indigo-100 to-blue-100",
   },
 ];
