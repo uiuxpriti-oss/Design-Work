@@ -3570,44 +3570,59 @@ const BLUE_PILL =
   "bg-gradient-to-r from-[#1e3a8a] via-[#2563eb] to-[#60a5fa] text-white shadow-[0_8px_30px_rgba(37,99,235,0.35)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_12px_36px_rgba(59,130,246,0.5)]";
 
 // Variant H — a round "say hi" badge with rotating text, flanked by icon circles.
-function FooterBadge({ list }: { list: FooterLink[] }) {
+// Round "Book a call" badge — sits on the footer's top edge, half outside it.
+function FooterCallBadge({ href }: { href: string }) {
+  return (
+    <div className="pointer-events-none absolute inset-x-0 top-0 z-30">
+      <div className="mx-auto flex max-w-[72rem] justify-center px-4 sm:justify-end sm:px-6">
+        <a
+          href={href}
+          target="_blank"
+          rel="noreferrer"
+          aria-label="Book a call"
+          className="group pointer-events-auto relative -translate-y-1/2 flex h-44 w-44 shrink-0 items-center justify-center rounded-full bg-[#05060b] shadow-[0_20px_50px_-20px_rgba(37,99,235,0.6)] ring-1 ring-white/10 sm:h-52 sm:w-52"
+        >
+          <svg viewBox="0 0 200 200" className="footer-spin absolute inset-0 h-full w-full text-white/60" aria-hidden="true">
+            <defs>
+              <path id="ftr-circle" d="M100,100 m-82,0 a82,82 0 1,1 164,0 a82,82 0 1,1 -164,0" />
+            </defs>
+            <text fontSize="12" fill="currentColor" fontFamily="'JetBrains Mono', monospace">
+              <textPath href="#ftr-circle" textLength="506" lengthAdjust="spacing">BOOK A CALL • SAY HELLO • LET'S TALK • </textPath>
+            </text>
+          </svg>
+          <span className={`flex h-24 w-24 items-center justify-center rounded-full transition-transform duration-300 group-hover:scale-110 sm:h-28 sm:w-28 ${BLUE_PILL}`}>
+            <ArrowUpRight className="h-8 w-8" aria-hidden="true" />
+          </span>
+        </a>
+      </div>
+    </div>
+  );
+}
+
+function FooterLinks({ list }: { list: FooterLink[] }) {
   const { copied, copy } = useCopyEmail();
-  const call = list.find((l) => l.label === "Book a call")!;
   const rest = list.filter((l) => l.label !== "Book a call");
   return (
-    <div className="mt-12 flex flex-col items-center gap-10 sm:mt-14 sm:flex-row sm:justify-between">
-      <a href={call.href} target="_blank" rel="noreferrer" className="group relative flex h-44 w-44 shrink-0 items-center justify-center sm:h-52 sm:w-52" aria-label="Book a call">
-        <svg viewBox="0 0 200 200" className="footer-spin absolute inset-0 h-full w-full text-white/60" aria-hidden="true">
-          <defs>
-            <path id="ftr-circle" d="M100,100 m-82,0 a82,82 0 1,1 164,0 a82,82 0 1,1 -164,0" />
-          </defs>
-          <text fontSize="12" fill="currentColor" fontFamily="'JetBrains Mono', monospace">
-            <textPath href="#ftr-circle" textLength="506" lengthAdjust="spacing">BOOK A CALL • SAY HELLO • LET'S TALK • </textPath>
-          </text>
-        </svg>
-        <span className={`flex h-24 w-24 items-center justify-center rounded-full transition-transform duration-300 group-hover:scale-110 sm:h-28 sm:w-28 ${BLUE_PILL}`}>
-          <ArrowUpRight className="h-8 w-8" aria-hidden="true" />
-        </span>
-      </a>
-      <div className="flex w-full flex-col gap-3 sm:max-w-xl">
-        {rest.map(({ href, label, hint, Icon, mail }) => (
-          <a
-            key={label}
-            href={href}
-            onClick={mail ? copy : undefined}
-            {...(mail ? {} : { target: "_blank", rel: "noreferrer" })}
-            className={`group flex items-center justify-between gap-4 rounded-full py-2.5 pl-2.5 pr-6 text-white/80 hover:text-white ${GLASS}`}
-          >
-            <span className="flex items-center gap-4">
-              <span className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 transition-colors group-hover:bg-gradient-to-br group-hover:from-[#2563eb] group-hover:to-[#60a5fa]">
-                <Icon className="h-[18px] w-[18px]" aria-hidden="true" />
-              </span>
-              <span className="text-[15px]">{label}</span>
+    <div className="mt-12 grid gap-3 sm:mt-14 sm:grid-cols-2">
+      {rest.map(({ href, label, hint, Icon, mail }, i) => (
+        <a
+          key={label}
+          href={href}
+          onClick={mail ? copy : undefined}
+          {...(mail ? {} : { target: "_blank", rel: "noreferrer" })}
+          className={`group flex items-center justify-between gap-4 rounded-full py-2.5 pl-2.5 pr-6 text-white/80 hover:text-white ${GLASS} ${
+            i === rest.length - 1 && rest.length % 2 === 1 ? "sm:col-span-2" : ""
+          }`}
+        >
+          <span className="flex items-center gap-4">
+            <span className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 transition-colors group-hover:bg-gradient-to-br group-hover:from-[#2563eb] group-hover:to-[#60a5fa]">
+              <Icon className="h-[18px] w-[18px]" aria-hidden="true" />
             </span>
-            <span className="text-[12px] text-white/35 group-hover:text-white/65">{mail && copied ? "Copied ✓" : hint}</span>
-          </a>
-        ))}
-      </div>
+            <span className="text-[15px]">{label}</span>
+          </span>
+          <span className="text-[12px] text-white/35 group-hover:text-white/65">{mail && copied ? "Copied ✓" : hint}</span>
+        </a>
+      ))}
     </div>
   );
 }
@@ -3622,7 +3637,9 @@ function SiteFooter() {
     { href: links.cal, label: "Book a call", hint: "30 minutes, free", Icon: Calendar },
   ];
   return (
-    <footer id="contact" className="footer-dark relative mt-16 scroll-mt-24 overflow-hidden bg-[#05060b] text-white sm:mt-24">
+    <div className="relative mt-24 sm:mt-32">
+    <FooterCallBadge href={links.cal} />
+    <footer id="contact" className="footer-dark relative scroll-mt-24 overflow-hidden bg-[#05060b] text-white">
       {/* Moving blue gradient — slow, blurred blobs plus a fine grain */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0">
         <span className="footer-blob footer-blob-a" />
@@ -3630,7 +3647,7 @@ function SiteFooter() {
         <span className="footer-blob footer-blob-c" />
         <span className="footer-grain absolute inset-0" />
       </div>
-      <div className="relative mx-auto max-w-[72rem] px-4 pb-10 pt-16 sm:px-6 sm:pt-24">
+      <div className="relative mx-auto max-w-[72rem] px-4 pb-10 pt-28 sm:px-6 sm:pt-24">
         <div className="flex flex-wrap items-baseline justify-between gap-x-8 gap-y-2">
           <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-white/45">Let&apos;s connect</p>
         </div>
@@ -3642,7 +3659,7 @@ function SiteFooter() {
           I&rsquo;m open to Mid, Senior design roles, and selective consulting: BI, AI-assisted UX, complex
           enterprise tools, and teams that need more than screens.
         </p>
-        <FooterBadge list={link} />
+        <FooterLinks list={link} />
         <div className="mt-24 flex flex-wrap items-end justify-between gap-4 sm:mt-32">
           <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-white/45">
             &copy;2026 / Priti Jani &middot; All rights reserved
@@ -3651,6 +3668,7 @@ function SiteFooter() {
         </div>
       </div>
     </footer>
+    </div>
   );
 }
 
