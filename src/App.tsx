@@ -3573,14 +3573,14 @@ const BLUE_PILL =
 // Round "Book a call" badge — sits on the footer's top edge, half outside it.
 function FooterCallBadge({ href }: { href: string }) {
   return (
-    <div className="pointer-events-none absolute inset-x-0 top-0 z-30">
+    <div className="pointer-events-none sticky top-36 z-30 h-0">
       <div className="mx-auto flex max-w-[72rem] justify-center px-4 sm:justify-end sm:px-6">
         <a
           href={href}
           target="_blank"
           rel="noreferrer"
           aria-label="Book a call"
-          className="group pointer-events-auto relative -translate-y-1/2 flex h-44 w-44 shrink-0 items-center justify-center rounded-full bg-[#05060b] shadow-[0_20px_50px_-20px_rgba(37,99,235,0.6)] ring-1 ring-white/10 sm:h-52 sm:w-52"
+          className="group pointer-events-auto relative -translate-y-1/2 flex h-32 w-32 shrink-0 items-center justify-center rounded-full bg-[#05060b] shadow-[0_20px_50px_-20px_rgba(37,99,235,0.6)] ring-1 ring-white/10 transition-transform duration-300 hover:scale-105 sm:h-36 sm:w-36"
         >
           <svg viewBox="0 0 200 200" className="footer-spin absolute inset-0 h-full w-full text-white/60" aria-hidden="true">
             <defs>
@@ -3590,8 +3590,8 @@ function FooterCallBadge({ href }: { href: string }) {
               <textPath href="#ftr-circle" textLength="506" lengthAdjust="spacing">BOOK A CALL • SAY HELLO • LET'S TALK • </textPath>
             </text>
           </svg>
-          <span className={`flex h-24 w-24 items-center justify-center rounded-full transition-transform duration-300 group-hover:scale-110 sm:h-28 sm:w-28 ${BLUE_PILL}`}>
-            <ArrowUpRight className="h-8 w-8" aria-hidden="true" />
+          <span className={`flex h-[72px] w-[72px] items-center justify-center rounded-full transition-transform duration-300 group-hover:scale-110 sm:h-20 sm:w-20 ${BLUE_PILL}`}>
+            <ArrowUpRight className="h-6 w-6" aria-hidden="true" />
           </span>
         </a>
       </div>
@@ -3647,7 +3647,7 @@ function SiteFooter() {
         <span className="footer-blob footer-blob-c" />
         <span className="footer-grain absolute inset-0" />
       </div>
-      <div className="relative mx-auto max-w-[72rem] px-4 pb-10 pt-28 sm:px-6 sm:pt-24">
+      <div className="relative mx-auto max-w-[72rem] px-4 pb-10 pt-24 sm:px-6 sm:pt-24">
         <div className="flex flex-wrap items-baseline justify-between gap-x-8 gap-y-2">
           <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-white/45">Let&apos;s connect</p>
         </div>
