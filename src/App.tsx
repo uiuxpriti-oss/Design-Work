@@ -2768,10 +2768,10 @@ function AwardRow({
         <div className="aspect-[16/11] w-full overflow-hidden">
           {hasImg ? (
             <img
-              src={a.certificate}
+              src={assetUrl(a.certificate ?? "")}
               alt={`${a.title} certificate`}
               onError={() => setImgOk(false)}
-              loading="lazy"
+              decoding="async"
               className="h-full w-full object-cover object-top"
             />
           ) : (
@@ -2824,7 +2824,7 @@ function CertificateLightbox({
         <X className="h-5 w-5" aria-hidden="true" />
       </button>
       <img
-        src={award.certificate}
+        src={assetUrl(award.certificate ?? "")}
         alt={`${award.title} certificate`}
         onClick={(e) => e.stopPropagation()}
         className="max-h-[85vh] max-w-[92vw] rounded-lg object-contain shadow-2xl"
@@ -2881,9 +2881,9 @@ function CreativeMarqueeRow({
           >
             {c.image ? (
               <img
-                src={c.image}
+                src={assetUrl(c.image)}
                 alt={c.name}
-                loading="lazy"
+                decoding="async"
                 className="absolute inset-0 h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.04]"
               />
             ) : (
@@ -2987,7 +2987,7 @@ function CreativeLightbox({
       {current.image && (
         <img
           key={current.image}
-          src={current.image}
+          src={assetUrl(current.image)}
           alt={current.name}
           onClick={(e) => e.stopPropagation()}
           className="max-h-[78vh] max-w-[calc(100vw-7rem)] rounded-lg object-contain shadow-2xl sm:max-w-[calc(100vw-9rem)]"
