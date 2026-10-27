@@ -679,7 +679,7 @@ function SideNav({
   );
 }
 
-const GREETINGS = ["Hola", "Bonjour", "नमस्ते", "Ciao", "Konnichiwa", "Hello"];
+const GREETINGS = ["Hola", "Bonjour", "नमस्ते", "Konnichiwa", "Hello"];
 const HERO_PHRASES = [
   "opening Figma.",
   "sketching a solution.",
@@ -689,7 +689,7 @@ const HERO_PHRASES = [
 
 type SplashPhase = "show" | "leaving" | "done";
 
-// Start-up window: cycles hello in six languages, then slides away.
+// Start-up window: cycles hello in five languages (~3.7s in total), then slides away.
 function StartupSplash({ phase, onPhase }: { phase: SplashPhase; onPhase: (p: SplashPhase) => void }) {
   const [g, setG] = useState(0);
   useEffect(() => {
@@ -704,12 +704,12 @@ function StartupSplash({ phase, onPhase }: { phase: SplashPhase; onPhase: (p: Sp
           t1 = window.setTimeout(() => {
             onPhase("leaving");
             t2 = window.setTimeout(() => onPhase("done"), 700);
-          }, 500);
+          }, 600);
           return cur;
         }
         return cur + 1;
       });
-    }, reduce ? 160 : 380);
+    }, reduce ? 160 : 600);
     return () => {
       window.clearInterval(iv);
       window.clearTimeout(t1);
