@@ -766,7 +766,6 @@ function StartupSplash({ phase, onPhase }: { phase: SplashPhase; onPhase: (p: Sp
 function Hero({ ready }: { ready: boolean }) {
   const [i, setI] = useState(0);
   const [copied, setCopied] = useState(false);
-  const [time, setTime] = useState("");
   const rot = useRef<number | undefined>(undefined);
   const restart = () => {
     window.clearInterval(rot.current);
@@ -775,20 +774,8 @@ function Hero({ ready }: { ready: boolean }) {
   };
   useEffect(() => {
     restart();
-    const tick = () =>
-      setTime(
-        new Date().toLocaleTimeString("en-US", {
-          hour: "2-digit",
-          minute: "2-digit",
-          hour12: false,
-          timeZone: "Asia/Kolkata",
-        }) + " local",
-      );
-    tick();
-    const clock = window.setInterval(tick, 30000);
     return () => {
       window.clearInterval(rot.current);
-      window.clearInterval(clock);
     };
   }, []);
   const copyEmail = async () => {
@@ -828,7 +815,7 @@ function Hero({ ready }: { ready: boolean }) {
     >
       <span style={{ width: 6, height: 6, borderRadius: "50%", background: "var(--hr-green)", animation: "heroPulse 2s infinite" }} />
       <span style={{ color: "var(--hr-green)", fontWeight: 500 }}>Open to work</span>
-      <span>&middot; For new opportunities &middot; {time}</span>
+      <span>&middot; For new opportunities</span>
     </div>
   );
   return (
