@@ -3606,7 +3606,7 @@ function FooterLinks({ list }: { list: FooterLink[] }) {
           href={href}
           onClick={mail ? copy : undefined}
           {...(mail ? {} : { target: "_blank", rel: "noreferrer" })}
-          className={`group flex items-center justify-between gap-4 rounded-full py-2.5 pl-2.5 pr-6 text-white/80 hover:text-white ${GLASS} ${
+          className={`group flex items-center justify-between gap-4 rounded-full py-2.5 pl-2.5 pr-6 text-white/90 hover:text-white ${GLASS} ${
             i === rest.length - 1 && rest.length % 2 === 1 ? "sm:col-span-2" : ""
           }`}
         >
@@ -3616,7 +3616,7 @@ function FooterLinks({ list }: { list: FooterLink[] }) {
             </span>
             <span className="text-[15px]">{label}</span>
           </span>
-          <span className="text-[12px] text-white/35 group-hover:text-white/65">{mail && copied ? "Copied ✓" : hint}</span>
+          <span className="text-[12px] text-white/65 group-hover:text-white/90">{mail && copied ? "Copied ✓" : hint}</span>
         </a>
       ))}
     </div>
@@ -3645,22 +3645,22 @@ function SiteFooter() {
       </div>
       <div className="relative mx-auto max-w-[72rem] px-4 pb-10 pt-24 sm:px-6 sm:pt-24">
         <div className="flex flex-wrap items-baseline justify-between gap-x-8 gap-y-2">
-          <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-white/45">Let&apos;s connect</p>
+          <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-white/70">Let&apos;s connect</p>
         </div>
         <h2 className="mt-4 max-w-3xl text-3xl font-medium tracking-tight text-white/90 sm:text-5xl">
-          Let&rsquo;s turn <span className="italic text-white/55">&ldquo;huh?&rdquo;</span> into{" "}
+          Let&rsquo;s turn <span className="italic text-white/70">&ldquo;huh?&rdquo;</span> into{" "}
           <span className="footer-grad-text">&ldquo;oh, nice.&rdquo;</span>
         </h2>
-        <p className="mt-5 max-w-2xl text-[15px] leading-[1.7] text-white/55">
+        <p className="mt-5 max-w-2xl text-[15px] leading-[1.7] text-white/75">
           I&rsquo;m open to Mid, Senior design roles, and selective consulting: BI, AI-assisted UX, complex
           enterprise tools, and teams that need more than screens.
         </p>
         <FooterLinks list={link} />
         <div className="mt-24 flex flex-wrap items-end justify-between gap-4 sm:mt-32">
-          <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-white/45">
+          <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-white/65">
             &copy;2026 / Priti Jani &middot; All rights reserved
           </p>
-          <p className="text-[12px] text-white/40">Designed, built &amp; deployed end to end &mdash; by me.</p>
+          <p className="text-[12px] text-white/65">Designed, built &amp; deployed end to end &mdash; by me.</p>
         </div>
       </div>
     </footer>
