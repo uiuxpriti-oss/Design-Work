@@ -19,6 +19,7 @@ import {
   Home,
   Menu,
   Send,
+  ThumbsUp,
   Copy,
   Check,
   ExternalLink,
@@ -793,15 +794,11 @@ function Hero({ ready }: { ready: boolean }) {
   const chip = "rounded px-1 py-px text-[13px] text-[var(--hr-chip-text)] bg-[var(--hr-chip)]";
   const status = (
     <div
-      className="flex items-center gap-2.5 rounded-full border px-5 py-3"
+      className="flex items-center gap-2.5 rounded-full border px-4 py-2.5 text-base md:text-[15px]"
       style={{
         background: "var(--hr-bg)",
         borderColor: "var(--hr-border)",
-        fontFamily: "'JetBrains Mono', monospace",
-        fontSize: "clamp(10px,0.95vw,12px)",
-        letterSpacing: "0.12em",
-        textTransform: "uppercase",
-        color: "var(--hr-mute)",
+        color: "var(--hr-link)",
       }}
     >
       <span style={{ width: 6, height: 6, borderRadius: "50%", background: "var(--hr-green)", animation: "heroPulse 2s infinite" }} />
@@ -3692,6 +3689,71 @@ function FooterLinks({ list }: { list: FooterLink[] }) {
   );
 }
 
+// Visitor "Like" — one like per browser, with a shared count from a free public counter.
+// If the counter can't be reached the button still works, it just hides the number.
+const LIKE_API = "https://abacus.jasoncameron.dev";
+const LIKE_NS = "uiuxpriti.com";
+const LIKE_KEY = "portfolio-likes";
+
+function LikeButton() {
+  const [count, setCount] = useState<number | null>(null);
+  const [liked, setLiked] = useState(() => {
+    try {
+      return localStorage.getItem("pj-liked") === "1";
+    } catch {
+      return false;
+    }
+  });
+  useEffect(() => {
+    const ctrl = new AbortController();
+    fetch(`${LIKE_API}/get/${LIKE_NS}/${LIKE_KEY}`, { signal: ctrl.signal })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => {
+        if (d && typeof d.value === "number") setCount(d.value);
+      })
+      .catch(() => {});
+    return () => ctrl.abort();
+  }, []);
+  const like = () => {
+    if (liked) return;
+    setLiked(true);
+    setCount((c) => (c ?? 0) + 1);
+    try {
+      localStorage.setItem("pj-liked", "1");
+    } catch {
+      /* storage unavailable */
+    }
+    fetch(`${LIKE_API}/hit/${LIKE_NS}/${LIKE_KEY}`)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => {
+        if (d && typeof d.value === "number") setCount(d.value);
+      })
+      .catch(() => {});
+  };
+  return (
+    <button
+      type="button"
+      onClick={like}
+      aria-pressed={liked}
+      aria-label={liked ? "Liked, thank you" : "Like this portfolio"}
+      className={`group inline-flex items-center gap-2.5 rounded-full px-4 py-2.5 text-[14px] font-medium outline-none transition-all duration-200 focus-visible:ring-2 focus-visible:ring-white/40 active:scale-[0.96] ${
+        liked
+          ? "bg-gradient-to-b from-[#3b6cf6] to-[#2346c7] text-white shadow-[0_8px_20px_-8px_rgba(47,91,232,0.7)]"
+          : `text-white/90 hover:text-white ${GLASS}`
+      }`}
+    >
+      <ThumbsUp className={`h-4 w-4 transition-transform duration-200 group-hover:-rotate-12 ${liked ? "fill-current" : ""}`} aria-hidden="true" />
+      <span>{liked ? "Liked" : "Like"}</span>
+      {count !== null && (
+        <>
+          <span className="h-4 w-px bg-white/25" aria-hidden="true" />
+          <span className="tabular-nums">{count.toLocaleString("en-US")}</span>
+        </>
+      )}
+    </button>
+  );
+}
+
 function SiteFooter() {
   const link: FooterLink[] = [
     { href: links.linkedin, label: "LinkedIn", hint: "Say hi, or follow my work", Icon: Linkedin },
@@ -3725,7 +3787,10 @@ function SiteFooter() {
           enterprise tools, and teams that need more than screens.
         </p>
         <FooterLinks list={link} />
-        <div className="mt-24 flex flex-wrap items-end justify-between gap-4 sm:mt-32">
+        <div className="mt-16 flex justify-center sm:mt-20">
+          <LikeButton />
+        </div>
+        <div className="mt-16 flex flex-wrap items-end justify-between gap-4 sm:mt-20">
           <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-white/65">
             &copy;2026 / Priti Jani &middot; All rights reserved
           </p>
