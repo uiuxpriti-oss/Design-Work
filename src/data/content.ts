@@ -2002,8 +2002,8 @@ export interface MotionItem {
   image?: string;
   /** Silent looping video under /public — a micro-interaction that autoplays in its tile. */
   loop?: string;
-  /** Built-in animated mark (drawn in code) instead of an image. */
-  art?: "sparkle";
+  /** Square (1:1) video — shown in a square player. */
+  square?: boolean;
 }
 
 /** Animation & video work — add entries here and they appear in the Animation / Video tab. */
@@ -2034,13 +2034,14 @@ export const motionWork: MotionItem[] = [
     title: "AI Sparkle",
     category: "Micro-interaction",
     description: "The sparkle mark used for AI moments — a small, friendly cue that something smart is happening.",
-    art: "sparkle",
+    image: "motion/ai-sparkle.webp",
   },
   {
     title: "Connecting Data Sources",
-    category: "Micro-interaction",
-    description: "CSV, databases, Excel, Salesforce and Redshift flow into Lumenore — how a new data source gets connected.",
-    loop: "motion/data-connect.mp4",
+    category: "Product animation · Data",
+    src: "motion/data-connect.mp4",
+    poster: "motion/data-connect-poster.webp",
+    square: true,
   },
 ];
 

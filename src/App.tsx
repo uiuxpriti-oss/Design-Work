@@ -1156,34 +1156,6 @@ function YouTubeEmbed({ id, title, poster, onPlay }: { id: string; title: string
   );
 }
 
-function SparkleArt() {
-  // Three four-point stars that twinkle in turn — the AI moment mark.
-  const star = "M50 4C55 30 70 45 96 50C70 55 55 70 50 96C45 70 30 55 4 50C30 45 45 30 50 4Z";
-  return (
-    <svg viewBox="0 0 160 160" className="h-full w-full" role="img" aria-label="AI sparkle">
-      <defs>
-        <linearGradient id="spk-a" x1="0" y1="1" x2="1" y2="0">
-          <stop offset="0" stopColor="#22b8f5" />
-          <stop offset="1" stopColor="#6d7ff7" />
-        </linearGradient>
-        <linearGradient id="spk-b" x1="0" y1="1" x2="1" y2="0">
-          <stop offset="0" stopColor="#6aa8f7" />
-          <stop offset="1" stopColor="#9aa0f6" />
-        </linearGradient>
-      </defs>
-      <g className="spk spk-1" style={{ transformOrigin: "57px 83px" }}>
-        <path d={star} transform="translate(2 28) scale(1.1)" fill="none" stroke="url(#spk-a)" strokeWidth="7" strokeLinejoin="round" strokeLinecap="round" />
-      </g>
-      <g className="spk spk-2" style={{ transformOrigin: "122px 42px" }}>
-        <path d={star} transform="translate(104 24) scale(0.36)" fill="#e5e0f7" />
-      </g>
-      <g className="spk spk-3" style={{ transformOrigin: "122px 120px" }}>
-        <path d={star} transform="translate(100 98) scale(0.44)" fill="url(#spk-b)" />
-      </g>
-    </svg>
-  );
-}
-
 function VideoLightbox({ item, onClose }: { item: (typeof motionWork)[number]; onClose: () => void }) {
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -1202,7 +1174,9 @@ function VideoLightbox({ item, onClose }: { item: (typeof motionWork)[number]; o
   }, [onClose]);
   const frame = item.vertical
     ? "aspect-[9/16] h-[min(86vh,52rem)] max-w-[92vw]"
-    : "aspect-video w-[min(92vw,70rem)] max-h-[82vh]";
+    : item.square
+      ? "aspect-square h-[min(84vh,46rem)] max-w-[92vw]"
+      : "aspect-video w-[min(92vw,70rem)] max-h-[82vh]";
   return (
     <div
       role="dialog"
@@ -1256,11 +1230,16 @@ function MotionGrid() {
       </section>
     );
   }
-  const isMicro = (m: (typeof motionWork)[number]) => Boolean(m.image || m.loop || m.art);
+  const isMicro = (m: (typeof motionWork)[number]) => Boolean(m.image || m.loop);
   const videos = motionWork.filter((m) => !isMicro(m));
   const micro = motionWork.filter(isMicro);
-  // One wide + one portrait video sit side by side with players of equal height.
-  const paired = videos.length === 2 && videos.filter((v) => v.vertical).length === 1;
+  // One wide + one portrait video sit side by side with players of equal height;
+  // any further videos (e.g. a square one) go in a row below.
+  const wide = videos.find((v) => !v.vertical && !v.square);
+  const tall = videos.find((v) => v.vertical);
+  const paired = Boolean(wide && tall);
+  const pairRow = paired ? [wide!, tall!] : videos;
+  const extras = paired ? videos.filter((v) => v !== wide && v !== tall) : [];
 
   const videoCard = (m: (typeof motionWork)[number]) => (
     <figure key={m.title} className="flex flex-col overflow-hidden rounded-3xl bg-[#FAFBFC] p-2.5 dark:bg-white/[0.05]">
@@ -1268,7 +1247,9 @@ function MotionGrid() {
         className={`overflow-hidden rounded-[20px] bg-black ${
           m.vertical
             ? "mx-auto aspect-[9/16] w-full max-w-[19rem] lg:max-w-none"
-            : paired
+            : m.square
+              ? "aspect-square w-full"
+              : paired
               ? "aspect-video w-full lg:aspect-auto lg:h-[28rem]"
               : "aspect-video w-full"
         }`}
@@ -1328,18 +1309,17 @@ function MotionGrid() {
             paired ? "lg:grid-cols-[minmax(0,1fr)_17rem]" : "sm:grid-cols-2"
           }`}
         >
-          {paired ? [...videos].sort((x, y) => Number(!!x.vertical) - Number(!!y.vertical)).map(videoCard) : videos.map(videoCard)}
+          {pairRow.map(videoCard)}
         </section>
+      )}
+      {extras.length > 0 && (
+        <section className="grid grid-cols-1 gap-6 sm:grid-cols-2">{extras.map(videoCard)}</section>
       )}
       {micro.length > 0 && (
         <section className="grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-3">
           {micro.map((m) => (
             <div key={m.title} className="aspect-square w-full overflow-hidden rounded-3xl border border-slate-100 bg-white">
-              {m.art === "sparkle" ? (
-                <div className="grid h-full w-full place-items-center bg-[#f1f4f7] p-[8%]">
-                  <SparkleArt />
-                </div>
-              ) : m.loop ? (
+              {m.loop ? (
                 <video
                   src={assetUrl(m.loop)}
                   autoPlay
