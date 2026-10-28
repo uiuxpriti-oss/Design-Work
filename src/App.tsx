@@ -791,7 +791,7 @@ function Hero({ ready }: { ready: boolean }) {
   } as const;
   const btn =
     "flex items-center gap-2.5 rounded-full border border-[var(--hr-border)] bg-[var(--hr-bg)] px-4 py-2.5 text-base text-[var(--hr-link)] md:text-[15px] transition-all duration-200 ease-out hover:-translate-y-0.5 hover:border-[#A3A3A3] hover:text-[var(--hr-strong)] hover:shadow-[0_6px_16px_rgba(0,0,0,.06)]";
-  const chip = "rounded px-1 py-px text-[13px] text-[var(--hr-chip-text)] bg-[var(--hr-chip)]";
+  const chip = "inline-flex h-6 w-6 items-center justify-center rounded-md text-[var(--hr-chip-text)] bg-[var(--hr-chip)]";
   const status = (
     <div
       className="flex items-center gap-2.5 rounded-full border px-4 py-2.5 text-base md:text-[15px]"
@@ -877,13 +877,13 @@ function Hero({ ready }: { ready: boolean }) {
         <div className="relative mx-auto flex max-w-[72rem] flex-wrap items-center justify-between gap-4 px-4 sm:px-6">
           <div className="flex flex-wrap gap-4 sm:gap-6">
             <a href={links.linkedin} target="_blank" rel="noreferrer" className={btn}>
-              LinkedIn <span className={chip}>↗</span>
+              LinkedIn <span className={chip}><ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" /></span>
             </a>
             <button type="button" onClick={copyEmail} className={`${btn} cursor-pointer`} style={{ font: "inherit" }}>
-              {copied ? "Copied to clipboard" : "Copy email"} <span className={chip}>{copied ? "✓" : "⧉"}</span>
+              {copied ? "Copied to clipboard" : "Copy email"} <span className={chip}>{copied ? <Check className="h-3.5 w-3.5" aria-hidden="true" /> : <Copy className="h-3.5 w-3.5" aria-hidden="true" />}</span>
             </button>
             <a href={links.cv} target="_blank" rel="noreferrer" className={btn}>
-              Resume <span className={chip}>↗</span>
+              Resume <span className={chip}><ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" /></span>
             </a>
           </div>
           <div className="flex flex-wrap items-center gap-3 sm:gap-4">
