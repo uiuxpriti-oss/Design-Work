@@ -1118,25 +1118,13 @@ function CreativeGridCard({
 }
 
 // Click-to-load YouTube player: shows the thumbnail first (fast, no tracking until played).
-function YouTubeEmbed({ id, title, poster }: { id: string; title: string; poster?: string }) {
-  const [playing, setPlaying] = useState(false);
+function YouTubeEmbed({ id, title, poster, onPlay }: { id: string; title: string; poster?: string; onPlay: () => void }) {
   const [thumb, setThumb] = useState<"maxresdefault" | "hqdefault">("maxresdefault");
   const [thumbFailed, setThumbFailed] = useState(false);
-  if (playing) {
-    return (
-      <iframe
-        src={`https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0&modestbranding=1`}
-        title={title}
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
-        allowFullScreen
-        className="h-full w-full border-0"
-      />
-    );
-  }
   return (
     <button
       type="button"
-      onClick={() => setPlaying(true)}
+      onClick={onPlay}
       aria-label={`Play ${title}`}
       className="group relative block h-full w-full outline-none focus-visible:ring-2 focus-visible:ring-foreground/40"
     >
@@ -1176,7 +1164,65 @@ function YouTubeEmbed({ id, title, poster }: { id: string; title: string; poster
   );
 }
 
+function VideoLightbox({ item, onClose }: { item: (typeof motionWork)[number]; onClose: () => void }) {
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    document.addEventListener("keydown", onKey);
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const lenis = (window as unknown as { __lenis?: { stop: () => void; start: () => void } }).__lenis;
+    lenis?.stop();
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prev;
+      lenis?.start();
+    };
+  }, [onClose]);
+  const frame = item.vertical
+    ? "aspect-[9/16] h-[min(86vh,52rem)] max-w-[92vw]"
+    : "aspect-video w-[min(92vw,70rem)] max-h-[82vh]";
+  return (
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-label={item.title}
+      onClick={onClose}
+      className="fixed inset-0 z-[100] flex flex-col items-center justify-center gap-4 bg-black/85 p-4 backdrop-blur-sm sm:p-8"
+    >
+      <button
+        type="button"
+        onClick={onClose}
+        aria-label="Close video"
+        className="absolute right-4 top-4 inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white outline-none transition-colors hover:bg-white/20 focus-visible:ring-2 focus-visible:ring-white/40"
+      >
+        <X className="h-5 w-5" aria-hidden="true" />
+      </button>
+      <div onClick={(e) => e.stopPropagation()} className={`overflow-hidden rounded-2xl bg-black shadow-2xl ${frame}`}>
+        {item.youtube ? (
+          <iframe
+            src={`https://www.youtube-nocookie.com/embed/${item.youtube}?autoplay=1&rel=0&modestbranding=1&playsinline=1`}
+            title={item.title}
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
+            allowFullScreen
+            className="h-full w-full border-0"
+          />
+        ) : item.src ? (
+          <video src={assetUrl(item.src)} poster={item.poster ? assetUrl(item.poster) : undefined} controls autoPlay playsInline className="h-full w-full object-contain" />
+        ) : null}
+      </div>
+      <p className="text-center text-sm text-white/85">
+        <span className="font-semibold text-white">{item.title}</span>
+        <span className="mx-1.5 text-white/40">·</span>
+        {item.category}
+      </p>
+    </div>
+  );
+}
+
 function MotionGrid() {
+  const [open, setOpen] = useState<(typeof motionWork)[number] | null>(null);
   if (motionWork.length === 0) {
     return (
       <section className="flex min-h-[18rem] flex-col items-center justify-center gap-3 rounded-3xl border border-dashed border-border px-6 py-16 text-center">
@@ -1207,7 +1253,7 @@ function MotionGrid() {
         }`}
       >
         {m.youtube ? (
-          <YouTubeEmbed id={m.youtube} title={m.title} poster={m.poster} />
+          <YouTubeEmbed id={m.youtube} title={m.title} poster={m.poster} onPlay={() => setOpen(m)} />
         ) : m.src ? (
           <video
             src={assetUrl(m.src)}
@@ -1271,6 +1317,7 @@ function MotionGrid() {
           ))}
         </section>
       )}
+      {open && <VideoLightbox item={open} onClose={() => setOpen(null)} />}
     </div>
   );
 }
