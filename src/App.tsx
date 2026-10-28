@@ -1013,11 +1013,11 @@ function ProjectCard({
         type="button"
         onClick={() => onOpen(project.id)}
         aria-label={`Open ${project.title} case study`}
-        className="group grid w-full gap-2 rounded-[30px] border border-[#efeff1] bg-[#f7f7f8] p-2 text-left shadow-[0_-18px_40px_-30px_rgba(24,24,27,0.35)] outline-none focus-visible:ring-2 focus-visible:ring-foreground/25 focus-visible:ring-offset-4 focus-visible:ring-offset-background dark:border-white/10 dark:bg-white/[0.05] md:grid-cols-2"
+        className="group grid w-full gap-2 rounded-[30px] border border-[#efeff1] bg-[#f7f7f8] p-2 text-left outline-none focus-visible:ring-2 focus-visible:ring-foreground/25 focus-visible:ring-offset-4 focus-visible:ring-offset-background dark:border-white/10 dark:bg-white/[0.05] md:grid-cols-2"
       >
         {/* Text panel — category, headline, description and pill */}
         <div
-          className={`flex flex-col gap-3 rounded-[24px] bg-white px-7 pb-7 pt-8 shadow-[0_1px_2px_rgba(24,24,27,0.04)] sm:px-9 dark:bg-card ${flip ? "md:order-none" : "md:order-last"}`}
+          className={`flex flex-col gap-3 rounded-[24px] bg-white px-7 pb-7 pt-8 sm:px-9 dark:bg-card ${flip ? "md:order-none" : "md:order-last"}`}
           style={{ minHeight: CARD_MIN_H }}
         >
           <span className="text-[12px] font-medium uppercase tracking-[0.16em] text-[#8a8a93] dark:text-muted-foreground">
