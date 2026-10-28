@@ -632,7 +632,7 @@ html.lenis body {
 }
 .splash-word {
   font-family: "Greeting Script", "Sacramento", cursive;
-  font-size: clamp(88px, 12vw, 168px);
+  font-size: clamp(40px, 4.6vw, 56px);
   line-height: 1.2;
   color: var(--hr-strong, #171717);
   /* Roomy box so the script's swashes and descenders are never clipped by the write-on mask */
