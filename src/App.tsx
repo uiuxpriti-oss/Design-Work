@@ -886,7 +886,10 @@ function Hero({ ready }: { ready: boolean }) {
               Resume <span className={chip}>↗</span>
             </a>
           </div>
-          {status}
+          <div className="flex flex-wrap items-center gap-3 sm:gap-4">
+            {status}
+            <LikeButton tone="light" />
+          </div>
         </div>
       </div>
     </section>
@@ -3695,7 +3698,7 @@ const LIKE_API = "https://abacus.jasoncameron.dev";
 const LIKE_NS = "uiuxpriti.com";
 const LIKE_KEY = "portfolio-likes";
 
-function LikeButton() {
+function LikeButton({ tone = "dark" }: { tone?: "dark" | "light" }) {
   const [count, setCount] = useState<number | null>(null);
   const [liked, setLiked] = useState(() => {
     try {
@@ -3736,17 +3739,21 @@ function LikeButton() {
       onClick={like}
       aria-pressed={liked}
       aria-label={liked ? "Liked, thank you" : "Like this portfolio"}
-      className={`group inline-flex items-center gap-2.5 rounded-full px-4 py-2.5 text-[14px] font-medium outline-none transition-all duration-200 focus-visible:ring-2 focus-visible:ring-white/40 active:scale-[0.96] ${
+      className={`group inline-flex items-center gap-2.5 rounded-full px-4 py-2.5 outline-none transition-all duration-200 focus-visible:ring-2 active:scale-[0.96] ${
+        tone === "light" ? "text-base focus-visible:ring-foreground/25 md:text-[15px]" : "text-[14px] font-medium focus-visible:ring-white/40"
+      } ${
         liked
           ? "bg-gradient-to-b from-[#3b6cf6] to-[#2346c7] text-white shadow-[0_8px_20px_-8px_rgba(47,91,232,0.7)]"
-          : `text-white/90 hover:text-white ${GLASS}`
+          : tone === "light"
+            ? "border border-[var(--hr-border)] bg-[var(--hr-bg)] text-[var(--hr-link)] hover:border-[#A3A3A3] hover:text-[var(--hr-strong)]"
+            : `text-white/90 hover:text-white ${GLASS}`
       }`}
     >
       <ThumbsUp className={`h-4 w-4 transition-transform duration-200 group-hover:-rotate-12 ${liked ? "fill-current" : ""}`} aria-hidden="true" />
       <span>{liked ? "Liked" : "Like"}</span>
       {count !== null && (
         <>
-          <span className="h-4 w-px bg-white/25" aria-hidden="true" />
+          <span className={`h-4 w-px ${liked || tone === "dark" ? "bg-white/25" : "bg-[var(--hr-border)]"}`} aria-hidden="true" />
           <span className="tabular-nums">{count.toLocaleString("en-US")}</span>
         </>
       )}
@@ -3787,10 +3794,7 @@ function SiteFooter() {
           enterprise tools, and teams that need more than screens.
         </p>
         <FooterLinks list={link} />
-        <div className="mt-16 flex justify-center sm:mt-20">
-          <LikeButton />
-        </div>
-        <div className="mt-16 flex flex-wrap items-end justify-between gap-4 sm:mt-20">
+        <div className="mt-24 flex flex-wrap items-end justify-between gap-4 sm:mt-32">
           <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-white/65">
             &copy;2026 / Priti Jani &middot; All rights reserved
           </p>
