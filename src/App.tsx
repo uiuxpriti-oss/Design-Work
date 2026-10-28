@@ -2113,11 +2113,11 @@ function StudySectionBlock({
                 </span>
               </div>
               {/* The full page — scrolls inside the frame */}
-              <div className="max-h-[75vh] overflow-y-auto overscroll-contain">
+              <div data-lenis-prevent className="max-h-[75vh] min-h-[16rem] overflow-y-auto overscroll-contain">
                 <img
                   src={assetUrl(block.image)}
                   alt={block.title || block.eyebrow || ""}
-                  loading="lazy"
+                  decoding="async"
                   className="w-full align-top"
                 />
               </div>
