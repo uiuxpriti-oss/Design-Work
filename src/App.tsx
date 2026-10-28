@@ -1387,7 +1387,6 @@ function ProjectsPage({
   ] as const;
   return (
     <>
-      {tab === "case" && <SideNav items={projects} watchId="case-studies" />}
       <main className="mx-auto max-w-[72rem] px-6 pb-14 sm:pb-32">
         <section className="pt-10 pb-8">
           <button
