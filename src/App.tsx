@@ -1553,6 +1553,162 @@ function ProcessArt({ kind }: { kind: (typeof PROCESS_TONES)[number]["art"] }) {
 }
 
 
+// Colourful numbered cards (used for the solution highlights).
+function ColourCards({ items }: { items: { title: string; text: string }[] }) {
+  return (
+    <ol
+      className={`-mx-4 flex snap-x snap-mandatory items-start gap-4 overflow-x-auto px-4 pb-20 pt-2 [scrollbar-width:none] sm:mx-0 sm:px-0 [&::-webkit-scrollbar]:hidden ${
+        items.length <= 4 ? "lg:grid lg:overflow-visible lg:[grid-template-columns:repeat(var(--n),minmax(0,1fr))]" : ""
+      }`}
+      style={{ ["--n" as string]: items.length }}
+    >
+      {items.map((s, i) => {
+        const t = PROCESS_TONES[i % PROCESS_TONES.length];
+        return (
+          <li
+            key={i}
+            className={`group relative flex w-[17.5rem] shrink-0 snap-start flex-col justify-between rounded-[32px] p-6 transition-transform duration-300 ease-out hover:-translate-y-1 sm:w-[19rem] lg:w-auto ${
+              t.tall ? "min-h-[24rem]" : "min-h-[19rem]"
+            } ${t.card}`}
+          >
+            <span className={`relative z-10 flex h-11 w-11 items-center justify-center rounded-full text-[15px] font-semibold tracking-wide ${t.badge}`}>
+              {ROMAN[i] ?? i + 1}
+            </span>
+            <ProcessArt kind={t.art} />
+            <div className="relative z-10 mt-10">
+              <p className={`text-[22px] font-semibold leading-tight tracking-tight ${t.title}`}>{s.title}</p>
+              <p className={`mt-3 text-[14.5px] leading-[1.6] ${t.text}`}>{s.text}</p>
+            </div>
+          </li>
+        );
+      })}
+    </ol>
+  );
+}
+
+const TIMELINE_BARS = [
+  { bar: "bg-gradient-to-b from-[#3b6cf6] to-[#2346c7] text-white", pill: "bg-white" },
+  { bar: "bg-[#8b7bff] text-white", pill: "bg-white" },
+  { bar: "bg-[#cfe0ff] text-[#0f1530]", pill: "bg-[#0f1530]" },
+  { bar: "bg-white text-[#0f1530]", pill: "bg-[#0f1530]" },
+  { bar: "bg-[#38bdf8] text-[#0f1530]", pill: "bg-[#0f1530]" },
+];
+
+// Design-process section: numbered phases on top, and a dark timeline below whose bars
+// load in one after another (the phase text above lights up in step with them).
+function ProcessTimeline({ steps }: { steps: { step: string; text: string }[] }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [shown, setShown] = useState(0);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let timers: number[] = [];
+    const play = () => {
+      timers.forEach(clearTimeout);
+      timers = [];
+      if (reduce) return setShown(steps.length);
+      setShown(0);
+      steps.forEach((_, i) => timers.push(window.setTimeout(() => setShown(i + 1), 500 + i * 650)));
+    };
+    const io = new IntersectionObserver(
+      (es) => {
+        if (es.some((e) => e.isIntersecting)) play();
+        else {
+          timers.forEach(clearTimeout);
+          setShown(0);
+        }
+      },
+      { threshold: 0.35 },
+    );
+    io.observe(el);
+    return () => {
+      io.disconnect();
+      timers.forEach(clearTimeout);
+    };
+  }, [steps]);
+
+  const n = steps.length;
+  const w = Math.min(34, (100 / n) * 1.4);
+  return (
+    <section id="cs-process" className="mt-14 scroll-mt-24 border-t border-border pt-10">
+      <div className="flex items-start justify-between gap-4">
+        <div className="flex items-center gap-3">
+          <span className="flex h-2 w-9 overflow-hidden rounded-full" aria-hidden="true">
+            <span className="h-full w-2/3 bg-[#3b6cf6]" />
+            <span className="h-full w-1/3 bg-foreground" />
+          </span>
+          <h2 className="text-xl font-medium tracking-tight text-muted-foreground sm:text-2xl">Design Process</h2>
+        </div>
+        <span className="rounded-full bg-[#dbe7ff] px-3.5 py-1.5 text-[12px] font-medium text-[#1e3a8a] dark:bg-blue-300/15 dark:text-blue-200">
+          Timeline
+        </span>
+      </div>
+
+      <ol
+        className="mt-10 grid gap-8 sm:gap-6 lg:[grid-template-columns:repeat(var(--n),minmax(0,1fr))]"
+        style={{ ["--n" as string]: n }}
+      >
+        {steps.map((s, i) => {
+          const on = shown > i;
+          return (
+            <li key={s.step} className="relative">
+              <span
+                className={`flex h-9 w-9 items-center justify-center rounded-full text-[12px] font-medium transition-colors duration-500 ${
+                  on ? "bg-gradient-to-b from-[#3b6cf6] to-[#2346c7] text-white" : "bg-[#dbe7ff] text-[#1e3a8a] dark:bg-blue-300/15 dark:text-blue-200"
+                }`}
+              >
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              <p className="mt-5 text-[22px] font-semibold tracking-tight text-foreground">{s.step}</p>
+              <p
+                className={`mt-4 text-[14.5px] leading-[1.65] transition-colors duration-500 ${
+                  on ? "text-foreground" : "text-muted-foreground/60"
+                }`}
+              >
+                {s.text}
+              </p>
+            </li>
+          );
+        })}
+      </ol>
+
+      <div
+        ref={ref}
+        className="relative mt-10 h-[22rem] overflow-hidden rounded-[28px] bg-[#0a0c14] sm:h-[26rem]"
+        aria-hidden="true"
+      >
+        <div className="absolute inset-0 flex">
+          {Array.from({ length: 10 }).map((_, k) => (
+            <span key={k} className="h-full flex-1 border-l border-white/[0.04]" />
+          ))}
+        </div>
+        {steps.map((s, i) => {
+          const t = TIMELINE_BARS[i % TIMELINE_BARS.length];
+          const left = n === 1 ? 6 : 5 + (i * (90 - w)) / (n - 1);
+          const on = shown > i;
+          return (
+            <div
+              key={s.step}
+              className={`absolute flex h-[3.4rem] origin-left items-center gap-3 rounded-2xl pl-3 pr-4 text-[13px] font-medium shadow-[0_10px_30px_-12px_rgba(0,0,0,0.6)] transition-[transform,opacity] duration-[650ms] ease-[cubic-bezier(0.2,0.8,0.2,1)] sm:h-[4.4rem] sm:text-[15px] ${t.bar}`}
+              style={{
+                left: `${left}%`,
+                width: `${w}%`,
+                top: `${9 + i * (n > 1 ? 66 / (n - 1) : 0)}%`,
+                opacity: on ? 1 : 0,
+                transform: on ? "scaleX(1)" : "scaleX(0.15) translateX(-12px)",
+              }}
+            >
+              <span className={`h-6 w-1.5 shrink-0 rounded-full sm:h-8 ${t.pill}`} />
+              <span className="truncate">{s.step}</span>
+            </div>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
+
 function CaseSection({
   id,
   eyebrow,
@@ -1694,13 +1850,167 @@ function HoverRevealMedia({
 }
 
 // A fully written case-study section.
+// Count a stat up from zero once it scrolls into view ("-42%", "2.1×", "+38%", "24 hrs").
+// Values with a colon or slash (4:20, 4.6/5) are shown as written.
+function useCountUp(value: string, run: boolean) {
+  const m = /^([^\d]*?)(\d+(?:\.\d+)?)([^\d:/].*|)$/.exec(value);
+  const [out, setOut] = useState(value);
+  useEffect(() => {
+    if (!m || /[:/]/.test(value)) return setOut(value);
+    if (!run) return setOut(`${m[1]}0${m[3]}`);
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return setOut(value);
+    const target = parseFloat(m[2]);
+    const dec = (m[2].split(".")[1] ?? "").length;
+    const t0 = performance.now();
+    let raf = 0;
+    const tick = (t: number) => {
+      const k = Math.min(1, (t - t0) / 1400);
+      const v = target * (1 - Math.pow(1 - k, 3));
+      setOut(`${m[1]}${v.toFixed(dec)}${m[3]}`);
+      if (k < 1) raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [value, run]);
+  return out;
+}
+
+function useInView<T extends HTMLElement>(threshold = 0.3) {
+  const ref = useRef<T>(null);
+  const [seen, setSeen] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || !("IntersectionObserver" in window)) return setSeen(true);
+    const io = new IntersectionObserver(
+      (es) => {
+        if (es.some((e) => e.isIntersecting)) {
+          setSeen(true);
+          io.disconnect();
+        }
+      },
+      { threshold },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [threshold]);
+  return [ref, seen] as const;
+}
+
+function StatCard({ stat, tone, run }: { stat: { value: string; label: string }; tone: "light" | "dark"; run: boolean }) {
+  const shown = useCountUp(stat.value, run);
+  return (
+    <div
+      className={`flex min-h-[15rem] flex-col justify-between rounded-[28px] p-7 sm:min-h-[17rem] ${
+        tone === "dark" ? "bg-[#0a0c14] text-white" : "border border-border bg-[#f5f6f8] text-foreground dark:bg-white/[0.05]"
+      }`}
+    >
+      <p className="text-[clamp(44px,6vw,72px)] font-medium leading-none tracking-[-0.05em] tabular-nums">{shown}</p>
+      <p className={`max-w-[22ch] text-[16px] leading-snug ${tone === "dark" ? "text-white/75" : "text-foreground/70"}`}>{stat.label}</p>
+    </div>
+  );
+}
+
+// Segmented progress ring for a percentage stat.
+function RingCard({ stat, run }: { stat: { value: string; label: string }; run: boolean }) {
+  const pct = Math.min(100, Math.abs(parseFloat(stat.value.replace(/[^\d.]/g, "")) || 0));
+  const SEG = 30;
+  const filled = Math.round((pct / 100) * SEG);
+  const shown = useCountUp(stat.value, run);
+  return (
+    <div className="flex min-h-[19rem] flex-col rounded-[28px] border border-border bg-[#f5f6f8] p-7 dark:bg-white/[0.05]">
+      <div className="flex items-start justify-between gap-4">
+        <p className="max-w-[12ch] text-[20px] font-medium leading-tight tracking-tight">{stat.label}</p>
+      </div>
+      <div className="relative mx-auto mt-4 h-44 w-44">
+        <svg viewBox="0 0 200 200" className="h-full w-full -rotate-90" aria-hidden="true">
+          {Array.from({ length: SEG }).map((_, i) => (
+            <line
+              key={i}
+              x1="100"
+              y1="14"
+              x2="100"
+              y2="38"
+              strokeWidth="9"
+              strokeLinecap="round"
+              transform={`rotate(${(i * 360) / SEG} 100 100)`}
+              className={i < filled ? "stroke-[#3b6cf6]" : "stroke-foreground/10"}
+              style={{
+                opacity: i < filled ? (run ? 1 : 0.15) : 1,
+                transition: `opacity .4s ${i * 45}ms`,
+              }}
+            />
+          ))}
+        </svg>
+        <p className="absolute inset-0 grid place-items-center text-[34px] font-medium tracking-[-0.04em] tabular-nums">{shown}</p>
+      </div>
+    </div>
+  );
+}
+
+// "What I achieved": big-number tiles (the middle one dark), an optional ring for a
+// percentage result, and the summary text beside it.
+function OutcomeShowcase({
+  heading = "What I achieved",
+  text,
+  stats,
+  note,
+}: {
+  heading?: string;
+  text?: string;
+  stats: { value: string; label: string }[];
+  note?: string;
+}) {
+  const [ref, seen] = useInView<HTMLDivElement>(0.25);
+  const cards = stats.slice(0, 3);
+  const ringStat = stats.find((x) => /%/.test(x.value)) ?? null;
+  return (
+    <div ref={ref}>
+      <div className="flex items-center gap-3">
+        <span className="flex h-2 w-9 overflow-hidden rounded-full" aria-hidden="true">
+          <span className="h-full w-2/3 bg-[#3b6cf6]" />
+          <span className="h-full w-1/3 bg-foreground" />
+        </span>
+        <h3 className="text-xl font-medium tracking-tight text-muted-foreground sm:text-2xl">{heading}</h3>
+      </div>
+      {text && <p className="mt-8 max-w-2xl text-[15px] leading-[1.7] text-foreground">{renderRich(text)}</p>}
+      {cards.length > 0 && (
+        <div className="mt-10 grid gap-4 sm:grid-cols-3">
+          {cards.map((st, i) => (
+            <StatCard key={st.label} stat={st} tone={i === 1 ? "dark" : "light"} run={seen} />
+          ))}
+        </div>
+      )}
+      {ringStat && (
+        <div className="mt-4 grid gap-4 sm:grid-cols-3">
+          <div className="sm:col-start-2">
+            <RingCard stat={ringStat} run={seen} />
+          </div>
+          {note && <p className="self-center text-[15px] leading-[1.7] text-foreground/70 sm:col-start-3">{renderRich(note)}</p>}
+        </div>
+      )}
+      {!ringStat && note && <p className="mt-6 max-w-xl text-[15px] leading-[1.7] text-foreground/70">{renderRich(note)}</p>}
+    </div>
+  );
+}
+
 function StudySectionBlock({
   block,
   onZoom,
+  fallbackStats = [],
 }: {
   block: StudyBlock;
   onZoom: (src: string) => void;
+  fallbackStats?: { value: string; label: string }[];
 }) {
+  // Outcome sections share one "what I achieved" template.
+  if (block.id === "outcome") {
+    return (
+      <section id={`cs-${block.id}`} className="mt-16 scroll-mt-24 border-t border-border pt-10">
+        <OutcomeShowcase text={block.lead} stats={block.stats ?? fallbackStats} note={block.note} />
+      </section>
+    );
+  }
   // Editorial two-column row: small label left, content right (neat & clean).
   if (block.side) {
     return (
@@ -2334,35 +2644,7 @@ function CaseStudyPage({
         </div>
       </CaseSection>
 
-      <CaseSection id="cs-process" eyebrow="Process" title="How I got there">
-        <ol
-          className={`-mx-4 flex snap-x snap-mandatory items-start gap-4 overflow-x-auto px-4 pb-20 pt-2 [scrollbar-width:none] sm:mx-0 sm:px-0 [&::-webkit-scrollbar]:hidden ${
-            cs.process.length <= 4 ? "lg:grid lg:overflow-visible lg:[grid-template-columns:repeat(var(--n),minmax(0,1fr))]" : ""
-          }`}
-          style={{ ["--n" as string]: cs.process.length }}
-        >
-          {cs.process.map((s, i) => {
-            const t = PROCESS_TONES[i % PROCESS_TONES.length];
-            return (
-              <li
-                key={i}
-                className={`group relative flex w-[17.5rem] shrink-0 snap-start flex-col justify-between rounded-[32px] p-6 transition-transform duration-300 ease-out hover:-translate-y-1 sm:w-[19rem] lg:w-auto ${
-                  t.tall ? "min-h-[24rem]" : "min-h-[19rem]"
-                } ${t.card}`}
-              >
-                <span className={`relative z-10 flex h-11 w-11 items-center justify-center rounded-full text-[15px] font-semibold tracking-wide ${t.badge}`}>
-                  {ROMAN[i] ?? i + 1}
-                </span>
-                <ProcessArt kind={t.art} />
-                <div className="relative z-10 mt-10">
-                  <p className={`text-[24px] font-semibold leading-tight tracking-tight ${t.title}`}>{s.step}</p>
-                  <p className={`mt-3 text-[14.5px] leading-[1.6] ${t.text}`}>{s.text}</p>
-                </div>
-              </li>
-            );
-          })}
-        </ol>
-      </CaseSection>
+      <ProcessTimeline steps={cs.process} />
 
       {cs.beforeAfter && (
         <CaseSection id="cs-beforeafter" eyebrow="Before → After" title="What changed">
@@ -2407,15 +2689,8 @@ function CaseStudyPage({
         <p className="max-w-2xl text-[15px] leading-relaxed text-foreground/85">
           {cs.solution.text}
         </p>
-        <div className="mt-6 grid gap-4 sm:grid-cols-3">
-          {cs.solution.highlights.map((h) => (
-            <div key={h.title} className="rounded-2xl border border-border bg-card p-5">
-              <p className="text-[15px] font-semibold text-foreground">{h.title}</p>
-              <p className="mt-1.5 text-[14px] leading-relaxed text-muted-foreground">
-                {h.text}
-              </p>
-            </div>
-          ))}
+        <div className="mt-8">
+          <ColourCards items={cs.solution.highlights.map((h) => ({ title: h.title, text: h.text }))} />
         </div>
         {/* Screen slots — real mockups when provided, else gradient placeholders. */}
         {cs.screens && cs.screens.length > 0 ? (
@@ -2491,7 +2766,7 @@ function CaseStudyPage({
       )}
 
       {cs.sections && cs.sections.map((block) => (
-        <StudySectionBlock key={block.id} block={block} onZoom={setZoom} />
+        <StudySectionBlock key={block.id} block={block} onZoom={setZoom} fallbackStats={cs.outcomes.metrics} />
       ))}
 
       {cs.board && !cs.sections && (
@@ -2547,21 +2822,9 @@ function CaseStudyPage({
       )}
 
       {!cs.sections && (
-      <CaseSection id="cs-impact" eyebrow="Impact" title="Outcomes">
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-          {cs.outcomes.metrics.map((m) => (
-            <div key={m.label} className="rounded-2xl border border-border bg-card p-5">
-              <p className="text-3xl font-semibold tracking-tight text-foreground">
-                {m.value}
-              </p>
-              <p className="mt-1 text-[13px] text-muted-foreground">{m.label}</p>
-            </div>
-          ))}
-        </div>
-        <p className="mt-6 max-w-2xl text-[15px] leading-relaxed text-foreground/85">
-          {cs.outcomes.text}
-        </p>
-      </CaseSection>
+      <section id="cs-impact" className="mt-14 scroll-mt-24 border-t border-border pt-10">
+        <OutcomeShowcase text={cs.outcomes.text} stats={cs.outcomes.metrics} />
+      </section>
       )}
 
       <button
