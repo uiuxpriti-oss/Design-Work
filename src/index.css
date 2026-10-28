@@ -605,7 +605,70 @@ html.lenis body {
   .spk { animation: none; }
 }
 
-/* Start-up greeting — each word resolves out of a blur, then dissolves back into one */
+/* Start-up greeting: handwritten script that is "written" left to right over a glassy gradient */
+@font-face {
+  font-family: "Greeting Script";
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+  src: url("/fonts/sacramento-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+20AC, U+2122;
+}
+@font-face {
+  font-family: "Greeting Script";
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+  src: url("/fonts/kalam-devanagari.woff2") format("woff2");
+  unicode-range: U+0900-097F, U+1CD0-1CF9, U+200C-200D, U+20A8, U+20B9, U+25CC, U+A830-A839, U+A8E0-A8FF;
+}
+.splash-glass {
+  background: linear-gradient(160deg, #3b2fd8 0%, #2a5bff 45%, #7d5cf0 100%);
+  overflow: hidden;
+}
+.splash-blob {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(70px);
+  opacity: 0.85;
+}
+.splash-blob-a { width: 60vmax; height: 60vmax; left: -15vmax; top: -20vmax; background: #6bb8ff; animation: splashDriftA 9s ease-in-out infinite alternate; }
+.splash-blob-b { width: 55vmax; height: 55vmax; right: -18vmax; top: 10vmax; background: #c07bff; animation: splashDriftB 11s ease-in-out infinite alternate; }
+.splash-blob-c { width: 50vmax; height: 50vmax; left: 10vmax; bottom: -25vmax; background: #1f3bd6; animation: splashDriftA 10s ease-in-out infinite alternate-reverse; }
+@keyframes splashDriftA { to { transform: translate3d(8vmax, 6vmax, 0) scale(1.1); } }
+@keyframes splashDriftB { to { transform: translate3d(-9vmax, -4vmax, 0) scale(0.92); } }
+.splash-sheen {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, rgba(255, 255, 255, 0.22) 0%, rgba(255, 255, 255, 0.04) 38%, rgba(255, 255, 255, 0) 60%);
+  backdrop-filter: blur(2px);
+}
+.splash-word {
+  font-family: "Greeting Script", "Sacramento", cursive;
+  font-size: clamp(88px, 12vw, 168px);
+  line-height: 1.1;
+  color: #fff;
+  text-shadow: 0 6px 40px rgba(255, 255, 255, 0.35);
+  -webkit-mask-image: linear-gradient(90deg, #000 45%, transparent 55%);
+  mask-image: linear-gradient(90deg, #000 45%, transparent 55%);
+  -webkit-mask-size: 260% 100%;
+  mask-size: 260% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+@keyframes greetWrite {
+  from { -webkit-mask-position: 100% 0; mask-position: 100% 0; opacity: 0.4; filter: blur(6px); }
+  to { -webkit-mask-position: 0% 0; mask-position: 0% 0; opacity: 1; filter: blur(0); }
+}
+@keyframes greetOut {
+  to { opacity: 0; filter: blur(14px); transform: translateY(-6px) scale(1.03); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .splash-blob { animation: none; }
+  .splash-word { -webkit-mask-image: none; mask-image: none; }
+}
+
+/* Start-up greeting (older blur variant, unused now) */
 @keyframes greetBlur {
   0% { opacity: 0; filter: blur(18px); transform: scale(0.94); }
   28% { opacity: 1; filter: blur(0); transform: scale(1); }

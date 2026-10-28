@@ -689,62 +689,72 @@ const HERO_PHRASES = [
 
 type SplashPhase = "show" | "leaving" | "done";
 
-// Start-up window: cycles hello in four languages with a blur-in / blur-out (~4.2s in total), then slides away.
+// Start-up window: writes hello in four languages on a glassy gradient (~4s in total), then slides away.
 function StartupSplash({ phase, onPhase }: { phase: SplashPhase; onPhase: (p: SplashPhase) => void }) {
   const [g, setG] = useState(0);
+  // Keep the latest callback in a ref so a parent re-render never restarts the timers.
+  const onPhaseRef = useRef(onPhase);
+  onPhaseRef.current = onPhase;
   useEffect(() => {
     if (phase !== "show") return;
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     let t1 = 0;
-    let t2 = 0;
     const iv = window.setInterval(() => {
       setG((cur) => {
-        if (cur + 1 >= GREETINGS.length) {
+        const next = cur + 1;
+        if (next >= GREETINGS.length - 1) {
+          // Last word: let it finish writing, hold briefly, then leave.
           window.clearInterval(iv);
-          t1 = window.setTimeout(() => {
-            onPhase("leaving");
-            t2 = window.setTimeout(() => onPhase("done"), 700);
-          }, 800);
-          return cur;
+          if (!t1) t1 = window.setTimeout(() => onPhaseRef.current("leaving"), reduce ? 400 : 1200);
         }
-        return cur + 1;
+        return Math.min(next, GREETINGS.length - 1);
       });
-    }, reduce ? 160 : 900);
+    }, reduce ? 160 : 800);
     return () => {
       window.clearInterval(iv);
       window.clearTimeout(t1);
-      window.clearTimeout(t2);
     };
-  }, [phase, onPhase]);
+  }, [phase]);
+  // Once the splash starts leaving, remove it after its fade-out finishes.
+  useEffect(() => {
+    if (phase !== "leaving") return;
+    const t = window.setTimeout(() => onPhaseRef.current("done"), 600);
+    return () => window.clearTimeout(t);
+  }, [phase]);
   if (phase === "done") return null;
+  const last = g === GREETINGS.length - 1;
   return (
     <div
-      className="hero-root"
+      className="splash-glass"
       style={{
         position: "fixed",
         inset: 0,
         zIndex: 120,
-        background: "var(--hr-bg)",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        transition: "opacity .7s ease, transform .7s cubic-bezier(.7,0,.2,1)",
+        transition: "opacity .6s ease, transform .6s cubic-bezier(.7,0,.2,1)",
         opacity: phase === "leaving" ? 0 : 1,
         transform: phase === "leaving" ? "translateY(-4%)" : "none",
         pointerEvents: phase === "leaving" ? "none" : "auto",
-        fontFamily: "'Manrope', system-ui, sans-serif",
       }}
       aria-hidden="true"
     >
+      <span className="splash-blob splash-blob-a" />
+      <span className="splash-blob splash-blob-b" />
+      <span className="splash-blob splash-blob-c" />
+      <span className="splash-sheen" />
+      <span className="footer-grain absolute inset-0" />
       <span
         key={g}
+        className="splash-word"
         style={{
+          position: "relative",
           display: "inline-block",
-          fontSize: "clamp(40px,4.6vw,56px)",
-          fontWeight: 500,
-          letterSpacing: "-0.03em",
-          color: "var(--hr-strong)",
-          animation: `${g === GREETINGS.length - 1 ? "greetBlurIn" : "greetBlur"} .9s cubic-bezier(.22,.61,.36,1) both`,
+          padding: "0 0.1em",
+          animation: last
+            ? "greetWrite .75s cubic-bezier(.45,.05,.25,1) both"
+            : "greetWrite .7s cubic-bezier(.45,.05,.25,1) both, greetOut .15s ease-in .7s forwards",
         }}
       >
         {GREETINGS[g]}
