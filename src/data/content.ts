@@ -2017,14 +2017,6 @@ export const motionWork: MotionItem[] = [
     poster: "motion/ask-me-promo.webp",
   },
   {
-    title: "Dashboard Creation — Made with Claude",
-    category: "AI-assisted · Motion design",
-    description:
-      "An animation of a dashboard coming together from a blank screen to a finished view, created with Claude AI.",
-    youtube: "r-LXJZjG4qU",
-    vertical: true,
-  },
-  {
     title: "Grid Wave",
     category: "Micro-interaction",
     description: "Cells fill in a diagonal wave from the first selection — a loading and selection pattern for data grids.",

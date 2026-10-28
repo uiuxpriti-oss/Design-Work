@@ -523,17 +523,13 @@ function Header({
           >
             <FileText className="h-4 w-4" aria-hidden="true" /> Resume
           </a>
-          {scrolled && (
-            <div className="hidden sm:block">
-              <ContactButton
-                align="right"
-                className="inline-flex items-center gap-1.5 rounded-full bg-primary px-3 py-2 text-sm font-medium text-primary-foreground outline-none transition-all duration-300 ease-out hover:opacity-90 active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-foreground/25 sm:px-3.5"
-              >
-                <Send className="h-4 w-4" aria-hidden="true" />{" "}
-                <span className="hidden sm:inline">Contact</span>
-              </ContactButton>
-            </div>
-          )}
+          <ContactButton
+            align="right"
+            className="inline-flex h-9 w-9 items-center justify-center gap-1.5 rounded-full bg-primary text-sm font-medium text-primary-foreground outline-none transition-all duration-300 ease-out hover:opacity-90 active:scale-[0.97] focus-visible:ring-2 focus-visible:ring-foreground/25 sm:h-auto sm:w-auto sm:px-3.5 sm:py-2"
+          >
+            <Send className="h-4 w-4" aria-hidden="true" />{" "}
+            <span className="hidden sm:inline">Contact</span>
+          </ContactButton>
 
           {/* Mobile menu button */}
           <button
@@ -1237,9 +1233,11 @@ function MotionGrid() {
   // any further videos (e.g. a square one) go in a row below.
   const wide = videos.find((v) => !v.vertical && !v.square);
   const tall = videos.find((v) => v.vertical);
-  const paired = Boolean(wide && tall);
-  const pairRow = paired ? [wide!, tall!] : videos;
-  const extras = paired ? videos.filter((v) => v !== wide && v !== tall) : [];
+  const square = videos.find((v) => v.square);
+  const side = tall ?? square;
+  const paired = Boolean(wide && side);
+  const pairRow = paired ? [wide!, side!] : videos;
+  const extras = paired ? videos.filter((v) => v !== wide && v !== side) : [];
 
   const videoCard = (m: (typeof motionWork)[number]) => (
     <figure key={m.title} className="flex flex-col overflow-hidden rounded-3xl bg-[#FAFBFC] p-2.5 dark:bg-white/[0.05]">
@@ -1249,7 +1247,7 @@ function MotionGrid() {
             ? "mx-auto aspect-[9/16] w-full max-w-[19rem] lg:max-w-none"
             : m.square
               ? "aspect-square w-full"
-              : paired
+              : paired && tall
               ? "aspect-video w-full lg:aspect-auto lg:h-[28rem]"
               : "aspect-video w-full"
         }`}
@@ -1306,7 +1304,7 @@ function MotionGrid() {
       {videos.length > 0 && (
         <section
           className={`grid grid-cols-1 gap-6 ${
-            paired ? "lg:grid-cols-[minmax(0,1fr)_17rem]" : "sm:grid-cols-2"
+            paired ? (tall ? "lg:grid-cols-[minmax(0,1fr)_17rem]" : "lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]") : "sm:grid-cols-2"
           }`}
         >
           {pairRow.map(videoCard)}
@@ -1335,7 +1333,7 @@ function MotionGrid() {
                   src={assetUrl(m.image!)}
                   alt={`${m.title} — ${m.category}`}
                   loading="lazy"
-                  className="h-full w-full object-cover"
+                  className={`h-full w-full object-cover ${m.image!.endsWith("ai-sparkle.webp") ? "sparkle-breathe" : ""}`}
                 />
               )}
             </div>
