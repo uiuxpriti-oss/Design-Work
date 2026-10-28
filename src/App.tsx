@@ -1164,6 +1164,34 @@ function YouTubeEmbed({ id, title, poster, onPlay }: { id: string; title: string
   );
 }
 
+function SparkleArt() {
+  // Three four-point stars that twinkle in turn — the AI moment mark.
+  const star = "M50 4C55 30 70 45 96 50C70 55 55 70 50 96C45 70 30 55 4 50C30 45 45 30 50 4Z";
+  return (
+    <svg viewBox="0 0 160 160" className="h-full w-full" role="img" aria-label="AI sparkle">
+      <defs>
+        <linearGradient id="spk-a" x1="0" y1="1" x2="1" y2="0">
+          <stop offset="0" stopColor="#22b8f5" />
+          <stop offset="1" stopColor="#6d7ff7" />
+        </linearGradient>
+        <linearGradient id="spk-b" x1="0" y1="1" x2="1" y2="0">
+          <stop offset="0" stopColor="#6aa8f7" />
+          <stop offset="1" stopColor="#9aa0f6" />
+        </linearGradient>
+      </defs>
+      <g className="spk spk-1" style={{ transformOrigin: "57px 83px" }}>
+        <path d={star} transform="translate(2 28) scale(1.1)" fill="none" stroke="url(#spk-a)" strokeWidth="7" strokeLinejoin="round" strokeLinecap="round" />
+      </g>
+      <g className="spk spk-2" style={{ transformOrigin: "122px 42px" }}>
+        <path d={star} transform="translate(104 24) scale(0.36)" fill="#e5e0f7" />
+      </g>
+      <g className="spk spk-3" style={{ transformOrigin: "122px 120px" }}>
+        <path d={star} transform="translate(100 98) scale(0.44)" fill="url(#spk-b)" />
+      </g>
+    </svg>
+  );
+}
+
 function VideoLightbox({ item, onClose }: { item: (typeof motionWork)[number]; onClose: () => void }) {
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -1236,8 +1264,9 @@ function MotionGrid() {
       </section>
     );
   }
-  const videos = motionWork.filter((m) => !m.image);
-  const micro = motionWork.filter((m) => m.image);
+  const isMicro = (m: (typeof motionWork)[number]) => Boolean(m.image || m.loop || m.art);
+  const videos = motionWork.filter((m) => !isMicro(m));
+  const micro = motionWork.filter(isMicro);
   // One wide + one portrait video sit side by side with players of equal height.
   const paired = videos.length === 2 && videos.filter((v) => v.vertical).length === 1;
 
@@ -1255,14 +1284,21 @@ function MotionGrid() {
         {m.youtube ? (
           <YouTubeEmbed id={m.youtube} title={m.title} poster={m.poster} onPlay={() => setOpen(m)} />
         ) : m.src ? (
-          <video
-            src={assetUrl(m.src)}
-            poster={m.poster ? assetUrl(m.poster) : undefined}
-            controls
-            playsInline
-            preload="metadata"
-            className="h-full w-full object-cover"
-          />
+          <button
+            type="button"
+            onClick={() => setOpen(m)}
+            aria-label={`Play ${m.title}`}
+            className="group relative block h-full w-full outline-none focus-visible:ring-2 focus-visible:ring-foreground/40"
+          >
+            {m.poster && (
+              <img src={assetUrl(m.poster)} alt="" decoding="async" className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+            )}
+            <span className="absolute inset-0 flex items-center justify-center bg-black/20 transition-colors group-hover:bg-black/30">
+              <span className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-white/90 text-neutral-900 shadow-xl transition-transform group-hover:scale-105">
+                <Play className="h-7 w-7 translate-x-0.5 fill-current" aria-hidden="true" />
+              </span>
+            </span>
+          </button>
         ) : (
           <a
             href={m.href}
@@ -1307,12 +1343,29 @@ function MotionGrid() {
         <section className="grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-3">
           {micro.map((m) => (
             <div key={m.title} className="aspect-square w-full overflow-hidden rounded-3xl border border-slate-100 bg-white">
-              <img
-                src={assetUrl(m.image!)}
-                alt={`${m.title} — ${m.category}`}
-                loading="lazy"
-                className="h-full w-full object-cover"
-              />
+              {m.art === "sparkle" ? (
+                <div className="grid h-full w-full place-items-center bg-[#f1f4f7] p-[8%]">
+                  <SparkleArt />
+                </div>
+              ) : m.loop ? (
+                <video
+                  src={assetUrl(m.loop)}
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  preload="metadata"
+                  aria-label={`${m.title} — ${m.category}`}
+                  className="h-full w-full object-cover"
+                />
+              ) : (
+                <img
+                  src={assetUrl(m.image!)}
+                  alt={`${m.title} — ${m.category}`}
+                  loading="lazy"
+                  className="h-full w-full object-cover"
+                />
+              )}
             </div>
           ))}
         </section>

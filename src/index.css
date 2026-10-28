@@ -591,3 +591,16 @@ html.lenis body {
   .about-track { animation: none; }
   .about-rise { animation: none; }
 }
+
+/* AI sparkle micro-interaction — the three stars twinkle in turn */
+@keyframes spkTwinkle {
+  0%, 100% { transform: scale(1) rotate(0deg); opacity: 1; }
+  45% { transform: scale(0.72) rotate(-8deg); opacity: 0.55; }
+  70% { transform: scale(1.1) rotate(6deg); opacity: 1; }
+}
+.spk { animation: spkTwinkle 2.6s ease-in-out infinite; transform-box: view-box; }
+.spk-2 { animation-delay: 0.5s; }
+.spk-3 { animation-delay: 1.1s; }
+@media (prefers-reduced-motion: reduce) {
+  .spk { animation: none; }
+}

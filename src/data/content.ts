@@ -2000,6 +2000,10 @@ export interface MotionItem {
   vertical?: boolean;
   /** Looping animated image (GIF / animated WebP) under /public — a micro-interaction, no video needed. */
   image?: string;
+  /** Silent looping video under /public — a micro-interaction that autoplays in its tile. */
+  loop?: string;
+  /** Built-in animated mark (drawn in code) instead of an image. */
+  art?: "sparkle";
 }
 
 /** Animation & video work — add entries here and they appear in the Animation / Video tab. */
@@ -2009,7 +2013,7 @@ export const motionWork: MotionItem[] = [
     category: "Product animation · GenAI",
     description:
       "A walkthrough of the Ask Me mobile app, Lumenore's GenAI conversational analytics assistant — ask in plain language and get a clear answer from your data.",
-    youtube: "KkRSZQ-6les",
+    src: "motion/ask-me-promo.mp4",
     poster: "motion/ask-me-promo.webp",
   },
   {
@@ -2030,7 +2034,13 @@ export const motionWork: MotionItem[] = [
     title: "AI Sparkle",
     category: "Micro-interaction",
     description: "The sparkle mark used for AI moments — a small, friendly cue that something smart is happening.",
-    image: "motion/ai-sparkle.webp",
+    art: "sparkle",
+  },
+  {
+    title: "Connecting Data Sources",
+    category: "Micro-interaction",
+    description: "CSV, databases, Excel, Salesforce and Redshift flow into Lumenore — how a new data source gets connected.",
+    loop: "motion/data-connect.mp4",
   },
 ];
 
