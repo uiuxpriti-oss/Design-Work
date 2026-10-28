@@ -604,3 +604,16 @@ html.lenis body {
 @media (prefers-reduced-motion: reduce) {
   .spk { animation: none; }
 }
+
+/* Start-up greeting — each word resolves out of a blur, then dissolves back into one */
+@keyframes greetBlur {
+  0% { opacity: 0; filter: blur(18px); transform: scale(0.94); }
+  28% { opacity: 1; filter: blur(0); transform: scale(1); }
+  70% { opacity: 1; filter: blur(0); transform: scale(1); }
+  100% { opacity: 0; filter: blur(16px); transform: scale(1.04); }
+}
+@keyframes greetBlurIn {
+  0% { opacity: 0; filter: blur(18px); transform: scale(0.94); }
+  35% { opacity: 1; filter: blur(0); transform: scale(1); }
+  100% { opacity: 1; filter: blur(0); transform: scale(1); }
+}

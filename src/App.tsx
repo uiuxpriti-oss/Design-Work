@@ -679,7 +679,7 @@ function SideNav({
   );
 }
 
-const GREETINGS = ["Hola", "Bonjour", "नमस्ते", "Konnichiwa", "Hello"];
+const GREETINGS = ["नमस्ते", "Hola", "Bonjour", "Hello"];
 const HERO_PHRASES = [
   "opening Figma.",
   "sketching a solution.",
@@ -689,7 +689,7 @@ const HERO_PHRASES = [
 
 type SplashPhase = "show" | "leaving" | "done";
 
-// Start-up window: cycles hello in five languages (~3.7s in total), then slides away.
+// Start-up window: cycles hello in four languages with a blur-in / blur-out (~4.2s in total), then slides away.
 function StartupSplash({ phase, onPhase }: { phase: SplashPhase; onPhase: (p: SplashPhase) => void }) {
   const [g, setG] = useState(0);
   useEffect(() => {
@@ -704,12 +704,12 @@ function StartupSplash({ phase, onPhase }: { phase: SplashPhase; onPhase: (p: Sp
           t1 = window.setTimeout(() => {
             onPhase("leaving");
             t2 = window.setTimeout(() => onPhase("done"), 700);
-          }, 600);
+          }, 800);
           return cur;
         }
         return cur + 1;
       });
-    }, reduce ? 160 : 600);
+    }, reduce ? 160 : 900);
     return () => {
       window.clearInterval(iv);
       window.clearTimeout(t1);
@@ -744,7 +744,7 @@ function StartupSplash({ phase, onPhase }: { phase: SplashPhase; onPhase: (p: Sp
           fontWeight: 500,
           letterSpacing: "-0.03em",
           color: "var(--hr-strong)",
-          animation: "heroIn .3s ease-out",
+          animation: `${g === GREETINGS.length - 1 ? "greetBlurIn" : "greetBlur"} .9s cubic-bezier(.22,.61,.36,1) both`,
         }}
       >
         {GREETINGS[g]}
