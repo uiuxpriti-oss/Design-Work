@@ -1937,54 +1937,6 @@ function TagGroup({ label, items }: { label: string; items: string[] }) {
   );
 }
 
-const CASE_SECTIONS = [
-  { id: "cs-intro", label: "Intro" },
-  { id: "cs-problem", label: "The challenge" },
-  { id: "cs-research", label: "Research" },
-  { id: "cs-process", label: "Process" },
-  { id: "cs-solution", label: "Solution" },
-  { id: "cs-impact", label: "Impact" },
-];
-
-// Always-visible scroll-spy rail for the case study detail page.
-function CaseStudyRail() {
-  const [active, selectActive] = useActiveSection(CASE_SECTIONS.map((s) => s.id));
-  return (
-    <aside className="hidden xl:block fixed left-8 top-1/2 z-20 -translate-y-1/2">
-      <ul className="space-y-3 text-[14px]">
-        {CASE_SECTIONS.map((s) => {
-          const isActive = active === s.id;
-          return (
-            <li key={s.id}>
-              <a
-                href={`#${s.id}`}
-                onClick={() => selectActive(s.id)}
-                aria-current={isActive ? "true" : undefined}
-                className={`group flex items-center gap-3.5 rounded-md outline-none transition-colors duration-200 ease-out focus-visible:ring-2 focus-visible:ring-foreground/20 ${
-                  isActive
-                    ? "font-medium text-foreground"
-                    : "text-muted-foreground/60 hover:text-foreground"
-                }`}
-              >
-                <span className="flex w-8 justify-start" aria-hidden="true">
-                  <span
-                    className={`rounded-full transition-all duration-300 ease-out ${
-                      isActive
-                        ? "h-0.5 w-8 bg-foreground"
-                        : "h-px w-4 bg-muted-foreground/50 group-hover:w-6 group-hover:bg-foreground/70"
-                    }`}
-                  />
-                </span>
-                {s.label}
-              </a>
-            </li>
-          );
-        })}
-      </ul>
-    </aside>
-  );
-}
-
 // Floating "All work" button — slides in once the header scrolls away.
 function FloatingBack({ onBack }: { onBack: () => void }) {
   const [show, setShow] = useState(false);
@@ -2208,7 +2160,6 @@ function CaseStudyPage({
   const next = projects[(idx + 1) % projects.length];
   return (
     <main className="mx-auto max-w-[72rem] px-6 pb-14 sm:pb-32">
-      <CaseStudyRail />
       <FloatingBack onBack={onBack} />
       <button
         type="button"
