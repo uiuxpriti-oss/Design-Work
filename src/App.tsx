@@ -1133,7 +1133,7 @@ function CreativeGridCard({
           src={creative.image}
           alt={creative.name}
           loading="lazy"
-          className="absolute inset-0 h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.04]"
+          className={`absolute inset-0 h-full w-full object-cover ${creative.center ? "object-center" : "object-top"} transition-transform duration-500 group-hover:scale-[1.04]`}
         />
       ) : (
         <span
@@ -3289,7 +3289,7 @@ function CreativeMarqueeRow({
                 src={assetUrl(c.image)}
                 alt={c.name}
                 decoding="async"
-                className="absolute inset-0 h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.04]"
+                className={`absolute inset-0 h-full w-full object-cover ${c.center ? "object-center" : "object-top"} transition-transform duration-500 group-hover:scale-[1.04]`}
               />
             ) : (
               <span

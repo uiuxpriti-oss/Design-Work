@@ -1997,6 +1997,8 @@ export interface Creative {
   gradient: string;
   /** Image under /public. Falls back to the gradient when missing. */
   image?: string;
+  /** Centre the image in the card (logo marks) instead of aligning its top edge. */
+  center?: boolean;
 }
 
 export interface MotionItem {
@@ -2058,6 +2060,7 @@ export const creatives: Creative[] = [
     name: "Néant — Monogram",
     category: "Logo Design",
     image: "creatives/neant-monogram.webp",
+    center: true,
     gradient: "from-purple-500/30 to-indigo-800/30",
   },
   {
