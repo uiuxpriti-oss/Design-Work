@@ -638,10 +638,10 @@ html.lenis body {
   /* Roomy box so the script's swashes and descenders are never clipped by the write-on mask */
   padding: 0.25em 0.4em;
   margin: -0.25em -0.4em;
-  -webkit-mask-image: linear-gradient(90deg, #000 45%, transparent 55%);
-  mask-image: linear-gradient(90deg, #000 45%, transparent 55%);
-  -webkit-mask-size: 260% 100%;
-  mask-size: 260% 100%;
+  -webkit-mask-image: linear-gradient(90deg, #000 33%, transparent 67%);
+  mask-image: linear-gradient(90deg, #000 33%, transparent 67%);
+  -webkit-mask-size: 300% 100%;
+  mask-size: 300% 100%;
   -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
 }
@@ -652,11 +652,13 @@ html.lenis body {
   filter: drop-shadow(0 8px 24px rgba(255, 255, 255, 0.12));
 }
 @keyframes greetWrite {
-  from { -webkit-mask-position: 100% 0; mask-position: 100% 0; opacity: 0.4; filter: blur(6px); }
-  to { -webkit-mask-position: 0% 0; mask-position: 0% 0; opacity: 1; filter: blur(0); }
+  0% { -webkit-mask-position: 100% 0; mask-position: 100% 0; opacity: 0; filter: blur(8px); transform: translateY(6px); }
+  25% { opacity: 1; }
+  100% { -webkit-mask-position: 0% 0; mask-position: 0% 0; opacity: 1; filter: blur(0); transform: none; }
 }
 @keyframes greetOut {
-  to { opacity: 0; filter: blur(14px); transform: translateY(-6px) scale(1.03); }
+  from { opacity: 1; filter: blur(0); transform: none; }
+  to { opacity: 0; filter: blur(10px); transform: translateY(-4px) scale(1.02); }
 }
 @media (prefers-reduced-motion: reduce) {
   .splash-word { -webkit-mask-image: none; mask-image: none; }

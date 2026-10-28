@@ -705,11 +705,11 @@ function StartupSplash({ phase, onPhase }: { phase: SplashPhase; onPhase: (p: Sp
         if (next >= GREETINGS.length - 1) {
           // Last word: let it finish writing, hold briefly, then leave.
           window.clearInterval(iv);
-          if (!t1) t1 = window.setTimeout(() => onPhaseRef.current("leaving"), reduce ? 400 : 1200);
+          if (!t1) t1 = window.setTimeout(() => onPhaseRef.current("leaving"), reduce ? 400 : 700);
         }
         return Math.min(next, GREETINGS.length - 1);
       });
-    }, reduce ? 160 : 700);
+    }, reduce ? 160 : 780);
     return () => {
       window.clearInterval(iv);
       window.clearTimeout(t1);
@@ -747,8 +747,8 @@ function StartupSplash({ phase, onPhase }: { phase: SplashPhase; onPhase: (p: Sp
           style={{
             display: "inline-block",
             animation: last
-              ? "greetWrite .75s cubic-bezier(.45,.05,.25,1) both"
-              : "greetWrite .62s cubic-bezier(.45,.05,.25,1) both, greetOut .13s ease-in .57s forwards",
+              ? "greetWrite .9s cubic-bezier(.4,0,.2,1) both"
+              : "greetWrite .8s cubic-bezier(.4,0,.2,1) both, greetOut .25s ease-in-out .55s forwards",
           }}
         >
           {GREETINGS[g]}
