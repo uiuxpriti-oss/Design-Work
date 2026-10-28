@@ -949,71 +949,123 @@ function LockFillIcon({ className = "" }: { className?: string }) {
   );
 }
 
+// Sticky stack: each card pins under the header and the one it covers scales down and dims
+// as the next card slides over it. Desktop only; reduced-motion users get plain cards.
+function CaseStack({ children, className = "" }: { children: React.ReactNode; className?: string }) {
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const root = ref.current;
+    if (!root || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      const cards = [...root.querySelectorAll<HTMLElement>("[data-stack-card]")];
+      cards.forEach((el, i) => {
+        const next = cards[i + 1];
+        let p = 0;
+        if (next && window.innerWidth > 767) {
+          const r = el.getBoundingClientRect();
+          p = Math.min(1, Math.max(0, (r.top + r.height - next.getBoundingClientRect().top) / r.height));
+        }
+        el.style.transform = p ? `scale(${1 - p * 0.08})` : "";
+        el.style.filter = p ? `brightness(${1 - p * 0.4})` : "";
+      });
+    };
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(update);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    update();
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      cancelAnimationFrame(raf);
+    };
+  }, []);
+  return (
+    <div ref={ref} className={className}>
+      {children}
+    </div>
+  );
+}
+
+const CARD_MIN_H = "clamp(240px, calc((100vh - 250px) / 1.5), 460px)";
+
 function ProjectCard({
   project,
   onOpen,
+  flip = false,
 }: {
   project: (typeof projects)[number];
   onOpen: (id: string) => void;
+  flip?: boolean;
 }) {
   const [imgOk, setImgOk] = useState(true);
   const locked = !!PROTECTED_CASES[project.id] && !isUnlocked(project.id);
   return (
-    <article id={project.id} className="scroll-mt-24">
+    <article
+      id={project.id}
+      data-stack-card
+      className="scroll-mt-24 origin-top will-change-transform md:sticky md:top-[88px]"
+    >
       <button
         type="button"
         onClick={() => onOpen(project.id)}
         aria-label={`Open ${project.title} case study`}
-        className="group grid w-full gap-2.5 rounded-[32px] bg-[#FAFBFC] p-2.5 text-left dark:bg-white/[0.05] outline-none transition-colors focus-visible:ring-2 focus-visible:ring-foreground/25 focus-visible:ring-offset-4 focus-visible:ring-offset-background md:grid-cols-2 dark:bg-white/[0.05]"
+        className="group grid w-full gap-2 rounded-[30px] border border-[#efeff1] bg-[#f7f7f8] p-2 text-left shadow-[0_-18px_40px_-30px_rgba(24,24,27,0.35)] outline-none focus-visible:ring-2 focus-visible:ring-foreground/25 focus-visible:ring-offset-4 focus-visible:ring-offset-background dark:border-white/10 dark:bg-white/[0.05] md:grid-cols-2"
       >
-        {/* Left panel — title, headline, description and tag */}
-        <div className="flex flex-col justify-between gap-8 rounded-[24px] bg-white p-7 sm:p-9 dark:bg-card">
-          <div>
-            <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-neutral-400 dark:text-muted-foreground">
-              {project.title}
+        {/* Text panel — category, headline, description and pill */}
+        <div
+          className={`flex flex-col gap-3 rounded-[24px] bg-white px-7 pb-7 pt-8 shadow-[0_1px_2px_rgba(24,24,27,0.04)] sm:px-9 dark:bg-card ${flip ? "md:order-none" : "md:order-last"}`}
+          style={{ minHeight: CARD_MIN_H }}
+        >
+          <span className="text-[12px] font-medium uppercase tracking-[0.16em] text-[#8a8a93] dark:text-muted-foreground">
+            {project.title}
+          </span>
+          <h3 className="text-pretty text-[22px] font-medium leading-[1.32] tracking-[-0.018em] text-[#18181b] sm:text-[24px] dark:text-foreground">
+            {project.headline ?? project.description}
+          </h3>
+          {project.headline && (
+            <p className="text-pretty text-[15px] leading-[1.65] text-[#71717a] dark:text-muted-foreground">
+              {project.description}
             </p>
-            <h3 className="mt-3 text-[22px] font-semibold leading-[1.28] tracking-tight text-neutral-900 sm:text-[26px] dark:text-foreground">
-              {project.headline ?? project.description}
-            </h3>
-            {project.headline && (
-              <p className="mt-5 text-[15px] leading-relaxed text-neutral-500 dark:text-muted-foreground">
-                {project.description}
-              </p>
-            )}
-          </div>
-          <span className="inline-flex w-fit items-center gap-2 rounded-full border border-blue-100 bg-blue-50 px-5 py-2.5 text-sm font-medium text-blue-900 transition-colors duration-200 group-hover:bg-blue-100 dark:border-blue-300/25 dark:bg-blue-300/10 dark:text-blue-200 dark:group-hover:bg-blue-300/20">
+          )}
+          <span className="min-h-3 flex-1" />
+          <span className="inline-flex h-[42px] w-fit items-center gap-2 rounded-full border border-[#dbe4ff] bg-[#eff4ff] px-[18px] text-sm font-medium text-[#1e3a8a] transition-colors duration-200 group-hover:bg-[#e2eaff] dark:border-blue-300/25 dark:bg-blue-300/10 dark:text-blue-200 dark:group-hover:bg-blue-300/20">
             {locked && <LockFillIcon className="h-3.5 w-3.5" />}
             {locked ? "Unlock case study" : (project.tag ?? "Case study")}
           </span>
         </div>
-        {/* Right panel — image fills the whole card, zooms on hover */}
-        <div className="group/img relative overflow-hidden rounded-[24px] bg-white dark:bg-card">
-          <div className="aspect-[16/11] w-full md:aspect-auto md:h-full">
-            {project.image && imgOk ? (
-              <img
-                src={project.image}
-                alt={project.title}
-                loading="lazy"
-                onError={() => setImgOk(false)}
-                className={`h-full w-full object-cover transition-transform duration-500 ease-out group-hover/img:scale-105 ${
-                  locked ? "scale-110 blur-xl" : ""
-                }`}
-              />
-            ) : (
-              <div
-                className={`h-full w-full bg-gradient-to-br ${project.gradient} transition-transform duration-500 ease-out group-hover/img:scale-105 ${
-                  locked ? "blur-xl" : ""
-                }`}
-                aria-label={project.title}
-              />
-            )}
-          </div>
+        {/* Media panel — image zooms on hover; locked work blurs and shows the lock on hover */}
+        <div
+          className={`group/img relative order-first overflow-hidden rounded-[24px] bg-[#120d3a] ${flip ? "md:order-last" : "md:order-first"}`}
+          style={{ minHeight: CARD_MIN_H }}
+        >
+          {project.image && imgOk ? (
+            <img
+              src={project.image}
+              alt={project.title}
+              loading="lazy"
+              onError={() => setImgOk(false)}
+              className={`absolute inset-0 h-full w-full scale-[1.04] object-cover transition-[transform,filter] duration-[800ms] ease-out group-hover:scale-[1.08] ${
+                locked ? "group-hover:blur-[22px]" : ""
+              }`}
+            />
+          ) : (
+            <div
+              className={`absolute inset-0 bg-gradient-to-br ${project.gradient} transition-transform duration-[800ms] ease-out group-hover:scale-105 ${
+                locked ? "group-hover:blur-[22px]" : ""
+              }`}
+              aria-label={project.title}
+            />
+          )}
           {locked && (
-            <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-black/25 text-white">
-              <span className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-white/90 text-blue-900 shadow-xl ring-1 ring-black/5 transition-transform duration-300 group-hover/img:scale-105">
+            <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center gap-3 bg-[rgba(10,8,20,0.25)] text-white opacity-0 transition-opacity duration-[350ms] group-hover:opacity-100">
+              <span className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-white/90 text-blue-900 shadow-[0_10px_30px_rgba(0,0,0,0.35)]">
                 <LockFillIcon className="h-7 w-7" />
               </span>
-              <span className="rounded-full bg-black/40 px-3.5 py-1.5 text-[12px] font-medium tracking-wide backdrop-blur-sm">
+              <span className="rounded-full bg-[rgba(10,10,14,0.8)] px-3.5 py-1.5 text-[13px] font-medium">
                 Password protected
               </span>
             </div>
@@ -1041,11 +1093,11 @@ function Work({
           Case studies
         </h2>
       </div>
-      <div className="grid gap-6">
-        {HOME_PROJECTS.map((project) => (
-          <ProjectCard key={project.id} project={project} onOpen={onOpen} />
+      <CaseStack className="flex flex-col gap-6">
+        {HOME_PROJECTS.map((project, i) => (
+          <ProjectCard key={project.id} project={project} onOpen={onOpen} flip={i % 2 === 1} />
         ))}
-      </div>
+      </CaseStack>
       <div className="flex justify-center pt-4">
         <button
           type="button"
@@ -1395,10 +1447,12 @@ function ProjectsPage({
           </div>
         </section>
         {tab === "case" ? (
-          <section id="case-studies" className="grid gap-6">
-            {projects.map((project) => (
-              <ProjectCard key={project.id} project={project} onOpen={onOpen} />
-            ))}
+          <section id="case-studies">
+            <CaseStack className="flex flex-col gap-6">
+              {projects.map((project, i) => (
+                <ProjectCard key={project.id} project={project} onOpen={onOpen} flip={i % 2 === 1} />
+              ))}
+            </CaseStack>
           </section>
         ) : tab === "motion" ? (
           <MotionGrid />
