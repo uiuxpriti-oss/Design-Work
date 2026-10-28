@@ -689,7 +689,7 @@ const HERO_PHRASES = [
 
 type SplashPhase = "show" | "leaving" | "done";
 
-// Start-up window: writes hello in four languages on a glassy gradient (~4s in total), then slides away.
+// Start-up window: writes hello in four languages in frosted-glass script (~4s in total), then slides away.
 function StartupSplash({ phase, onPhase }: { phase: SplashPhase; onPhase: (p: SplashPhase) => void }) {
   const [g, setG] = useState(0);
   // Keep the latest callback in a ref so a parent re-render never restarts the timers.
@@ -725,11 +725,12 @@ function StartupSplash({ phase, onPhase }: { phase: SplashPhase; onPhase: (p: Sp
   const last = g === GREETINGS.length - 1;
   return (
     <div
-      className="splash-glass"
+      className="hero-root"
       style={{
         position: "fixed",
         inset: 0,
         zIndex: 120,
+        background: "var(--hr-bg)",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -740,24 +741,18 @@ function StartupSplash({ phase, onPhase }: { phase: SplashPhase; onPhase: (p: Sp
       }}
       aria-hidden="true"
     >
-      <span className="splash-blob splash-blob-a" />
-      <span className="splash-blob splash-blob-b" />
-      <span className="splash-blob splash-blob-c" />
-      <span className="splash-sheen" />
-      <span className="footer-grain absolute inset-0" />
-      <span
-        key={g}
-        className="splash-word"
-        style={{
-          position: "relative",
-          display: "inline-block",
-          padding: "0 0.1em",
-          animation: last
-            ? "greetWrite .75s cubic-bezier(.45,.05,.25,1) both"
-            : "greetWrite .7s cubic-bezier(.45,.05,.25,1) both, greetOut .15s ease-in .7s forwards",
-        }}
-      >
-        {GREETINGS[g]}
+      <span key={g} className="splash-glow" style={{ display: "inline-block" }}>
+        <span
+          className="splash-word"
+          style={{
+            display: "inline-block",
+            animation: last
+              ? "greetWrite .75s cubic-bezier(.45,.05,.25,1) both"
+              : "greetWrite .7s cubic-bezier(.45,.05,.25,1) both, greetOut .15s ease-in .7s forwards",
+          }}
+        >
+          {GREETINGS[g]}
+        </span>
       </span>
     </div>
   );
