@@ -313,10 +313,11 @@ export const caseStudies: Record<string, CaseStudy> = {
       ],
     },
     process: [
-      { step: "Map", text: "Broke down what Students, Teachers, Coordinators, Speakers, Course Allocation, and Roles & Access each actually need to expose." },
-      { step: "Unify", text: "Designed one shared 'module health' card anatomy — four numbers, one trend meter, one status pill — reused across all six." },
-      { step: "Go deep", text: "Let each module's tables and detail views handle its own domain complexity underneath the shared shell." },
-      { step: "Stress-test", text: "Designed loading, empty, error, no-permission, and partial-access states for the more data-heavy modules." },
+      { step: "Empathize", text: "Broke down what Students, Teachers, Coordinators, Speakers, Course Allocation, and Roles & Access each actually need to expose." },
+      { step: "Define", text: "Set one goal: a shared language for module health that works across all six modules." },
+      { step: "Ideate", text: "Designed one shared 'module health' card anatomy — four numbers, one trend meter, one status pill — reused across all six." },
+      { step: "Prototype", text: "Let each module's tables and detail views handle its own domain complexity underneath the shared shell." },
+      { step: "Test", text: "Stress-tested loading, empty, error, no-permission, and partial-access states for the more data-heavy modules." },
     ],
     solution: {
       text: "The result is a Dashboard that acts as a control tower — six module-health cards plus one prioritized, cross-module action queue — sitting above six modules that each solve their own domain's hardest problem: multi-entitlement students, faculty payouts and live-class ops, a coordinator workload score, a speaker application funnel, and an access-control surface built around risk instead of a role list.",
@@ -397,10 +398,11 @@ export const caseStudies: Record<string, CaseStudy> = {
       ],
     },
     process: [
-      { step: "Research & Discovery", text: "Interviews, focus groups, usability testing, heuristic evaluation, and journey mapping to surface gaps." },
-      { step: "Understand", text: "Built personas (Rohan, Priya), user stories, and end-to-end user flows." },
-      { step: "Opportunities", text: "Competitor analysis (ChatGPT, Julius AI, Formula Bot) and opportunity areas across entry points, trust, and UI." },
-      { step: "Design", text: "Wireframes → a scalable design system → hi-fi solution and prototype, validated with A/B testing." },
+      { step: "Empathize", text: "Interviews, focus groups, usability testing, heuristic evaluation, and journey mapping to surface gaps." },
+      { step: "Define", text: "Built personas (Rohan, Priya), user stories, and end-to-end user flows." },
+      { step: "Ideate", text: "Competitor analysis (ChatGPT, Julius AI, Formula Bot) and opportunity areas across entry points, trust, and UI." },
+      { step: "Prototype", text: "Wireframes → a scalable design system → hi-fi solution and prototype." },
+      { step: "Test", text: "Validated the solution with A/B testing." },
     ],
     solution: {
       text:
@@ -786,10 +788,10 @@ export const caseStudies: Record<string, CaseStudy> = {
       ],
     },
     process: [
-      { step: "Map", text: "Reframed 14 services around user intent, not department names." },
-      { step: "Structure", text: "Rebuilt the IA and a single guided request flow with inline validation." },
-      { step: "Prototype", text: "Tested a guided form + status tracker with 12 citizens across literacy levels." },
-      { step: "Handoff", text: "Shipped a component library and English/regional patterns to engineering." },
+      { step: "Define", text: "Reframed 14 services around user intent, not department names." },
+      { step: "Ideate", text: "Rebuilt the IA and a single guided request flow with inline validation." },
+      { step: "Prototype", text: "Built a guided form + status tracker, then shipped a component library and English/regional patterns to engineering." },
+      { step: "Test", text: "Tested the guided form + status tracker with 12 citizens across literacy levels." },
     ],
     solution: {
       text:
@@ -854,9 +856,9 @@ export const caseStudies: Record<string, CaseStudy> = {
     },
     process: [
       { step: "Define", text: "Prioritised trust signals: verified reviews, specialities, location, availability." },
-      { step: "Flow", text: "Designed a progressive onboarding that asks for documents last." },
-      { step: "Prototype", text: "Built a tappable profile + hire flow and tested with 8 workers." },
-      { step: "Polish", text: "Added playful, reassuring micro-interactions for a friendly tone." },
+      { step: "Ideate", text: "Designed a progressive onboarding that asks for documents last." },
+      { step: "Prototype", text: "Built a tappable profile + hire flow." },
+      { step: "Test", text: "Tested with 8 workers, then added playful, reassuring micro-interactions for a friendly tone." },
     ],
     solution: {
       text:
@@ -911,10 +913,10 @@ export const caseStudies: Record<string, CaseStudy> = {
       ],
     },
     process: [
-      { step: "System", text: "Built a shared component and layout system for all verticals." },
-      { step: "Navigate", text: "Designed a category-aware search + tile-based browse." },
-      { step: "Prototype", text: "Validated cross-category ordering with 10 shoppers." },
-      { step: "Scale", text: "Delivered responsive web + mobile patterns from one library." },
+      { step: "Define", text: "Set out to serve every category from one shared component and layout system." },
+      { step: "Ideate", text: "Designed a category-aware search + tile-based browse." },
+      { step: "Prototype", text: "Delivered responsive web + mobile patterns from one library." },
+      { step: "Test", text: "Validated cross-category ordering with 10 shoppers." },
     ],
     solution: {
       text:
@@ -1083,10 +1085,10 @@ export const caseStudies: Record<string, CaseStudy> = {
       ],
     },
     process: [
-      { step: "Direction", text: "Two hero explorations in the first hours — bento vs. cinematic." },
-      { step: "Decide", text: "Picked the direction that put the countdown and form first." },
-      { step: "Build", text: "Designed the full page — hero to footer — in one pass." },
-      { step: "Handoff", text: "Specs and assets to the developer the same day." },
+      { step: "Define", text: "Framed the page around a countdown and a form, so the wait feels like the event." },
+      { step: "Ideate", text: "Two hero explorations in the first hours — bento vs. cinematic — then picked the one that put the countdown and form first." },
+      { step: "Prototype", text: "Designed the full page — hero to footer — in one pass." },
+      { step: "Deliver", text: "Specs and assets to the developer the same day." },
     ],
     solution: {
       text:
@@ -1222,10 +1224,10 @@ export const caseStudies: Record<string, CaseStudy> = {
       ],
     },
     process: [
-      { step: "IA", text: "Six pages: Home, About, Transparency, Blog, Resources, Contact." },
-      { step: "System", text: "Blue for action, gold for the asset, generous white space." },
-      { step: "Design", text: "Hi-fi pages in Figma with a shared component set." },
-      { step: "Handoff", text: "Specs and assets for the development team." },
+      { step: "Define", text: "Mapped six pages: Home, About, Transparency, Blog, Resources, Contact." },
+      { step: "Ideate", text: "Blue for action, gold for the asset, generous white space." },
+      { step: "Prototype", text: "Hi-fi pages in Figma with a shared component set." },
+      { step: "Deliver", text: "Specs and assets for the development team." },
     ],
     solution: {
       text:
@@ -1337,10 +1339,10 @@ export const caseStudies: Record<string, CaseStudy> = {
       ],
     },
     process: [
-      { step: "Frame", text: "Structured browse around occasion, shape, and design." },
-      { step: "Design", text: "Built a playful system of shapes, colour, and motion cues." },
-      { step: "Prototype", text: "Tested the customise + gift flow with 8 shoppers." },
-      { step: "Refine", text: "Simplified steps and added a personalised gift message." },
+      { step: "Define", text: "Structured browse around occasion, shape, and design." },
+      { step: "Ideate", text: "Built a playful system of shapes, colour, and motion cues." },
+      { step: "Prototype", text: "Built the customise + gift flow, with simplified steps and a personalised gift message." },
+      { step: "Test", text: "Tested the flow with 8 shoppers." },
     ],
     solution: {
       text:
@@ -1395,10 +1397,10 @@ export const caseStudies: Record<string, CaseStudy> = {
       ],
     },
     process: [
-      { step: "Position", text: "Framed the story around board-ready risk numbers." },
-      { step: "System", text: "Built a dark, high-contrast visual language with a node motif." },
-      { step: "Compose", text: "Designed problem, methodology, outcomes, and FAQ sections." },
-      { step: "Build", text: "Prototyped interactions in Framer for handoff." },
+      { step: "Define", text: "Framed the story around board-ready risk numbers." },
+      { step: "Ideate", text: "Built a dark, high-contrast visual language with a node motif." },
+      { step: "Prototype", text: "Designed problem, methodology, outcomes, and FAQ sections." },
+      { step: "Deliver", text: "Prototyped interactions in Framer for handoff." },
     ],
     solution: {
       text:
@@ -1466,10 +1468,10 @@ export const caseStudies: Record<string, CaseStudy> = {
       ],
     },
     process: [
-      { step: "Prioritise", text: "Ranked dashboard widgets by real daily usage." },
-      { step: "Structure", text: "Designed list + registration flows with strong filtering." },
-      { step: "Visualise", text: "Built clear charts for attendance and fee trends." },
-      { step: "Systemise", text: "Delivered a component set for consistent data display." },
+      { step: "Define", text: "Ranked dashboard widgets by real daily usage." },
+      { step: "Ideate", text: "Designed list + registration flows with strong filtering." },
+      { step: "Prototype", text: "Built clear charts for attendance and fee trends." },
+      { step: "Deliver", text: "Delivered a component set for consistent data display." },
     ],
     solution: {
       text:
@@ -1536,10 +1538,10 @@ export const caseStudies: Record<string, CaseStudy> = {
       ],
     },
     process: [
-      { step: "Map", text: "Modelled the demo lifecycle: create, manage, share, reuse." },
-      { step: "Design", text: "Built a card-grid ‘My Sites’ hub with clear per-site actions." },
-      { step: "Prototype", text: "Tested create-from-template with 6 sales engineers." },
-      { step: "Refine", text: "Added quick actions and a lightweight sidebar system." },
+      { step: "Define", text: "Modelled the demo lifecycle: create, manage, share, reuse." },
+      { step: "Ideate", text: "Built a card-grid ‘My Sites’ hub with clear per-site actions." },
+      { step: "Prototype", text: "Added quick actions and a lightweight sidebar system." },
+      { step: "Test", text: "Tested create-from-template with 6 sales engineers." },
     ],
     solution: {
       text:
@@ -1725,10 +1727,10 @@ export const caseStudies: Record<string, CaseStudy> = {
       ],
     },
     process: [
-      { step: "Frame", text: "Split the screen into transcript, summaries, sentiment, and actions." },
-      { step: "Visualise", text: "Designed an emoji-anchored sentiment trend and clear AI states." },
-      { step: "Prototype", text: "Tested the review flow with 7 support leads." },
-      { step: "Refine", text: "Tuned density, copy affordances, and the upsell panel." },
+      { step: "Define", text: "Split the screen into transcript, summaries, sentiment, and actions." },
+      { step: "Ideate", text: "Designed an emoji-anchored sentiment trend and clear AI states." },
+      { step: "Prototype", text: "Tuned density, copy affordances, and the upsell panel." },
+      { step: "Test", text: "Tested the review flow with 7 support leads." },
     ],
     solution: {
       text:
