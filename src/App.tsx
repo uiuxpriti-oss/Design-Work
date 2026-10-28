@@ -1988,23 +1988,19 @@ function PasswordGate({
             <span className="mx-auto inline-flex h-14 w-14 items-center justify-center rounded-full border border-border text-foreground">
               <Lock className="h-5 w-5" aria-hidden="true" />
             </span>
-            <p className="mt-6 text-[11px] font-medium uppercase tracking-[0.2em] text-muted-foreground">
-              Protected work
-            </p>
-            <h1 className="mt-5 text-4xl font-light leading-[1.1] tracking-tight sm:text-5xl">
+            <h1 className="mt-6 text-4xl font-light leading-[1.1] tracking-tight sm:text-5xl">
               This case study is{" "}
               <span className="font-semibold italic">password protected.</span>
             </h1>
-            <p className="mx-auto mt-6 max-w-md text-[15px] leading-[1.8] text-foreground/70">
-              These write-ups contain client work I keep out of open search. If you have the
-              password, enter it below. If you don&apos;t, email me at{" "}
+            <p className="mx-auto mt-6 max-w-lg text-[15px] leading-[1.8] text-foreground/70">
+              Client work, kept private. Enter the password, or email{" "}
               <a
                 href={`${links.email}?subject=${encodeURIComponent(`Password for ${title}`)}`}
                 className="text-foreground underline underline-offset-4 decoration-foreground/30 transition-colors hover:decoration-foreground"
               >
                 {links.emailAddress}
               </a>{" "}
-              and I&apos;ll send it over.
+              for access. I can also walk you through it in an interview.
             </p>
             <form onSubmit={submit} className="mx-auto mt-8 max-w-sm">
               <div key={shake} className={shake ? "animate-gate-shake" : ""}>
@@ -3872,15 +3868,22 @@ export default function App() {
           return;
         }
       }
+      const lenis = (window as unknown as { __lenis?: Lenis }).__lenis;
+      lenis?.scrollTo(0, { immediate: true, force: true });
       window.scrollTo({ top: 0, left: 0, behavior: "instant" as ScrollBehavior });
     };
+    // Don't let the browser restore the previous page's scroll offset on its own.
+    if ("scrollRestoration" in window.history) window.history.scrollRestoration = "manual";
     let inner = 0;
     const outer = requestAnimationFrame(() => {
       inner = requestAnimationFrame(jump);
     });
+    // Second pass once the new page's images and fonts have settled the layout.
+    const late = window.setTimeout(jump, 250);
     return () => {
       cancelAnimationFrame(outer);
       cancelAnimationFrame(inner);
+      window.clearTimeout(late);
     };
   }, [page, caseId, scrollTarget]);
   // Sync app state when the user uses the browser back/forward buttons.
