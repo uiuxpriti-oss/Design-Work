@@ -3578,11 +3578,11 @@ function FooterCallBadge({ href }: { href: string }) {
           aria-label="Book a call"
           className="group pointer-events-auto relative -translate-y-1/2 flex h-28 w-28 shrink-0 items-center justify-center rounded-full bg-[#05060b] shadow-[0_20px_50px_-20px_rgba(37,99,235,0.6)] ring-1 ring-white/10 transition-transform duration-300 hover:scale-105 sm:h-32 sm:w-32"
         >
-          <svg viewBox="0 0 200 200" className="footer-spin absolute inset-0 h-full w-full text-white/60" aria-hidden="true">
+          <svg viewBox="0 0 200 200" className="footer-spin absolute inset-0 h-full w-full text-white" aria-hidden="true">
             <defs>
               <path id="ftr-circle" d="M100,100 m-82,0 a82,82 0 1,1 164,0 a82,82 0 1,1 -164,0" />
             </defs>
-            <text fontSize="12" fill="currentColor" fontFamily="'JetBrains Mono', monospace">
+            <text fontSize="15" fontWeight="600" fill="currentColor" fontFamily="'JetBrains Mono', monospace">
               <textPath href="#ftr-circle" textLength="506" lengthAdjust="spacing">BOOK A CALL • SAY HELLO • LET'S TALK • </textPath>
             </text>
           </svg>
