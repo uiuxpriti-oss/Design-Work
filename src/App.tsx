@@ -3699,7 +3699,9 @@ const LIKE_NS = "uiuxpriti.com";
 const LIKE_KEY = "portfolio-likes";
 // Optional email alert on each new like, via Web3Forms (https://web3forms.com — the access key is
 // meant to be public). Leave empty to turn alerts off.
-const LIKE_NOTIFY_KEY = "";
+const LIKE_NOTIFY_KEY = "9db643af-7850-4c00-bc76-b26e0386f9db";
+// Starting number shown before the shared counter; real likes are added on top of it.
+const LIKE_BASE = 100;
 
 function LikeButton({ tone = "dark" }: { tone?: "dark" | "light" }) {
   const [count, setCount] = useState<number | null>(null);
@@ -3766,12 +3768,8 @@ function LikeButton({ tone = "dark" }: { tone?: "dark" | "light" }) {
     >
       <ThumbsUp className={`h-4 w-4 transition-transform duration-200 group-hover:-rotate-12 ${liked ? "fill-current" : ""}`} aria-hidden="true" />
       <span>{liked ? "Liked" : "Like"}</span>
-      {count !== null && (
-        <>
-          <span className={`h-4 w-px ${liked || tone === "dark" ? "bg-white/25" : "bg-[var(--hr-border)]"}`} aria-hidden="true" />
-          <span className="tabular-nums">{count.toLocaleString("en-US")}</span>
-        </>
-      )}
+      <span className={`h-4 w-px ${liked || tone === "dark" ? "bg-white/25" : "bg-[var(--hr-border)]"}`} aria-hidden="true" />
+      <span className="tabular-nums">{(LIKE_BASE + (count ?? 0)).toLocaleString("en-US")}</span>
     </button>
   );
 }
