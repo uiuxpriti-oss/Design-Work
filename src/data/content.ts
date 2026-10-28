@@ -190,6 +190,8 @@ export interface CaseStudy {
   };
   research: { text: string; findings: string[] };
   process: { step: string; text: string }[];
+  /** Short activity labels for the animated process timeline bars (distinct from the step titles). */
+  timeline?: string[];
   solution: { text: string; highlights: { title: string; text: string }[] };
   /** Optional screen/mockup images shown in the solution section. */
   screens?: { src: string; caption: string }[];
@@ -319,6 +321,7 @@ export const caseStudies: Record<string, CaseStudy> = {
       { step: "Prototype", text: "Let each module's tables and detail views handle its own domain complexity underneath the shared shell." },
       { step: "Test", text: "Stress-tested loading, empty, error, no-permission, and partial-access states for the more data-heavy modules." },
     ],
+    timeline: ["Module mapping", "Health card anatomy", "Shared shell", "Detail views", "Empty, error & no-access states"],
     solution: {
       text: "The result is a Dashboard that acts as a control tower — six module-health cards plus one prioritized, cross-module action queue — sitting above six modules that each solve their own domain's hardest problem: multi-entitlement students, faculty payouts and live-class ops, a coordinator workload score, a speaker application funnel, and an access-control surface built around risk instead of a role list.",
       highlights: [
@@ -404,6 +407,7 @@ export const caseStudies: Record<string, CaseStudy> = {
       { step: "Prototype", text: "Wireframes → a scalable design system → hi-fi solution and prototype." },
       { step: "Test", text: "Validated the solution with A/B testing." },
     ],
+    timeline: ["Interviews & focus groups", "Usability testing", "Journey mapping", "Personas & user flows", "Competitor analysis", "Wireframes → design system", "A/B testing"],
     solution: {
       text:
         "A guided, data-first workflow with a clean, minimal interface (and dark mode). The homepage leads with one clear action; a chat-first Ask Me turns natural-language questions into structured insights and recommended next steps; and a central Data Pool makes every file, schema, and analysis visible in one place. Designed to balance ease for beginners with control for data experts.",
@@ -793,6 +797,7 @@ export const caseStudies: Record<string, CaseStudy> = {
       { step: "Prototype", text: "Built a guided form + status tracker, then shipped a component library and English/regional patterns to engineering." },
       { step: "Test", text: "Tested the guided form + status tracker with 12 citizens across literacy levels." },
     ],
+    timeline: ["Service reframing", "IA & guided request flow", "Form + status tracker", "Citizen testing", "Component library"],
     solution: {
       text:
         "A calm dashboard organised by what people want to do, a step-by-step request form with plain-language help and live validation, and a status tracker with WhatsApp/email/download delivery.",
@@ -860,6 +865,7 @@ export const caseStudies: Record<string, CaseStudy> = {
       { step: "Prototype", text: "Built a tappable profile + hire flow." },
       { step: "Test", text: "Tested with 8 workers, then added playful, reassuring micro-interactions for a friendly tone." },
     ],
+    timeline: ["Trust signals", "Progressive onboarding", "Profile + hire flow", "Worker testing", "Micro-interactions"],
     solution: {
       text:
         "A vibrant profile that leads with role, specialities, and multi-source ratings, a fast ‘Get Started’ onboarding, and a clean hire action for employers.",
@@ -918,6 +924,7 @@ export const caseStudies: Record<string, CaseStudy> = {
       { step: "Prototype", text: "Delivered responsive web + mobile patterns from one library." },
       { step: "Test", text: "Validated cross-category ordering with 10 shoppers." },
     ],
+    timeline: ["Shared system", "Category-aware search", "Tile-based browse", "Responsive patterns", "Shopper testing"],
     solution: {
       text:
         "A warm hero with a scoped search, colourful category tiles, and ‘restaurants/stores near you’ lists — all sharing one cart and checkout across breakpoints.",
@@ -1090,6 +1097,7 @@ export const caseStudies: Record<string, CaseStudy> = {
       { step: "Prototype", text: "Designed the full page — hero to footer — in one pass." },
       { step: "Deliver", text: "Specs and assets to the developer the same day." },
     ],
+    timeline: ["Hero exploration", "Direction decision", "Full page design", "Specs & assets"],
     solution: {
       text:
         "An electric purple-and-lime identity with a serif display voice: a live countdown, a signup form above the fold, an attitude-led manifesto section, and a plain-spoken feature set — all in Spanish, all sounding like a filmmaker wrote it.",
@@ -1229,6 +1237,7 @@ export const caseStudies: Record<string, CaseStudy> = {
       { step: "Prototype", text: "Hi-fi pages in Figma with a shared component set." },
       { step: "Deliver", text: "Specs and assets for the development team." },
     ],
+    timeline: ["Page mapping", "Colour system", "Hi-fi pages in Figma", "Component set", "Dev handoff"],
     solution: {
       text:
         "A clean, banking-adjacent visual language: real gold photography, a calm blue action colour, and proof sections — storage, auditing, roadmap — ahead of any token talk.",
@@ -1344,6 +1353,7 @@ export const caseStudies: Record<string, CaseStudy> = {
       { step: "Prototype", text: "Built the customise + gift flow, with simplified steps and a personalised gift message." },
       { step: "Test", text: "Tested the flow with 8 shoppers." },
     ],
+    timeline: ["Occasion-based browse", "Shape & colour system", "Customise + gift flow", "Shopper testing", "Gift message"],
     solution: {
       text:
         "A cheerful home with occasion-led entry points, a guided ‘what would you like to order?’ flow, and a dedicated ‘send your gift to loved ones’ path with a personal message.",
@@ -1402,6 +1412,7 @@ export const caseStudies: Record<string, CaseStudy> = {
       { step: "Prototype", text: "Designed problem, methodology, outcomes, and FAQ sections." },
       { step: "Deliver", text: "Prototyped interactions in Framer for handoff." },
     ],
+    timeline: ["Risk-first story", "Dark visual language", "Section design", "Framer interactions"],
     solution: {
       text:
         "A cosmic, high-precision landing experience: an animated risk-graph hero, a clear enterprise-risk breakdown, outcome-led proof, and a constellation-themed contact flow.",
@@ -1473,6 +1484,7 @@ export const caseStudies: Record<string, CaseStudy> = {
       { step: "Prototype", text: "Built clear charts for attendance and fee trends." },
       { step: "Deliver", text: "Delivered a component set for consistent data display." },
     ],
+    timeline: ["Widget ranking", "List & registration flows", "Attendance charts", "Fee trends", "Component set"],
     solution: {
       text:
         "A dashboard leading with student, employee, fee, and attendance summaries, searchable record tables, and trend charts that make patterns obvious.",
@@ -1543,6 +1555,7 @@ export const caseStudies: Record<string, CaseStudy> = {
       { step: "Prototype", text: "Added quick actions and a lightweight sidebar system." },
       { step: "Test", text: "Tested create-from-template with 6 sales engineers." },
     ],
+    timeline: ["Demo lifecycle", "My Sites hub", "Quick actions", "Sidebar system", "Template testing"],
     solution: {
       text:
         "A friendly ‘My Sites’ grid where each demo is a card with its live link and quick actions, a simple sidebar for navigation, and a fast create-from-template path.",
@@ -1732,6 +1745,7 @@ export const caseStudies: Record<string, CaseStudy> = {
       { step: "Prototype", text: "Tuned density, copy affordances, and the upsell panel." },
       { step: "Test", text: "Tested the review flow with 7 support leads." },
     ],
+    timeline: ["Screen split", "Sentiment trend", "AI states", "Density tuning", "Review-flow testing"],
     solution: {
       text:
         "A calm three-column workspace: a scrubbable recording, transcript alongside customer and agent summaries, an emoji-anchored sentiment trend, and an upsell panel with clear AI ‘generating’ states.",

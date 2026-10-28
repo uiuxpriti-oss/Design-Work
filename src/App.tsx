@@ -1596,7 +1596,8 @@ const TIMELINE_BARS = [
 
 // Design-process section: numbered phases on top, and a dark timeline below whose bars
 // load in one after another (the phase text above lights up in step with them).
-function ProcessTimeline({ steps }: { steps: { step: string; text: string }[] }) {
+function ProcessTimeline({ steps, bars }: { steps: { step: string; text: string }[]; bars?: string[] }) {
+  const labels = bars && bars.length > 0 ? bars : steps.map((x) => x.step);
   const ref = useRef<HTMLDivElement>(null);
   const [shown, setShown] = useState(0);
   useEffect(() => {
@@ -1607,9 +1608,9 @@ function ProcessTimeline({ steps }: { steps: { step: string; text: string }[] })
     const play = () => {
       timers.forEach(clearTimeout);
       timers = [];
-      if (reduce) return setShown(steps.length);
+      if (reduce) return setShown(labels.length);
       setShown(0);
-      steps.forEach((_, i) => timers.push(window.setTimeout(() => setShown(i + 1), 500 + i * 650)));
+      labels.forEach((_, i) => timers.push(window.setTimeout(() => setShown(i + 1), 500 + i * 650)));
     };
     const io = new IntersectionObserver(
       (es) => {
@@ -1626,10 +1627,11 @@ function ProcessTimeline({ steps }: { steps: { step: string; text: string }[] })
       io.disconnect();
       timers.forEach(clearTimeout);
     };
-  }, [steps]);
+  }, [labels]);
 
   const n = steps.length;
-  const w = Math.min(34, (100 / n) * 1.4);
+  const nb = labels.length;
+  const w = Math.min(34, (100 / nb) * 1.5);
   return (
     <section id="cs-process" className="mt-14 scroll-mt-24 border-t border-border pt-10">
       <div className="flex items-start justify-between gap-4">
@@ -1650,7 +1652,8 @@ function ProcessTimeline({ steps }: { steps: { step: string; text: string }[] })
         style={{ ["--n" as string]: n }}
       >
         {steps.map((s, i) => {
-          const on = shown > i;
+          // A phase lights up once the first timeline bar that belongs to it has loaded.
+          const on = shown > Math.floor((i * nb) / n);
           return (
             <li key={s.step} className="relative">
               <span
@@ -1675,7 +1678,7 @@ function ProcessTimeline({ steps }: { steps: { step: string; text: string }[] })
 
       <div
         ref={ref}
-        className="relative mt-10 h-[22rem] overflow-hidden rounded-[28px] bg-[#0a0c14] sm:h-[26rem]"
+        className="relative mt-10 h-[24rem] overflow-hidden rounded-[28px] bg-[#0a0c14] sm:h-[27rem]"
         aria-hidden="true"
       >
         <div className="absolute inset-0 flex">
@@ -1683,24 +1686,24 @@ function ProcessTimeline({ steps }: { steps: { step: string; text: string }[] })
             <span key={k} className="h-full flex-1 border-l border-white/[0.04]" />
           ))}
         </div>
-        {steps.map((s, i) => {
+        {labels.map((label, i) => {
           const t = TIMELINE_BARS[i % TIMELINE_BARS.length];
-          const left = n === 1 ? 6 : 5 + (i * (90 - w)) / (n - 1);
+          const left = nb === 1 ? 6 : 5 + (i * (90 - w)) / (nb - 1);
           const on = shown > i;
           return (
             <div
-              key={s.step}
-              className={`absolute flex h-[3.4rem] origin-left items-center gap-3 rounded-2xl pl-3 pr-4 text-[13px] font-medium shadow-[0_10px_30px_-12px_rgba(0,0,0,0.6)] transition-[transform,opacity] duration-[650ms] ease-[cubic-bezier(0.2,0.8,0.2,1)] sm:h-[4.4rem] sm:text-[15px] ${t.bar}`}
+              key={label}
+              className={`absolute flex h-[3rem] origin-left items-center gap-3 rounded-2xl pl-3 pr-4 text-[13px] font-medium shadow-[0_10px_30px_-12px_rgba(0,0,0,0.6)] transition-[transform,opacity] duration-[650ms] ease-[cubic-bezier(0.2,0.8,0.2,1)] sm:h-[3.6rem] sm:text-[15px] ${t.bar}`}
               style={{
                 left: `${left}%`,
                 width: `${w}%`,
-                top: `${9 + i * (n > 1 ? 66 / (n - 1) : 0)}%`,
+                top: `${7 + i * (nb > 1 ? 72 / (nb - 1) : 0)}%`,
                 opacity: on ? 1 : 0,
                 transform: on ? "scaleX(1)" : "scaleX(0.15) translateX(-12px)",
               }}
             >
-              <span className={`h-6 w-1.5 shrink-0 rounded-full sm:h-8 ${t.pill}`} />
-              <span className="truncate">{s.step}</span>
+              <span className={`h-5 w-1.5 shrink-0 rounded-full sm:h-6 ${t.pill}`} />
+              <span className="truncate">{label}</span>
             </div>
           );
         })}
@@ -2644,7 +2647,7 @@ function CaseStudyPage({
         </div>
       </CaseSection>
 
-      <ProcessTimeline steps={cs.process} />
+      <ProcessTimeline steps={cs.process} bars={cs.timeline} />
 
       {cs.beforeAfter && (
         <CaseSection id="cs-beforeafter" eyebrow="Before → After" title="What changed">
