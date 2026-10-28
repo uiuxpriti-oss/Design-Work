@@ -1499,11 +1499,59 @@ function SectionHeading({
 const ROMAN = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII"];
 // Process cards cycle through our blue palette: navy, soft blue, outlined white, bright blue.
 const PROCESS_TONES = [
-  { card: "bg-[#0f1530] dark:bg-[#0f1530]", badge: "bg-white text-[#0f1530]", title: "text-white", text: "text-[#c9d6ff]" },
-  { card: "bg-[#dbe7ff] dark:bg-[#1b2a5a]", badge: "bg-[#1e3a8a] text-white", title: "text-[#1e3a8a] dark:text-blue-100", text: "text-[#2f4a8f] dark:text-blue-200/80" },
-  { card: "border border-border bg-white dark:bg-card", badge: "bg-gradient-to-b from-[#3b6cf6] to-[#2346c7] text-white", title: "text-[#2346c7] dark:text-blue-300", text: "text-foreground/70" },
-  { card: "bg-gradient-to-b from-[#3b6cf6] to-[#2346c7]", badge: "bg-white text-[#2346c7]", title: "text-white", text: "text-white/80" },
-];
+  { card: "bg-[#0f1530] dark:bg-[#0f1530]", badge: "bg-white text-[#0f1530]", title: "text-white", text: "text-[#c9d6ff]", tall: false, art: "hand" },
+  { card: "bg-[#dbe7ff] dark:bg-[#1b2a5a]", badge: "bg-[#1e3a8a] text-white", title: "text-[#1e3a8a] dark:text-blue-100", text: "text-[#2f4a8f] dark:text-blue-200/80", tall: true, art: "face" },
+  { card: "border border-border bg-white dark:bg-card", badge: "bg-gradient-to-b from-[#3b6cf6] to-[#2346c7] text-white", title: "text-[#2346c7] dark:text-blue-300", text: "text-foreground/70", tall: false, art: "legs" },
+  { card: "bg-gradient-to-b from-[#3b6cf6] to-[#2346c7]", badge: "bg-white text-[#2346c7]", title: "text-white", text: "text-white/80", tall: true, art: "spark" },
+] as const;
+
+// Small playful doodles that hang off or sit inside the process cards.
+function ProcessArt({ kind }: { kind: (typeof PROCESS_TONES)[number]["art"] }) {
+  const base = "pointer-events-none absolute transition-transform duration-500 ease-out";
+  if (kind === "hand")
+    return (
+      <svg viewBox="0 0 150 90" className={`${base} -bottom-[4.2rem] right-10 h-[5.4rem] w-[9.4rem] origin-top group-hover:rotate-3`} aria-hidden="true">
+        <path d="M30 0 C30 42 46 66 92 66" fill="none" stroke="#0f1530" strokeWidth="14" strokeLinecap="round" />
+        <path d="M86 48 C100 40 116 44 128 40 L146 26 C150 24 154 28 150 32 L138 46 C142 60 128 78 108 78 C94 78 84 70 82 62 Z" fill="#fff" stroke="#0f1530" strokeWidth="4" strokeLinejoin="round" />
+        <path d="M104 60 C112 64 122 62 128 56" fill="none" stroke="#0f1530" strokeWidth="3" strokeLinecap="round" />
+      </svg>
+    );
+  if (kind === "face")
+    return (
+      <svg viewBox="0 0 120 110" className={`${base} right-6 top-6 h-[6.4rem] w-[7rem] group-hover:-rotate-6`} aria-hidden="true">
+        <g fill="none" stroke="#0f1530" strokeWidth="5" strokeLinecap="round">
+          <path d="M14 22 C24 8 40 8 48 16" />
+          <path d="M78 16 C88 8 104 8 112 20" />
+          <circle cx="32" cy="46" r="17" />
+          <circle cx="86" cy="46" r="17" />
+          <path d="M22 70 C34 62 50 62 60 70" />
+        </g>
+        <circle cx="38" cy="42" r="7" fill="#0f1530" />
+        <circle cx="92" cy="42" r="7" fill="#0f1530" />
+        <circle cx="62" cy="96" r="8" fill="#0f1530" />
+      </svg>
+    );
+  if (kind === "legs")
+    return (
+      <svg viewBox="0 0 170 90" className={`${base} -bottom-[4.4rem] left-8 h-[5.6rem] w-[10.6rem] origin-top group-hover:-rotate-3`} aria-hidden="true">
+        <g fill="none" stroke="#2346c7" strokeWidth="9" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M60 0 C60 26 50 34 34 38" />
+          <path d="M104 0 C108 28 118 40 130 44" />
+        </g>
+        <g fill="#fff" stroke="#2346c7" strokeWidth="5" strokeLinejoin="round">
+          <ellipse cx="24" cy="52" rx="18" ry="24" />
+          <ellipse cx="140" cy="58" rx="18" ry="22" transform="rotate(-20 140 58)" />
+        </g>
+      </svg>
+    );
+  return (
+    <svg viewBox="0 0 120 110" className={`${base} right-6 top-6 h-[6rem] w-[6.6rem] group-hover:rotate-12`} aria-hidden="true">
+      <path d="M52 8 C56 40 70 54 100 58 C70 62 56 76 52 108 C48 76 34 62 4 58 C34 54 48 40 52 8Z" fill="#fff" />
+      <path d="M96 14 C97 24 102 28 112 30 C102 32 97 36 96 46 C95 36 90 32 80 30 C90 28 95 24 96 14Z" fill="#fff" opacity="0.7" />
+    </svg>
+  );
+}
+
 
 function CaseSection({
   id,
@@ -2288,7 +2336,7 @@ function CaseStudyPage({
 
       <CaseSection id="cs-process" eyebrow="Process" title="How I got there">
         <ol
-          className={`-mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-4 [scrollbar-width:none] sm:mx-0 sm:px-0 [&::-webkit-scrollbar]:hidden ${
+          className={`-mx-4 flex snap-x snap-mandatory items-start gap-4 overflow-x-auto px-4 pb-20 pt-2 [scrollbar-width:none] sm:mx-0 sm:px-0 [&::-webkit-scrollbar]:hidden ${
             cs.process.length <= 4 ? "lg:grid lg:overflow-visible lg:[grid-template-columns:repeat(var(--n),minmax(0,1fr))]" : ""
           }`}
           style={{ ["--n" as string]: cs.process.length }}
@@ -2298,13 +2346,16 @@ function CaseStudyPage({
             return (
               <li
                 key={i}
-                className={`group flex min-h-[19rem] w-[17.5rem] shrink-0 snap-start flex-col justify-between rounded-[28px] p-6 transition-transform duration-300 ease-out hover:-translate-y-1 sm:w-[19rem] lg:w-auto ${t.card}`}
+                className={`group relative flex w-[17.5rem] shrink-0 snap-start flex-col justify-between rounded-[32px] p-6 transition-transform duration-300 ease-out hover:-translate-y-1 sm:w-[19rem] lg:w-auto ${
+                  t.tall ? "min-h-[24rem]" : "min-h-[19rem]"
+                } ${t.card}`}
               >
-                <span className={`flex h-11 w-11 items-center justify-center rounded-full text-[15px] font-semibold tracking-wide ${t.badge}`}>
+                <span className={`relative z-10 flex h-11 w-11 items-center justify-center rounded-full text-[15px] font-semibold tracking-wide ${t.badge}`}>
                   {ROMAN[i] ?? i + 1}
                 </span>
-                <div>
-                  <p className={`text-[22px] font-semibold leading-tight tracking-tight ${t.title}`}>{s.step}</p>
+                <ProcessArt kind={t.art} />
+                <div className="relative z-10 mt-10">
+                  <p className={`text-[24px] font-semibold leading-tight tracking-tight ${t.title}`}>{s.step}</p>
                   <p className={`mt-3 text-[14.5px] leading-[1.6] ${t.text}`}>{s.text}</p>
                 </div>
               </li>
