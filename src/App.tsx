@@ -3697,6 +3697,9 @@ function FooterLinks({ list }: { list: FooterLink[] }) {
 const LIKE_API = "https://abacus.jasoncameron.dev";
 const LIKE_NS = "uiuxpriti.com";
 const LIKE_KEY = "portfolio-likes";
+// Optional email alert on each new like, via Web3Forms (https://web3forms.com — the access key is
+// meant to be public). Leave empty to turn alerts off.
+const LIKE_NOTIFY_KEY = "";
 
 function LikeButton({ tone = "dark" }: { tone?: "dark" | "light" }) {
   const [count, setCount] = useState<number | null>(null);
@@ -3732,6 +3735,18 @@ function LikeButton({ tone = "dark" }: { tone?: "dark" | "light" }) {
         if (d && typeof d.value === "number") setCount(d.value);
       })
       .catch(() => {});
+    if (LIKE_NOTIFY_KEY) {
+      fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          access_key: LIKE_NOTIFY_KEY,
+          subject: "Someone liked your portfolio",
+          from_name: "uiuxpriti.com",
+          message: `A visitor just liked your portfolio (${new Date().toUTCString()}).`,
+        }),
+      }).catch(() => {});
+    }
   };
   return (
     <button
