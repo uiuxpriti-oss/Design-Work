@@ -1496,6 +1496,15 @@ function SectionHeading({
   );
 }
 
+const ROMAN = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII"];
+// Process cards cycle through our blue palette: navy, soft blue, outlined white, bright blue.
+const PROCESS_TONES = [
+  { card: "bg-[#0f1530] dark:bg-[#0f1530]", badge: "bg-white text-[#0f1530]", title: "text-white", text: "text-[#c9d6ff]" },
+  { card: "bg-[#dbe7ff] dark:bg-[#1b2a5a]", badge: "bg-[#1e3a8a] text-white", title: "text-[#1e3a8a] dark:text-blue-100", text: "text-[#2f4a8f] dark:text-blue-200/80" },
+  { card: "border border-border bg-white dark:bg-card", badge: "bg-gradient-to-b from-[#3b6cf6] to-[#2346c7] text-white", title: "text-[#2346c7] dark:text-blue-300", text: "text-foreground/70" },
+  { card: "bg-gradient-to-b from-[#3b6cf6] to-[#2346c7]", badge: "bg-white text-[#2346c7]", title: "text-white", text: "text-white/80" },
+];
+
 function CaseSection({
   id,
   eyebrow,
@@ -2278,20 +2287,29 @@ function CaseStudyPage({
       </CaseSection>
 
       <CaseSection id="cs-process" eyebrow="Process" title="How I got there">
-        <ol className="space-y-5">
-          {cs.process.map((s, i) => (
-            <li key={i} className="flex gap-4">
-              <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-foreground text-[13px] font-semibold text-background">
-                {i + 1}
-              </span>
-              <div>
-                <p className="text-[15px] font-medium text-foreground">{s.step}</p>
-                <p className="mt-1 text-[15px] leading-relaxed text-foreground/80">
-                  {s.text}
-                </p>
-              </div>
-            </li>
-          ))}
+        <ol
+          className={`-mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-4 [scrollbar-width:none] sm:mx-0 sm:px-0 [&::-webkit-scrollbar]:hidden ${
+            cs.process.length <= 4 ? "lg:grid lg:overflow-visible lg:[grid-template-columns:repeat(var(--n),minmax(0,1fr))]" : ""
+          }`}
+          style={{ ["--n" as string]: cs.process.length }}
+        >
+          {cs.process.map((s, i) => {
+            const t = PROCESS_TONES[i % PROCESS_TONES.length];
+            return (
+              <li
+                key={i}
+                className={`group flex min-h-[19rem] w-[17.5rem] shrink-0 snap-start flex-col justify-between rounded-[28px] p-6 transition-transform duration-300 ease-out hover:-translate-y-1 sm:w-[19rem] lg:w-auto ${t.card}`}
+              >
+                <span className={`flex h-11 w-11 items-center justify-center rounded-full text-[15px] font-semibold tracking-wide ${t.badge}`}>
+                  {ROMAN[i] ?? i + 1}
+                </span>
+                <div>
+                  <p className={`text-[22px] font-semibold leading-tight tracking-tight ${t.title}`}>{s.step}</p>
+                  <p className={`mt-3 text-[14.5px] leading-[1.6] ${t.text}`}>{s.text}</p>
+                </div>
+              </li>
+            );
+          })}
         </ol>
       </CaseSection>
 
