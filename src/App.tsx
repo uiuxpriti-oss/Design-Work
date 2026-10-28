@@ -679,7 +679,7 @@ function SideNav({
   );
 }
 
-const GREETINGS = ["नमस्ते", "Hola", "Bonjour", "Hello"];
+const GREETINGS = ["नमस्ते", "Hola", "Bonjour", "你好", "Hello"];
 const HERO_PHRASES = [
   "opening Figma.",
   "sketching a solution.",
@@ -689,7 +689,7 @@ const HERO_PHRASES = [
 
 type SplashPhase = "show" | "leaving" | "done";
 
-// Start-up window: writes hello in four languages in frosted-glass script (~4s in total), then slides away.
+// Start-up window: writes hello in five languages in frosted-glass script (~4s in total), then slides away.
 function StartupSplash({ phase, onPhase }: { phase: SplashPhase; onPhase: (p: SplashPhase) => void }) {
   const [g, setG] = useState(0);
   // Keep the latest callback in a ref so a parent re-render never restarts the timers.
@@ -709,7 +709,7 @@ function StartupSplash({ phase, onPhase }: { phase: SplashPhase; onPhase: (p: Sp
         }
         return Math.min(next, GREETINGS.length - 1);
       });
-    }, reduce ? 160 : 800);
+    }, reduce ? 160 : 700);
     return () => {
       window.clearInterval(iv);
       window.clearTimeout(t1);
@@ -748,7 +748,7 @@ function StartupSplash({ phase, onPhase }: { phase: SplashPhase; onPhase: (p: Sp
             display: "inline-block",
             animation: last
               ? "greetWrite .75s cubic-bezier(.45,.05,.25,1) both"
-              : "greetWrite .7s cubic-bezier(.45,.05,.25,1) both, greetOut .15s ease-in .7s forwards",
+              : "greetWrite .62s cubic-bezier(.45,.05,.25,1) both, greetOut .13s ease-in .57s forwards",
           }}
         >
           {GREETINGS[g]}
