@@ -1722,7 +1722,7 @@ function CaseSection({
 }) {
   return (
     <section id={id} className="mt-14 scroll-mt-24 border-t border-border pt-10">
-      {eyebrow && (
+      {eyebrow && !title && (
         <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-blue-800 dark:text-blue-300">
           {eyebrow}
         </p>
@@ -2467,7 +2467,7 @@ function RoadGantt({ stops }: { stops: RoadStop[] }) {
   const [step, setStep] = useState(0);
   const [hover, setHover] = useState<number | null>(null);
   const n = stops.length;
-  const ROW = 46;
+  const ROW = 60;
   const LEN = 3.1;
   const start = (i: number) => (i * (n - LEN)) / (n - 1);
   const groupOf = (i: number) => ROAD_GROUPS.findIndex((g) => i >= g.from && i <= g.to);
@@ -2505,16 +2505,16 @@ function RoadGantt({ stops }: { stops: RoadStop[] }) {
   const curEnd = start(sel) + LEN;
   const cardLeft = curEnd / n > 0.62;
   return (
-    <div ref={wrap} className="relative mt-8 hidden md:block" style={{ height: `${n * 42 + 70}vh` }}>
-      <div className="sticky top-24 overflow-hidden rounded-[28px] border border-border bg-white shadow-[0_30px_60px_-40px_rgba(20,30,60,0.35)] dark:bg-card">
-        <div className="flex items-center justify-between gap-3 border-b border-border px-5 py-4">
+    <div ref={wrap} className="relative mt-8 hidden md:block" style={{ height: `${n * 46 + 80}vh` }}>
+      <div className="sticky top-20 overflow-hidden rounded-[32px] border border-border bg-white shadow-[0_30px_60px_-40px_rgba(20,30,60,0.35)] dark:bg-card">
+        <div className="flex items-center justify-between gap-3 border-b border-border px-6 py-5">
           <div className="flex items-center gap-3">
-            <span className="grid h-8 w-8 place-items-center rounded-xl bg-[#2563eb]">
-              <span className="h-3 w-3 rounded-full bg-white" />
+            <span className="grid h-10 w-10 place-items-center rounded-xl bg-[#2563eb]">
+              <span className="h-3.5 w-3.5 rounded-full bg-white" />
             </span>
-            <p className="text-[16px] font-semibold tracking-tight text-foreground">Ask Me redesign</p>
+            <p className="text-[19px] font-semibold tracking-tight text-foreground">Ask Me redesign</p>
           </div>
-          <span className="rounded-md bg-[#fff4d6] px-2 py-1 text-[12px] font-medium tabular-nums text-[#b7791f]">
+          <span className="rounded-md bg-[#fff4d6] px-2.5 py-1.5 text-[13px] font-medium tabular-nums text-[#b7791f]">
             Phase {step + 1} of {n}
           </span>
         </div>
@@ -2523,13 +2523,13 @@ function RoadGantt({ stops }: { stops: RoadStop[] }) {
           <div className="h-[4.5rem] border-b border-border">
             <div className="grid h-8" style={{ gridTemplateColumns: ROAD_GROUPS.map((g) => `${g.to - g.from + 1}fr`).join(" ") }}>
               {ROAD_GROUPS.map((g, gi) => (
-                <span key={g.label} className={`flex items-center border-l border-border/60 pl-3 text-[11px] font-semibold uppercase tracking-[0.14em] transition-colors first:border-l-0 ${groupOf(sel) === gi ? "text-[#2563eb]" : "text-foreground/40"}`}>{g.label}</span>
+                <span key={g.label} className={`flex items-center border-l border-border/60 pl-3 text-[12px] font-semibold uppercase tracking-[0.14em] transition-colors first:border-l-0 ${groupOf(sel) === gi ? "text-[#2563eb]" : "text-foreground/40"}`}>{g.label}</span>
               ))}
             </div>
-            <div className="grid h-10" style={{ gridTemplateColumns: `repeat(${n}, 1fr)` }}>
+            <div className="grid h-12" style={{ gridTemplateColumns: `repeat(${n}, 1fr)` }}>
               {stops.map((_, i) => (
                 <span key={i} className="flex items-center justify-center">
-                  <span className={`grid h-7 min-w-7 place-items-center rounded-lg px-1 text-[12px] font-medium tabular-nums transition-all duration-300 ${sel === i ? "bg-[#2563eb] text-white shadow-[0_6px_14px_-6px_#2563eb]" : "text-muted-foreground"}`}>{String(i + 1).padStart(2, "0")}</span>
+                  <span className={`grid h-8 min-w-8 place-items-center rounded-lg px-1.5 text-[13.5px] font-medium tabular-nums transition-all duration-300 ${sel === i ? "bg-[#2563eb] text-white shadow-[0_6px_14px_-6px_#2563eb]" : "text-muted-foreground"}`}>{String(i + 1).padStart(2, "0")}</span>
                 </span>
               ))}
             </div>
@@ -2552,8 +2552,8 @@ function RoadGantt({ stops }: { stops: RoadStop[] }) {
                   onMouseLeave={() => setHover(null)}
                   className="absolute flex items-center overflow-hidden rounded-full"
                   style={{
-                    top: i * ROW + 7,
-                    height: ROW - 14,
+                    top: i * ROW + 8,
+                    height: ROW - 16,
                     left: `${(start(i) / n) * 100}%`,
                     width: shown ? `${(LEN / n) * 100}%` : "0%",
                     transition: "width .8s cubic-bezier(.2,.7,.2,1), box-shadow .3s",
@@ -2562,30 +2562,30 @@ function RoadGantt({ stops }: { stops: RoadStop[] }) {
                     opacity: on ? 1 : 0.62,
                   }}
                 >
-                  <span className="truncate pl-3.5 pr-2 text-[12.5px] font-medium" style={{ color: s.color === "#f5c400" || s.color === "#4fd1d1" || s.color === "#34bdf2" ? "#0f1530" : "#fff" }}>{s.title}</span>
-                  <span className="ml-auto mr-3 shrink-0 rounded-full bg-black/10 px-2 py-0.5 text-[10.5px] font-semibold tabular-nums" style={{ color: s.color === "#f5c400" || s.color === "#4fd1d1" || s.color === "#34bdf2" ? "#0f1530" : "#fff" }}>{s.items.length} pts</span>
+                  <span className="truncate pl-4 pr-2 text-[14.5px] font-medium" style={{ color: s.color === "#f5c400" || s.color === "#4fd1d1" || s.color === "#34bdf2" ? "#0f1530" : "#fff" }}>{s.title}</span>
+                  <span className="ml-auto mr-3.5 shrink-0 rounded-full bg-black/10 px-2.5 py-0.5 text-[12px] font-semibold tabular-nums" style={{ color: s.color === "#f5c400" || s.color === "#4fd1d1" || s.color === "#34bdf2" ? "#0f1530" : "#fff" }}>{s.items.length} pts</span>
                 </div>
               );
             })}
 
             <div
               key={sel}
-              className="absolute z-10 w-[17.5rem] rounded-xl bg-white p-4 shadow-[0_22px_44px_-16px_rgba(20,30,60,0.4)] ring-1 ring-black/5 dark:bg-card"
+              className="absolute z-10 w-[21rem] rounded-2xl bg-white p-5 shadow-[0_22px_44px_-16px_rgba(20,30,60,0.4)] ring-1 ring-black/5 dark:bg-card"
               style={{
-                top: Math.min(Math.max(sel * ROW - 6, 6), n * ROW - 200),
+                top: Math.min(Math.max(sel * ROW - 6, 6), n * ROW - 250),
                 ...(cardLeft ? { left: "2%" } : { left: `${(curEnd / n) * 100 + 1.5}%` }),
                 animation: "aboutRise .35s ease both",
               }}
             >
               {!cardLeft && <span aria-hidden="true" className="absolute top-6 h-3 w-3 rotate-45 bg-white ring-1 ring-black/5 dark:bg-card" style={{ left: -6 }} />}
               <div className="relative flex gap-2.5">
-                <span className="mt-0.5 h-5 w-1 shrink-0 rounded-full" style={{ background: cur.color }} />
+                <span className="mt-0.5 h-6 w-1 shrink-0 rounded-full" style={{ background: cur.color }} />
                 <div className="min-w-0 flex-1">
-                  <p className="text-[10.5px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">Phase {sel + 1} · {ROAD_GROUPS[groupOf(sel)]?.label}</p>
-                  <p className="mt-1 text-[15px] font-semibold leading-tight text-foreground">{cur.title}</p>
-                  <ul className="mt-2 space-y-1">
+                  <p className="text-[11.5px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">Phase {sel + 1} · {ROAD_GROUPS[groupOf(sel)]?.label}</p>
+                  <p className="mt-1.5 text-[18px] font-semibold leading-tight text-foreground">{cur.title}</p>
+                  <ul className="mt-2.5 space-y-1.5">
                     {cur.items.map((it) => (
-                      <li key={it} className="text-[12.5px] leading-snug text-muted-foreground">{it}</li>
+                      <li key={it} className="text-[14px] leading-snug text-muted-foreground">{it}</li>
                     ))}
                   </ul>
                 </div>
@@ -2838,8 +2838,7 @@ function StudySectionBlock({
   if (block.id === "future-scope" && block.cards) {
     return (
       <section id={`cs-${block.id}`} className="mt-16 scroll-mt-24 border-t border-border pt-10">
-        {block.eyebrow && <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-blue-800 dark:text-blue-300">{block.eyebrow}</p>}
-        <h2 className="mt-2 text-2xl font-semibold tracking-tight sm:text-3xl">{block.title}</h2>
+        <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">{block.title}</h2>
         {block.lead && <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-foreground/85">{block.lead}</p>}
         <NextRoadmap cards={block.cards} lesson={block.body?.[0]} />
       </section>
@@ -2894,7 +2893,7 @@ function StudySectionBlock({
         <div className={block.title ? "grid gap-3 sm:grid-cols-[180px_1fr] sm:gap-12" : ""}>
           {block.title && <p className="text-[14px] font-semibold text-foreground">{block.title}</p>}
           <div>
-            {block.eyebrow && (
+            {block.eyebrow && !block.title && (
               <p
                 className={
                   block.title
@@ -3142,6 +3141,7 @@ function TagGroup({ label, items }: { label: string; items: string[] }) {
               className="inline-flex items-center gap-1.5 rounded-full bg-foreground/[0.06] px-3 py-1.5 text-[13px] text-foreground/85"
             >
               {Brand && <Brand className="h-3.5 w-3.5" />}
+              {t === "In progress" && <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#2E6B54]" />}
               {t}
             </span>
           );
@@ -3387,18 +3387,7 @@ function CaseStudyPage({
       </button>
 
       <header className="mt-8">
-        <div className="flex flex-wrap items-center gap-3">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-blue-800 dark:text-blue-300">
-            {cs.eyebrow}
-          </p>
-          {cs.inProgress && (
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-blue-900/20 bg-blue-900/[0.06] px-2.5 py-1 text-[11px] font-medium text-blue-900 dark:border-blue-300/30 dark:bg-blue-300/10 dark:text-blue-300">
-              <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#2E6B54]" />
-              In progress
-            </span>
-          )}
-        </div>
-        <h1 className="mt-3 text-3xl font-semibold tracking-tight sm:text-5xl">
+        <h1 className="text-3xl font-semibold tracking-tight sm:text-5xl">
           {project.title}
         </h1>
         <p className="mt-4 max-w-2xl text-[17px] leading-relaxed text-foreground/85">
@@ -3439,8 +3428,15 @@ function CaseStudyPage({
           </div>
         </div>
         <aside className="space-y-6">
+          {(() => {
+            // The category line that used to sit above the title (e.g. "Product Design · AI Analytics"),
+            // minus anything already listed under Role or Type.
+            const have = new Set([...cs.tags.role, ...cs.tags.type].map((x) => x.toLowerCase()));
+            const cat = cs.eyebrow.split("·").map((x) => x.trim()).filter((x) => x && !have.has(x.toLowerCase()));
+            return cat.length > 0 ? <TagGroup label="Category" items={cat} /> : null;
+          })()}
           <TagGroup label="Role" items={cs.tags.role} />
-          <TagGroup label="Status" items={cs.tags.status} />
+          <TagGroup label="Status" items={cs.inProgress ? ["In progress", ...cs.tags.status] : cs.tags.status} />
           <TagGroup label="Type" items={cs.tags.type} />
           <TagGroup label="Tools" items={cs.tags.tools} />
         </aside>
