@@ -2791,140 +2791,152 @@ function PersonaHead({ label }: { label: string }) {
   );
 }
 
-const JOURNEY_TINTS = ["#f8a8e0", "#ffc26b", "#7ee6a8", "#6fb8ff", "#d2b2ff"];
 
 const MOOD: Record<string, number> = { "😕": 3, "😰": 2, "😵": 1, "😩": 1, "😔": 2 };
-const MOOD_AXIS = ["😊", "🙂", "😐", "🙁", "😟"];
 
-function RibbonLabel({ children }: { children: ReactNode }) {
-  return (
-    <span
-      className="inline-flex h-9 items-center bg-[#2563eb] pl-3.5 pr-6 text-[13.5px] font-medium text-white"
-      style={{ clipPath: "polygon(0 0, 100% 0, calc(100% - 9px) 50%, 100% 100%, 0 100%)" }}
-    >
-      {children}
-    </span>
-  );
-}
+const STAGE_HEAD = ["#ffe29a", "#ffb9dc", "#d6c0fb", "#a9d7ff", "#b5efc5"];
+const STAGE_SOFT = ["#fff6dc", "#ffe8f3", "#f0e7fd", "#e4f2ff", "#e6f8ec"];
+const MOOD_AXIS = ["🙂", "🤔", "😐", "😕", "🙁"];
 
-// Journey map in the "label ribbon + white cards + emotion curve" style: one row per question,
-// five stage columns, and a smooth curve that rises and falls with how the person feels.
+// Journey map as one tidy table: grey row labels, a pastel colour per stage, and a mood curve
+// with an emoji scale where the "emotion" row would be.
 function JourneyMap({ persona, seen }: { persona: Persona; seen: boolean }) {
   const j = persona.journey;
   const [stage, setStage] = useState<number | null>(null);
   const n = j.stages.length;
   const levels = j.feelings.map((f) => MOOD[f.emoji] ?? 3);
-  const yOf = (lvl: number) => 10 + ((5 - lvl) / 4) * 80;
+  const yOf = (lvl: number) => 12 + ((5 - lvl) / 4) * 68;
   const pts = levels.map((l, i) => ({ x: ((i + 0.5) / n) * 100, y: yOf(l) }));
-  // smooth path through the points
-  let d = `M0,${pts[0].y}`;
-  d += ` L${pts[0].x},${pts[0].y}`;
+  let d = `M0,${pts[0].y} L${pts[0].x},${pts[0].y}`;
   for (let i = 0; i < pts.length - 1; i++) {
     const m = (pts[i].x + pts[i + 1].x) / 2;
     d += ` C${m},${pts[i].y} ${m},${pts[i + 1].y} ${pts[i + 1].x},${pts[i + 1].y}`;
   }
   d += ` L100,${pts[n - 1].y}`;
-  const rows: { label: string; key: "action" | "goals" | "feelings" | "pains" | "ideas" }[] = [
-    { label: "Actions", key: "action" },
-    { label: "Wants", key: "goals" },
-    { label: "Feelings", key: "feelings" },
-  ];
-  const after: { label: string; key: "pains" | "ideas" }[] = [
-    { label: "Blockers", key: "pains" },
-    { label: "How we can help", key: "ideas" },
-  ];
-  const card = (i: number, content: ReactNode, delay: number) => (
-    <div
-      key={i}
-      onMouseEnter={() => setStage(i)}
-      onMouseLeave={() => setStage(null)}
-      className="h-full rounded-2xl border bg-white p-5 transition-all duration-300 dark:bg-card"
-      style={{
-        borderColor: stage === i ? "#2563eb66" : "hsl(var(--border))",
-        opacity: seen ? (stage === null || stage === i ? 1 : 0.45) : 0,
-        transform: seen ? undefined : "translateY(12px)",
-        transition: `opacity .5s ${seen ? delay : 0}ms, transform .5s ${delay}ms, border-color .2s`,
-      }}
-    >
-      {content}
+  const cols = "grid-cols-[9.5rem_repeat(5,minmax(0,1fr))]";
+  const dim = (i: number) => (stage === null || stage === i ? 1 : 0.45);
+  const label = (t: string) => (
+    <div className="p-1">
+      <p className="h-full rounded-lg bg-[#f0f0f2] px-4 py-3 text-[14px] font-semibold text-foreground dark:bg-white/10">{t}</p>
     </div>
   );
-  const list = (items: string[]) => (
-    <ul className="space-y-2">
-      {items.map((it) => (
-        <li key={it} className="text-[14.5px] leading-[1.55] text-foreground/80">{it}</li>
-      ))}
-    </ul>
-  );
-  const row = (label: string, key: "action" | "goals" | "feelings" | "pains" | "ideas", ri: number) => (
-    <div key={key} className="grid grid-cols-[9rem_repeat(5,minmax(0,1fr))] items-stretch">
-      <div className="flex items-center"><RibbonLabel>{label}</RibbonLabel></div>
+  const row = (t: string, key: "action" | "goals" | "pains" | "ideas", ri: number) => (
+    <div key={key} className={`grid ${cols}`}>
+      {label(t)}
       {j.stages.map((_, i) => (
-        <div key={i} className="px-2.5">
-          {card(i, key === "feelings" ? list(j.feelings[i].lines) : list(j[key][i]), 200 + ri * 100 + i * 50)}
+        <div key={i} className="p-1">
+          <div
+            onMouseEnter={() => setStage(i)}
+            onMouseLeave={() => setStage(null)}
+            className="h-full rounded-lg px-4 py-3"
+            style={{
+              background: STAGE_SOFT[i],
+              opacity: seen ? dim(i) : 0,
+              transform: seen ? undefined : "translateY(10px)",
+              transition: `opacity .5s ${seen ? 100 + ri * 80 + i * 40 : 0}ms, transform .5s ${100 + ri * 80 + i * 40}ms`,
+            }}
+          >
+            <ul className="space-y-2">
+              {j[key][i].map((it) => (
+                <li key={it} className="text-[14px] leading-[1.5] text-[#2a2a33]">{it}</li>
+              ))}
+            </ul>
+          </div>
         </div>
       ))}
     </div>
   );
   return (
-    <div className="-mx-6 mt-12 overflow-x-auto px-6 pb-4 [scrollbar-width:none] sm:mx-0 sm:px-0 [&::-webkit-scrollbar]:hidden">
-      <div className="min-w-[68rem] space-y-8">
-        <div className="grid grid-cols-[9rem_repeat(5,minmax(0,1fr))]">
+    <div className="-mx-6 overflow-x-auto px-6 pb-4 [scrollbar-width:none] sm:mx-0 sm:px-0 [&::-webkit-scrollbar]:hidden">
+      <div className="min-w-[64rem]">
+        <div className="flex flex-wrap items-start justify-between gap-6">
+          <div>
+            <p className="text-[clamp(24px,2.6vw,32px)] font-semibold tracking-[-0.02em] text-foreground">{persona.name.split(" ")[0]}&rsquo;s journey map</p>
+            <p className="mt-2 text-[16px] text-foreground/80"><span className="font-semibold text-foreground">Goal: </span>{persona.goal}</p>
+          </div>
+          <div className="flex items-center gap-3 rounded-lg bg-[#f0f0f2] py-2.5 pl-2.5 pr-5 dark:bg-white/10">
+            <img src={assetUrl(persona.avatar)} alt="" className="h-11 w-11 rounded-full object-cover" />
+            <div>
+              <p className="text-[15px] font-semibold text-foreground">{persona.name}</p>
+              <p className="text-[13px] text-foreground/70">{persona.role}, age {persona.facts.find((f) => f.label === "Age")?.value}</p>
+            </div>
+          </div>
+        </div>
+
+        <div className={`mt-8 grid ${cols}`}>
           <span />
           {j.stages.map((st, i) => (
-            <button
-              key={st}
-              type="button"
-              onMouseEnter={() => setStage(i)}
-              onMouseLeave={() => setStage(null)}
-              className="px-2.5 text-left outline-none"
-              style={{ opacity: stage === null || stage === i ? 1 : 0.45, transition: "opacity .2s" }}
-            >
-              <span className="block text-[12px] font-medium tabular-nums text-muted-foreground">{String(i + 1).padStart(2, "0")}</span>
-              <span className="mt-1 block text-[15px] font-semibold tracking-tight text-foreground">{st}</span>
-              <span className="mt-2.5 block h-1 rounded-full transition-all duration-500" style={{ background: JOURNEY_TINTS[i], width: seen ? "100%" : "0%", transitionDelay: `${i * 120}ms` }} />
-            </button>
+            <div key={st} className="p-1">
+              <button
+                type="button"
+                onMouseEnter={() => setStage(i)}
+                onMouseLeave={() => setStage(null)}
+                className="flex h-11 w-full items-center rounded-lg px-4 text-left text-[14px] font-semibold text-[#22222b] outline-none"
+                style={{ background: STAGE_HEAD[i], opacity: seen ? dim(i) : 0, transform: seen ? undefined : "translateY(-8px)", transition: `opacity .5s ${seen ? i * 70 : 0}ms, transform .5s ${i * 70}ms` }}
+              >
+                {st}
+              </button>
+            </div>
           ))}
         </div>
 
-        {rows.map((r, ri) => row(r.label, r.key, ri))}
+        <div className="mt-1 space-y-0">
+          {row("Actions", "action", 0)}
+          {row("Wants", "goals", 1)}
 
-        <div className="relative h-[15rem]">
-          <div className="absolute inset-y-0 left-0 w-[9rem]">
-            <div className="absolute left-0 top-1/2 -translate-y-1/2"><RibbonLabel>Mood</RibbonLabel></div>
-            {[10, 30, 50, 70, 90].map((y, k) => (
-              <span key={y} className="absolute right-3 -translate-y-1/2 text-[20px] opacity-70" style={{ top: `${y}%` }}>{MOOD_AXIS[k]}</span>
-            ))}
-          </div>
-          <div className="absolute inset-y-0 left-[9rem] right-0">
-            {[10, 30, 50, 70, 90].map((y) => (
-              <span key={y} className="absolute inset-x-0 border-t border-dashed border-border" style={{ top: `${y}%` }} />
-            ))}
-            <div style={{ clipPath: seen ? "inset(-20% 0 -20% 0)" : "inset(-20% 100% -20% 0)", transition: "clip-path 2.4s cubic-bezier(.4,0,.2,1) .4s" }} className="absolute inset-0">
-              <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="absolute inset-0 h-full w-full overflow-visible" aria-hidden="true">
-                <path d={d} fill="none" stroke="#2563eb" strokeWidth="2.5" strokeLinecap="round" vectorEffect="non-scaling-stroke" opacity="0.85" />
-              </svg>
+          <div className={`grid ${cols}`}>
+            <div className="p-1">
+              <div className="relative h-full rounded-lg bg-[#f0f0f2] px-4 py-3 dark:bg-white/10">
+                <p className="absolute bottom-3 left-4 text-[14px] font-semibold text-foreground">Feelings</p>
+                <div className="absolute inset-x-0 top-0 h-[10.5rem]">
+                  {[12, 29, 46, 63, 80].map((y, k) => (
+                    <span key={y} className="absolute right-3 -translate-y-1/2 text-[20px]" style={{ top: `${y}%` }}>{MOOD_AXIS[k]}</span>
+                  ))}
+                </div>
+              </div>
             </div>
-            {pts.map((pt, i) => (
-              <span
-                key={i}
-                onMouseEnter={() => setStage(i)}
-                onMouseLeave={() => setStage(null)}
-                className="absolute grid h-11 w-11 place-items-center rounded-full bg-white text-[24px] shadow-[0_6px_16px_-8px_rgba(20,30,60,0.35)] ring-1 ring-black/5 dark:bg-card"
-                style={{
-                  left: `${pt.x}%`,
-                  top: `${pt.y}%`,
-                  transform: `translate(-50%, -50%) scale(${seen ? (stage === i ? 1.2 : 1) : 0})`,
-                  transition: `transform .5s cubic-bezier(.2,.8,.2,1) ${seen ? 700 + i * 420 : 0}ms`,
-                }}
-              >
-                {j.feelings[i].emoji}
-              </span>
-            ))}
+            <div className="relative col-span-5 p-1">
+              <div className="absolute inset-1 grid grid-cols-5" aria-hidden="true">
+                {j.stages.map((_, i) => (
+                  <span key={i} style={{ background: STAGE_SOFT[i], opacity: seen ? dim(i) : 0, transition: "opacity .4s" }} className="mx-1 rounded-lg" />
+                ))}
+              </div>
+              <div className="relative">
+                <div className="relative h-[10.5rem]">
+                  {[12, 29, 46, 63, 80].map((y) => (
+                    <span key={y} className="absolute inset-x-0 border-t border-dashed border-black/10" style={{ top: `${y}%` }} />
+                  ))}
+                  <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="absolute inset-0 h-full w-full overflow-visible" aria-hidden="true" style={{ clipPath: seen ? "inset(-20% 0 -20% 0)" : "inset(-20% 100% -20% 0)", transition: "clip-path 2.2s cubic-bezier(.4,0,.2,1) .4s" }}>
+                    <path d={d} fill="none" stroke="#2563eb" strokeWidth="2.5" strokeLinecap="round" vectorEffect="non-scaling-stroke" opacity="0.9" />
+                  </svg>
+                  {pts.map((pt, i) => (
+                    <span
+                      key={i}
+                      onMouseEnter={() => setStage(i)}
+                      onMouseLeave={() => setStage(null)}
+                      className="absolute grid h-11 w-11 place-items-center rounded-full bg-white text-[24px] shadow-[0_6px_16px_-8px_rgba(20,30,60,0.4)] ring-1 ring-black/5"
+                      style={{ left: `${pt.x}%`, top: `${pt.y}%`, transform: `translate(-50%, -50%) scale(${seen ? (stage === i ? 1.2 : 1) : 0})`, transition: `transform .5s cubic-bezier(.2,.8,.2,1) ${seen ? 600 + i * 380 : 0}ms` }}
+                    >
+                      {j.feelings[i].emoji}
+                    </span>
+                  ))}
+                </div>
+                <div className="grid grid-cols-5 pb-3">
+                  {j.feelings.map((f, i) => (
+                    <ul key={i} className="space-y-1.5 px-4" style={{ opacity: seen ? dim(i) : 0, transition: `opacity .5s ${seen ? 900 + i * 200 : 0}ms` }}>
+                      {f.lines.map((l) => (
+                        <li key={l} className="text-[13.5px] leading-snug text-[#2a2a33]">{l}</li>
+                      ))}
+                    </ul>
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
 
-        {after.map((r, ri) => row(r.label, r.key, 4 + ri))}
+          {row("Pain points", "pains", 3)}
+          {row("Opportunities", "ideas", 4)}
+        </div>
       </div>
     </div>
   );
@@ -3044,10 +3056,7 @@ function PersonaExplorer({ personas }: { personas: Persona[] }) {
           </div>
         </div>
 
-        <p className="mt-20 text-center text-[clamp(26px,3vw,36px)] font-semibold tracking-[-0.03em] text-foreground">{p.name.split(" ")[0]}&rsquo;s journey map</p>
-        <p className="mx-auto mt-3 max-w-xl text-center text-[15px] leading-relaxed text-muted-foreground">
-          What {p.name.split(" ")[0]} does, feels and runs into at each step, and how we can help.
-        </p>
+        <div className="mt-20" />
         <JourneyMap persona={p} seen={seen} />
       </div>
     </div>
