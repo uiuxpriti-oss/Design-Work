@@ -596,16 +596,7 @@ export const caseStudies: Record<string, CaseStudy> = {
         id: "future-scope",
         eyebrow: "What's next",
         title: "What I'd do next",
-        lead: "The redesign proved the direction. Next, I'd go deeper:",
-        cards: [
-          { heading: "Smart suggestions", text: "Point out insights and the next best question before users even ask." },
-          { heading: "Personal homepage", text: "Tailor the home screen and suggestions to each person's role and goals." },
-          { heading: "Scheduled reports", text: "Run regular analyses and send reports automatically." },
-          { heading: "Deeper analysis", text: "Forecasts and what if scenarios for data experts who want more control." },
-        ],
-        body: [
-          "The bigger lesson: tools fail when the path to the answer doesn't match how people think, not because they lack power. This redesign removed the extra steps between what people want and what the tool does.",
-        ],
+        lead: "We will keep talking to users and keep improving the experience.",
       },
       {
         id: "conclusion",

@@ -2380,36 +2380,6 @@ function DecisionExplorer({ cards }: { cards: { heading: string; short?: string;
 }
 
 
-// "What I'd do next": a roadmap of colourful cards joined by a line, and a closing banner that says
-// the work keeps listening to users.
-function NextRoadmap({ cards }: { cards: { heading: string; text: string }[]; lesson?: string }) {
-  const [ref, seen] = useInView<HTMLDivElement>(0.2);
-  return (
-    <div ref={ref} className="mt-8">
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {cards.map((c, i) => (
-          <div
-            key={c.heading}
-            className="rounded-[22px] border border-border bg-card p-6 transition-[transform,opacity,border-color] duration-500 ease-out hover:-translate-y-1 hover:border-foreground/25"
-            style={{ opacity: seen ? 1 : 0, transform: seen ? undefined : "translateY(16px)", transitionDelay: seen ? `${i * 90}ms` : "0ms" }}
-          >
-            <p className="text-[13px] tabular-nums text-muted-foreground">{String(i + 1).padStart(2, "0")}</p>
-            <p className="mt-6 text-[19px] font-semibold leading-tight tracking-tight text-foreground">{c.heading}</p>
-            <p className="mt-2.5 text-[14.5px] leading-[1.6] text-muted-foreground">{c.text}</p>
-          </div>
-        ))}
-      </div>
-
-      <div className="mt-8 flex items-center gap-4 border-t border-border pt-6">
-        <span className="relative flex h-2.5 w-2.5 shrink-0">
-          <span className="absolute inset-0 animate-ping rounded-full bg-[#3b6cf6]/50" />
-          <span className="relative h-2.5 w-2.5 rounded-full bg-[#2563eb]" />
-        </span>
-        <p className="text-[clamp(18px,2vw,22px)] font-medium tracking-tight text-foreground">We keep listening to users, and every cycle makes the experience better.</p>
-      </div>
-    </div>
-  );
-}
 
 // Conclusion: one big statement, the three things that changed, and what users got.
 function ConclusionPanel() {
@@ -2821,15 +2791,6 @@ function StudySectionBlock({
   onZoom: (src: string) => void;
   fallbackStats?: { value: string; label: string }[];
 }) {
-  if (block.id === "future-scope" && block.cards) {
-    return (
-      <section id={`cs-${block.id}`} className="mt-16 scroll-mt-24 border-t border-border pt-10">
-        <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">{block.title}</h2>
-        {block.lead && <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-foreground/85">{block.lead}</p>}
-        <NextRoadmap cards={block.cards} lesson={block.body?.[0]} />
-      </section>
-    );
-  }
   if (block.id === "conclusion" && block.pillars) {
     return (
       <section id={`cs-${block.id}`} className="mt-16 scroll-mt-24 border-t border-border pt-10">
