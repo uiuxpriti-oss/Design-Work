@@ -3064,29 +3064,19 @@ function StudySectionBlock({
         </div>
       )}
       {block.gallery && (
-        <div className="mt-8 space-y-10">
+        <div className="mt-8 space-y-12">
           {block.gallery.map((g, i) => (
-            <div key={i}>
-              <h3 className="text-lg font-semibold text-foreground">{g.heading}</h3>
-              {g.text && (
-                <p className="mt-2 max-w-2xl text-[15px] leading-relaxed text-foreground/85">
-                  {g.text}
-                </p>
-              )}
-              {g.bullets && <div className="mt-4">{<StudyBullets items={g.bullets} />}</div>}
-              {g.subgroups?.map((sg, j) => (
-                <div key={j} className="mt-4">
-                  <p className="text-[14px] font-semibold text-foreground">{sg.heading}</p>
-                  <div className="mt-2">
-                    <StudyBullets items={sg.items} />
-                  </div>
-                </div>
-              ))}
+            <figure key={i}>
+              <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
+                <h3 className="text-[15px] font-medium text-foreground">{g.heading}</h3>
+                {g.text && <p className="text-[14px] text-muted-foreground sm:text-right">{g.text}</p>}
+              </div>
+              {g.bullets && <div className="mt-3"><StudyBullets items={g.bullets} /></div>}
               {g.note && <StudyNote text={g.note} />}
-              <div className="mt-5">
+              <div className="mt-4">
                 <StudyMedia value={g.image} alt={g.heading} onZoom={onZoom} />
               </div>
-            </div>
+            </figure>
           ))}
         </div>
       )}
