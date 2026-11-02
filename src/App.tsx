@@ -48,7 +48,7 @@ import {
   awards,
   links,
 } from "./data/content";
-import type { StudyBlock } from "./data/content";
+import type { StudyBlock, Persona } from "./data/content";
 
 // Number of case studies shown on the home page; the rest live on /all-projects.
 const HOME_PROJECT_COUNT = 5;
@@ -2782,6 +2782,166 @@ function FlowDiagram() {
   );
 }
 
+const JOURNEY_TINTS = ["#f8a8e0", "#ffc26b", "#7ee6a8", "#6fb8ff", "#d2b2ff"];
+
+// Persona + journey map, built in code. Switch between the two personas; the map below shows
+// five stages with what the person does, wants, feels, struggles with and what we could improve.
+// Hover a stage (or a column) to follow it down the rows.
+function PersonaExplorer({ personas }: { personas: Persona[] }) {
+  const [ref, seen] = useInView<HTMLDivElement>(0.15);
+  const [who, setWho] = useState(0);
+  const [stage, setStage] = useState<number | null>(null);
+  const p = personas[who];
+  const j = p.journey;
+  const rows: { label: string; key: "action" | "goals" | "feelings" | "pains" | "ideas" }[] = [
+    { label: "What they do", key: "action" },
+    { label: "What they want", key: "goals" },
+    { label: "How they feel", key: "feelings" },
+    { label: "What blocks them", key: "pains" },
+    { label: "How we can help", key: "ideas" },
+  ];
+  return (
+    <div ref={ref} className="mt-8">
+      <div className="inline-flex rounded-full bg-foreground/[0.05] p-1" role="tablist" aria-label="Persona">
+        {personas.map((x, i) => (
+          <button
+            key={x.name}
+            type="button"
+            role="tab"
+            aria-selected={who === i}
+            onClick={() => {
+              setWho(i);
+              setStage(null);
+            }}
+            className={`flex items-center gap-2 rounded-full py-1.5 pl-1.5 pr-4 text-[14px] font-medium outline-none transition-all ${who === i ? "bg-white text-foreground shadow-sm dark:bg-white/15" : "text-muted-foreground hover:text-foreground"}`}
+          >
+            <img src={assetUrl(x.avatar)} alt="" className="h-7 w-7 rounded-full object-cover" />
+            {x.name.split(" ")[0]}
+          </button>
+        ))}
+      </div>
+
+      <div key={who} className="mt-6" style={{ animation: "aboutRise .45s cubic-bezier(.2,.7,.2,1) both" }}>
+        <div className="grid gap-4 md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
+          <div className="flex gap-5 rounded-[26px] bg-[#f4f7fd] p-6 dark:bg-white/[0.04] sm:p-7">
+            <img src={assetUrl(p.avatar)} alt={p.name} className="h-20 w-20 shrink-0 rounded-full object-cover ring-4 ring-white dark:ring-white/10 sm:h-24 sm:w-24" />
+            <div className="min-w-0">
+              <p className="text-[22px] font-semibold tracking-tight text-foreground">{p.name}</p>
+              <p className="text-[14px] text-muted-foreground">{p.role}</p>
+              <dl className="mt-4 grid grid-cols-2 gap-x-5 gap-y-3">
+                {p.facts.map((f) => (
+                  <div key={f.label}>
+                    <dt className="text-[11px] uppercase tracking-[0.12em] text-muted-foreground">{f.label}</dt>
+                    <dd className="mt-0.5 text-[14.5px] font-medium text-foreground">{f.value}</dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+          </div>
+          <div className="rounded-[26px] border border-border p-6 sm:p-7">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#2346c7] dark:text-blue-300">About</p>
+            <p className="mt-3 text-[16px] leading-[1.7] text-foreground/80">{p.bio}</p>
+          </div>
+        </div>
+
+        <div className="mt-4 grid gap-4 md:grid-cols-3">
+          {[
+            { t: "Goals", items: p.goals, dot: "#34c28a" },
+            { t: "Pain points", items: p.pains, dot: "#f0645a" },
+            { t: "Thoughts & feelings", items: p.thoughts, dot: "#6b8cff" },
+          ].map((b) => (
+            <div key={b.t} className="rounded-[22px] border border-border p-5">
+              <p className="flex items-center gap-2 text-[15px] font-semibold text-foreground">
+                <span className="h-2 w-2 rounded-full" style={{ background: b.dot }} />
+                {b.t}
+              </p>
+              <ul className="mt-3 space-y-2">
+                {b.items.map((it) => (
+                  <li key={it} className="text-[14px] leading-snug text-foreground/70">{it}</li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+
+        <p className="mt-10 text-[15px] font-semibold text-foreground">{p.name.split(" ")[0]}&rsquo;s journey</p>
+        <div className="-mx-6 mt-4 overflow-x-auto px-6 pb-3 [scrollbar-width:none] sm:mx-0 sm:px-0 [&::-webkit-scrollbar]:hidden">
+          <div className="min-w-[60rem]">
+            <div className="grid grid-cols-[6.5rem_repeat(5,minmax(0,1fr))] gap-2">
+              <span />
+              {j.stages.map((st, i) => (
+                <button
+                  key={st}
+                  type="button"
+                  onMouseEnter={() => setStage(i)}
+                  onMouseLeave={() => setStage(null)}
+                  onClick={() => setStage(stage === i ? null : i)}
+                  className="relative h-12 text-[13.5px] font-semibold text-[#1f2a44] outline-none transition-transform duration-300 hover:-translate-y-0.5"
+                  style={{
+                    background: JOURNEY_TINTS[i],
+                    clipPath: "polygon(0 0, calc(100% - 16px) 0, 100% 50%, calc(100% - 16px) 100%, 0 100%, 16px 50%)",
+                    opacity: seen ? (stage === null || stage === i ? 1 : 0.45) : 0,
+                    transition: `opacity .5s ${i * 90}ms, transform .3s`,
+                  }}
+                >
+                  {st}
+                </button>
+              ))}
+            </div>
+            <div className="mt-3 space-y-2">
+              {rows.map((r, ri) => (
+                <div key={r.key} className="grid grid-cols-[6.5rem_repeat(5,minmax(0,1fr))] gap-2">
+                  <p className="flex items-center text-[12px] font-semibold uppercase leading-tight tracking-[0.1em] text-muted-foreground">{r.label}</p>
+                  {j.stages.map((_, i) => {
+                    const on = stage === null || stage === i;
+                    const delay = 250 + ri * 90 + i * 40;
+                    let body: React.ReactNode;
+                    if (r.key === "feelings") {
+                      const f = j.feelings[i];
+                      body = (
+                        <>
+                          <span className="text-[26px] leading-none">{f.emoji}</span>
+                          <p className="mt-2 space-y-1 text-[13px] leading-snug text-foreground/75">{f.lines.join(" · ")}</p>
+                        </>
+                      );
+                    } else {
+                      const items = j[r.key][i];
+                      body = (
+                        <ul className="space-y-1.5">
+                          {items.map((it) => (
+                            <li key={it} className="text-[13px] leading-snug text-foreground/75">{it}</li>
+                          ))}
+                        </ul>
+                      );
+                    }
+                    return (
+                      <div
+                        key={i}
+                        onMouseEnter={() => setStage(i)}
+                        onMouseLeave={() => setStage(null)}
+                        className="min-h-[5.5rem] rounded-2xl p-3.5"
+                        style={{
+                          background: r.key === "pains" ? "#fff1f0" : r.key === "ideas" ? "#effaf3" : "#f6f8fc",
+                          opacity: seen ? (on ? 1 : 0.4) : 0,
+                          transform: seen ? undefined : "translateY(10px)",
+                          boxShadow: stage === i ? `inset 0 0 0 1.5px ${JOURNEY_TINTS[i]}` : "none",
+                          transition: `opacity .4s ${seen ? delay : 0}ms, transform .5s ${delay}ms, box-shadow .2s`,
+                        }}
+                      >
+                        {body}
+                      </div>
+                    );
+                  })}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function StudySectionBlock({
   block,
   onZoom,
@@ -3002,6 +3162,7 @@ function StudySectionBlock({
         </div>
       )}
       {block.flow && <FlowDiagram />}
+      {block.personas && <PersonaExplorer personas={block.personas} />}
       {block.road && <RoadMap stops={block.road} />}
       {block.notes && <StickyNotes notes={block.notes} tone={block.noteTone} />}
       {block.cards && block.cards.every((c) => c.short) && <DecisionExplorer cards={block.cards} />}
