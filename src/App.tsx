@@ -2427,91 +2427,106 @@ function ConclusionPanel({ block }: { block: StudyBlock }) {
 // A winding road down the page with one stop per phase. Cards alternate sides; the road draws
 // itself and the stops pop in one after another when scrolled into view. On phones it becomes a
 // simple vertical list.
-// Minimal roadmap: one hairline path that winds down the page, a small dot per phase, and plain
-// text beside it (alternating sides). Dots fill with their colour as the section scrolls into view.
+// Journey rail: all phases sit on one horizontal track; pick a stop (or let it play) and the
+// panel below shows that phase. The track fills up to the active stop.
+const ROAD_GROUPS = [
+  { label: "Understand", from: 0, to: 3 },
+  { label: "Design", from: 4, to: 5 },
+  { label: "Prove", from: 6, to: 7 },
+  { label: "Look ahead", from: 8, to: 9 },
+];
+
 function RoadMap({ stops }: { stops: { title: string; color: string; items: string[] }[] }) {
-  const [ref, seen] = useInView<HTMLDivElement>(0.12);
-  const R = 170;
+  const [ref, seen] = useInView<HTMLDivElement>(0.3);
+  const [active, setActive] = useState(0);
+  const [auto, setAuto] = useState(true);
   const n = stops.length;
-  const H = n * R;
-  const xAt = (y: number) => 50 + 6 * Math.sin((y / R) * 1.15 * Math.PI * 0.5 + 0.4) + 2.5 * Math.sin((y / R) * 2.1);
-  const pts = Array.from({ length: Math.ceil(H / 6) + 1 }, (_, k) => {
-    const y = Math.min(H, k * 6);
-    return `${k === 0 ? "M" : "L"}${xAt(y).toFixed(2)},${y}`;
-  }).join(" ");
+  useEffect(() => {
+    if (!seen || !auto || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const t = window.setInterval(() => setActive((a) => (a + 1) % n), 5000);
+    return () => window.clearInterval(t);
+  }, [seen, auto, n]);
+  const go = (i: number) => {
+    setAuto(false);
+    setActive((i + n) % n);
+  };
+  const cur = stops[active];
+  const group = ROAD_GROUPS.find((g) => active >= g.from && active <= g.to);
   return (
     <div ref={ref} className="mt-10">
-      <div className="relative hidden md:block" style={{ height: H }}>
-        <svg viewBox={`0 0 100 ${H}`} preserveAspectRatio="none" className="absolute inset-0 h-full w-full" aria-hidden="true">
-          <path d={pts} fill="none" className="stroke-foreground/15" strokeWidth="1.5" strokeLinecap="round" vectorEffect="non-scaling-stroke" />
-          <path
-            d={pts}
-            pathLength={1}
-            fill="none"
-            className="stroke-foreground/70"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            vectorEffect="non-scaling-stroke"
-            style={{ strokeDasharray: 1, strokeDashoffset: seen ? 0 : 1, transition: "stroke-dashoffset 2.8s cubic-bezier(.4,0,.2,1)" }}
-          />
-        </svg>
-        {stops.map((s, i) => {
-          const y = (i + 0.5) * R;
-          const x = xAt(y);
-          const left = i % 2 === 0;
-          const span = [-70, -35, 0, 35, 70].map((d) => xAt(y + d));
-          const edge = left ? Math.min(...span) : Math.max(...span);
-          const delay = 300 + i * 220;
-          return (
-            <div key={s.title} className="pointer-events-none absolute inset-0" style={{ opacity: seen ? 1 : 0, transform: seen ? undefined : "translateY(10px)", transition: `opacity .6s ${delay}ms, transform .6s ${delay}ms` }}>
-              <span
-                className="absolute flex h-8 w-8 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border bg-background text-[11px] font-medium tabular-nums"
-                style={{ left: `${x}%`, top: y, borderColor: s.color, color: s.color }}
-              >
-                {String(i + 1).padStart(2, "0")}
+      <div className="-mx-6 overflow-x-auto px-6 pb-2 [scrollbar-width:none] sm:mx-0 sm:px-0 [&::-webkit-scrollbar]:hidden">
+        <div className="min-w-[44rem]">
+          <div className="relative flex text-[11px] font-medium uppercase tracking-[0.16em] text-muted-foreground">
+            {ROAD_GROUPS.map((g) => (
+              <span key={g.label} className="border-l border-border pl-2" style={{ flex: g.to - g.from + 1 }}>
+                {g.label}
               </span>
-              <div
-                className="pointer-events-auto absolute -translate-y-1/2"
-                style={{
-                  top: y,
-                  width: `min(21rem, calc(${left ? edge : 100 - edge}% - 56px))`,
-                  ...(left ? { right: `calc(${100 - edge}% + 32px)`, textAlign: "right" as const } : { left: `calc(${edge}% + 32px)` }),
-                }}
-              >
-                <p className="text-[18px] font-medium tracking-tight text-foreground">{s.title}</p>
-                <ul className={`mt-2 space-y-1 ${left ? "" : ""}`}>
-                  {s.items.map((it) => (
-                    <li key={it} className="text-[13.5px] leading-snug text-muted-foreground">
-                      {it}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          );
-        })}
+            ))}
+          </div>
+          <div className="relative mt-5">
+            <span aria-hidden="true" className="absolute left-[5%] right-[5%] top-1/2 h-px -translate-y-1/2 bg-foreground/15" />
+            <span
+              aria-hidden="true"
+              className="absolute left-[5%] top-1/2 h-px -translate-y-1/2 bg-foreground transition-[width] duration-500 ease-out"
+              style={{ width: `${(active / (n - 1)) * 90}%` }}
+            />
+            <ol className="relative flex justify-between">
+              {stops.map((s, i) => {
+                const on = i === active;
+                const done = i < active;
+                return (
+                  <li key={s.title} className="flex w-[10%] justify-center">
+                    <button
+                      type="button"
+                      onClick={() => go(i)}
+                      onMouseEnter={() => go(i)}
+                      aria-label={s.title}
+                      aria-current={on ? "step" : undefined}
+                      className={`flex items-center justify-center rounded-full border bg-background text-[11px] font-medium tabular-nums outline-none transition-all duration-300 focus-visible:ring-2 focus-visible:ring-foreground/25 ${
+                        on ? "h-10 w-10 scale-110 text-white" : done ? "h-7 w-7 text-white" : "h-7 w-7 text-muted-foreground hover:border-foreground/50"
+                      }`}
+                      style={on || done ? { background: s.color, borderColor: s.color } : undefined}
+                    >
+                      {done ? <Check className="h-3.5 w-3.5" aria-hidden="true" /> : String(i + 1).padStart(2, "0")}
+                    </button>
+                  </li>
+                );
+              })}
+            </ol>
+          </div>
+        </div>
       </div>
 
-      <ol className="relative md:hidden">
-        <span aria-hidden="true" className="absolute bottom-3 left-[15px] top-3 w-px bg-foreground/15" />
-        {stops.map((s, i) => (
-          <li key={s.title} className="relative flex gap-4 pb-7 last:pb-0" style={{ opacity: seen ? 1 : 0, transform: seen ? undefined : "translateY(10px)", transition: `opacity .5s ${i * 90}ms, transform .5s ${i * 90}ms` }}>
-            <span className="relative z-10 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border bg-background text-[11px] font-medium tabular-nums" style={{ borderColor: s.color, color: s.color }}>
-              {String(i + 1).padStart(2, "0")}
+      <div key={active} className="mt-10 grid gap-6 border-t border-border pt-8 sm:grid-cols-[9rem_1fr] sm:gap-10" style={{ animation: "aboutRise .45s cubic-bezier(.2,.7,.2,1) both" }}>
+        <div>
+          <p className="text-[64px] font-medium leading-none tracking-[-0.05em] tabular-nums" style={{ color: cur.color }}>
+            {String(active + 1).padStart(2, "0")}
+          </p>
+          <p className="mt-3 text-[11px] font-medium uppercase tracking-[0.16em] text-muted-foreground">{group?.label}</p>
+        </div>
+        <div>
+          <p className="text-[clamp(24px,3vw,32px)] font-medium leading-tight tracking-[-0.02em] text-foreground">{cur.title}</p>
+          <ul className="mt-5 grid gap-x-10 gap-y-2.5 sm:grid-cols-2">
+            {cur.items.map((it) => (
+              <li key={it} className="flex gap-3 text-[15px] leading-snug text-foreground/75">
+                <span className="mt-[9px] h-[2px] w-3 shrink-0 rounded-full" style={{ background: cur.color }} />
+                {it}
+              </li>
+            ))}
+          </ul>
+          <div className="mt-7 flex items-center gap-2">
+            <button type="button" aria-label="Previous phase" onClick={() => go(active - 1)} className="grid h-9 w-9 place-items-center rounded-full border border-border text-sm outline-none transition-colors hover:bg-foreground/[0.05] focus-visible:ring-2 focus-visible:ring-foreground/25">
+              ←
+            </button>
+            <button type="button" aria-label="Next phase" onClick={() => go(active + 1)} className="grid h-9 w-9 place-items-center rounded-full border border-border text-sm outline-none transition-colors hover:bg-foreground/[0.05] focus-visible:ring-2 focus-visible:ring-foreground/25">
+              →
+            </button>
+            <span className="ml-2 text-[13px] text-muted-foreground tabular-nums">
+              {active + 1} / {n}
             </span>
-            <div className="min-w-0 flex-1 pt-0.5">
-              <p className="text-[16px] font-medium text-foreground">{s.title}</p>
-              <ul className="mt-1.5 space-y-1">
-                {s.items.map((it) => (
-                  <li key={it} className="text-[13.5px] leading-snug text-muted-foreground">
-                    {it}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </li>
-        ))}
-      </ol>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
