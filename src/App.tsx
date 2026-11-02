@@ -2782,6 +2782,15 @@ function FlowDiagram() {
   );
 }
 
+function PersonaHead({ label }: { label: string }) {
+  return (
+    <p className="flex items-center gap-2.5 text-[13px] font-bold uppercase tracking-[0.12em] text-foreground/70">
+      <span className="h-3.5 w-1 rounded-full bg-[#2563eb]" />
+      {label}
+    </p>
+  );
+}
+
 const JOURNEY_TINTS = ["#f8a8e0", "#ffc26b", "#7ee6a8", "#6fb8ff", "#d2b2ff"];
 
 // Persona + journey map, built in code. Switch between the two personas; the map below shows
@@ -2822,46 +2831,90 @@ function PersonaExplorer({ personas }: { personas: Persona[] }) {
       </div>
 
       <div key={who} className="mt-10" style={{ animation: "aboutRise .45s cubic-bezier(.2,.7,.2,1) both" }}>
-        <div className="grid gap-6 md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] md:gap-10">
-          <div className="flex gap-6 rounded-[28px] bg-[#f4f7fd] p-7 dark:bg-white/[0.04] sm:p-9">
-            <img src={assetUrl(p.avatar)} alt={p.name} className="h-20 w-20 shrink-0 rounded-full object-cover ring-4 ring-white dark:ring-white/10 sm:h-24 sm:w-24" />
-            <div className="min-w-0">
-              <p className="text-[22px] font-semibold tracking-tight text-foreground">{p.name}</p>
-              <p className="text-[14px] text-muted-foreground">{p.role}</p>
-              <dl className="mt-6 grid grid-cols-2 gap-x-6 gap-y-5">
-                {p.facts.map((f) => (
-                  <div key={f.label}>
-                    <dt className="text-[11px] uppercase tracking-[0.12em] text-muted-foreground">{f.label}</dt>
-                    <dd className="mt-0.5 text-[14.5px] font-medium text-foreground">{f.value}</dd>
-                  </div>
-                ))}
-              </dl>
+        <div className="rounded-[32px] bg-[#eef0f4] p-3 dark:bg-white/[0.05] sm:p-4">
+          <div className="grid gap-3 lg:grid-cols-[minmax(0,4fr)_minmax(0,5fr)_minmax(0,4fr)]">
+            {/* Left: who they are */}
+            <div className="flex flex-col gap-3">
+              <div className="grid place-items-center rounded-[24px] bg-white p-6 dark:bg-card">
+                <img src={assetUrl(p.avatar)} alt={p.name} className="h-40 w-40 rounded-full object-cover ring-4 ring-[#2563eb]/80 ring-offset-4 ring-offset-white dark:ring-offset-card" />
+              </div>
+              <div className="flex flex-1 flex-col rounded-[24px] bg-white p-7 dark:bg-card">
+                <p className="text-[clamp(30px,3.4vw,40px)] font-bold leading-none tracking-[-0.03em] text-foreground">{p.name.split(" ")[0]}</p>
+                <p className="mt-2 text-[14px] font-medium text-[#2563eb] dark:text-blue-300">{p.role}</p>
+                <dl className="mt-6 space-y-2 text-[14px]">
+                  {p.facts.filter((f) => f.label !== "Tech comfort").map((f) => (
+                    <div key={f.label}>
+                      <dt className="inline font-semibold text-foreground">{f.label}: </dt>
+                      <dd className="inline text-foreground/70">{f.value}</dd>
+                    </div>
+                  ))}
+                </dl>
+                {(() => {
+                  const tc = p.facts.find((f) => f.label === "Tech comfort");
+                  if (!tc) return null;
+                  const lvl = /high/i.test(tc.value) ? 3 : /med/i.test(tc.value) ? 2 : 1;
+                  return (
+                    <div className="mt-5">
+                      <p className="flex justify-between text-[12px] font-medium uppercase tracking-[0.12em] text-muted-foreground">
+                        Tech comfort <span className="normal-case tracking-normal text-foreground/70">{tc.value}</span>
+                      </p>
+                      <div className="mt-2 flex gap-1.5">
+                        {[1, 2, 3].map((n) => (
+                          <span key={n} className="h-1.5 flex-1 rounded-full transition-colors duration-500" style={{ background: n <= lvl ? "#2563eb" : "hsl(var(--foreground) / 0.1)" }} />
+                        ))}
+                      </div>
+                    </div>
+                  );
+                })()}
+                <p className="relative mt-8 pt-6 text-[clamp(22px,2.2vw,28px)] font-semibold leading-[1.25] tracking-[-0.02em] text-foreground/75">
+                  <span aria-hidden="true" className="absolute -top-2 left-0 select-none text-[64px] font-bold leading-none text-foreground/10">&ldquo;</span>
+                  {p.quote.replace(/[\u201c\u201d]/g, "")}
+                </p>
+              </div>
             </div>
-          </div>
-          <div className="rounded-[28px] border border-border p-7 sm:p-9">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#2346c7] dark:text-blue-300">About</p>
-            <p className="mt-4 text-[16px] leading-[1.8] text-foreground/80">{p.bio}</p>
-          </div>
-        </div>
 
-        <div className="mt-6 grid gap-6 md:grid-cols-3 md:gap-10">
-          {[
-            { t: "Goals", items: p.goals, dot: "#34c28a" },
-            { t: "Pain points", items: p.pains, dot: "#f0645a" },
-            { t: "Thoughts & feelings", items: p.thoughts, dot: "#6b8cff" },
-          ].map((b) => (
-            <div key={b.t} className="py-2">
-              <p className="flex items-center gap-2 text-[15px] font-semibold text-foreground">
-                <span className="h-2 w-2 rounded-full" style={{ background: b.dot }} />
-                {b.t}
-              </p>
-              <ul className="mt-4 space-y-3">
-                {b.items.map((it) => (
-                  <li key={it} className="text-[14px] leading-snug text-foreground/70">{it}</li>
-                ))}
-              </ul>
+            {/* Middle: bio and what goes on in their head */}
+            <div className="flex flex-col gap-3">
+              <div className="flex-1 rounded-[24px] bg-white p-7 dark:bg-card">
+                <PersonaHead label="Bio" />
+                <p className="mt-5 text-[15px] leading-[1.85] text-foreground/75">{p.bio}</p>
+              </div>
+              <div className="rounded-[24px] bg-white p-7 dark:bg-card">
+                <PersonaHead label="Thoughts & feelings" />
+                <ul className="mt-5 space-y-3">
+                  {p.thoughts.map((t) => (
+                    <li key={t} className="text-[14.5px] leading-snug text-foreground/75">{t}</li>
+                  ))}
+                </ul>
+              </div>
             </div>
-          ))}
+
+            {/* Right: goals and pain points */}
+            <div className="flex flex-col gap-3">
+              <div className="rounded-[24px] bg-white p-7 dark:bg-card">
+                <PersonaHead label="Goals" />
+                <ul className="mt-5 space-y-3">
+                  {p.goals.map((t) => (
+                    <li key={t} className="flex gap-3 text-[14.5px] leading-snug text-foreground/75">
+                      <span className="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full bg-[#2563eb]" />
+                      {t}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="flex-1 rounded-[24px] bg-white p-7 dark:bg-card">
+                <PersonaHead label="Pain points" />
+                <ul className="mt-5 space-y-3">
+                  {p.pains.map((t) => (
+                    <li key={t} className="flex gap-3 text-[14.5px] leading-snug text-foreground/75">
+                      <span className="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full bg-[#f0645a]" />
+                      {t}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
         </div>
 
         <p className="mt-16 text-[18px] font-semibold tracking-tight text-foreground">{p.name.split(" ")[0]}&rsquo;s journey</p>
