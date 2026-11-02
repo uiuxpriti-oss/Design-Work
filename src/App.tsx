@@ -2082,7 +2082,7 @@ function DotStat({ value, label }: { value: string; label: string }) {
 function StudyStats({ stats, small = false }: { stats: { value: string; label: string }[]; small?: boolean }) {
   if (stats.length === 1 && /^\d{1,3}%$/.test(stats[0].value.trim())) {
     return (
-      <div className="mt-8 border-t border-border pt-8">
+      <div className="mt-10">
         <DotStat value={stats[0].value.trim()} label={stats[0].label} />
       </div>
     );
