@@ -2789,7 +2789,7 @@ const CASE_PASSWORD_HASH =
   "1aede9f588ca5083ae9ffd28200ce6c4e1a9e66e98ac9d699b686b948c2c8b7d";
 // Master switch: false = every case study is open (no lock icons, no password page).
 // Set to true to turn the password protection back on for the cases listed below.
-const PASSWORD_GATE_ON = false;
+const PASSWORD_GATE_ON = true;
 const PROTECTED_CASES: Record<string, string> = !PASSWORD_GATE_ON ? {} : {
   "project-studycrux": CASE_PASSWORD_HASH,
   "project-tabnet-security": CASE_PASSWORD_HASH,
