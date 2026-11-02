@@ -2684,6 +2684,124 @@ function RoadMap({ stops }: { stops: RoadStop[] }) {
   );
 }
 
+// Ask Me user flow, drawn in code. When it scrolls into view the nodes pop in and the connectors
+// draw themselves in order, so the path reads as it is being connected.
+type FlowNode = { id: string; x: number; y: number; r?: number; w?: number; h?: number; kind: "circle" | "rect" | "diamond"; fill: string; text?: string[]; dark?: boolean; at: number };
+type FlowEdge = { d: string; at: number; arrow?: { x: number; y: number; rot: number }; muted?: boolean };
+
+const FLOW_NODES: FlowNode[] = [
+  { id: "login", x: 79, y: 344, r: 45, kind: "circle", fill: "#16a34a", text: ["Login"], at: 0 },
+  { id: "ask", x: 224, y: 344, w: 105, h: 80, kind: "rect", fill: "#e4d3fb", text: ["Ask me"], dark: true, at: 500 },
+  { id: "d1", x: 342, y: 344, r: 24, kind: "diamond", fill: "#fde9b5", at: 950 },
+  { id: "upload", x: 510, y: 129, r: 45, kind: "circle", fill: "#2f7df6", text: ["Upload", "Files"], at: 1900 },
+  { id: "connect", x: 510, y: 262, r: 45, kind: "circle", fill: "#2f7df6", text: ["Connect", "data source"], at: 2050 },
+  { id: "sample", x: 510, y: 488, r: 45, kind: "circle", fill: "#2f7df6", text: ["Sample", "data"], at: 2200 },
+  { id: "send", x: 689, y: 344, r: 45, kind: "circle", fill: "#2f7df6", text: ["Send"], at: 3050 },
+  { id: "d2", x: 822, y: 344, r: 24, kind: "diamond", fill: "#fde9b5", at: 3500 },
+  { id: "on", x: 1000, y: 222, r: 48, kind: "circle", fill: "#2f7df6", text: ["Advance", "Capabilities", "on"], at: 4300 },
+  { id: "off", x: 1000, y: 540, r: 48, kind: "circle", fill: "#2f7df6", text: ["Advance", "Capabilities", "off"], at: 4450 },
+  { id: "unstr", x: 1274, y: 103, r: 50, kind: "circle", fill: "#2f7df6", text: ["Unstructured", "+ Structure", "data"], at: 5400 },
+  { id: "agent", x: 1272, y: 222, r: 45, kind: "circle", fill: "#2f7df6", text: ["Multiple", "Agent"], at: 5500 },
+  { id: "tools", x: 1272, y: 334, r: 45, kind: "circle", fill: "#2f7df6", text: ["Tools/", "Connectors"], at: 5600 },
+  { id: "only1", x: 1272, y: 478, r: 45, kind: "circle", fill: "#2f7df6", text: ["Unstructu", "red Data", "Only"], at: 5550 },
+  { id: "one", x: 1272, y: 601, r: 45, kind: "circle", fill: "#2f7df6", text: ["Only one", "agent at a", "time"], at: 5650 },
+  { id: "shared", x: 1518, y: 222, r: 48, kind: "circle", fill: "#2f7df6", text: ["Data will be", "shared with", "AI"], at: 6500 },
+  { id: "pool", x: 1505, y: 546, r: 45, kind: "circle", fill: "#2f7df6", text: ["Auto", "DataPool", "creation"], at: 7000 },
+];
+
+const FLOW_EDGES: FlowEdge[] = [
+  { d: "M124 344 H160", at: 250, arrow: { x: 166, y: 344, rot: 0 }, muted: true },
+  { d: "M278 344 H312", at: 800, arrow: { x: 318, y: 344, rot: 0 } },
+  { d: "M368 344 H640", at: 1250, arrow: { x: 646, y: 344, rot: 0 } },
+  { d: "M372 344 H395 Q415 344 415 324 V150 Q415 129 436 129 H460", at: 1500, arrow: { x: 466, y: 129, rot: 0 } },
+  { d: "M415 344 V283 Q415 262 436 262 H460", at: 1650, arrow: { x: 466, y: 262, rot: 0 } },
+  { d: "M415 344 V467 Q415 488 436 488 H460", at: 1800, arrow: { x: 466, y: 488, rot: 0 } },
+  { d: "M556 129 H578 Q600 129 600 151 V344", at: 2450 },
+  { d: "M556 262 H578 Q600 262 600 284 V344", at: 2600 },
+  { d: "M556 488 H578 Q600 488 600 466 V344", at: 2750 },
+  { d: "M735 344 H790", at: 3250, arrow: { x: 796, y: 344, rot: 0 } },
+  { d: "M848 344 H878 Q900 344 900 322 V244 Q900 222 922 222 H946", at: 3800, arrow: { x: 952, y: 222, rot: 0 } },
+  { d: "M900 344 V518 Q900 540 922 540 H946", at: 3950, arrow: { x: 952, y: 540, rot: 0 } },
+  { d: "M1048 222 H1220", at: 4750, arrow: { x: 1226, y: 222, rot: 0 } },
+  { d: "M1136 222 V125 Q1136 103 1158 103 H1220", at: 4900, arrow: { x: 1226, y: 103, rot: 0 } },
+  { d: "M1136 222 V312 Q1136 334 1158 334 H1220", at: 5050, arrow: { x: 1226, y: 334, rot: 0 } },
+  { d: "M1048 540 H1096 Q1118 540 1118 518 V500 Q1118 478 1140 478 H1220", at: 4900, arrow: { x: 1226, y: 478, rot: 0 } },
+  { d: "M1118 540 V579 Q1118 601 1140 601 H1220", at: 5050, arrow: { x: 1226, y: 601, rot: 0 } },
+  { d: "M1322 103 H1376 Q1398 103 1398 125 V200 Q1398 222 1420 222 H1466", at: 6000, arrow: { x: 1472, y: 222, rot: 0 } },
+  { d: "M1316 222 H1466", at: 6100 },
+  { d: "M1316 334 H1376 Q1398 334 1398 312 V244 Q1398 222 1420 222", at: 6200 },
+];
+const FLOW_LABELS = [
+  { x: 522, y: 344, t: "Type the question and hit send", at: 1500 },
+  { x: 900, y: 283, t: "Ask for data consent", at: 4000 },
+  { x: 1123, y: 222, t: "can use", at: 4900 },
+];
+
+function FlowDiagram() {
+  const [ref, seen] = useInView<HTMLDivElement>(0.25);
+  const [hot, setHot] = useState<string | null>(null);
+  const reduce = typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const k = reduce ? 0 : 0.7;
+  const ease = "cubic-bezier(.2,.7,.2,1)";
+  return (
+    <div ref={ref} className="mt-8 overflow-x-auto rounded-[28px] bg-[#eef5ff] p-3 dark:bg-white/[0.05] sm:p-5">
+      <svg viewBox="0 0 1600 700" className="h-auto w-full min-w-[46rem]" role="img" aria-label="Ask Me user flow">
+        <g fill="none" stroke="#6b6b75" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
+          {FLOW_EDGES.map((e, i) => (
+            <g key={i}>
+              <path
+                d={e.d}
+                pathLength={1}
+                stroke={e.muted ? "#b6b6c0" : "#6b6b75"}
+                style={{ strokeDasharray: 1, strokeDashoffset: seen ? 0 : 1, transition: `stroke-dashoffset ${600 * k + 1}ms ${ease} ${e.at * k}ms` }}
+              />
+              {e.arrow && (
+                <path
+                  d="M-12 -10 L0 0 L-12 10"
+                  transform={`translate(${e.arrow.x} ${e.arrow.y}) rotate(${e.arrow.rot})`}
+                  stroke={e.muted ? "#b6b6c0" : "#6b6b75"}
+                  style={{ opacity: seen ? 1 : 0, transition: `opacity 200ms ${(e.at + 520) * k}ms` }}
+                />
+              )}
+            </g>
+          ))}
+        </g>
+        {FLOW_LABELS.map((l) => (
+          <g key={l.t} style={{ opacity: seen ? 1 : 0, transition: `opacity 400ms ${(l.at + 300) * k}ms` }}>
+            <rect x={l.x - l.t.length * 4.1 - 10} y={l.y - 15} width={l.t.length * 8.2 + 20} height="30" rx="6" fill="#eef5ff" />
+            <text x={l.x} y={l.y + 5} textAnchor="middle" fontSize="15" fill="#2b2b35" fontFamily="Inter, system-ui, sans-serif">{l.t}</text>
+          </g>
+        ))}
+        {FLOW_NODES.map((n) => {
+          const on = hot === n.id;
+          return (
+            <g
+              key={n.id}
+              transform={`translate(${n.x} ${n.y})`}
+              onMouseEnter={() => setHot(n.id)}
+              onMouseLeave={() => setHot(null)}
+              style={{ cursor: "default" }}
+            >
+              <g style={{ opacity: seen ? 1 : 0, transform: `scale(${seen ? (on ? 1.08 : 1) : 0.4})`, transformBox: "fill-box", transformOrigin: "center", transition: `opacity 400ms ${n.at * k}ms, transform 450ms ${ease} ${n.at * k}ms` }}>
+                {n.kind === "circle" && <circle r={n.r} fill={n.fill} />}
+                {n.kind === "rect" && <rect x={-(n.w ?? 0) / 2} y={-(n.h ?? 0) / 2} width={n.w} height={n.h} rx="8" fill={n.fill} />}
+                {n.kind === "diamond" && <rect x={-(n.r ?? 0)} y={-(n.r ?? 0)} width={(n.r ?? 0) * 2} height={(n.r ?? 0) * 2} rx="4" fill={n.fill} transform="rotate(45)" />}
+                {n.text && (
+                  <text textAnchor="middle" fontSize="13.5" fill={n.dark ? "#2b2b35" : "#fff"} fontFamily="Inter, system-ui, sans-serif" fontWeight="500">
+                    {n.text.map((t, i) => (
+                      <tspan key={t} x="0" y={(i - (n.text!.length - 1) / 2) * 16 + 5}>{t}</tspan>
+                    ))}
+                  </text>
+                )}
+              </g>
+            </g>
+          );
+        })}
+      </svg>
+    </div>
+  );
+}
+
 function StudySectionBlock({
   block,
   onZoom,
@@ -2907,6 +3025,7 @@ function StudySectionBlock({
           ))}
         </div>
       )}
+      {block.flow && <FlowDiagram />}
       {block.road && <RoadMap stops={block.road} />}
       {block.notes && <StickyNotes notes={block.notes} tone={block.noteTone} />}
       {block.cards && block.cards.every((c) => c.short) && <DecisionExplorer cards={block.cards} />}
@@ -2930,7 +3049,7 @@ function StudySectionBlock({
         ))}
       {block.stats && <StudyStats stats={block.stats} />}
       {block.note && <StudyNote text={block.note} />}
-      {block.image && !block.road && (
+      {block.image && !block.road && !block.flow && (
         <div className="mt-6">
           <div style={block.imageBleed ? { width: `${block.imageBleed.width}%`, marginLeft: `${block.imageBleed.left}%` } : undefined}>
             <StudyMedia value={block.image} alt={block.title} onZoom={onZoom} />

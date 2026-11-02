@@ -242,6 +242,8 @@ export interface StudyBlock {
   bullets?: string[];
   /** Two/three-column cards (e.g. personas, method vs. findings). */
   columns?: { heading: string; items: string[] }[];
+  /** Draw the Ask Me user-flow diagram (code-built, connects itself on scroll). */
+  flow?: boolean;
   /** Roadmap phases: a colour, title and short points each. */
   road?: { title: string; color: string; items: string[] }[];
   /** Conclusion pillars: what was changed and what it gave users. */
@@ -516,9 +518,10 @@ export const caseStudies: Record<string, CaseStudy> = {
       {
         id: "user-flow",
         eyebrow: "Flow",
-        title: "🔄 User Flow",
+        title: "User Flow",
         lead: "A clear, step-by-step path from setup to results: log in → open Ask Me → connect a source, upload files, or use sample data → give data consent → analyse with agents and connectors → auto-create a Data Pool → ask a question → get insights.",
         image: "projects/askme-userflow.jpg",
+        flow: true,
       },
       {
         id: "design-system",
