@@ -3083,7 +3083,7 @@ function TagGroup({ label, items }: { label: string; items: string[] }) {
           return (
             <span
               key={t}
-              className="inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-[13px] text-foreground/85 ring-1 ring-black/[0.06] dark:bg-white/10 dark:ring-white/10"
+              className="inline-flex items-center gap-1.5 rounded-full bg-foreground/[0.05] px-3 py-1.5 text-[13px] text-foreground/85"
             >
               {Brand && <Brand className="h-3.5 w-3.5" />}
               {t === "In progress" && <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#2E6B54]" />}
@@ -3381,7 +3381,7 @@ function CaseStudyPage({
             )}
           </div>
         </div>
-        <aside className="self-start rounded-[26px] bg-[#f5f7fb] p-6 dark:bg-white/[0.04] sm:p-7">
+        <aside className="self-start">
           {(() => {
             // The category line that used to sit above the title (e.g. "Product Design · AI Analytics"),
             // minus anything already listed under Role or Type.
