@@ -893,10 +893,10 @@ function Hero({ ready }: { ready: boolean }) {
 }
 
 const SPECIALTIES = [
-  "AI-Powered UX",
-  "Data-Heavy Platforms",
+  "AI Powered UX",
+  "Data Heavy Platforms",
   "Complex Workflows",
-  "Decision-Centric Design",
+  "Decision Centric Design",
   "Design Systems",
   "Enterprise UX",
   "Design → Code",
@@ -904,7 +904,7 @@ const SPECIALTIES = [
   "AI Tooling",
   "Healthcare",
   "GovTech",
-  "E-commerce",
+  "Ecommerce",
 ];
 
 function FocusAreas() {
@@ -2379,12 +2379,6 @@ function DecisionExplorer({ cards }: { cards: { heading: string; short?: string;
   );
 }
 
-const NEXT_TONES = [
-  { card: "bg-[#0f1530] text-white", num: "bg-white text-[#0f1530]", text: "text-[#c9d6ff]", tag: "bg-white/10 text-[#c9d6ff]" },
-  { card: "bg-[#dbe7ff] text-[#1e3a8a] dark:bg-[#1b2a5a] dark:text-blue-100", num: "bg-[#1e3a8a] text-white", text: "text-[#2f4a8f] dark:text-blue-200/80", tag: "bg-white/70 text-[#1e3a8a] dark:bg-white/10 dark:text-blue-100" },
-  { card: "border border-border bg-white text-[#2346c7] dark:bg-card dark:text-blue-300", num: "bg-gradient-to-b from-[#3b6cf6] to-[#2346c7] text-white", text: "text-foreground/70", tag: "bg-[#eef3ff] text-[#1e3a8a] dark:bg-white/10 dark:text-blue-100" },
-  { card: "bg-gradient-to-b from-[#3b6cf6] to-[#2346c7] text-white", num: "bg-white text-[#2346c7]", text: "text-white/80", tag: "bg-white/15 text-white" },
-] as const;
 
 // "What I'd do next": a roadmap of colourful cards joined by a line, and a closing banner that says
 // the work keeps listening to users.
@@ -2392,26 +2386,18 @@ function NextRoadmap({ cards }: { cards: { heading: string; text: string }[]; le
   const [ref, seen] = useInView<HTMLDivElement>(0.2);
   return (
     <div ref={ref} className="mt-8">
-      <div className="relative grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <span aria-hidden="true" className="pointer-events-none absolute left-6 right-6 top-[3.35rem] hidden h-px bg-gradient-to-r from-transparent via-[#3b6cf6]/40 to-transparent lg:block" />
-        {cards.map((c, i) => {
-          const t = NEXT_TONES[i % NEXT_TONES.length];
-          return (
-            <div
-              key={c.heading}
-              className={`group relative flex min-h-[17rem] flex-col rounded-[28px] p-6 transition-[transform,opacity] duration-500 ease-out hover:-translate-y-1.5 ${t.card}`}
-              style={{ opacity: seen ? 1 : 0, transform: seen ? undefined : "translateY(20px)", transitionDelay: seen ? `${i * 110}ms` : "0ms" }}
-            >
-              <div className="flex items-center justify-between">
-                <span className={`flex h-11 w-11 items-center justify-center rounded-full text-[14px] font-semibold tabular-nums ${t.num}`}>{String(i + 1).padStart(2, "0")}</span>
-                <span className={`rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] ${t.tag}`}>Next</span>
-              </div>
-              <p className="mt-8 text-[22px] font-semibold leading-tight tracking-tight">{c.heading}</p>
-              <p className={`mt-3 text-[14.5px] leading-[1.6] ${t.text}`}>{c.text}</p>
-              <span aria-hidden="true" className="mt-auto pt-5 text-[20px] opacity-60 transition-transform duration-300 group-hover:translate-x-1">→</span>
-            </div>
-          );
-        })}
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {cards.map((c, i) => (
+          <div
+            key={c.heading}
+            className="rounded-[22px] border border-border bg-card p-6 transition-[transform,opacity,border-color] duration-500 ease-out hover:-translate-y-1 hover:border-foreground/25"
+            style={{ opacity: seen ? 1 : 0, transform: seen ? undefined : "translateY(16px)", transitionDelay: seen ? `${i * 90}ms` : "0ms" }}
+          >
+            <p className="text-[13px] tabular-nums text-muted-foreground">{String(i + 1).padStart(2, "0")}</p>
+            <p className="mt-6 text-[19px] font-semibold leading-tight tracking-tight text-foreground">{c.heading}</p>
+            <p className="mt-2.5 text-[14.5px] leading-[1.6] text-muted-foreground">{c.text}</p>
+          </div>
+        ))}
       </div>
 
       <div className="mt-8 flex items-center gap-4 border-t border-border pt-6">
@@ -2512,7 +2498,7 @@ function RoadGantt({ stops }: { stops: RoadStop[] }) {
             <span className="grid h-10 w-10 place-items-center rounded-xl bg-[#2563eb]">
               <span className="h-3.5 w-3.5 rounded-full bg-white" />
             </span>
-            <p className="text-[19px] font-semibold tracking-tight text-foreground">Ask Me redesign</p>
+            <p className="text-[19px] font-semibold tracking-tight text-foreground">Ask Me roadmap</p>
           </div>
           <span className="rounded-md bg-[#fff4d6] px-2.5 py-1.5 text-[13px] font-medium tabular-nums text-[#b7791f]">
             Phase {step + 1} of {n}
@@ -3128,17 +3114,15 @@ function renderRich(text: string) {
 
 function TagGroup({ label, items }: { label: string; items: string[] }) {
   return (
-    <div>
-      <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
-        {label}
-      </p>
-      <div className="mt-3 flex flex-wrap gap-2">
+    <div className="grid grid-cols-[5rem_1fr] items-start gap-4 border-t border-border/70 py-4 first:border-t-0 first:pt-0 last:pb-0">
+      <p className="pt-1.5 text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">{label}</p>
+      <div className="flex flex-wrap gap-1.5">
         {items.map((t) => {
           const Brand = BRAND_LOGOS[t];
           return (
             <span
               key={t}
-              className="inline-flex items-center gap-1.5 rounded-full bg-foreground/[0.06] px-3 py-1.5 text-[13px] text-foreground/85"
+              className="inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-[13px] text-foreground/85 ring-1 ring-black/[0.06] dark:bg-white/10 dark:ring-white/10"
             >
               {Brand && <Brand className="h-3.5 w-3.5" />}
               {t === "In progress" && <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#2E6B54]" />}
@@ -3416,18 +3400,27 @@ function CaseStudyPage({
         )}
       </div>
 
-      <section id="cs-intro" className="mt-12 grid scroll-mt-24 gap-10 border-t border-border pt-10 md:grid-cols-[1fr_240px]">
+      <section id="cs-intro" className="mt-12 grid scroll-mt-24 items-start gap-10 border-t border-border pt-10 md:grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)] md:gap-16">
         <div>
-          <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-blue-800 dark:text-blue-300">
+          <p className="flex items-center gap-2.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-blue-800 dark:text-blue-300">
+            <span className="h-px w-6 bg-current opacity-60" aria-hidden="true" />
             Intro
           </p>
-          <div className="mt-5 space-y-5 text-[16px] leading-relaxed text-foreground/85">
-            {cs.intro.map((para, i) => (
-              <p key={i}>{renderRich(para)}</p>
-            ))}
+          <div className="mt-6">
+            {cs.intro.map((para, i) =>
+              i === 0 ? (
+                <p key={i} className="text-[clamp(22px,2.5vw,30px)] font-medium leading-[1.3] tracking-[-0.02em] text-foreground">
+                  {renderRich(para)}
+                </p>
+              ) : (
+                <p key={i} className="mt-6 max-w-xl border-l-2 border-[#2563eb]/30 pl-5 text-[16px] leading-[1.7] text-foreground/70">
+                  {renderRich(para)}
+                </p>
+              ),
+            )}
           </div>
         </div>
-        <aside className="space-y-6">
+        <aside className="self-start rounded-[26px] bg-[#f5f7fb] p-6 dark:bg-white/[0.04] sm:p-7">
           {(() => {
             // The category line that used to sit above the title (e.g. "Product Design · AI Analytics"),
             // minus anything already listed under Role or Type.
@@ -3745,18 +3738,18 @@ function ToolGlyph({ name }: { name: string }) {
 
 const SKILL_CARDS: { label: string; fact: string; Icon: (p: { className?: string }) => ReactNode }[] = [
   { label: "Product Design", fact: "4+ years in enterprise SaaS, AI and data", Icon: SkProductDesign },
-  { label: "Data-driven Design", fact: "Dashboards, alerts and data workflows", Icon: SkDataDriven },
+  { label: "Data driven Design", fact: "Dashboards, alerts and data workflows", Icon: SkDataDriven },
   { label: "Design Systems", fact: "120+ components, 40% more reuse", Icon: SkDesignSystems },
   { label: "Prototyping", fact: "Figma, Framer, ProtoPie", Icon: SkPrototyping },
   { label: "AI Workflows", fact: "Ask Me, a GenAI analytics assistant", Icon: SkAiWorkflows },
-  { label: "Interaction Design", fact: "Micro-interactions that guide", Icon: SkInteraction },
+  { label: "Interaction Design", fact: "Micro interactions that guide", Icon: SkInteraction },
   { label: "Figma to Code", fact: "Figma MCP and Claude Code", Icon: SkFigmaToCode },
   { label: "UX Research", fact: "Usability tests, WCAG audits on 80+ screens", Icon: SkUxResearch },
 ];
 
 // **bold** marks the words that stay dark; everything else starts light and fills in on scroll.
 const SKILLS_STATEMENT =
-  "I design **decision-centric products** for complex data workflows, work closely with **engineering teams** and obsess over **details that ship.**";
+  "I design **decision centric products** for complex data workflows, work closely with **engineering teams** and obsess over **details that ship.**";
 
 function SkillsStatement() {
   const ref = useRef<HTMLParagraphElement>(null);
@@ -4330,7 +4323,7 @@ const ABOUT_SLIDES = [
 const ABOUT_TRAITS = [
   { title: "Problem Solver", img: "problem", bg: "#cfdcff", fg: "#1f3a9e", quip: "Solving problem. Oh solved it!", text: "Before I call something a 'problem,' I always ask myself, does this really need a solution? My curiosity helps me find a better one when it turns out to be a real issue." },
   { title: "Calm & Compose", img: "calm", bg: "#dcd6ff", fg: "#3b2b9e", quip: "I bring peace", text: "Deadlines move, scope shifts, I stay steady and keep the team moving." },
-  { title: "Detail-Oriented", img: "detail", bg: "#cbe4ff", fg: "#124e8a", quip: "After 52 attempts, now all details are covered.", text: "Because that one flow gap always gives a headache." },
+  { title: "Detail Oriented", img: "detail", bg: "#cbe4ff", fg: "#124e8a", quip: "After 52 attempts, now all details are covered.", text: "Because that one flow gap always gives a headache." },
   { title: "UX Researcher", img: "research", bg: "#c4d0ff", fg: "#1f2f8f", quip: "I want to know everything.", text: "I always love to dig deep to truly understand the core of the requirement." },
   { title: "Well Organized", img: "organized", bg: "#d3dbf5", fg: "#22306e", quip: "Not just perfect. Monica perfect!", text: "Actually a Designer OCD. Just to make everything in my way, perfect!! Like Monica (FRIENDS) hah! I knowwwww!" },
   { title: "Empathetic Listener", img: "listener", bg: "#dcd9ff", fg: "#3a2a8c", quip: "Yeah, I'm listening", text: "Oh, I'm really great at this, clients just love how well I listen and this helps me to empathise with them to get what they want." },
@@ -4358,14 +4351,14 @@ const ABOUT_JOBS: AboutJob[] = [
     desc: "Promoted from Associate UI/UX Designer to Senior Product Designer in 2026. Designing Lumenore, a BI & AI platform spanning conversational analytics, data management, dashboards, and enterprise workflows.",
     roles: [{ title: "Senior Product Designer", period: "2026 – Present" }, { title: "Associate UI/UX Designer", period: "Jul 2024 – 2026" }],
     highlight: { label: "ASK ME", text: "Designed Lumenore Ask Me, a GenAI conversational analytics assistant (agentic RAG, MCP integrations): natural language querying, streaming answer states, uncertainty and error handling, and confirmation before users act on model output." },
-    metrics: [{ v: "↓50%", l: "task completion time" }, { v: "↓32%", l: "onboarding drop-off" }, { v: "5,000+", l: "active users" }, { v: "120+", l: "design-system components" }, { v: "+40%", l: "component reuse" }, { v: "80+", l: "screens audited, WCAG 2.1 AA" }],
+    metrics: [{ v: "↓50%", l: "task completion time" }, { v: "↓32%", l: "onboarding drop-off" }, { v: "5,000+", l: "active users" }, { v: "120+", l: "design system components" }, { v: "+40%", l: "component reuse" }, { v: "80+", l: "screens audited, WCAG 2.1 AA" }],
     bullets: [
-      "Own end-to-end design across Ask Me, Data Magnet, dashboards, alerts, scheduler, and data-management workflows, from discovery through design QA and release.",
-      "Run user testing sessions with enterprise customers, including moderated walkthroughs, task-based scenarios, and post-release follow-ups.",
-      "Reduced task completion time by up to 50% by simplifying complex analytics workflows for non-technical users.",
+      "Own end to end design across Ask Me, Data Magnet, dashboards, alerts, scheduler, and data management workflows, from discovery through design QA and release.",
+      "Run user testing sessions with enterprise customers, including moderated walkthroughs, task based scenarios, and post release follow ups.",
+      "Reduced task completion time by up to 50% by simplifying complex analytics workflows for nontechnical users.",
       "Shipped 3 major features, reducing onboarding drop-off by 32% and support queries by 20%, reaching 5,000+ active users.",
       "Built and governed a design system of 120+ components, variants, states, and tokens, increasing reuse by 40%.",
-      "Ran usability studies and WCAG 2.1 AA audits across 80+ screens; mobile-first validation improved task completion by 25%.",
+      "Ran usability studies and WCAG 2.1 AA audits across 80+ screens; mobile first validation improved task completion by 25%.",
       "Partner with product, engineering, QA, and business stakeholders to align design with OKRs, KPIs, and technical constraints.",
     ],
   },
@@ -4375,19 +4368,19 @@ const ABOUT_JOBS: AboutJob[] = [
     desc: "Owned product design across SaaS, B2C, healthcare, and audit products, from discovery through live release.",
     metrics: [{ v: "6", l: "products shipped end to end" }, { v: "+35%", l: "task success (Maze)" }, { v: "↓30%", l: "dev clarification time" }, { v: "↓20%", l: "user errors" }],
     bullets: [
-      "Shipped 6 end-to-end products across web, mobile, and tablet, covering research, flows, interaction design, prototyping, and developer handoff.",
-      "Validated mobile-first healthcare and audit workflows through Maze studies, improving task success by 35%.",
+      "Shipped 6 end to end products across web, mobile, and tablet, covering research, flows, interaction design, prototyping, and developer handoff.",
+      "Validated mobile first healthcare and audit workflows through Maze studies, improving task success by 35%.",
       "Created reusable Figma systems and clearer specs, cutting developer clarification time by 30% and reducing user errors by 20%.",
     ],
   },
   {
     company: "Incscale Technologies", role: "UI/UX & Graphic Designer", logo: "logos/incscale.png",
     location: "Indore, India", dates: "Aug 2022 – Jun 2023", s: 19, e: 30,
-    desc: "Designed mobile-first B2C applications, e-commerce journeys, landing pages, and responsive websites.",
+    desc: "Designed mobile first B2C applications, ecommerce journeys, landing pages, and responsive websites.",
     metrics: [{ v: "↓15%", l: "bounce rate" }, { v: "↓25%", l: "design review cycles" }],
     bullets: [
       "Used Hotjar insights to reduce bounce rate by 15%; interactive prototypes cut design review cycles by 25%.",
-      "Created wireframes, user flows, and high-fidelity prototypes for client validation and development handoff; supported AI-assisted front-end prototyping.",
+      "Created wireframes, user flows, and high fidelity prototypes for client validation and development handoff; supported AI assisted front end prototyping.",
     ],
   },
   {
@@ -4485,7 +4478,7 @@ function AboutHero() {
       <div className="flex flex-wrap items-center justify-between gap-7">
         <div ref={statsRef} className="about-rise flex flex-wrap gap-x-10 gap-y-5" style={{ animationDelay: "0.9s" }}>
           <AboutStat pre="↓" n={50} suf="%" label="Task time" run={run} />
-          <AboutStat pre="↓" n={32} suf="%" label="Drop-off" run={run} />
+          <AboutStat pre="↓" n={32} suf="%" label="Drop off" run={run} />
           <AboutStat pre="" n={5000} suf="+" label="Users" run={run} />
         </div>
       </div>
