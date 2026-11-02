@@ -24,14 +24,14 @@ export const projects: Project[] = [
     id: "project-studycrux",
     title: "Admin Management",
     description:
-      "A super-admin console for a multi-module ed-tech platform — students, teachers, coordinators, and speakers in one system.",
+      "A super-admin console for a multi-module ed-tech platform: students, teachers, coordinators, and speakers in one system.",
     href: "https://uiuxpriti.com/projects/studycrux",
     likes: 16,
     image: "projects/studycrux-cover.jpg",
     gradient: "from-slate-800 via-teal-700 to-emerald-900",
     measures: ["6 modules, one system", "One shared health language", "RBAC that surfaces risk"],
     headline:
-      "Six admin tools, one console — and a shared language for module health.",
+      "Six admin tools, one console, and a shared language for module health.",
     tag: "Admin Console",
   },
   {
@@ -58,33 +58,33 @@ export const projects: Project[] = [
     gradient: "from-slate-700 via-cyan-800 to-slate-900",
     measures: ["More demo requests", "Board-ready framing", "Trust, quantified"],
     headline:
-      "A trustworthy identity for a modern security product — framing that turns visits into demo requests.",
+      "A trustworthy identity for a modern security product, framing that turns visits into demo requests.",
     tag: "Brand & Web",
   },
   {
     id: "project-brevio",
     title: "Brevio",
-    description: "A launch landing page for a short-film platform — designed and shipped in 24 hours.",
+    description: "A launch landing page for a short-film platform, designed and shipped in 24 hours.",
     href: "https://uiuxpriti.com/projects/brevio",
     likes: 24,
     image: "projects/brevio.jpg",
     gradient: "from-violet-600 via-indigo-500 to-lime-300",
     measures: ["24-hour turnaround", "Two hero directions", "Signups before launch"],
     headline:
-      "Designing a launch page for a short-film platform in 24 hours — and making the wait feel like the event.",
+      "Designing a launch page for a short-film platform in 24 hours, and making the wait feel like the event.",
     tag: "Event Landing · 24h",
   },
   {
     id: "project-baladi-express",
     title: "Baladi Express",
-    description: "A fast multi-category delivery experience — food, grocery & more.",
+    description: "A fast multi-category delivery experience, food, grocery & more.",
     href: "https://uiuxpriti.com/projects/baladi-express",
     likes: 26,
     image: "projects/baladi.jpg",
     gradient: "from-orange-200 via-amber-100 to-rose-100",
     measures: ["Cross-category orders up", "Search that works", "One system, all verticals"],
     headline:
-      "One delivery app for food, grocery and more — with search that finally works across every category.",
+      "One delivery app for food, grocery and more, with search that finally works across every category.",
     tag: "Q-Commerce",
   },
   {
@@ -276,9 +276,9 @@ export interface StudyBlock {
 export const caseStudies: Record<string, CaseStudy> = {
   "project-studycrux": {
     intro: [
-      "**Admin Management** is the operations backbone for a competitive-exam coaching business — the super-admin platform that runs students, teachers, coordinators, and guest speakers across dozens of live batches. I designed the entire console: **six operationally distinct modules**, each with its own data model, folded into one coherent system.",
-      "Admin tools like this usually sprawl into six tabs that don't talk to each other — open Students to see who's at risk, Teachers to catch a payout deadline, Roles to catch a security gap, with **nothing rolling up** to tell an admin what actually needs a decision today.",
-      "I built a **shared 'module health' language** — every module reports through the same four numbers, one trend meter, and a status pill — so a Dashboard can roll all six up into one screen, while each module still goes as deep as its own domain needs underneath.",
+      "**Admin Management** is the operations backbone for a competitive-exam coaching business: the super-admin platform that runs students, teachers, coordinators, and guest speakers across dozens of live batches. I designed the entire console: **six operationally distinct modules**, each with its own data model, folded into one coherent system.",
+      "Admin tools like this usually sprawl into six tabs that don't talk to each other: open Students to see who's at risk, Teachers to catch a payout deadline, Roles to catch a security gap, with **nothing rolling up** to tell an admin what actually needs a decision today.",
+      "I built a **shared 'module health' language** (every module reports through the same four numbers, one trend meter, and a status pill) so a Dashboard can roll all six up into one screen, while each module still goes as deep as its own domain needs underneath.",
     ],
     tags: {
       role: ["Product Designer"],
@@ -288,7 +288,7 @@ export const caseStudies: Record<string, CaseStudy> = {
     },
     eyebrow: "Product Design · Admin Platform",
     summary:
-      "A super-admin console for a multi-module ed-tech platform — unifying students, teachers, coordinators, speakers, course allocation, and access control into one operational system.",
+      "A super-admin console for a multi-module ed-tech platform: unifying students, teachers, coordinators, speakers, course allocation, and access control into one operational system.",
     meta: {
       role: "Product Designer",
       timeline: "Self-directed",
@@ -296,14 +296,14 @@ export const caseStudies: Record<string, CaseStudy> = {
       tools: "Figma · Claude Code",
     },
     overview:
-      "Admin Management runs a competitive-exam coaching operation — students juggling mock tests, live batches, and recorded courses at once; teachers and coordinators running the batches; guest speakers running webinars. I designed the super-admin console that Ops and academic leadership use to run all of it: six modules, one system, one consistent way to read what's healthy and what needs a decision.",
+      "Admin Management runs a competitive-exam coaching operation: students juggling mock tests, live batches, and recorded courses at once; teachers and coordinators running the batches; guest speakers running webinars. I designed the super-admin console that Ops and academic leadership use to run all of it: six modules, one system, one consistent way to read what's healthy and what needs a decision.",
     problem: {
       stats: [
         { value: "6", label: "modules, one super-admin persona" },
         { value: "3", label: "concurrent entitlement types per student" },
         { value: "8", label: "roles across 221 users to secure" },
       ],
-      text: "Most internal admin tools grow module-by-module until they're six unrelated apps wearing the same sidebar — nothing surfaces urgency across them. Admin Management's commercial model made the underlying data harder than usual too: **there's no subscription** — students hold several concurrent entitlements (mock-test tiers, live batches, recorded passes) at once, each with its own price, validity, and batch rules.",
+      text: "Most internal admin tools grow module-by-module until they're six unrelated apps wearing the same sidebar, nothing surfaces urgency across them. Admin Management's commercial model made the underlying data harder than usual too: **there's no subscription**, students hold several concurrent entitlements (mock-test tiers, live batches, recorded passes) at once, each with its own price, validity, and batch rules.",
       goals: [
         "Give one super-admin persona a single screen that rolls up all six modules' health",
         "Model multi-entitlement students honestly, without forcing one purchase per row",
@@ -312,41 +312,41 @@ export const caseStudies: Record<string, CaseStudy> = {
       ],
     },
     research: {
-      text: "Rather than reach for one generic table pattern, I mapped each module's actual operational questions first — what a coordinator's manager needs to decide in the next five minutes vs. what a finance lead checks once a month — before designing any screen.",
+      text: "Rather than reach for one generic table pattern, I mapped each module's actual operational questions first, what a coordinator's manager needs to decide in the next five minutes vs. what a finance lead checks once a month, before designing any screen.",
       findings: [
         "Every module answers the same three questions underneath: what's healthy, what needs a decision, what changed",
         "Students needed entitlement-level detail, not just account-level status",
-        "Access control gets treated as a settings page everywhere — never as something to actively monitor",
+        "Access control gets treated as a settings page everywhere, never as something to actively monitor",
         "Coordinators needed a way to flag overload before it became attrition, not after",
       ],
     },
     process: [
       { step: "Empathize", text: "Broke down what Students, Teachers, Coordinators, Speakers, Course Allocation, and Roles & Access each actually need to expose." },
       { step: "Define", text: "Set one goal: a shared language for module health that works across all six modules." },
-      { step: "Ideate", text: "Designed one shared 'module health' card anatomy — four numbers, one trend meter, one status pill — reused across all six." },
+      { step: "Ideate", text: "Designed one shared 'module health' card anatomy (four numbers, one trend meter, one status pill) reused across all six." },
       { step: "Prototype", text: "Let each module's tables and detail views handle its own domain complexity underneath the shared shell." },
       { step: "Test", text: "Stress-tested loading, empty, error, no-permission, and partial-access states for the more data-heavy modules." },
     ],
     timeline: ["Module mapping", "Health card anatomy", "Shared shell", "Detail views", "Empty, error & no-access states"],
     solution: {
-      text: "The result is a Dashboard that acts as a control tower — six module-health cards plus one prioritized, cross-module action queue — sitting above six modules that each solve their own domain's hardest problem: multi-entitlement students, faculty payouts and live-class ops, a coordinator workload score, a speaker application funnel, and an access-control surface built around risk instead of a role list.",
+      text: "The result is a Dashboard that acts as a control tower (six module-health cards plus one prioritized, cross-module action queue) sitting above six modules that each solve their own domain's hardest problem: multi-entitlement students, faculty payouts and live-class ops, a coordinator workload score, a speaker application funnel, and an access-control surface built around risk instead of a role list.",
       highlights: [
-        { title: "One health language, six modules", text: "Every module reports through the same four-number, one-meter, one-status card — scannable in seconds from the Dashboard." },
+        { title: "One health language, six modules", text: "Every module reports through the same four-number, one-meter, one-status card, scannable in seconds from the Dashboard." },
         { title: "Entitlement-first student records", text: "Expandable rows show every concurrent mock/live/recorded entitlement a student holds, each with its own plan and status." },
-        { title: "A workload score with a conscience", text: "Coordinator health rolls up staffing, attendance, operations, and student support — labelled 'not a sole measure of performance.'" },
-        { title: "Access control that watches itself", text: "Roles & Access surfaces its own risks — disabled 2FA, dormant accounts, over-broad grants — with a live audit trail, not just a role table." },
+        { title: "A workload score with a conscience", text: "Coordinator health rolls up staffing, attendance, operations, and student support, labelled 'not a sole measure of performance.'" },
+        { title: "Access control that watches itself", text: "Roles & Access surfaces its own risks (disabled 2FA, dormant accounts, over-broad grants) with a live audit trail, not just a role table." },
       ],
     },
     gallery: {
       title: "Inside the console",
-      text: "Six modules built on one shared design language — navy sidebar, teal accents, the same card anatomy everywhere. Tap any screen to view it full size.",
+      text: "Six modules built on one shared design language: navy sidebar, teal accents, the same card anatomy everywhere. Tap any screen to view it full size.",
       shots: [
-        { src: "projects/studycrux-dashboard.jpg", caption: "Platform Overview — every module's health rolled into one screen, plus a single prioritized action queue across all six." },
-        { src: "projects/studycrux-students.jpg", caption: "All Students — expandable rows reveal every concurrent entitlement (mock, live, recorded) a student holds, each with its own plan and status." },
-        { src: "projects/studycrux-teachers.jpg", caption: "Teacher Dashboard — faculty capacity, live-class schedule, and payout health for 128 teachers at a glance." },
-        { src: "projects/studycrux-coordinators.jpg", caption: "Coordinator Management — a weighted operations-health score (staffing, attendance, workload) plus a live status board, updated every 60 seconds." },
-        { src: "projects/studycrux-speakers.jpg", caption: "Speaker Dashboard — application funnel from invited to active, event health, and payouts for 128 guest speakers." },
-        { src: "projects/studycrux-roles-access.jpg", caption: "Access Control — 2FA gaps, dormant accounts, and over-broad grants surfaced as risks, with a full audit trail of every permission change." },
+        { src: "projects/studycrux-dashboard.jpg", caption: "Platform Overview, every module's health rolled into one screen, plus a single prioritized action queue across all six." },
+        { src: "projects/studycrux-students.jpg", caption: "All Students: expandable rows reveal every concurrent entitlement (mock, live, recorded) a student holds, each with its own plan and status." },
+        { src: "projects/studycrux-teachers.jpg", caption: "Teacher Dashboard: faculty capacity, live-class schedule, and payout health for 128 teachers at a glance." },
+        { src: "projects/studycrux-coordinators.jpg", caption: "Coordinator Management: a weighted operations-health score (staffing, attendance, workload) plus a live status board, updated every 60 seconds." },
+        { src: "projects/studycrux-speakers.jpg", caption: "Speaker Dashboard: application funnel from invited to active, event health, and payouts for 128 guest speakers." },
+        { src: "projects/studycrux-roles-access.jpg", caption: "Access Control: 2FA gaps, dormant accounts, and over-broad grants surfaced as risks, with a full audit trail of every permission change." },
       ],
     },
     outcomes: {
@@ -355,14 +355,14 @@ export const caseStudies: Record<string, CaseStudy> = {
         { value: "8", label: "roles · 221 users secured" },
         { value: "5", label: "UI states designed, not just happy path" },
       ],
-      text: "A super-admin console where six operationally different modules feel like one system — fast to scan for health, deep enough to act on, and honest about the states that aren't the happy path.",
+      text: "A super-admin console where six operationally different modules feel like one system: fast to scan for health, deep enough to act on, and honest about the states that aren't the happy path.",
     },
   },
   "project-ask-me": {
     intro: [
-      "**Ask Me** is Lumenore's AI-powered analytics tool — you talk to your business data in natural language and get answers back. Powerful, but the experience was complex, cluttered, and hard to start.",
+      "**Ask Me** is Lumenore's AI-powered analytics tool: you talk to your business data in natural language and get answers back. Powerful, but the experience was complex, cluttered, and hard to start.",
       "People opened it and didn't know where to begin: no clear entry point, no way to bring their own data, and chat answers that felt disconnected from the data behind them. **89% of users struggled to use the product.**",
-      "I rebuilt the experience around a **guided, AI-first, data-first flow** — one clear starting action, multiple ways to bring your own data, a transparent Data Pool, and structured insights you can act on.",
+      "I rebuilt the experience around a **guided, AI-first, data-first flow**, one clear starting action, multiple ways to bring your own data, a transparent Data Pool, and structured insights you can act on.",
     ],
     inProgress: true,
     tags: {
@@ -373,7 +373,7 @@ export const caseStudies: Record<string, CaseStudy> = {
     },
     eyebrow: "Product Design · AI Analytics",
     summary:
-      "Rebuilding Ask Me — Lumenore's conversational BI tool — into a guided, data-first AI experience: one clear starting point, bring-your-own-data, a transparent Data Pool, and structured, actionable insights.",
+      "Rebuilding Ask Me, Lumenore's conversational BI tool, into a guided, data-first AI experience: one clear starting point, bring-your-own-data, a transparent Data Pool, and structured, actionable insights.",
     meta: {
       role: "Product Designer (end to end)",
       timeline: "Ongoing · 2026",
@@ -392,16 +392,16 @@ export const caseStudies: Record<string, CaseStudy> = {
         "The old experience broke users' mental models: chat wasn't clearly tied to the data behind it, outputs were inconsistent, and the interface leaned on jargon like schemas and agents. Business users got stuck at the starting line; data experts hit walls of rigidity and low transparency.",
       goals: [
         "Give users one clear, guided way to start",
-        "Let people bring their own data — upload files or connect sources",
+        "Let people bring their own data, upload files or connect sources",
         "Make the data behind every answer visible and trustworthy",
         "Turn insights into clear, actionable next steps",
       ],
     },
     research: {
       text:
-        "I combined qualitative and evaluative methods — user interviews, focus groups, usability testing, heuristic evaluation, and think-aloud sessions — then mapped the journey for two very different users: Rohan, a business analyst who needs quick answers, and Priya, a data expert who needs control and transparency.",
+        "I combined qualitative and evaluative methods (user interviews, focus groups, usability testing, heuristic evaluation, and think-aloud sessions) then mapped the journey for two very different users: Rohan, a business analyst who needs quick answers, and Priya, a data expert who needs control and transparency.",
       findings: [
-        "89% of users struggled — with a heavy dependency on technical knowledge",
+        "89% of users struggled, with a heavy dependency on technical knowledge",
         "Business users stalled at the starting point; data experts hit rigidity and low control",
         "No data upload or external connections forced everyone into predefined schemas",
       ],
@@ -419,8 +419,8 @@ export const caseStudies: Record<string, CaseStudy> = {
         "A guided, data-first workflow with a clean, minimal interface (and dark mode). The homepage leads with one clear action; a chat-first Ask Me turns natural-language questions into structured insights and recommended next steps; and a central Data Pool makes every file, schema, and analysis visible in one place. Designed to balance ease for beginners with control for data experts.",
       highlights: [
         { title: "Conversational Ask Me", text: "Chat-first analysis: ask in natural language, get structured insights, charts, and recommended actions." },
-        { title: "Bring your own data", text: "Upload files or connect 50+ sources — no longer forced into predefined schemas." },
-        { title: "Data Pool", text: "One transparent workspace for files, datasets, and schemas — matching users' ‘my data in one place' model." },
+        { title: "Bring your own data", text: "Upload files or connect 50+ sources, no longer forced into predefined schemas." },
+        { title: "Data Pool", text: "One transparent workspace for files, datasets, and schemas, matching users' ‘my data in one place' model." },
       ],
     },
     sections: [
@@ -430,10 +430,10 @@ export const caseStudies: Record<string, CaseStudy> = {
         title: "Current Design",
         lead: "The original Ask Me was powerful, but the experience was complex, confusing, and inaccessible for non-technical users.",
         bullets: [
-          "Unclear starting point — no guidance on how to begin.",
-          "Visual clutter — too many options with no hierarchy.",
-          "Lack of guidance — users left to trial and error.",
-          "No data visibility — no preview of what data was in play.",
+          "Unclear starting point, no guidance on how to begin.",
+          "Visual clutter, too many options with no hierarchy.",
+          "Lack of guidance, users left to trial and error.",
+          "No data visibility, no preview of what data was in play.",
           "Desktop-heavy, complex workflows.",
         ],
         image: "projects/askme-current.jpg",
@@ -478,7 +478,7 @@ export const caseStudies: Record<string, CaseStudy> = {
         id: "competitor",
         eyebrow: "Benchmark",
         title: "Competitor Analysis",
-        lead: "I benchmarked Ask Me against ChatGPT, Julius AI, and Formula Bot across natural language, data connections, analysis depth, visualisations, context awareness, ease of use, and advanced controls — to find where Ask Me could win.",
+        lead: "I benchmarked Ask Me against ChatGPT, Julius AI, and Formula Bot across natural language, data connections, analysis depth, visualisations, context awareness, ease of use, and advanced controls, to find where Ask Me could win.",
         image: "projects/askme-competitor.jpg",
       },
       {
@@ -487,7 +487,7 @@ export const caseStudies: Record<string, CaseStudy> = {
         title: "Opportunity Areas",
         lead: "Where the redesign could create the most value:",
         notes: [{"title": "Enable Multiple Data Entry Points", "items": ["Upload files (Excel, PDF, Images and many more)", "Connect external sources (Drive, DB, APIs & 50+ More)", "Use existing Schemas", "Use Sample File"]}, {"title": "Introduce Data Pool as Central Workspace", "items": ["Single place to manage: Files, Datasets, Schemas", "Enable easy switching and management"]}, {"title": "Data Consent & Privacy Control", "items": ["Allow users to control how their data is used", "Provide clear consent mechanism before analysis", "Build trust through transparent data usage policies"]}, {"title": "Improve Trust & Transparency", "items": ["Show step-by-step processing", "Add explainability to insights", "Provide next-step suggestions"]}, {"title": "Minimal & Modern UI Experience", "items": ["Simplify interface (reduce clutter)", "Improve visual hierarchy", "Introduce Dark Mode"]}, {"title": "Personalization & Data Consent", "items": ["User-level personalization", "Analysis-level controls", "Data + privacy settings", "Provide clear consent mechanism before analysis"]}, {"title": "Actionable Insights → Dashboard Integration", "items": ["Add charts to dashboard", "Save insights", "Build presentations"]}, {"title": "AI-Powered Summarization", "items": ["Generate summaries in presentation format and structured insights", "Enable quick understanding of results"]}, {"title": "Enhance AI Response Experience", "items": ["Improve conversational flow", "Support natural language queries"]}, {"title": "Upgrade Visual System (Iconography & UI)", "items": ["Replace outdated icons", "Modernize visual language", "Ensure consistency across UI"]}, {"title": "Responsive Layout", "items": ["Improve mobile usability with simplified layouts and better hierarchy"]}],
-        note: "Users want a flexible, modern, and intelligent system that adapts to their data — not the other way around.",
+        note: "Users want a flexible, modern, and intelligent system that adapts to their data, not the other way around.",
       },
       {
         id: "problem",
@@ -520,11 +520,11 @@ export const caseStudies: Record<string, CaseStudy> = {
         title: "Design System",
         lead: "A scalable design system built for consistency, clarity, and efficiency across data-heavy, AI-driven workflows.",
         bullets: [
-          "Typography — Inter, for clean readability and strong hierarchy.",
-          "Colours — primary blue for actions, a gradient for AI, and semantic colours for states (error, success, info).",
-          "Icons — minimal, consistent, and action-focused.",
-          "Components — reusable cards, modals, loaders, and upload states.",
-          "Interactions — clear feedback, guided flows, and context-aware actions.",
+          "Typography, Inter, for clean readability and strong hierarchy.",
+          "Colours: primary blue for actions, a gradient for AI, and semantic colours for states (error, success, info).",
+          "Icons: minimal, consistent, and action-focused.",
+          "Components: reusable cards, modals, loaders, and upload states.",
+          "Interactions: clear feedback, guided flows, and context-aware actions.",
         ],
         image: "projects/askme-designsystem.jpg",
       },
@@ -539,11 +539,11 @@ export const caseStudies: Record<string, CaseStudy> = {
         id: "solution",
         eyebrow: "Solution",
         title: "Solution & Visual Design",
-        lead: "A guided, data-first workflow with a clean, minimal interface (and dark mode) — combining improved flows, a simplified UI, and clear visual hierarchy to make analysis faster, easier, and more actionable.",
+        lead: "A guided, data-first workflow with a clean, minimal interface (and dark mode), combining improved flows, a simplified UI, and clear visual hierarchy to make analysis faster, easier, and more actionable.",
         note: "👉 Designed to balance ease of use for beginners and flexibility for advanced users.",
         gallery: [
           {
-            heading: "Homepage — First-Time User",
+            heading: "Homepage: First-Time User",
             text: "What changed:",
             bullets: [
               "Centralised input with every entry option.",
@@ -554,18 +554,18 @@ export const caseStudies: Record<string, CaseStudy> = {
             image: "projects/askme-sol-home-first.jpg",
           },
           {
-            heading: "Homepage — Dark Theme",
-            text: "The same guided start in dark mode — reduced cognitive load and a strong visual hierarchy for focused, low-strain sessions.",
+            heading: "Homepage: Dark Theme",
+            text: "The same guided start in dark mode, reduced cognitive load and a strong visual hierarchy for focused, low-strain sessions.",
             image: "projects/askme-sol-home-dark.jpg",
           },
           {
-            heading: "Homepage — Returning User",
-            text: "Personalised for people coming back — faster task resumption, less rework, and contextual suggestions from recent analysis.",
+            heading: "Homepage: Returning User",
+            text: "Personalised for people coming back: faster task resumption, less rework, and contextual suggestions from recent analysis.",
             image: "projects/askme-sol-home-returning.jpg",
           },
           {
             heading: "Processing",
-            text: "Step-by-step system visibility — upload → detection → schema → Data Pool.",
+            text: "Step-by-step system visibility, upload → detection → schema → Data Pool.",
             note: "👉 Improves system transparency and builds trust.",
             image: "projects/askme-sol-processing.jpg",
           },
@@ -578,8 +578,8 @@ export const caseStudies: Record<string, CaseStudy> = {
           },
           {
             heading: "Data Pool",
-            text: "A centralised Data Pool for organised, transparent, efficient data management — shown before → after.",
-            note: "👉 Aligns with the user's mental model — ‘my data in one place'.",
+            text: "A centralised Data Pool for organised, transparent, efficient data management, shown before → after.",
+            note: "👉 Aligns with the user's mental model, ‘my data in one place'.",
             image: "projects/askme-sol-datapool.jpg",
           },
           {
@@ -634,7 +634,7 @@ export const caseStudies: Record<string, CaseStudy> = {
         id: "ab-testing",
         eyebrow: "Validation",
         title: "🧪 A/B Testing",
-        lead: "Two designs, measured head to head on task completion, time to insight, and satisfaction. Design 2 — the guided, chat-first approach — won on every metric and was selected for implementation.",
+        lead: "Two designs, measured head to head on task completion, time to insight, and satisfaction. Design 2 (the guided, chat-first approach) won on every metric and was selected for implementation.",
         stats: [
           { value: "90%", label: "Task completion (from 65%)" },
           { value: "18s", label: "Time to insight (from 38s)" },
@@ -647,20 +647,20 @@ export const caseStudies: Record<string, CaseStudy> = {
         id: "design-decisions",
         eyebrow: "In action",
         title: "Design decisions that built trust",
-        lead: "A walkthrough of the rebuilt experience, and the specific decisions behind it — each one aimed at the same goal: **making the AI feel accountable**, not magical.",
+        lead: "A walkthrough of the rebuilt experience, and the specific decisions behind it, each one aimed at the same goal: **making the AI feel accountable**, not magical.",
         video: "projects/askme-demo.mp4",
         cards: [
           {
             heading: "Schema selector pinned at the bottom",
             short: "The schema is visible before every question, so nobody wonders “Is this the right dataset?”",
             tag: "Clarity",
-            text: "Users always know what data they're querying. The schema context is visible before every question — eliminating the most common confusion: \"Is this the right dataset?\"",
+            text: "Users always know what data they're querying. The schema context is visible before every question, eliminating the most common confusion: \"Is this the right dataset?\"",
           },
           {
             heading: "Starter suggestions panel",
             short: "Example questions from the user's own schema remove blank-canvas paralysis.",
             tag: "Onboarding",
-            text: "Users who don't know what to ask see example questions from their schema — \"Not sure where to start? You can ask questions like…\" This removes blank-canvas paralysis.",
+            text: "Users who don't know what to ask see example questions from their schema, \"Not sure where to start? You can ask questions like…\" This removes blank-canvas paralysis.",
           },
           {
             heading: "Chart / narrative mode toggle",
@@ -670,13 +670,13 @@ export const caseStudies: Record<string, CaseStudy> = {
           },
           {
             heading: "Explicit AI attribution",
-            short: "Every output is labelled “Generated by Lumenore AI” — visible, not alarming.",
+            short: "Every output is labelled “Generated by Lumenore AI”, visible, not alarming.",
             tag: "Trust",
-            text: "Every output is labelled \"Generated by Lumenore AI · [date, time]\". The beta label sets expectations — a disclaimer that's visible but not alarming. Trust through transparency.",
+            text: "Every output is labelled \"Generated by Lumenore AI · [date, time]\". The beta label sets expectations, a disclaimer that's visible but not alarming. Trust through transparency.",
           },
           {
             heading: "\"Add to Dashboard\" in one click",
-            short: "Push any analysis to a dashboard without leaving Ask Me — three clicks to a published insight.",
+            short: "Push any analysis to a dashboard without leaving Ask Me, three clicks to a published insight.",
             tag: "Speed",
             text: "Any analysis can be pushed straight to a dashboard without leaving Ask Me. The AI becomes a dashboard builder: question to published insight in three clicks.",
           },
@@ -684,7 +684,7 @@ export const caseStudies: Record<string, CaseStudy> = {
             heading: "Saved & shared analyses",
             short: "Pin, revisit and share analyses: an ongoing workspace, not a one-off query tool.",
             tag: "Continuity",
-            text: "A left panel lets users pin analyses, revisit recent ones, and share findings with teammates — Ask Me becomes an ongoing analysis environment, not a one-off query tool.",
+            text: "A left panel lets users pin analyses, revisit recent ones, and share findings with teammates, Ask Me becomes an ongoing analysis environment, not a one-off query tool.",
           },
         ],
       },
@@ -702,7 +702,7 @@ export const caseStudies: Record<string, CaseStudy> = {
         cards: [
           {
             heading: "AI recommendations",
-            text: "Proactively surface insights and the next best question from a user's data — before they even ask.",
+            text: "Proactively surface insights and the next best question from a user's data, before they even ask.",
           },
           {
             heading: "Personalisation",
@@ -718,7 +718,7 @@ export const caseStudies: Record<string, CaseStudy> = {
           },
         ],
         body: [
-          "The deeper lesson: adoption rarely fails because a tool lacks capability — it fails when the path to the outcome doesn't match how people think. This redesign didn't add power; it removed the translation step between user intent and the system.",
+          "The deeper lesson: adoption rarely fails because a tool lacks capability, it fails when the path to the outcome doesn't match how people think. This redesign didn't add power; it removed the translation step between user intent and the system.",
         ],
       },
       {
@@ -743,11 +743,11 @@ export const caseStudies: Record<string, CaseStudy> = {
         { value: "4.6/5", label: "User satisfaction (A/B winner)" },
       ],
       text:
-        "A/B testing validated the redesign: Design 2 lifted task completion from 65% to 90%, halved time-to-insight (38s → 18s), raised feature adoption by ~30%, and scored 4.6/5 satisfaction. The result turns a complex, tech-heavy tool into a guided, data-first AI experience aligned with how people actually think about their data. (Ongoing — future scope: AI recommendations, personalisation, and automation.)",
+        "A/B testing validated the redesign: Design 2 lifted task completion from 65% to 90%, halved time-to-insight (38s → 18s), raised feature adoption by ~30%, and scored 4.6/5 satisfaction. The result turns a complex, tech-heavy tool into a guided, data-first AI experience aligned with how people actually think about their data. (Ongoing, future scope: AI recommendations, personalisation, and automation.)",
     },
   },
   "project-punjab-land-records": {
-    intro: ["Getting a land record in Punjab usually means a trip to an agent. I watched people **give up on the official portal** and pay someone to do it for them.","The services exist — Jamabandi, Mutation, Fard — but the digital flow buried them under department names and long forms that failed without saying why.","I redesigned the experience around **what people actually want to do**, so a first-time user can find, request, and track a document without a middleman."],
+    intro: ["Getting a land record in Punjab usually means a trip to an agent. I watched people **give up on the official portal** and pay someone to do it for them.","The services exist (Jamabandi, Mutation, Fard) but the digital flow buried them under department names and long forms that failed without saying why.","I redesigned the experience around **what people actually want to do**, so a first-time user can find, request, and track a document without a middleman."],
     tags: {"role":["Lead Product Designer","UX Research"],"status":["Hi-Fi Prototype","2024"],"type":["GovTech","B2C","Web"],"tools":["Figma","Maze","Drupal"]},
     eyebrow: "Product Design · GovTech",
     summary:
@@ -763,7 +763,7 @@ export const caseStudies: Record<string, CaseStudy> = {
     problem: {
       stats: [{"value":"80%","label":"couldn’t name the right service"},{"value":"1 in 3","label":"gave up and used an agent"},{"value":"#1 call","label":"‘where is my request?’"}],
       text:
-        "Property records are high-stakes and unfamiliar. Users didn't know which service they needed, forms failed silently, and status was invisible after submitting — so people gave up or paid an agent.",
+        "Property records are high-stakes and unfamiliar. Users didn't know which service they needed, forms failed silently, and status was invisible after submitting, so people gave up or paid an agent.",
       goals: [
         "Help users find the right service on the first try",
         "Make long official forms feel guided, not intimidating",
@@ -797,11 +797,11 @@ export const caseStudies: Record<string, CaseStudy> = {
     },
     gallery: {
       title: "The request flow",
-      text: "Requesting a Digital Fard end to end — a plain-language form, a clear fee summary before payment, and instant confirmation with a downloadable document. Tap any screen to view it full size.",
+      text: "Requesting a Digital Fard end to end: a plain-language form, a clear fee summary before payment, and instant confirmation with a downloadable document. Tap any screen to view it full size.",
       shots: [
-        { src: "projects/punjab-fard-1.jpg", caption: "Guided request form — plain-language fields, inline validation, and a choice of WhatsApp, email or direct download." },
-        { src: "projects/punjab-fard-2.jpg", caption: "Review & payment — applicant details and a transparent fee breakdown before the citizen pays." },
-        { src: "projects/punjab-fard-3.jpg", caption: "Instant confirmation — the Digital Fard is generated with a transaction number and one-tap download." },
+        { src: "projects/punjab-fard-1.jpg", caption: "Guided request form: plain-language fields, inline validation, and a choice of WhatsApp, email or direct download." },
+        { src: "projects/punjab-fard-2.jpg", caption: "Review & payment, applicant details and a transparent fee breakdown before the citizen pays." },
+        { src: "projects/punjab-fard-3.jpg", caption: "Instant confirmation, the Digital Fard is generated with a transaction number and one-tap download." },
       ],
     },
     outcomes: {
@@ -815,11 +815,11 @@ export const caseStudies: Record<string, CaseStudy> = {
     },
   },
   "project-avoda": {
-    intro: ["Healthcare workers pick up shifts between long, exhausting days. The staffing apps they used **all looked the same** and asked for too much, too soon.","An employer needs to trust a candidate in seconds; a worker needs to sign up between rounds. The old flow front-loaded paperwork and hid what mattered.","I designed a profile that **leads with trust** — role, specialities, multi-source ratings — and an onboarding you can finish in under five minutes."],
+    intro: ["Healthcare workers pick up shifts between long, exhausting days. The staffing apps they used **all looked the same** and asked for too much, too soon.","An employer needs to trust a candidate in seconds; a worker needs to sign up between rounds. The old flow front-loaded paperwork and hid what mattered.","I designed a profile that **leads with trust** (role, specialities, multi-source ratings) and an onboarding you can finish in under five minutes."],
     tags: {"role":["Product Designer","UX Research"],"status":["Hi-Fi Prototype","2024"],"type":["Healthcare","Staffing","Mobile App"],"tools":["Figma","Protopie","Maze"]},
     eyebrow: "Product Design · Healthcare Staffing",
     summary:
-      "A mobile app that connects healthcare workers — nurses, aides, technicians — with shifts and employers who can trust their credentials.",
+      "A mobile app that connects healthcare workers (nurses, aides, technicians) with shifts and employers who can trust their credentials.",
     meta: {
       role: "Product Designer",
       timeline: "3 months",
@@ -827,7 +827,7 @@ export const caseStudies: Record<string, CaseStudy> = {
       tools: "Figma · Protopie · Maze",
     },
     overview:
-      "Avoda helps healthcare professionals showcase skills and get hired quickly. The core challenge was building trust fast — an employer needs to gauge a candidate's fit and credibility in seconds, and a worker needs onboarding that respects a busy shift schedule.",
+      "Avoda helps healthcare professionals showcase skills and get hired quickly. The core challenge was building trust fast, an employer needs to gauge a candidate's fit and credibility in seconds, and a worker needs onboarding that respects a busy shift schedule.",
     problem: {
       stats: [{"value":"3 in 5","label":"abandoned onboarding"},{"value":"70%","label":"distrusted a single rating"},{"value":"38%","label":"profiles left incomplete"}],
       text:
@@ -874,11 +874,11 @@ export const caseStudies: Record<string, CaseStudy> = {
     },
   },
   "project-baladi-express": {
-    intro: ["Ordering food, then groceries, then flowers usually means learning three different apps. Baladi wanted all of it in **one place** for the Qatar market.","The hard part isn't the catalogue — it's making one app feel coherent when the categories are this different, and keeping search from returning the wrong thing.","I built **one system** across every vertical: a scoped search, bright category tiles, and an identical cart and checkout on web and mobile."],
+    intro: ["Ordering food, then groceries, then flowers usually means learning three different apps. Baladi wanted all of it in **one place** for the Qatar market.","The hard part isn't the catalogue, it's making one app feel coherent when the categories are this different, and keeping search from returning the wrong thing.","I built **one system** across every vertical: a scoped search, bright category tiles, and an identical cart and checkout on web and mobile."],
     tags: {"role":["Product Designer"],"status":["Hi-Fi Prototype","2024"],"type":["Q-Commerce","B2C","Web & Mobile"],"tools":["Figma","Framer","Maze"]},
     eyebrow: "Product Design · Q-Commerce",
     summary:
-      "A multi-category delivery experience — food, grocery, flowers, pharmacy — unified under one fast, friendly ordering flow.",
+      "A multi-category delivery experience (food, grocery, flowers, pharmacy) unified under one fast, friendly ordering flow.",
     meta: {
       role: "Product Designer",
       timeline: "5 months",
@@ -915,9 +915,9 @@ export const caseStudies: Record<string, CaseStudy> = {
     timeline: ["Shared system", "Category-aware search", "Tile-based browse", "Responsive patterns", "Shopper testing"],
     solution: {
       text:
-        "A warm hero with a scoped search, colourful category tiles, and ‘restaurants/stores near you’ lists — all sharing one cart and checkout across breakpoints.",
+        "A warm hero with a scoped search, colourful category tiles, and ‘restaurants/stores near you’ lists, all sharing one cart and checkout across breakpoints.",
       highlights: [
-        { title: "Scoped search", text: "Pick a category, then search within it — no dead-end results." },
+        { title: "Scoped search", text: "Pick a category, then search within it, no dead-end results." },
         { title: "Tile discovery", text: "Bright category tiles make browsing feel effortless." },
         { title: "One system", text: "Identical cart and checkout on web and mobile." },
       ],
@@ -927,9 +927,9 @@ export const caseStudies: Record<string, CaseStudy> = {
         id: "brief",
         eyebrow: "The brief",
         title: "An immersive grocery experience for the Middle East",
-        lead: "Baladi connects customers with grocery suppliers across Qatar — **one app** for food, groceries, flowers, and more, with quick deliveries and a wide selection of quality goods.",
+        lead: "Baladi connects customers with grocery suppliers across Qatar: **one app** for food, groceries, flowers, and more, with quick deliveries and a wide selection of quality goods.",
         body: [
-          "The redesign had one priority: make shopping feel immersive and effortless while strengthening Baladi's digital presence. That meant focusing on accessibility and smooth interaction — linking consumers with reliable suppliers for quick deliveries across every category.",
+          "The redesign had one priority: make shopping feel immersive and effortless while strengthening Baladi's digital presence. That meant focusing on accessibility and smooth interaction, linking consumers with reliable suppliers for quick deliveries across every category.",
         ],
         bullets: [
           "A wide range of products across very different categories",
@@ -954,8 +954,8 @@ export const caseStudies: Record<string, CaseStudy> = {
         eyebrow: "Challenges",
         title: "What made it hard",
         cards: [
-          { heading: "Brand maintenance", text: "Keeping Baladi's identity intact through the redesign — every visual element had to follow the brand's values and guidelines." },
-          { heading: "Brand-aligned system changes", text: "Evolving the design system without breaking visual coherence — new components had to stay recognisably Baladi." },
+          { heading: "Brand maintenance", text: "Keeping Baladi's identity intact through the redesign, every visual element had to follow the brand's values and guidelines." },
+          { heading: "Brand-aligned system changes", text: "Evolving the design system without breaking visual coherence, new components had to stay recognisably Baladi." },
         ],
       },
       {
@@ -965,7 +965,7 @@ export const caseStudies: Record<string, CaseStudy> = {
         lead: "I went through the existing app screen by screen. The same problems kept surfacing:",
         bullets: [
           "Dull, muted color scheme that didn't feel like a fresh-food brand",
-          "Category differentiation wasn't clear — everything blurred together",
+          "Category differentiation wasn't clear, everything blurred together",
           "Promotions weren't distinctly highlighted",
           "Cluttered layouts with too little white space",
           "Weak visual hierarchy made browsing slow",
@@ -976,21 +976,21 @@ export const caseStudies: Record<string, CaseStudy> = {
         id: "colors",
         eyebrow: "Visual language",
         title: "A palette built around Cascara",
-        lead: "The core color — **Cascara (#F54D21)** — pairs with fresh green, warm amber, and soft creams: a modern, appetising palette that reads unmistakably Baladi for both customers and vendors.",
+        lead: "The core color, **Cascara (#F54D21)**, pairs with fresh green, warm amber, and soft creams: a modern, appetising palette that reads unmistakably Baladi for both customers and vendors.",
         image: "projects/baladi-palette.jpg",
       },
       {
         id: "type",
         eyebrow: "Typography",
         title: "Type and hierarchy",
-        lead: "**Gilroy** — a modern sans serif with a geometric touch — carries the interface in both English and Arabic, with a deliberate Regular→Bold hierarchy that keeps dense product screens readable.",
+        lead: "**Gilroy**, a modern sans serif with a geometric touch, carries the interface in both English and Arabic, with a deliberate Regular→Bold hierarchy that keeps dense product screens readable.",
         image: "projects/baladi-type.jpg",
       },
       {
         id: "icons",
         eyebrow: "Iconography",
         title: "Minimalistic iconography",
-        lead: "Simple, recognisable icons that follow familiar UX patterns — user interactions get easier and screens feel lighter.",
+        lead: "Simple, recognisable icons that follow familiar UX patterns, user interactions get easier and screens feel lighter.",
         image: "projects/baladi-icons.jpg",
       },
       {
@@ -1006,13 +1006,13 @@ export const caseStudies: Record<string, CaseStudy> = {
           "Stronger visual hierarchy for efficient browsing",
         ],
         image: "projects/baladi-new-ui.jpg",
-        note: "Compare with the audit above — same journeys, rebuilt with a system that actually sells fresh food.",
+        note: "Compare with the audit above, same journeys, rebuilt with a system that actually sells fresh food.",
       },
       {
         id: "screens",
         eyebrow: "Screens",
         title: "The final experience",
-        lead: "Address and live order tracking, scoped search, category browsing, coupons, wallet and payments — one coherent system across the whole journey.",
+        lead: "Address and live order tracking, scoped search, category browsing, coupons, wallet and payments, one coherent system across the whole journey.",
         image: "projects/baladi-screens.jpg",
       },
       {
@@ -1040,9 +1040,9 @@ export const caseStudies: Record<string, CaseStudy> = {
   },
   "project-brevio": {
     intro: [
-      "**Brevio** is a new home for short films — a platform where Spanish-speaking filmmakers, students and creators upload their work, get paid for it, and build an audience without waiting for permission.",
+      "**Brevio** is a new home for short films: a platform where Spanish-speaking filmmakers, students and creators upload their work, get paid for it, and build an audience without waiting for permission.",
       "The ask was a **launch event landing page**, and the deadline was **24 hours**: a countdown to opening day, a contest for the first 100 uploads, and enough personality to make people sign up before the product even existed.",
-      "I explored **two hero directions**, picked the one that sold the moment hardest, and shipped the full page — hero to footer — inside the day.",
+      "I explored **two hero directions**, picked the one that sold the moment hardest, and shipped the full page, hero to footer, inside the day.",
     ],
     tags: {
       role: ["Product Designer", "Visual Design"],
@@ -1052,7 +1052,7 @@ export const caseStudies: Record<string, CaseStudy> = {
     },
     eyebrow: "Web Design · Launch Campaign",
     summary:
-      "A launch landing page for Brevio, a short-film platform — countdown, contest, and a personality-first pitch, designed and shipped in 24 hours.",
+      "A launch landing page for Brevio, a short-film platform, countdown, contest, and a personality-first pitch, designed and shipped in 24 hours.",
     meta: {
       role: "Product & Visual Designer",
       timeline: "24 hours",
@@ -1063,16 +1063,16 @@ export const caseStudies: Record<string, CaseStudy> = {
       "Brevio needed a pre-launch page that could collect signups and contest entries before the platform opened. With a single day to design it, the work was as much about decisiveness as craft: set a visual direction fast, write copy that sounds like the brand, and hand off something a developer can build immediately.",
     problem: {
       text:
-        "A pre-launch page has nothing to demo — no product screenshots, no social proof. It has to sell a promise, and it has to do it fast enough that people hand over their email.",
+        "A pre-launch page has nothing to demo: no product screenshots, no social proof. It has to sell a promise, and it has to do it fast enough that people hand over their email.",
       goals: [
         "Make an unlaunched product feel like an event worth joining",
-        "Give the contest — €200 to the first 100 uploads — a clear, urgent home",
+        "Give the contest, €200 to the first 100 uploads, a clear, urgent home",
         "Set a full visual direction inside one working day",
       ],
     },
     research: {
       text:
-        "No time for a study. I looked at how launch pages for creator platforms build urgency — countdowns, waitlists, contest mechanics — and borrowed the patterns that convert without feeling like a scam.",
+        "No time for a study. I looked at how launch pages for creator platforms build urgency (countdowns, waitlists, contest mechanics) and borrowed the patterns that convert without feeling like a scam.",
       findings: [
         "A live countdown does more for urgency than any amount of copy",
         "Creator audiences respond to attitude, not corporate polish",
@@ -1081,16 +1081,16 @@ export const caseStudies: Record<string, CaseStudy> = {
     },
     process: [
       { step: "Define", text: "Framed the page around a countdown and a form, so the wait feels like the event." },
-      { step: "Ideate", text: "Two hero explorations in the first hours — bento vs. cinematic — then picked the one that put the countdown and form first." },
-      { step: "Prototype", text: "Designed the full page — hero to footer — in one pass." },
+      { step: "Ideate", text: "Two hero explorations in the first hours, bento vs. cinematic, then picked the one that put the countdown and form first." },
+      { step: "Prototype", text: "Designed the full page, hero to footer, in one pass." },
       { step: "Deliver", text: "Specs and assets to the developer the same day." },
     ],
     timeline: ["Hero exploration", "Direction decision", "Full page design", "Specs & assets"],
     solution: {
       text:
-        "An electric purple-and-lime identity with a serif display voice: a live countdown, a signup form above the fold, an attitude-led manifesto section, and a plain-spoken feature set — all in Spanish, all sounding like a filmmaker wrote it.",
+        "An electric purple-and-lime identity with a serif display voice: a live countdown, a signup form above the fold, an attitude-led manifesto section, and a plain-spoken feature set, all in Spanish, all sounding like a filmmaker wrote it.",
       highlights: [
-        { title: "The countdown leads", text: "Days, hours, minutes — the launch is the headline." },
+        { title: "The countdown leads", text: "Days, hours, minutes, the launch is the headline." },
         { title: "Attitude as brand", text: "‘Hollywood no te va a llamar. Y qué.’ does the persuading." },
         { title: "Contest, front and centre", text: "€200 to the first 100 uploads, impossible to miss." },
       ],
@@ -1100,13 +1100,13 @@ export const caseStudies: Record<string, CaseStudy> = {
         id: "overview",
         side: true,
         title: "Overview",
-        lead: "**Brevio** is a new home for short films — a platform where Spanish-speaking filmmakers upload work, get paid, and build an audience. I designed its **launch event landing page** in **24 hours**: countdown, contest, manifesto, and feature set, hero to footer.",
+        lead: "**Brevio** is a new home for short films: a platform where Spanish-speaking filmmakers upload work, get paid, and build an audience. I designed its **launch event landing page** in **24 hours**: countdown, contest, manifesto, and feature set, hero to footer.",
       },
       {
         id: "challenge",
         side: true,
         title: "Challenge",
-        lead: "A pre-launch page has nothing to demo — no product shots, no reviews, no numbers. It has to sell a promise fast enough that a filmmaker hands over their email, and it had to exist by tomorrow.",
+        lead: "A pre-launch page has nothing to demo: no product shots, no reviews, no numbers. It has to sell a promise fast enough that a filmmaker hands over their email, and it had to exist by tomorrow.",
         body: [
           "That ruled out research rounds and long explorations. The plan: two hero directions in the first hours, one decision, then a single confident pass through the whole page.",
         ],
@@ -1116,10 +1116,10 @@ export const caseStudies: Record<string, CaseStudy> = {
         side: true,
         title: "Ideation",
         eyebrow: "Two directions for the hero",
-        lead: "**Direction A — the bento hero.** A bright purple board that packs everything into one view: headline, contest dates, an awards tile, the €200 prize, and a big register button. Busy on purpose — it treats the launch like a festival poster.",
+        lead: "**Direction A (the bento hero.** A bright purple board that packs everything into one view: headline, contest dates, an awards tile, the €200 prize, and a big register button. Busy on purpose) it treats the launch like a festival poster.",
         body: [
-          "**Direction B — the cinematic hero.** Near-black, centred serif headline, and a fanned row of film stills underneath. Quieter, more premium, and it makes the films the hero instead of the offer.",
-          "I shipped **B**: with no product to show, the emotional pitch — **this is where your film lives** — converts better than a wall of offers, and the countdown gives it all the urgency the bento layout was trying to manufacture.",
+          "**Direction B: the cinematic hero.** Near-black, centred serif headline, and a fanned row of film stills underneath. Quieter, more premium, and it makes the films the hero instead of the offer.",
+          "I shipped **B**: with no product to show, the emotional pitch, **this is where your film lives**, converts better than a wall of offers, and the countdown gives it all the urgency the bento layout was trying to manufacture.",
         ],
         image: "projects/brevio-ideations.jpg",
       },
@@ -1127,7 +1127,7 @@ export const caseStudies: Record<string, CaseStudy> = {
         id: "solution-hero",
         side: true,
         title: "Solution",
-        eyebrow: "The hero — countdown first",
+        eyebrow: "The hero: countdown first",
         lead: "A live countdown to **15/10/2025** sits above the headline, the signup form sits directly under it, and floating **#Quehistoria:)** stickers scatter across the page like set decoration. Nothing stands between arriving and signing up.",
         image: "projects/brevio-hero.jpg",
       },
@@ -1135,23 +1135,23 @@ export const caseStudies: Record<string, CaseStudy> = {
         id: "solution-manifesto",
         side: true,
         title: "",
-        eyebrow: "The manifesto — attitude as the pitch",
-        lead: "**\"Hollywood no te va a llamar. Y qué.\"** — the section that does the real persuading.",
+        eyebrow: "The manifesto: attitude as the pitch",
+        lead: "**\"Hollywood no te va a llamar. Y qué.\"**, the section that does the real persuading.",
         image: "projects/brevio-manifesto.jpg",
       },
       {
         id: "solution-features",
         side: true,
         title: "",
-        eyebrow: "What's coming — the plain-spoken feature set",
-        lead: "Four jargon-free cards — upload, get paid (**you keep 80%**), track, teach — then **Formatos para cada historia**.",
+        eyebrow: "What's coming: the plain-spoken feature set",
+        lead: "Four jargon-free cards (upload, get paid (**you keep 80%**), track, teach) then **Formatos para cada historia**.",
         image: "projects/brevio-features.jpg",
       },
       {
         id: "solution-close",
         side: true,
         title: "",
-        eyebrow: "The close — app download and one last push",
+        eyebrow: "The close, app download and one last push",
         lead: "Store links so creators can start before launch day, then a line that earns the signup.",
         image: "projects/brevio-close.jpg",
         note: "Every section ends in the same place: the countdown, or the form. On a pre-launch page, momentum is the whole design.",
@@ -1160,7 +1160,7 @@ export const caseStudies: Record<string, CaseStudy> = {
         id: "outcome",
         side: true,
         title: "Outcome",
-        lead: "A complete launch identity and landing page — hero to footer, in Spanish, with a live countdown and contest mechanics — designed, decided, and handed off inside **24 hours**.",
+        lead: "A complete launch identity and landing page (hero to footer, in Spanish, with a live countdown and contest mechanics) designed, decided, and handed off inside **24 hours**.",
         stats: [
           { value: "24 hrs", label: "concept to handoff" },
           { value: "2", label: "hero directions explored" },
@@ -1175,14 +1175,14 @@ export const caseStudies: Record<string, CaseStudy> = {
         { value: "1 day", label: "Full brand direction" },
       ],
       text:
-        "A launch page that made an unreleased product feel like an event — designed and shipped in a single day.",
+        "A launch page that made an unreleased product feel like an event, designed and shipped in a single day.",
     },
   },
   "project-capitalfi": {
     intro: [
-      "**CapitalFi (CFI)** is a stablecoin backed by physical gold — a digital asset that pairs the enduring value of gold with the flexibility of blockchain.",
+      "**CapitalFi (CFI)** is a stablecoin backed by physical gold, a digital asset that pairs the enduring value of gold with the flexibility of blockchain.",
       "Crypto asks for trust; gold buyers give it slowly. The website had to convince a **conservative, gold-minded audience** that a token is as solid as the bars behind it.",
-      "I designed the full 6-page marketing site around one idea: **show the proof before the pitch** — transparency as a first-class page, not a footnote.",
+      "I designed the full 6-page marketing site around one idea: **show the proof before the pitch**, transparency as a first-class page, not a footnote.",
     ],
     tags: {
       role: ["Web Designer", "Visual Design"],
@@ -1192,7 +1192,7 @@ export const caseStudies: Record<string, CaseStudy> = {
     },
     eyebrow: "Web Design · Fintech",
     summary:
-      "A trust-first marketing website for a gold-backed stablecoin — six pages that lead with physical gold, transparent custody, and one clear action.",
+      "A trust-first marketing website for a gold-backed stablecoin: six pages that lead with physical gold, transparent custody, and one clear action.",
     meta: {
       role: "Web Designer",
       timeline: "4 weeks",
@@ -1200,10 +1200,10 @@ export const caseStudies: Record<string, CaseStudy> = {
       tools: "Figma",
     },
     overview:
-      "CapitalFi needed a site that could explain a gold-backed stablecoin to people who distrust crypto. The answer was to lead every page with the physical asset — real gold, real custody, real audits — and keep a single CTA throughout.",
+      "CapitalFi needed a site that could explain a gold-backed stablecoin to people who distrust crypto. The answer was to lead every page with the physical asset (real gold, real custody, real audits) and keep a single CTA throughout.",
     problem: {
       text:
-        "Crypto landing pages tend to look like crypto — neon gradients and jargon. That aesthetic is exactly what this audience distrusts.",
+        "Crypto landing pages tend to look like crypto, neon gradients and jargon. That aesthetic is exactly what this audience distrusts.",
       goals: [
         "Make the gold backing feel tangible on every page",
         "Give transparency its own place in the IA",
@@ -1228,7 +1228,7 @@ export const caseStudies: Record<string, CaseStudy> = {
     timeline: ["Page mapping", "Colour system", "Hi-fi pages in Figma", "Component set", "Dev handoff"],
     solution: {
       text:
-        "A clean, banking-adjacent visual language: real gold photography, a calm blue action colour, and proof sections — storage, auditing, roadmap — ahead of any token talk.",
+        "A clean, banking-adjacent visual language: real gold photography, a calm blue action colour, and proof sections (storage, auditing, roadmap) ahead of any token talk.",
       highlights: [
         { title: "Proof first", text: "Transparency is a top-level page, not a footer link." },
         { title: "One action", text: "A single 'Get Started' CTA repeats across all six pages." },
@@ -1240,13 +1240,13 @@ export const caseStudies: Record<string, CaseStudy> = {
         id: "overview",
         side: true,
         title: "Overview",
-        lead: "**CapitalFi (CFI)** is a stablecoin backed by physical gold — a digital asset pairing the enduring value of gold with the flexibility of blockchain. I designed the full 6-page marketing site: Home, About, Transparency, Blog, Resources, and Contact.",
+        lead: "**CapitalFi (CFI)** is a stablecoin backed by physical gold: a digital asset pairing the enduring value of gold with the flexibility of blockchain. I designed the full 6-page marketing site: Home, About, Transparency, Blog, Resources, and Contact.",
       },
       {
         id: "challenge",
         side: true,
         title: "Challenge",
-        lead: "Crypto asks for trust; gold buyers give it slowly. The audience this site courts — cautious, gold-minded investors — is exactly the audience most sceptical of crypto, and most allergic to neon-gradient Web3 aesthetics.",
+        lead: "Crypto asks for trust; gold buyers give it slowly. The audience this site courts (cautious, gold-minded investors) is exactly the audience most sceptical of crypto, and most allergic to neon-gradient Web3 aesthetics.",
         body: [
           "So the site borrows its manners from banking, not Web3: real photography of the asset, plain-language answers about custody and audits, and one calm, repeated call to action.",
         ],
@@ -1255,8 +1255,8 @@ export const caseStudies: Record<string, CaseStudy> = {
         id: "solution-home",
         side: true,
         title: "Solution",
-        eyebrow: "Home — one scroll, the whole trust story",
-        lead: "The hero opens on real gold bars — **\"We are backed by physical gold\"** — then the page walks stability, security and transparency, the roadmap, how it works, FAQs, and community, ending on a single CTA.",
+        eyebrow: "Home: one scroll, the whole trust story",
+        lead: "The hero opens on real gold bars, **\"We are backed by physical gold\"**: then the page walks stability, security and transparency, the roadmap, how it works, FAQs, and community, ending on a single CTA.",
         image: "projects/capitalfi-home-full.jpg",
         scroller: { label: "capitalfi.com" },
       },
@@ -1264,32 +1264,32 @@ export const caseStudies: Record<string, CaseStudy> = {
         id: "solution-transparency",
         side: true,
         title: "",
-        eyebrow: "Transparency — proof before promises",
-        lead: "**How the gold is stored**, how it's audited, how the chain works — each its own plain-language card.",
+        eyebrow: "Transparency: proof before promises",
+        lead: "**How the gold is stored**, how it's audited, how the chain works, each its own plain-language card.",
         image: "projects/capitalfi-proof.jpg",
       },
       {
         id: "solution-about",
         side: true,
         title: "",
-        eyebrow: "About — the people behind the peg",
-        lead: "The mission, stated plainly — **who** holds the gold matters as much as the gold.",
+        eyebrow: "About: the people behind the peg",
+        lead: "The mission, stated plainly, **who** holds the gold matters as much as the gold.",
         image: "projects/capitalfi-about.jpg",
       },
       {
         id: "solution-resources",
         side: true,
         title: "",
-        eyebrow: "Resources — the white paper, one click away",
-        lead: "Blogs, community and the **white paper** — what serious investors look for first.",
+        eyebrow: "Resources: the white paper, one click away",
+        lead: "Blogs, community and the **white paper**, what serious investors look for first.",
         image: "projects/capitalfi-resources.jpg",
       },
       {
         id: "outcome",
         side: true,
         title: "Outcome",
-        lead: "A trust-first site that lets the gold do the convincing — six pages, one shared visual system, shipped from IA to handoff in four weeks.",
-        note: "Every page ends the same way: one action, repeated calmly — no urgency tricks, because urgency is what this audience distrusts.",
+        lead: "A trust-first site that lets the gold do the convincing: six pages, one shared visual system, shipped from IA to handoff in four weeks.",
+        note: "Every page ends the same way: one action, repeated calmly, no urgency tricks, because urgency is what this audience distrusts.",
       },
     ],
     outcomes: {
@@ -1299,15 +1299,15 @@ export const caseStudies: Record<string, CaseStudy> = {
         { value: "4 wks", label: "Design to handoff" },
       ],
       text:
-        "A trust-first site that lets the gold do the convincing — shipped from IA to handoff in four weeks.",
+        "A trust-first site that lets the gold do the convincing, shipped from IA to handoff in four weeks.",
     },
   },
   "project-cakes-celebrations": {
-    intro: ["Ordering a custom cake online is oddly stressful. Every site throws a **wall of options** at you and hides the part where you send it as a gift.","People shop for a moment — a birthday, an anniversary — not for a product grid. And gifting deserves its own obvious path.","I made customisation **playful and guided** — by occasion, shape, and design — with a built-in way to add a message and deliver it to someone you love."],
+    intro: ["Ordering a custom cake online is oddly stressful. Every site throws a **wall of options** at you and hides the part where you send it as a gift.","People shop for a moment (a birthday, an anniversary) not for a product grid. And gifting deserves its own obvious path.","I made customisation **playful and guided** (by occasion, shape, and design) with a built-in way to add a message and deliver it to someone you love."],
     tags: {"role":["Product Designer","Visual Design"],"status":["Hi-Fi Prototype","2024"],"type":["E-commerce","B2C","Web & Mobile"],"tools":["Figma","Illustrator","Maze"]},
     eyebrow: "Product Design · E-commerce",
     summary:
-      "A playful cake-ordering experience where people design custom cakes by occasion, shape, and style — and send them as gifts.",
+      "A playful cake-ordering experience where people design custom cakes by occasion, shape, and style, and send them as gifts.",
     meta: {
       role: "Product & Visual Designer",
       timeline: "3 months",
@@ -1362,7 +1362,7 @@ export const caseStudies: Record<string, CaseStudy> = {
     },
   },
   "project-tabnet-security": {
-    intro: ["Most security tools either look like toys or bury you in jargon. Tabnet quantifies cyber risk in **money a board can act on** — and the brand had to feel that precise.","Buyers here don't want adjectives; they want proof — the methodology, the outcomes, the numbers behind the score.","I built a **dark, high-precision identity** and a problem-to-outcome story that speaks to security leaders and executives at once."],
+    intro: ["Most security tools either look like toys or bury you in jargon. Tabnet quantifies cyber risk in **money a board can act on**, and the brand had to feel that precise.","Buyers here don't want adjectives; they want proof: the methodology, the outcomes, the numbers behind the score.","I built a **dark, high-precision identity** and a problem-to-outcome story that speaks to security leaders and executives at once."],
     tags: {"role":["Product Designer"],"status":["Hi-Fi Prototype","2024"],"type":["Cybersecurity","B2B","Web"],"tools":["Figma","Framer"]},
     eyebrow: "Product Design · Cybersecurity",
     summary:
@@ -1412,15 +1412,15 @@ export const caseStudies: Record<string, CaseStudy> = {
     },
     gallery: {
       title: "Inside the product",
-      text: "The same dark, precise language carried into the platform itself — security data that reads at a glance. Tap any screen to view it full size.",
+      text: "The same dark, precise language carried into the platform itself, security data that reads at a glance. Tap any screen to view it full size.",
       shots: [
-        { src: "projects/tabnet-dashboard.jpg", caption: "Security Posture Dashboard — overall risk score, findings, compliance and integration status, with product summaries and misconfiguration analysis in one view." },
-        { src: "projects/tabnet-attack-surface.jpg", caption: "Attack Surface — monitored domains, a live subdomain network map, and critical findings ranked by severity." },
-        { src: "projects/tabnet-domain-overview.jpg", caption: "Domain Overview — per-domain drilldown: risk score trend, vulnerability distribution, tech stack, and recent findings." },
-        { src: "projects/tabnet-risk-calculator.jpg", caption: "Risk Calculator — risk score, likelihood and impact with a radar breakdown, plus prioritised preventive measures." },
-        { src: "projects/tabnet-insights.jpg", caption: "FAIRCAM Controls Insights — the constellation view: every control mapped in orbit, click any node for detail and affected findings." },
-        { src: "projects/tabnet-ai-search.jpg", caption: "Ask anything — an AI entry point with suggested security questions, from cyber risk score to ransomware exposure." },
-        { src: "projects/tabnet-visuals.jpg", caption: "Visual language — the shield, radar, and integration motifs that carry the cosmic security identity through the product." },
+        { src: "projects/tabnet-dashboard.jpg", caption: "Security Posture Dashboard: overall risk score, findings, compliance and integration status, with product summaries and misconfiguration analysis in one view." },
+        { src: "projects/tabnet-attack-surface.jpg", caption: "Attack Surface: monitored domains, a live subdomain network map, and critical findings ranked by severity." },
+        { src: "projects/tabnet-domain-overview.jpg", caption: "Domain Overview: per-domain drilldown: risk score trend, vulnerability distribution, tech stack, and recent findings." },
+        { src: "projects/tabnet-risk-calculator.jpg", caption: "Risk Calculator: risk score, likelihood and impact with a radar breakdown, plus prioritised preventive measures." },
+        { src: "projects/tabnet-insights.jpg", caption: "FAIRCAM Controls Insights, the constellation view: every control mapped in orbit, click any node for detail and affected findings." },
+        { src: "projects/tabnet-ai-search.jpg", caption: "Ask anything, an AI entry point with suggested security questions, from cyber risk score to ransomware exposure." },
+        { src: "projects/tabnet-visuals.jpg", caption: "Visual language: the shield, radar, and integration motifs that carry the cosmic security identity through the product." },
       ],
     },
     outcomes: {
@@ -1434,7 +1434,7 @@ export const caseStudies: Record<string, CaseStudy> = {
     },
   },
   "project-academic-web": {
-    intro: ["School admins run on spreadsheets. The numbers that matter — attendance, fees — were **buried**, and monthly reports took hours to rebuild by hand.","I shadowed administrators through their day to see which metrics they actually check, and which reports they recreate every cycle.","The result is a **daily-first dashboard** with fast record search and clear trends, turning manual reporting into a few clicks."],
+    intro: ["School admins run on spreadsheets. The numbers that matter (attendance, fees) were **buried**, and monthly reports took hours to rebuild by hand.","I shadowed administrators through their day to see which metrics they actually check, and which reports they recreate every cycle.","The result is a **daily-first dashboard** with fast record search and clear trends, turning manual reporting into a few clicks."],
     tags: {"role":["Product Designer"],"status":["Hi-Fi Prototype","2024"],"type":["EdTech","B2B SaaS","Web"],"tools":["Figma","Maze"]},
     eyebrow: "Product Design · EdTech SaaS",
     summary:
@@ -1446,7 +1446,7 @@ export const caseStudies: Record<string, CaseStudy> = {
       tools: "Figma · Maze",
     },
     overview:
-      "Advance Academic Web brings scattered school operations — students, employees, fees, attendance — into a single system. The design needed to make dense administrative data feel calm and glanceable for non-technical school staff.",
+      "Advance Academic Web brings scattered school operations (students, employees, fees, attendance) into a single system. The design needed to make dense administrative data feel calm and glanceable for non-technical school staff.",
     problem: {
       stats: [{"value":"4 hrs","label":"per monthly report, by hand"},{"value":"70%","label":"of data lived in spreadsheets"},{"value":"2","label":"metrics checked every day"}],
       text:
@@ -1484,14 +1484,14 @@ export const caseStudies: Record<string, CaseStudy> = {
     },
     gallery: {
       title: "The admin workspace",
-      text: "The daily surfaces of the school-admin product — attendance, fees, and exams, each a few clicks from the dashboard. Tap any screen to view it full size.",
+      text: "The daily surfaces of the school-admin product: attendance, fees, and exams, each a few clicks from the dashboard. Tap any screen to view it full size.",
       shots: [
-        { src: "projects/academic-overview.jpg", caption: "The system at a glance — daily-first dashboard, salary slips, exam timetables, and fee tracking, all behind one simple login." },
-        { src: "projects/academic-attendance-dashboard.jpg", caption: "Attendance dashboard — comparison and daily charts up top, with a per-department report ready to export." },
-        { src: "projects/academic-attendance-register.jpg", caption: "Attendance register — the month at a glance per teacher, with present/absent/holiday states readable in a scan." },
-        { src: "projects/academic-student-profile.jpg", caption: "Student profile — personal, contact, and account details collected into one clean, private record." },
-        { src: "projects/academic-fees.jpg", caption: "Student fee payments — totals summarised, then every student's paid/remaining status with filters and export." },
-        { src: "projects/academic-exams.jpg", caption: "Exam timetable — a confirmed, printable half-yearly schedule generated per class." },
+        { src: "projects/academic-overview.jpg", caption: "The system at a glance: daily-first dashboard, salary slips, exam timetables, and fee tracking, all behind one simple login." },
+        { src: "projects/academic-attendance-dashboard.jpg", caption: "Attendance dashboard, comparison and daily charts up top, with a per-department report ready to export." },
+        { src: "projects/academic-attendance-register.jpg", caption: "Attendance register, the month at a glance per teacher, with present/absent/holiday states readable in a scan." },
+        { src: "projects/academic-student-profile.jpg", caption: "Student profile: personal, contact, and account details collected into one clean, private record." },
+        { src: "projects/academic-fees.jpg", caption: "Student fee payments, totals summarised, then every student's paid/remaining status with filters and export." },
+        { src: "projects/academic-exams.jpg", caption: "Exam timetable, a confirmed, printable half-yearly schedule generated per class." },
       ],
     },
     outcomes: {
@@ -1505,7 +1505,7 @@ export const caseStudies: Record<string, CaseStudy> = {
     },
   },
   "project-leadsdemos": {
-    intro: ["Sales teams rebuild the same demo over and over and **lose track of versions**. There was no single place to see, launch, or reuse what they'd already made.","Talking to sales engineers, the biggest unmet need was reuse — most demos were near-duplicates of an earlier one.","I designed a **visual My Sites hub** where every demo is a card with quick actions, plus a fast create-from-template path."],
+    intro: ["Sales teams rebuild the same demo over and over and **lose track of versions**. There was no single place to see, launch, or reuse what they'd already made.","Talking to sales engineers, the biggest unmet need was reuse, most demos were near-duplicates of an earlier one.","I designed a **visual My Sites hub** where every demo is a card with quick actions, plus a fast create-from-template path."],
     tags: {"role":["Product Designer"],"status":["Hi-Fi Prototype","2024"],"type":["SaaS","B2B","Web"],"tools":["Figma","Maze"]},
     eyebrow: "Product Design · SaaS",
     summary:
@@ -1517,7 +1517,7 @@ export const caseStudies: Record<string, CaseStudy> = {
       tools: "Figma · Maze",
     },
     overview:
-      "LeadsDemos lets teams build and organise demo experiences — landing pages, dashboards, full sites — from one place. The design centred on a ‘My Sites’ hub that makes managing many demos feel light and organised.",
+      "LeadsDemos lets teams build and organise demo experiences (landing pages, dashboards, full sites) from one place. The design centred on a ‘My Sites’ hub that makes managing many demos feel light and organised.",
     problem: {
       stats: [{"value":"60%","label":"of demos were near-duplicates"},{"value":"0","label":"single place to find them"},{"value":"2.8×","label":"wasted rebuild effort"}],
       text:
@@ -1532,7 +1532,7 @@ export const caseStudies: Record<string, CaseStudy> = {
       text:
         "I interviewed sales engineers about how they prep demos and mapped the lifecycle of a demo from request to reuse.",
       findings: [
-        "Reuse was the biggest unmet need — most demos were near-duplicates",
+        "Reuse was the biggest unmet need, most demos were near-duplicates",
         "Users wanted per-site quick actions (open, edit, share)",
         "A visual grid beat a text list for recognising the right demo",
       ],
@@ -1560,7 +1560,7 @@ export const caseStudies: Record<string, CaseStudy> = {
         title: "Overview",
         lead: "**LeadsWithDemos** turns CMS sandbox demos into a lead-generation engine: marketers build a demo site with no coding, share it, and capture qualified leads from people who have actually used the product.",
         body: [
-          "I designed the platform end to end — the marketing site, the builder, the demo management hub, and the billing flows — plus the visual system underneath it all.",
+          "I designed the platform end to end (the marketing site, the builder, the demo management hub, and the billing flows) plus the visual system underneath it all.",
         ],
         bullets: [
           "No coding needed to publish a demo",
@@ -1572,16 +1572,16 @@ export const caseStudies: Record<string, CaseStudy> = {
         id: "discover",
         side: true,
         title: "Discover",
-        lead: "I got to know the consumers and the market before touching a screen — how marketers actually generate leads, and where sandbox demos fit in that funnel.",
+        lead: "I got to know the consumers and the market before touching a screen, how marketers actually generate leads, and where sandbox demos fit in that funnel.",
         body: [
-          "The insight that reframed the product: a demo isn't a marketing asset, it's a **qualifying step**. Someone who spends ten minutes inside your sandbox is a far better lead than someone who downloaded a PDF — so the design had to treat lead capture and demo building as one flow, not two.",
+          "The insight that reframed the product: a demo isn't a marketing asset, it's a **qualifying step**. Someone who spends ten minutes inside your sandbox is a far better lead than someone who downloaded a PDF, so the design had to treat lead capture and demo building as one flow, not two.",
         ],
       },
       {
         id: "challenge",
         side: true,
         title: "Challenge",
-        lead: "Delivering a genuinely user-friendly platform meant navigating real complexity — sandbox environments, CMS variations, and billing tiers — without any of it leaking into the interface.",
+        lead: "Delivering a genuinely user-friendly platform meant navigating real complexity (sandbox environments, CMS variations, and billing tiers) without any of it leaking into the interface.",
         bullets: [
           "Make a technical product (sandboxes, subdomains, environments) feel simple",
           "Keep one coherent system across marketing site, builder, and dashboard",
@@ -1593,7 +1593,7 @@ export const caseStudies: Record<string, CaseStudy> = {
         side: true,
         narrow: true,
         title: "Colors",
-        lead: "A palette of **Royal Blue, Portage and Selago**. Royal Blue carries trust, Portage adds a hint of refinement, and Selago keeps the background calm — with a Royal-Blue-to-Portage gradient adding depth on hero and CTA moments.",
+        lead: "A palette of **Royal Blue, Portage and Selago**. Royal Blue carries trust, Portage adds a hint of refinement, and Selago keeps the background calm, with a Royal-Blue-to-Portage gradient adding depth on hero and CTA moments.",
         image: "projects/leads-colors.jpg",
       },
       {
@@ -1601,7 +1601,7 @@ export const caseStudies: Record<string, CaseStudy> = {
         side: true,
         narrow: true,
         title: "Visual and typography hierarchy",
-        lead: "**Qanelas** across four weights, mapped deliberately: Bold for prices, SemiBold for plan names, Medium for section labels, Regular for body — so a dense pricing card stays readable in one pass.",
+        lead: "**Qanelas** across four weights, mapped deliberately: Bold for prices, SemiBold for plan names, Medium for section labels, Regular for body, so a dense pricing card stays readable in one pass.",
         image: "projects/leads-type.jpg",
       },
       {
@@ -1616,7 +1616,7 @@ export const caseStudies: Record<string, CaseStudy> = {
         id: "solution-mysites",
         side: true,
         title: "Solution",
-        eyebrow: "My Sites — every demo in one place",
+        eyebrow: "My Sites: every demo in one place",
         lead: "The hub the whole product hangs off: each demo is a card with its live URL and quick actions, so finding, previewing and reusing an existing demo beats rebuilding one.",
         image: "projects/leads-mysites.jpg",
       },
@@ -1624,15 +1624,15 @@ export const caseStudies: Record<string, CaseStudy> = {
         id: "solution-builder",
         side: true,
         title: "",
-        eyebrow: "The builder — pages without code",
-        lead: "Templates for footer, news, predesigned and contact pages — no hosting or code to think about.",
+        eyebrow: "The builder: pages without code",
+        lead: "Templates for footer, news, predesigned and contact pages, no hosting or code to think about.",
         image: "projects/leads-builder.jpg",
       },
       {
         id: "solution-ui",
         side: true,
         title: "",
-        eyebrow: "UI elements — the working parts",
+        eyebrow: "UI elements: the working parts",
         lead: "Performance at a glance, audience sync to Mailchimp, Active Campaign or Constant Contact, plus payments and scheduling.",
         image: "projects/leads-components.jpg",
       },
@@ -1640,9 +1640,9 @@ export const caseStudies: Record<string, CaseStudy> = {
         id: "wireframes",
         side: true,
         title: "Wireframes → visual design",
-        lead: "Every screen was structured in **greyscale first** — hierarchy, density and flow settled before a single colour decision. Only once the layout held up did the palette, type and icons go on top.",
+        lead: "Every screen was structured in **greyscale first**: hierarchy, density and flow settled before a single colour decision. Only once the layout held up did the palette, type and icons go on top.",
         body: [
-          "Hover the screens below to fade the wireframes into the finished visual design — same layouts, same spacing, just the system applied.",
+          "Hover the screens below to fade the wireframes into the finished visual design: same layouts, same spacing, just the system applied.",
         ],
         image: "projects/leads-wireframe.jpg",
         hoverImage: "projects/leads-wireframe-color.jpg",
@@ -1651,8 +1651,8 @@ export const caseStudies: Record<string, CaseStudy> = {
         id: "solution-pricing",
         side: true,
         title: "",
-        eyebrow: "Pricing — three plans, no fine print",
-        lead: "Try It Free, Basic and Pro side by side — so the upgrade decision needs no sales call.",
+        eyebrow: "Pricing: three plans, no fine print",
+        lead: "Try It Free, Basic and Pro side by side, so the upgrade decision needs no sales call.",
         image: "projects/leads-pricing.jpg",
       },
       {
@@ -1660,7 +1660,7 @@ export const caseStudies: Record<string, CaseStudy> = {
         side: true,
         title: "",
         eyebrow: "The marketing site",
-        lead: "**\"Create SandboxDemos to Capture High-Quality Leads\"** — why it's unique, how demos qualify buyers, and pricing in one scroll.",
+        lead: "**\"Create SandboxDemos to Capture High-Quality Leads\"**: why it's unique, how demos qualify buyers, and pricing in one scroll.",
         image: "projects/leads-website.jpg",
         scroller: { label: "leadswithdemos.com" },
       },
@@ -1668,7 +1668,7 @@ export const caseStudies: Record<string, CaseStudy> = {
         id: "visual-design",
         side: true,
         title: "Visual design",
-        lead: "The finished system in use — playful but disciplined, vivid colour on calm backgrounds, and the same components repeating from marketing site to dashboard.",
+        lead: "The finished system in use: playful but disciplined, vivid colour on calm backgrounds, and the same components repeating from marketing site to dashboard.",
         image: "projects/leads-collage.jpg",
         note: "One system across three very different surfaces: a marketing site that sells, a builder that creates, and a dashboard that manages.",
       },
@@ -1676,7 +1676,7 @@ export const caseStudies: Record<string, CaseStudy> = {
         id: "outcome",
         side: true,
         title: "Outcome",
-        lead: "A complete platform identity and product design — marketing site, no-code builder, demo hub, and billing — built on one palette, one typeface, and one icon set.",
+        lead: "A complete platform identity and product design (marketing site, no-code builder, demo hub, and billing) built on one palette, one typeface, and one icon set.",
         stats: [
           { value: "3", label: "surfaces: site, builder, dashboard" },
           { value: "1", label: "design system across all of them" },
@@ -1695,11 +1695,11 @@ export const caseStudies: Record<string, CaseStudy> = {
     },
   },
   "project-audio-transcript-analysis": {
-    intro: ["AI can transcribe a support call in seconds — and then hand you **a wall of text you can't trust**. Managers needed the outcome, not the transcript.","I tested how support leads read calls today, and which sentiment visualisations they actually understood at a glance.","The workspace makes a whole call graspable in seconds: transcript, side-by-side summaries, **emoji-anchored sentiment**, and clear AI states."],
+    intro: ["AI can transcribe a support call in seconds, and then hand you **a wall of text you can't trust**. Managers needed the outcome, not the transcript.","I tested how support leads read calls today, and which sentiment visualisations they actually understood at a glance.","The workspace makes a whole call graspable in seconds: transcript, side-by-side summaries, **emoji-anchored sentiment**, and clear AI states."],
     tags: {"role":["Product Designer"],"status":["Hi-Fi Prototype","2024"],"type":["AI","Support Ops","Web"],"tools":["Figma","Framer","Maze"]},
     eyebrow: "Product Design · AI · Support Ops",
     summary:
-      "An AI workspace that turns support call recordings into transcripts, summaries, sentiment, and upsell suggestions — in one view.",
+      "An AI workspace that turns support call recordings into transcripts, summaries, sentiment, and upsell suggestions, in one view.",
     meta: {
       role: "Product Designer",
       timeline: "4 months",
@@ -1711,7 +1711,7 @@ export const caseStudies: Record<string, CaseStudy> = {
     problem: {
       stats: [{"value":"55%","label":"of review time wasted"},{"value":"1 screen","label":"of untrusted AI text"},{"value":"30%","label":"of upsell signals missed"}],
       text:
-        "AI outputs can feel like a wall of text you can't trust. Managers needed to grasp a call's outcome, sentiment, and next action in seconds — without reading the whole transcript.",
+        "AI outputs can feel like a wall of text you can't trust. Managers needed to grasp a call's outcome, sentiment, and next action in seconds, without reading the whole transcript.",
       goals: [
         "Make a whole call graspable at a glance",
         "Show sentiment in a way people instantly read",
@@ -1745,9 +1745,9 @@ export const caseStudies: Record<string, CaseStudy> = {
     },
     gallery: {
       title: "The workspace",
-      text: "Everything about a call in one screen — a scrubbable recording up top, the transcript beside customer and agent summaries, sentiment as an emoji-anchored trend, and the ticket summary with upsell suggestions below.",
+      text: "Everything about a call in one screen: a scrubbable recording up top, the transcript beside customer and agent summaries, sentiment as an emoji-anchored trend, and the ticket summary with upsell suggestions below.",
       shots: [
-        { src: "projects/ata-dashboard.jpg", caption: "The call workspace — recording, transcript, dual summaries, sentiment trends, ticket details, and upsell prompts in a single view." },
+        { src: "projects/ata-dashboard.jpg", caption: "The call workspace: recording, transcript, dual summaries, sentiment trends, ticket details, and upsell prompts in a single view." },
       ],
     },
     outcomes: {
@@ -2015,23 +2015,23 @@ export interface MotionItem {
 /** Animation & video work — add entries here and they appear in the Animation / Video tab. */
 export const motionWork: MotionItem[] = [
   {
-    title: "Ask Me — Mobile App",
+    title: "Ask Me: Mobile App",
     category: "Product animation · GenAI",
     description:
-      "A walkthrough of the Ask Me mobile app, Lumenore's GenAI conversational analytics assistant — ask in plain language and get a clear answer from your data.",
+      "A walkthrough of the Ask Me mobile app, Lumenore's GenAI conversational analytics assistant, ask in plain language and get a clear answer from your data.",
     src: "motion/ask-me-promo.mp4",
     poster: "motion/ask-me-promo.webp",
   },
   {
     title: "Grid Wave",
     category: "Micro-interaction",
-    description: "Cells fill in a diagonal wave from the first selection — a loading and selection pattern for data grids.",
+    description: "Cells fill in a diagonal wave from the first selection, a loading and selection pattern for data grids.",
     image: "motion/grid-wave.gif",
   },
   {
     title: "AI Sparkle",
     category: "Micro-interaction",
-    description: "The sparkle mark used for AI moments — a small, friendly cue that something smart is happening.",
+    description: "The sparkle mark used for AI moments, a small, friendly cue that something smart is happening.",
     image: "motion/ai-sparkle.webp",
   },
   {
@@ -2045,7 +2045,7 @@ export const motionWork: MotionItem[] = [
 
 export const creatives: Creative[] = [
   {
-    name: "Néant — Monogram",
+    name: "Néant: Monogram",
     category: "Logo Design",
     image: "creatives/neant-monogram.webp",
     center: true,
@@ -2070,7 +2070,7 @@ export const creatives: Creative[] = [
     gradient: "from-blue-500/30 to-indigo-700/30",
   },
   {
-    name: "Career Crush — Concept",
+    name: "Career Crush: Concept",
     category: "Brand Ideation",
     image: "creatives/career-crush-concept.webp",
     gradient: "from-amber-300/30 to-orange-400/30",
@@ -2132,15 +2132,15 @@ export const creatives: Creative[] = [
 ];
 
 export const aboutIntro =
-  "Hi, I'm Priti — a Senior Product Designer at Lumenore, recovering chemical engineer, and lifelong tinkerer.";
+  "Hi, I'm Priti, a Senior Product Designer at Lumenore, recovering chemical engineer, and lifelong tinkerer.";
 
 export const learning: string[] = [
   "Shipping AI products at Lumenore.",
   "Prototyping with AI more than I expected.",
   "Reading more books.",
   "Learning development to build what I design.",
-  "Psychology — why people think, feel and behave the way they do.",
-  "Service design — mapping the whole experience beyond the screen.",
+  "Psychology, why people think, feel and behave the way they do.",
+  "Service design, mapping the whole experience beyond the screen.",
   "Trying to keep the promises I make to myself.",
 ];
 
@@ -2159,7 +2159,7 @@ export const principles: Principle[] = [
   {
     tag: "I don't design in a cave",
     tagClass: "border-violet-200 bg-violet-100 text-violet-900",
-    text: "The best work happens shoulder-to-shoulder with PMs, engineers, and research — early and often. Handoff is not a relay race.",
+    text: "The best work happens shoulder-to-shoulder with PMs, engineers, and research, early and often. Handoff is not a relay race.",
   },
   {
     tag: "I speak human, not just designer",
@@ -2169,12 +2169,12 @@ export const principles: Principle[] = [
   {
     tag: "I work with AI, not around it",
     tagClass: "border-amber-200 bg-amber-100 text-amber-900",
-    text: "I use AI to prototype faster, explore wider, and skip the busywork — but the judgment, taste, and craft stay human. That's where the bar gets raised.",
+    text: "I use AI to prototype faster, explore wider, and skip the busywork, but the judgment, taste, and craft stay human. That's where the bar gets raised.",
   },
   {
     tag: "Systems, not one-offs",
     tagClass: "border-rose-200 bg-rose-100 text-rose-900",
-    text: "I build for the ten screens that come after this one — reusable patterns and components, not a single well-polished exception.",
+    text: "I build for the ten screens that come after this one, reusable patterns and components, not a single well-polished exception.",
   },
   {
     tag: "Outcomes over output",
@@ -2213,7 +2213,7 @@ export const awards: Award[] = [
     issuer: "Lumenore",
     year: "2026",
     description:
-      "Certificate of Achievement for Best Performer of the Quarter (Q1, Jan–Mar 2026) at Netlink | Lumenore — recognised for hard work and great efforts.",
+      "Certificate of Achievement for Best Performer of the Quarter (Q1, Jan–Mar 2026) at Netlink | Lumenore, recognised for hard work and great efforts.",
     certificate: "awards/lumenore-best-performer.webp",
     gradient: "from-emerald-200 via-teal-100 to-green-100",
   },
@@ -2222,7 +2222,7 @@ export const awards: Award[] = [
     issuer: "EHAC & SSISM",
     year: "2021",
     description:
-      "Certificate of Participation in an online training program on 'Emotional Well-Being with EaR' — 10 sessions, conducted by a BPS-licensed clinical psychologist.",
+      "Certificate of Participation in an online training program on 'Emotional Well-Being with EaR', 10 sessions, conducted by a BPS-licensed clinical psychologist.",
     certificate: "awards/emotional-wellbeing-ear.jpg",
     gradient: "from-sky-200 via-cyan-100 to-teal-100",
   },
@@ -2231,7 +2231,7 @@ export const awards: Award[] = [
     issuer: "Accenture (FutureLearn)",
     year: "2022",
     description:
-      "Certificate of Achievement for completing 'Digital Skills: User Experience' — an introduction to UX and why it matters in an ever-evolving digital world.",
+      "Certificate of Achievement for completing 'Digital Skills: User Experience', an introduction to UX and why it matters in an ever-evolving digital world.",
     certificate: "awards/accenture-ux.webp",
     gradient: "from-fuchsia-200 via-pink-100 to-rose-100",
   },

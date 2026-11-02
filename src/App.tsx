@@ -869,7 +869,7 @@ function Hero({ ready }: { ready: boolean }) {
         className="relative mx-auto mb-4 mt-8 w-full max-w-[72rem] px-4 text-base sm:mb-5 sm:mt-[clamp(56px,10vh,96px)] sm:px-6 md:text-[15px]"
         style={{ color: "var(--hr-mute)" }}
       >
-        Feel free to connect - I&rsquo;m always up for a good conversation.
+        Feel free to connect, I&rsquo;m always up for a good conversation.
       </p>
       <div className="relative">
         <div className="absolute inset-x-0 top-1/2 hidden h-px sm:block" style={{ background: "var(--hr-border)" }} />
@@ -1373,13 +1373,13 @@ function MotionGrid() {
                   muted
                   playsInline
                   preload="metadata"
-                  aria-label={`${m.title} — ${m.category}`}
+                  aria-label={`${m.title}: ${m.category}`}
                   className="h-full w-full object-cover"
                 />
               ) : (
                 <img
                   src={assetUrl(m.image!)}
-                  alt={`${m.title} — ${m.category}`}
+                  alt={`${m.title}: ${m.category}`}
                   loading="lazy"
                   className={`h-full w-full object-cover ${m.image!.endsWith("ai-sparkle.webp") ? "sparkle-breathe" : ""}`}
                 />
@@ -3110,7 +3110,7 @@ function CaseStudyPage({
                 <div className="relative aspect-[16/10] w-full overflow-hidden bg-background/40">
                   <img
                     src={assetUrl(s.src)}
-                    alt={`${s.tag} — ${s.caption}`}
+                    alt={`${s.tag}: ${s.caption}`}
                     loading="lazy"
                     className="h-full w-full object-cover"
                   />
@@ -3220,7 +3220,7 @@ function CaseStudyPage({
       {cs.board && !cs.sections && (
         <CaseSection id="cs-board" eyebrow="Case study" title="The full design">
           <p className="max-w-2xl text-[15px] leading-relaxed text-foreground/85">
-            Every section from the original case study — research, personas, flows,
+            Every section from the original case study: research, personas, flows,
             the design system, and final screens. Tap any section to view it full size.
           </p>
           <div className="mt-8 space-y-5">
@@ -3892,7 +3892,7 @@ function Creatives({ onViewAll }: { onViewAll: () => void }) {
           </button>
         </div>
         <p className="mt-3 max-w-md text-[15px] leading-relaxed text-muted-foreground">
-          Logos, posters, and explorations — work that lives outside the sprint.
+          Logos, posters, and explorations, work that lives outside the sprint.
         </p>
       </div>
       {/* Full-bleed, two opposing rows of larger cards */}
@@ -3930,8 +3930,8 @@ const ABOUT_SLIDES = [
 ];
 
 const ABOUT_TRAITS = [
-  { title: "Problem Solver", img: "problem", bg: "#cfdcff", fg: "#1f3a9e", quip: "Solving problem. Oh solved it!", text: "Before I call something a 'problem,' I always ask myself — does this really need a solution? My curiosity helps me find a better one when it turns out to be a real issue." },
-  { title: "Calm & Compose", img: "calm", bg: "#dcd6ff", fg: "#3b2b9e", quip: "I bring peace", text: "Deadlines move, scope shifts — I stay steady and keep the team moving." },
+  { title: "Problem Solver", img: "problem", bg: "#cfdcff", fg: "#1f3a9e", quip: "Solving problem. Oh solved it!", text: "Before I call something a 'problem,' I always ask myself, does this really need a solution? My curiosity helps me find a better one when it turns out to be a real issue." },
+  { title: "Calm & Compose", img: "calm", bg: "#dcd6ff", fg: "#3b2b9e", quip: "I bring peace", text: "Deadlines move, scope shifts, I stay steady and keep the team moving." },
   { title: "Detail-Oriented", img: "detail", bg: "#cbe4ff", fg: "#124e8a", quip: "After 52 attempts, now all details are covered.", text: "Because that one flow gap always gives a headache." },
   { title: "UX Researcher", img: "research", bg: "#c4d0ff", fg: "#1f2f8f", quip: "I want to know everything.", text: "I always love to dig deep to truly understand the core of the requirement." },
   { title: "Well Organized", img: "organized", bg: "#d3dbf5", fg: "#22306e", quip: "Not just perfect. Monica perfect!", text: "Actually a Designer OCD. Just to make everything in my way, perfect!! Like Monica (FRIENDS) hah! I knowwwww!" },
@@ -4080,7 +4080,7 @@ function AboutHero() {
           ))}
         </h1>
         <p className="about-rise max-w-[34rem] text-pretty text-base leading-[1.7] text-[#a3a3a3] md:text-[15px]" style={{ animationDelay: "0.75s" }}>
-          Four years across enterprise SaaS, AI and data. Today I shape Lumenore — from Ask Me, a
+          Four years across enterprise SaaS, AI and data. Today I shape Lumenore, from Ask Me, a
           GenAI analytics assistant, to dashboards and data workflows.
         </p>
       </div>
@@ -4543,7 +4543,7 @@ function SiteFooter() {
           <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-white/65">
             &copy;2026 / Priti Jani &middot; All rights reserved
           </p>
-          <p className="text-[12px] text-white/65">Designed, built &amp; deployed end to end &mdash; by me.</p>
+          <p className="text-[12px] text-white/65">Designed, built &amp; deployed end to end, by me.</p>
         </div>
       </div>
     </footer>
@@ -4783,14 +4783,14 @@ export default function App() {
   }, []);
   // Keep the document title in step with the route (helps sharing + SEO).
   useEffect(() => {
-    let t = "Priti Jani — Product & UX Designer";
+    let t = "Priti Jani: Product & UX Designer";
     if (page === "case" && caseId) {
       const pr = projects.find((p) => p.id === caseId);
-      if (pr) t = `${pr.title} — Case Study · Priti Jani`;
+      if (pr) t = `${pr.title}: Case Study · Priti Jani`;
     } else if (page === "projects") {
-      t = "Work — Priti Jani";
+      t = "Work: Priti Jani";
     } else if (page === "about") {
-      t = "About — Priti Jani";
+      t = "About: Priti Jani";
     }
     document.title = t;
   }, [page, caseId]);
