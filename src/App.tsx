@@ -2141,6 +2141,50 @@ function InfoColumn({ heading, items, tone }: { heading: string; items: string[]
   );
 }
 
+// Paper-note look: folded top-left corner, soft paper shadow, a slight tilt that straightens on hover.
+function StickyShell({
+  bg,
+  fold,
+  tilt = 0,
+  className = "",
+  style,
+  children,
+}: {
+  bg: string;
+  fold: string;
+  tilt?: number;
+  className?: string;
+  style?: React.CSSProperties;
+  children: ReactNode;
+}) {
+  return (
+    <div
+      className="transition-transform duration-300 ease-out hover:-translate-y-1.5 hover:rotate-0"
+      style={{ transform: `rotate(${tilt}deg)`, filter: "drop-shadow(0 10px 14px rgba(20,20,40,0.16)) drop-shadow(0 2px 3px rgba(20,20,40,0.12))", ...style }}
+    >
+      <div
+        className={`relative h-full ${className}`}
+        style={{
+          background: `linear-gradient(180deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0) 30%), ${bg}`,
+          clipPath: "polygon(44px 0, 100% 0, 100% 100%, 0 100%, 0 44px)",
+          borderRadius: 20,
+        }}
+      >
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute left-0 top-0 h-11 w-11"
+          style={{
+            background: `linear-gradient(225deg, ${fold} 0%, ${fold} 55%, rgba(0,0,0,0.18) 100%)`,
+            clipPath: "polygon(100% 0, 100% 100%, 0 100%)",
+            borderBottomRightRadius: 14,
+          }}
+        />
+        {children}
+      </div>
+    </div>
+  );
+}
+
 const NOTE_COLOURS = [
   { bg: "#ff9f98", fold: "#d97a74" },
   { bg: "#ffb868", fold: "#d99443" },
@@ -2150,30 +2194,30 @@ const NOTE_COLOURS = [
 
 // Sticky-note cards with a folded top-left corner. Colours cycle salmon, orange, blue, purple;
 // each note tilts slightly straight on hover, and they rise in one after another on scroll.
-function StickyNotes({ notes }: { notes: { title: string; items: string[] }[] }) {
+function StickyNotes({ notes, tone = "mixed" }: { notes: { title: string; items: string[]; takeaway?: string }[]; tone?: "mixed" | "pink" }) {
   const [ref, seen] = useInView<HTMLDivElement>(0.15);
+  const TILTS = [-1.2, 0.8, -0.6, 1.1];
   return (
-    <div ref={ref} className="mt-8 flex flex-wrap justify-center gap-5">
+    <div ref={ref} className="mt-8 flex flex-wrap justify-center gap-6">
       {notes.map((n, i) => {
-        const col = NOTE_COLOURS[i % NOTE_COLOURS.length];
+        const col = tone === "pink" ? NOTE_COLOURS[0] : NOTE_COLOURS[i % NOTE_COLOURS.length];
         return (
           <div
             key={n.title}
-            className="group relative min-h-[15rem] w-full rounded-[22px] px-6 pb-7 pt-12 sm:w-[calc(50%-10px)] lg:w-[calc(25%-15px)] text-[#1f1d2b] transition-[transform,opacity] duration-500 ease-out hover:-translate-y-1 hover:rotate-[-0.6deg]"
+            className={`w-full sm:w-[calc(50%-12px)] ${tone === "pink" ? "lg:w-[calc(33.333%-16px)]" : "lg:w-[calc(25%-18px)]"}`}
+          >
+          <StickyShell
+            bg={col.bg}
+            fold={col.fold}
+            tilt={TILTS[(i + Math.floor(i / 4)) % TILTS.length]}
+            className="min-h-[15rem] px-6 pb-7 pt-12 text-[#1f1d2b]"
             style={{
-              background: col.bg,
               opacity: seen ? 1 : 0,
-              transform: seen ? undefined : "translateY(18px)",
-              transitionDelay: seen ? `${(i % 4) * 70 + Math.floor(i / 4) * 120}ms` : "0ms",
-              clipPath: "polygon(34px 0, 100% 0, 100% 100%, 0 100%, 0 34px)",
-              borderRadius: 22,
+              translate: seen ? "0 0" : "0 18px",
+              transition: `opacity .5s ${(i % 4) * 70 + Math.floor(i / 4) * 120}ms, translate .5s ${(i % 4) * 70 + Math.floor(i / 4) * 120}ms, transform .3s`,
+              width: undefined,
             }}
           >
-            <span
-              aria-hidden="true"
-              className="absolute left-0 top-0 h-[34px] w-[34px] rounded-br-[14px]"
-              style={{ background: col.fold, clipPath: "polygon(100% 0, 100% 100%, 0 100%)", filter: "brightness(0.96)" }}
-            />
             <p className="text-[16px] font-semibold leading-snug tracking-tight">{n.title}</p>
             <ul className="mt-4 space-y-2">
               {n.items.map((it) => (
@@ -2183,6 +2227,59 @@ function StickyNotes({ notes }: { notes: { title: string; items: string[] }[] })
                 </li>
               ))}
             </ul>
+            {n.takeaway && (
+              <p className="mt-5 rounded-xl bg-white/55 px-3 py-2.5 text-[13px] font-medium leading-snug text-[#2b2940]">
+                {n.takeaway}
+              </p>
+            )}
+          </StickyShell>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+const STORY_RE = /^As an? (.+?), I want (.+?), so (?:that )?(.+?)\.?$/i;
+
+// "As a …, I want …, so I can …" stories as three cards: who, what they want, why.
+function StoryCards({ items }: { items: string[] }) {
+  const [ref, seen] = useInView<HTMLDivElement>(0.2);
+  const parsed = items.map((x) => STORY_RE.exec(x.trim()));
+  const TONES = [
+    { card: "bg-[#eef3ff] dark:bg-[#1b2a5a]", who: "bg-[#1e3a8a] text-white", want: "text-[#14245f] dark:text-blue-50", why: "bg-white text-[#2f4a8f] dark:bg-white/10 dark:text-blue-100", mark: "text-[#2346c7]/25 dark:text-blue-300/30" },
+    { card: "bg-[#0f1530]", who: "bg-white text-[#0f1530]", want: "text-white", why: "bg-white/10 text-[#c9d6ff]", mark: "text-white/15" },
+    { card: "border border-border bg-white dark:bg-card", who: "bg-gradient-to-b from-[#3b6cf6] to-[#2346c7] text-white", want: "text-foreground", why: "bg-[#eef3ff] text-[#1e3a8a] dark:bg-white/10 dark:text-blue-100", mark: "text-[#2346c7]/15" },
+  ];
+  return (
+    <div ref={ref} className="mt-8 grid gap-4 md:grid-cols-3">
+      {items.map((raw, i) => {
+        const m = parsed[i];
+        const t = TONES[i % TONES.length];
+        const role = m ? m[1] : "User";
+        const want = m ? m[2] : raw;
+        const why = m ? m[3].replace(/^I can /i, "I can ") : "";
+        return (
+          <div
+            key={i}
+            className={`relative flex min-h-[18rem] flex-col justify-between overflow-hidden rounded-[28px] p-6 transition-[transform,opacity] duration-500 ease-out hover:-translate-y-1 sm:p-7 ${t.card}`}
+            style={{ opacity: seen ? 1 : 0, transform: seen ? undefined : "translateY(18px)", transitionDelay: seen ? `${i * 110}ms` : "0ms" }}
+          >
+            <span aria-hidden="true" className={`pointer-events-none absolute -right-1 -top-6 select-none text-[130px] font-bold leading-none ${t.mark}`}>&ldquo;</span>
+            <div className="relative">
+              <span className={`inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-[12px] font-semibold uppercase tracking-[0.12em] ${t.who}`}>
+                <span className="h-1.5 w-1.5 rounded-full bg-current opacity-70" />
+                {role}
+              </span>
+              <p className={`mt-6 text-[12px] font-semibold uppercase tracking-[0.14em] opacity-60 ${t.want}`}>I want</p>
+              <p className={`mt-2 text-[20px] font-semibold leading-snug tracking-tight ${t.want}`}>{want.charAt(0).toUpperCase() + want.slice(1)}</p>
+            </div>
+            {why && (
+              <p className={`relative mt-6 rounded-2xl px-4 py-3 text-[14px] leading-snug ${t.why}`}>
+                <span className="mr-1.5 font-semibold">So that</span>
+                {why.replace(/^I can /i, "I can ").replace(/^I /, "I ")}
+              </p>
+            )}
           </div>
         );
       })}
@@ -2345,7 +2442,14 @@ function StudySectionBlock({
             {renderRich(p)}
           </p>
         ))}
-      {block.bullets && <div className="mt-5">{<StudyBullets items={block.bullets} />}</div>}
+      {block.bullets &&
+        (block.bullets.length > 0 && block.bullets.every((b) => STORY_RE.test(b.trim())) ? (
+          <StoryCards items={block.bullets} />
+        ) : (
+          <div className="mt-5">
+            <StudyBullets items={block.bullets} />
+          </div>
+        ))}
       {block.video && (
         <div className="mt-6 overflow-hidden rounded-2xl">
           <video
@@ -2371,7 +2475,7 @@ function StudySectionBlock({
           ))}
         </div>
       )}
-      {block.notes && <StickyNotes notes={block.notes} />}
+      {block.notes && <StickyNotes notes={block.notes} tone={block.noteTone} />}
       {block.cards && (
         <div className="mt-6 grid gap-4 sm:grid-cols-2">
           {block.cards.map((c, i) => (

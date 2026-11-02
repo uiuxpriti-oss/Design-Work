@@ -243,7 +243,9 @@ export interface StudyBlock {
   /** Two/three-column cards (e.g. personas, method vs. findings). */
   columns?: { heading: string; items: string[] }[];
   /** Sticky-note cards: a title and short bullet points each. */
-  notes?: { title: string; items: string[] }[];
+  notes?: { title: string; items: string[]; takeaway?: string }[];
+  /** Colour of the sticky notes: cycle through four colours (default) or all one. */
+  noteTone?: "mixed" | "pink";
   /** Titled cards with a paragraph each, shown in a 2-column grid. */
   cards?: { heading: string; text: string }[];
   /** Big stat tiles. */
@@ -488,17 +490,10 @@ export const caseStudies: Record<string, CaseStudy> = {
       {
         id: "problem",
         eyebrow: "The problem",
-        title: "⚠️ Problem Statement",
+        title: "Problem Statement",
         lead: "Users struggle to efficiently analyse data due to unclear workflows, lack of guidance, and the inability to use their own data.",
-        bullets: [
-          "No support for user data — people are forced into predefined schemas.",
-          "Broken mental model — chat isn't clearly tied to the data behind it.",
-          "Non-deterministic, inconsistent outputs reduce trust.",
-          "Tech-heavy experience and excessive jargon (schemas, agents).",
-          "High cognitive load and an unclear starting point.",
-          "Disconnected data workflow with no data visibility.",
-        ],
-        image: "projects/askme-problem.jpg",
+        noteTone: "pink",
+        notes: [{"title": "No Support for User Data (Major Gap)", "items": ["Users cannot: upload their own files, connect external data sources"], "takeaway": "Forces users into predefined schemas"}, {"title": "Broken Mental Model (Chat-Based Experience)", "items": ["Chat is not clearly connected to data context", "Users don't understand what data is being used or how responses are generated"], "takeaway": "Breaks trust and usability"}, {"title": "Non-Deterministic / Inconsistent Outputs", "items": ["Similar queries can produce different results", "Lack of consistency in responses"], "takeaway": "Reduces reliability and user confidence"}, {"title": "Tech-Heavy Experience", "items": ["The interface relies heavily on technical concepts (schema, agents, etc.)", "Difficult for non-technical users to understand"], "takeaway": "Creates a barrier for business users"}, {"title": "Excessive Jargon", "items": ["Use of complex terminology without explanation", "Not aligned with users' mental models"], "takeaway": "Increases confusion and learning curve"}, {"title": "High Cognitive Load", "items": ["Multiple options shown at once", "No prioritization or hierarchy", "Mobile experience was cluttered and not optimized for usability"], "takeaway": "Users feel overwhelmed"}],
       },
       {
         id: "user-stories",
