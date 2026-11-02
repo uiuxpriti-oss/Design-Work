@@ -2435,85 +2435,152 @@ const ROAD_GROUPS = [
   { label: "Next", from: 8, to: 9 },
 ];
 
-// A. Gantt: a project-management style timeline. Task list on the left, staggered coloured bars
-// on a grid on the right, a dotted "now" line, and a floating detail card for the chosen task.
+// A. Gantt: a project-management style timeline. Phase list on the left, staggered bars on a
+// 10-column grid, a dotted "now" line with a highlighted column, stage filters on top and a
+// floating detail card for the chosen phase. Bars up to the chosen phase are filled in.
 function RoadGantt({ stops }: { stops: RoadStop[] }) {
   const [ref, seen] = useInView<HTMLDivElement>(0.2);
-  const [sel, setSel] = useState(2);
+  const [sel, setSel] = useState(0);
+  const [stage, setStage] = useState<number | null>(null);
+  const [auto, setAuto] = useState(true);
   const n = stops.length;
-  const cols = 14;
+  const ROW = 46;
+  const LEN = 3.1;
+  const start = (i: number) => (i * (n - LEN)) / (n - 1);
+  const groupOf = (i: number) => ROAD_GROUPS.findIndex((g) => i >= g.from && i <= g.to);
+  const inStage = (i: number) => stage === null || groupOf(i) === stage;
+  useEffect(() => {
+    if (!seen || !auto || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const t = window.setInterval(() => setSel((x) => (x + 1) % n), 2800);
+    return () => window.clearInterval(t);
+  }, [seen, auto, n]);
+  const choose = (i: number) => {
+    setAuto(false);
+    setSel(i);
+  };
+  const chooseStage = (g: number | null) => {
+    setAuto(false);
+    setStage(g);
+    if (g !== null) setSel(ROAD_GROUPS[g].from);
+  };
   const cur = stops[sel];
-  const barStart = (i: number) => (i / (n - 1)) * (cols - 4.2);
+  const curEnd = start(sel) + LEN;
+  const cardLeft = curEnd / n > 0.62;
   return (
-    <div ref={ref} className="mt-8 overflow-hidden rounded-[28px] border border-border bg-white dark:bg-card">
-      <div className="flex items-center justify-between gap-4 border-b border-border px-5 py-4">
-        <p className="text-[16px] font-semibold tracking-tight text-foreground">Ask Me redesign</p>
-        <div className="flex items-center gap-2 text-[12px]">
-          <span className="rounded-md bg-[#fff4d6] px-2 py-1 font-medium text-[#b7791f]">{n} phases</span>
-          <span className="hidden rounded-md bg-foreground/[0.05] px-2 py-1 font-medium text-muted-foreground sm:inline">4 stages</span>
+    <div ref={ref} className="mt-8 overflow-hidden rounded-[28px] border border-border bg-white shadow-[0_30px_60px_-40px_rgba(20,30,60,0.35)] dark:bg-card">
+      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border px-5 py-4">
+        <div className="flex items-center gap-3">
+          <span className="grid h-8 w-8 place-items-center rounded-xl bg-[#2563eb]">
+            <span className="h-3 w-3 rounded-full bg-white" />
+          </span>
+          <p className="text-[16px] font-semibold tracking-tight text-foreground">Ask Me redesign</p>
+          <span className="hidden rounded-md bg-[#fff4d6] px-2 py-1 text-[12px] font-medium text-[#b7791f] sm:inline">{n} phases</span>
+        </div>
+        <div className="flex items-center gap-1.5 overflow-x-auto text-[12.5px] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          {[{ label: "All" }, ...ROAD_GROUPS].map((g, k) => {
+            const on = (k === 0 && stage === null) || stage === k - 1;
+            return (
+              <button key={g.label} type="button" onClick={() => chooseStage(k === 0 ? null : k - 1)} className={`whitespace-nowrap rounded-full px-3 py-1.5 font-medium outline-none transition-colors ${on ? "bg-[#0f1530] text-white" : "bg-foreground/[0.05] text-foreground/70 hover:bg-foreground/[0.09]"}`}>
+                {g.label}
+              </button>
+            );
+          })}
+          <button type="button" onClick={() => setAuto((a) => !a)} aria-label={auto ? "Pause" : "Play"} className="ml-1 grid h-8 w-8 shrink-0 place-items-center rounded-full border border-border text-[11px] outline-none transition-colors hover:bg-foreground/[0.05]">
+            {auto ? "❚❚" : "▶"}
+          </button>
         </div>
       </div>
-      <div className="grid md:grid-cols-[15rem_1fr]">
+
+      <div className="grid md:grid-cols-[15.5rem_1fr]">
         <ul className="hidden border-r border-border md:block">
-          <li className="flex h-12 items-center px-5 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">Phases</li>
+          <li className="flex h-[4.5rem] items-end px-5 pb-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">Phases</li>
           {stops.map((s, i) => (
             <li key={s.title}>
-              <button type="button" onClick={() => setSel(i)} onMouseEnter={() => setSel(i)} className={`flex h-11 w-full items-center gap-3 px-5 text-left text-[13.5px] outline-none transition-colors ${sel === i ? "bg-foreground/[0.05] font-semibold text-foreground" : "text-foreground/70 hover:bg-foreground/[0.03]"}`}>
-                <span className="h-2 w-2 shrink-0 rounded-full" style={{ background: s.color }} />
+              <button type="button" onClick={() => choose(i)} onMouseEnter={() => choose(i)} className={`flex w-full items-center gap-3 px-5 text-left text-[13.5px] outline-none transition-all duration-200 ${sel === i ? "bg-[#2563eb]/[0.07] font-semibold text-foreground" : "text-foreground/70 hover:bg-foreground/[0.03]"}`} style={{ height: ROW, opacity: inStage(i) ? 1 : 0.35 }}>
+                <span className="grid h-5 w-5 shrink-0 place-items-center rounded-md text-[10px] font-bold text-white" style={{ background: s.color }}>{i + 1}</span>
                 <span className="truncate">{s.title}</span>
+                <span className="ml-auto text-[11px] font-normal text-muted-foreground">{s.items.length}</span>
               </button>
             </li>
           ))}
         </ul>
-        <div className="relative overflow-x-auto">
-          <div className="relative min-w-[40rem]">
-            <div className="grid h-12 border-b border-border text-[11px] font-medium text-muted-foreground" style={{ gridTemplateColumns: `repeat(${n}, 1fr)` }}>
-              {ROAD_GROUPS.flatMap((g) => Array.from({ length: g.to - g.from + 1 }, (_, k) => (k === 0 ? g.label : ""))).map((label, i) => (
-                <span key={i} className="flex items-center border-l border-border/60 pl-2 first:border-l-0">{label}</span>
-              ))}
-            </div>
-            <div className="relative" style={{ height: n * 44 }}>
-              <div className="absolute inset-0 grid" style={{ gridTemplateColumns: `repeat(${cols}, 1fr)` }} aria-hidden="true">
-                {Array.from({ length: cols }).map((_, i) => (
-                  <span key={i} className={`border-l border-border/50 ${i % 7 === 5 || i % 7 === 6 ? "bg-foreground/[0.025]" : ""}`} />
+
+        <div className="overflow-x-auto">
+          <div className="relative min-w-[44rem]">
+            <div className="h-[4.5rem] border-b border-border">
+              <div className="grid h-8" style={{ gridTemplateColumns: ROAD_GROUPS.map((g) => `${g.to - g.from + 1}fr`).join(" ") }}>
+                {ROAD_GROUPS.map((g, gi) => (
+                  <span key={g.label} className={`flex items-center border-l border-border/60 pl-3 text-[11px] font-semibold uppercase tracking-[0.14em] first:border-l-0 ${stage === null || stage === gi ? "text-foreground/70" : "text-foreground/25"}`}>{g.label}</span>
                 ))}
               </div>
-              <span aria-hidden="true" className="absolute top-0 h-full border-l-2 border-dotted border-[#2563eb]/70 transition-all duration-500" style={{ left: `${((barStart(sel) + 0.4) / cols) * 100}%` }} />
-              {stops.map((s, i) => (
-                <button
-                  key={s.title}
-                  type="button"
-                  onClick={() => setSel(i)}
-                  onMouseEnter={() => setSel(i)}
-                  className="absolute flex h-8 items-center rounded-full px-3 text-left text-[12.5px] font-medium outline-none transition-[width,opacity,box-shadow] duration-700 ease-out"
-                  style={{
-                    top: i * 44 + 6,
-                    left: `${(barStart(i) / cols) * 100}%`,
-                    width: seen ? `${(4.2 / cols) * 100}%` : "0%",
-                    transitionDelay: `${i * 90}ms`,
-                    background: `${s.color}${sel === i ? "" : "55"}`,
-                    color: sel === i ? "#fff" : "#1f2a44",
-                    boxShadow: sel === i ? `0 8px 18px -8px ${s.color}` : "none",
-                    overflow: "hidden",
-                  }}
-                >
-                  <span className="truncate">{s.title}</span>
-                </button>
-              ))}
+              <div className="grid h-10" style={{ gridTemplateColumns: `repeat(${n}, 1fr)` }}>
+                {stops.map((_, i) => (
+                  <span key={i} className="flex items-center justify-center">
+                    <span className={`grid h-7 min-w-7 place-items-center rounded-lg px-1 text-[12px] font-medium tabular-nums transition-all duration-300 ${sel === i ? "bg-[#2563eb] text-white shadow-[0_6px_14px_-6px_#2563eb]" : "text-muted-foreground"}`}>{String(i + 1).padStart(2, "0")}</span>
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            <div className="relative" style={{ height: n * ROW }}>
+              <div className="absolute inset-0 grid" style={{ gridTemplateColumns: `repeat(${n}, 1fr)` }} aria-hidden="true">
+                {stops.map((_, i) => (
+                  <span key={i} className={`border-l border-border/50 ${i === sel ? "bg-[#2563eb]/[0.05]" : groupOf(i) % 2 === 1 ? "bg-foreground/[0.02]" : ""}`} />
+                ))}
+              </div>
+              <span aria-hidden="true" className="absolute top-0 h-full border-l-2 border-dotted border-[#2563eb]/80 transition-all duration-500" style={{ left: `${((sel + 0.5) / n) * 100}%` }} />
+              {stops.map((s, i) => {
+                const reached = i <= sel;
+                const on = i === sel;
+                return (
+                  <button
+                    key={s.title}
+                    type="button"
+                    onClick={() => choose(i)}
+                    onMouseEnter={() => choose(i)}
+                    className="absolute flex items-center overflow-hidden rounded-full text-left outline-none"
+                    style={{
+                      top: i * ROW + 7,
+                      height: ROW - 14,
+                      left: `${(start(i) / n) * 100}%`,
+                      width: seen ? `${(LEN / n) * 100}%` : "0%",
+                      transition: `width .8s cubic-bezier(.2,.7,.2,1) ${i * 80}ms, opacity .3s, box-shadow .3s`,
+                      background: `${s.color}${reached ? "" : "40"}`,
+                      opacity: inStage(i) ? 1 : 0.25,
+                      boxShadow: on ? `0 10px 20px -8px ${s.color}` : "none",
+                    }}
+                  >
+                    <span className={`truncate pl-3.5 pr-2 text-[12.5px] font-medium ${reached ? "text-white" : "text-[#1f2a44]"}`} style={reached && (s.color === "#f5c400" || s.color === "#4fd1d1" || s.color === "#34bdf2") ? { color: "#0f1530" } : undefined}>{s.title}</span>
+                    <span className="ml-auto mr-3 shrink-0 rounded-full bg-black/10 px-2 py-0.5 text-[10.5px] font-semibold tabular-nums" style={{ color: reached ? "inherit" : "#1f2a44" }}>{s.items.length} pts</span>
+                  </button>
+                );
+              })}
+
               <div
                 key={sel}
-                className="absolute right-3 z-10 hidden w-[17rem] rounded-xl bg-white p-4 shadow-[0_18px_40px_-14px_rgba(20,30,60,0.35)] ring-1 ring-black/5 md:block dark:bg-card"
-                style={{ top: Math.min(sel * 44 + 40, n * 44 - 190), animation: "aboutRise .35s ease both" }}
+                className="absolute z-10 hidden w-[17.5rem] rounded-xl bg-white p-4 shadow-[0_22px_44px_-16px_rgba(20,30,60,0.4)] ring-1 ring-black/5 md:block dark:bg-card"
+                style={{
+                  top: Math.min(Math.max(sel * ROW - 6, 6), n * ROW - 230),
+                  ...(cardLeft ? { right: `${(1 - start(sel) / n) * 100 + 1}%` } : { left: `${(curEnd / n) * 100 + 1.5}%` }),
+                  animation: "aboutRise .35s ease both",
+                }}
               >
-                <div className="flex gap-2.5">
+                <span aria-hidden="true" className="absolute top-6 h-3 w-3 rotate-45 bg-white ring-1 ring-black/5 dark:bg-card" style={cardLeft ? { right: -6 } : { left: -6 }} />
+                <div className="relative flex gap-2.5">
                   <span className="mt-0.5 h-5 w-1 shrink-0 rounded-full" style={{ background: cur.color }} />
-                  <div>
-                    <p className="text-[15px] font-semibold leading-tight text-foreground">{cur.title}</p>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-[10.5px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">Phase {sel + 1} · {ROAD_GROUPS[groupOf(sel)]?.label}</p>
+                    <p className="mt-1 text-[15px] font-semibold leading-tight text-foreground">{cur.title}</p>
                     <ul className="mt-2 space-y-1">
                       {cur.items.map((it) => (
                         <li key={it} className="text-[12.5px] leading-snug text-muted-foreground">{it}</li>
                       ))}
                     </ul>
+                    <div className="mt-3 flex items-center gap-2 border-t border-border pt-2.5">
+                      <button type="button" aria-label="Previous phase" onClick={() => choose((sel + n - 1) % n)} className="grid h-7 w-7 place-items-center rounded-full border border-border text-[12px] outline-none hover:bg-foreground/[0.05]">←</button>
+                      <button type="button" aria-label="Next phase" onClick={() => choose((sel + 1) % n)} className="grid h-7 w-7 place-items-center rounded-full border border-border text-[12px] outline-none hover:bg-foreground/[0.05]">→</button>
+                      <span className="ml-auto text-[11.5px] tabular-nums text-muted-foreground">{sel + 1} / {n}</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -2521,12 +2588,13 @@ function RoadGantt({ stops }: { stops: RoadStop[] }) {
           </div>
         </div>
       </div>
+
       <ul className="border-t border-border md:hidden">
         {stops.map((s, i) => (
           <li key={s.title} className="flex gap-3 border-b border-border/60 px-5 py-3 last:border-b-0">
-            <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full" style={{ background: s.color }} />
+            <span className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-md text-[10px] font-bold text-white" style={{ background: s.color }}>{i + 1}</span>
             <div>
-              <p className="text-[14px] font-medium text-foreground">{i + 1}. {s.title}</p>
+              <p className="text-[14px] font-medium text-foreground">{s.title}</p>
               <p className="mt-0.5 text-[12.5px] text-muted-foreground">{s.items.join(" · ")}</p>
             </div>
           </li>
