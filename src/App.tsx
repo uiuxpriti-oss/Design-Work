@@ -2290,56 +2290,35 @@ function StoryCards({ items }: { items: string[] }) {
 // Interactive list of design decisions: pick one on the left, read the one-liner on the right.
 // Cycles on its own while on screen until you touch it.
 function DecisionExplorer({ cards }: { cards: { heading: string; short?: string; tag?: string }[] }) {
-  const [ref, seen] = useInView<HTMLDivElement>(0.3);
   const [active, setActive] = useState(0);
-  const [auto, setAuto] = useState(true);
-  useEffect(() => {
-    if (!seen || !auto || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const t = window.setInterval(() => setActive((a) => (a + 1) % cards.length), 4500);
-    return () => window.clearInterval(t);
-  }, [seen, auto, cards.length]);
-  const pick = (i: number) => {
-    setAuto(false);
-    setActive(i);
-  };
   const cur = cards[active];
   return (
-    <div ref={ref} className="mt-8 grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)]">
-      <div className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-2 [scrollbar-width:none] lg:mx-0 lg:flex-col lg:overflow-visible lg:px-0 lg:pb-0 [&::-webkit-scrollbar]:hidden" role="tablist" aria-label="Design decisions">
+    <div className="mt-8 grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-10">
+      <ul className="flex flex-col" role="tablist" aria-label="Design decisions">
         {cards.map((c, i) => {
           const on = i === active;
           return (
-            <button
-              key={c.heading}
-              type="button"
-              role="tab"
-              aria-selected={on}
-              onClick={() => pick(i)}
-              onMouseEnter={() => pick(i)}
-              className={`group relative flex shrink-0 items-center gap-3 overflow-hidden rounded-2xl px-4 py-3.5 text-left outline-none transition-all duration-300 focus-visible:ring-2 focus-visible:ring-foreground/25 lg:shrink ${
-                on ? "bg-[#0f1530] text-white shadow-[0_12px_30px_-16px_rgba(15,21,48,0.7)] lg:translate-x-1" : "bg-[#f4f6fb] text-foreground/80 hover:bg-[#e9eefc] dark:bg-white/[0.05] dark:hover:bg-white/[0.09]"
-              }`}
-            >
-              <span className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-[12px] font-semibold tabular-nums transition-colors ${on ? "bg-white text-[#0f1530]" : "bg-white text-[#1e3a8a] dark:bg-white/10 dark:text-blue-100"}`}>
-                {String(i + 1).padStart(2, "0")}
-              </span>
-              <span className="whitespace-nowrap text-[15px] font-medium leading-snug lg:whitespace-normal">{c.heading}</span>
-              {on && auto && (
-                <span key={`${active}-bar`} className="absolute inset-x-0 bottom-0 h-0.5 origin-left bg-[#60a5fa]" style={{ animation: "decisionBar 4.5s linear" }} />
-              )}
-            </button>
+            <li key={c.heading}>
+              <button
+                type="button"
+                role="tab"
+                aria-selected={on}
+                onClick={() => setActive(i)}
+                onMouseEnter={() => setActive(i)}
+                className={`flex w-full items-center gap-4 border-l-2 py-3 pl-4 text-left text-[16px] outline-none transition-all duration-200 focus-visible:ring-2 focus-visible:ring-foreground/25 ${
+                  on ? "border-[#2346c7] font-semibold text-foreground" : "border-border text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                {c.heading}
+              </button>
+            </li>
           );
         })}
-      </div>
-      <div key={active} className="relative flex min-h-[18rem] flex-col justify-between overflow-hidden rounded-[28px] bg-gradient-to-b from-[#3b6cf6] to-[#2346c7] p-7 text-white sm:p-9" style={{ animation: "aboutRise .5s cubic-bezier(.2,.7,.2,1) both" }}>
-        <span aria-hidden="true" className="pointer-events-none absolute -right-4 -top-8 select-none text-[190px] font-bold leading-none tracking-[-0.06em] text-white/10">
-          {String(active + 1).padStart(2, "0")}
-        </span>
-        <span className="relative inline-flex w-fit items-center rounded-full bg-white/15 px-3.5 py-1.5 text-[12px] font-semibold uppercase tracking-[0.14em]">{cur.tag}</span>
-        <div className="relative">
-          <p className="text-[26px] font-semibold leading-tight tracking-tight sm:text-[30px]">{cur.heading}</p>
-          <p className="mt-4 max-w-md text-[16px] leading-[1.6] text-white/85">{cur.short}</p>
-        </div>
+      </ul>
+      <div key={active} className="rounded-[24px] bg-[#f4f6fb] p-7 dark:bg-white/[0.05] sm:p-8" style={{ animation: "aboutRise .4s cubic-bezier(.2,.7,.2,1) both" }}>
+        {cur.tag && <span className="text-[12px] font-semibold uppercase tracking-[0.14em] text-[#2346c7] dark:text-blue-300">{cur.tag}</span>}
+        <p className="mt-3 text-[22px] font-semibold leading-snug tracking-tight text-foreground">{cur.heading}</p>
+        <p className="mt-3 text-[16px] leading-[1.6] text-foreground/70">{cur.short}</p>
       </div>
     </div>
   );
