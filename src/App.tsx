@@ -3078,6 +3078,23 @@ function StudySectionBlock({
       </section>
     );
   }
+  // A/B testing + impact in one section: the test image first, then the headline numbers.
+  if (block.id === "ab-testing" && block.stats && block.stats.length === 4) {
+    return (
+      <section id={`cs-${block.id}`} className="mt-14 scroll-mt-24 border-t border-border pt-10">
+        <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">{block.title}</h2>
+        {block.lead && <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-foreground/85">{renderRich(block.lead)}</p>}
+        {block.image && (
+          <div className="mt-8">
+            <StudyMedia value={block.image} alt={block.title} onZoom={onZoom} />
+          </div>
+        )}
+        <div className="mt-12">
+          <OutcomeShowcase heading="What changed" stats={block.stats} />
+        </div>
+      </section>
+    );
+  }
   // Outcome sections share one "what I achieved" template.
   if (block.id === "outcome") {
     return (
