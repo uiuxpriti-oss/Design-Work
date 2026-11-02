@@ -2801,7 +2801,7 @@ function PersonaExplorer({ personas }: { personas: Persona[] }) {
     { label: "How we can help", key: "ideas" },
   ];
   return (
-    <div ref={ref} className="mt-8">
+    <div ref={ref} className="mt-10">
       <div className="inline-flex rounded-full bg-foreground/[0.05] p-1" role="tablist" aria-label="Persona">
         {personas.map((x, i) => (
           <button
@@ -2821,14 +2821,14 @@ function PersonaExplorer({ personas }: { personas: Persona[] }) {
         ))}
       </div>
 
-      <div key={who} className="mt-6" style={{ animation: "aboutRise .45s cubic-bezier(.2,.7,.2,1) both" }}>
-        <div className="grid gap-4 md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
-          <div className="flex gap-5 rounded-[26px] bg-[#f4f7fd] p-6 dark:bg-white/[0.04] sm:p-7">
+      <div key={who} className="mt-10" style={{ animation: "aboutRise .45s cubic-bezier(.2,.7,.2,1) both" }}>
+        <div className="grid gap-6 md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] md:gap-10">
+          <div className="flex gap-6 rounded-[28px] bg-[#f4f7fd] p-7 dark:bg-white/[0.04] sm:p-9">
             <img src={assetUrl(p.avatar)} alt={p.name} className="h-20 w-20 shrink-0 rounded-full object-cover ring-4 ring-white dark:ring-white/10 sm:h-24 sm:w-24" />
             <div className="min-w-0">
               <p className="text-[22px] font-semibold tracking-tight text-foreground">{p.name}</p>
               <p className="text-[14px] text-muted-foreground">{p.role}</p>
-              <dl className="mt-4 grid grid-cols-2 gap-x-5 gap-y-3">
+              <dl className="mt-6 grid grid-cols-2 gap-x-6 gap-y-5">
                 {p.facts.map((f) => (
                   <div key={f.label}>
                     <dt className="text-[11px] uppercase tracking-[0.12em] text-muted-foreground">{f.label}</dt>
@@ -2838,24 +2838,24 @@ function PersonaExplorer({ personas }: { personas: Persona[] }) {
               </dl>
             </div>
           </div>
-          <div className="rounded-[26px] border border-border p-6 sm:p-7">
+          <div className="rounded-[28px] border border-border p-7 sm:p-9">
             <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-[#2346c7] dark:text-blue-300">About</p>
-            <p className="mt-3 text-[16px] leading-[1.7] text-foreground/80">{p.bio}</p>
+            <p className="mt-4 text-[16px] leading-[1.8] text-foreground/80">{p.bio}</p>
           </div>
         </div>
 
-        <div className="mt-4 grid gap-4 md:grid-cols-3">
+        <div className="mt-6 grid gap-6 md:grid-cols-3 md:gap-10">
           {[
             { t: "Goals", items: p.goals, dot: "#34c28a" },
             { t: "Pain points", items: p.pains, dot: "#f0645a" },
             { t: "Thoughts & feelings", items: p.thoughts, dot: "#6b8cff" },
           ].map((b) => (
-            <div key={b.t} className="rounded-[22px] border border-border p-5">
+            <div key={b.t} className="py-2">
               <p className="flex items-center gap-2 text-[15px] font-semibold text-foreground">
                 <span className="h-2 w-2 rounded-full" style={{ background: b.dot }} />
                 {b.t}
               </p>
-              <ul className="mt-3 space-y-2">
+              <ul className="mt-4 space-y-3">
                 {b.items.map((it) => (
                   <li key={it} className="text-[14px] leading-snug text-foreground/70">{it}</li>
                 ))}
@@ -2864,10 +2864,10 @@ function PersonaExplorer({ personas }: { personas: Persona[] }) {
           ))}
         </div>
 
-        <p className="mt-10 text-[15px] font-semibold text-foreground">{p.name.split(" ")[0]}&rsquo;s journey</p>
-        <div className="-mx-6 mt-4 overflow-x-auto px-6 pb-3 [scrollbar-width:none] sm:mx-0 sm:px-0 [&::-webkit-scrollbar]:hidden">
-          <div className="min-w-[60rem]">
-            <div className="grid grid-cols-[6.5rem_repeat(5,minmax(0,1fr))] gap-2">
+        <p className="mt-16 text-[18px] font-semibold tracking-tight text-foreground">{p.name.split(" ")[0]}&rsquo;s journey</p>
+        <div className="-mx-6 mt-6 overflow-x-auto px-6 pb-3 [scrollbar-width:none] sm:mx-0 sm:px-0 [&::-webkit-scrollbar]:hidden">
+          <div className="min-w-[64rem]">
+            <div className="grid grid-cols-[7rem_repeat(5,minmax(0,1fr))] gap-3">
               <span />
               {j.stages.map((st, i) => (
                 <button
@@ -2888,9 +2888,9 @@ function PersonaExplorer({ personas }: { personas: Persona[] }) {
                 </button>
               ))}
             </div>
-            <div className="mt-3 space-y-2">
+            <div className="mt-5 space-y-3">
               {rows.map((r, ri) => (
-                <div key={r.key} className="grid grid-cols-[6.5rem_repeat(5,minmax(0,1fr))] gap-2">
+                <div key={r.key} className="grid grid-cols-[7rem_repeat(5,minmax(0,1fr))] gap-3">
                   <p className="flex items-center text-[12px] font-semibold uppercase leading-tight tracking-[0.1em] text-muted-foreground">{r.label}</p>
                   {j.stages.map((_, i) => {
                     const on = stage === null || stage === i;
@@ -2901,13 +2901,13 @@ function PersonaExplorer({ personas }: { personas: Persona[] }) {
                       body = (
                         <>
                           <span className="text-[26px] leading-none">{f.emoji}</span>
-                          <p className="mt-2 space-y-1 text-[13px] leading-snug text-foreground/75">{f.lines.join(" · ")}</p>
+                          <p className="mt-3 space-y-1 text-[13px] leading-snug text-foreground/75">{f.lines.join(" · ")}</p>
                         </>
                       );
                     } else {
                       const items = j[r.key][i];
                       body = (
-                        <ul className="space-y-1.5">
+                        <ul className="space-y-2">
                           {items.map((it) => (
                             <li key={it} className="text-[13px] leading-snug text-foreground/75">{it}</li>
                           ))}
@@ -2919,9 +2919,9 @@ function PersonaExplorer({ personas }: { personas: Persona[] }) {
                         key={i}
                         onMouseEnter={() => setStage(i)}
                         onMouseLeave={() => setStage(null)}
-                        className="min-h-[5.5rem] rounded-2xl p-3.5"
+                        className="min-h-[6.5rem] rounded-2xl p-4"
                         style={{
-                          background: r.key === "pains" ? "#fff1f0" : r.key === "ideas" ? "#effaf3" : "#f6f8fc",
+                          background: r.key === "pains" ? "#fff5f4" : r.key === "ideas" ? "#f2fbf6" : "#f8f9fc",
                           opacity: seen ? (on ? 1 : 0.4) : 0,
                           transform: seen ? undefined : "translateY(10px)",
                           boxShadow: stage === i ? `inset 0 0 0 1.5px ${JOURNEY_TINTS[i]}` : "none",
