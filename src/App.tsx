@@ -19,7 +19,6 @@ import {
   Home,
   Menu,
   Send,
-  ThumbsUp,
   Copy,
   Check,
   ExternalLink,
@@ -885,10 +884,7 @@ function Hero({ ready }: { ready: boolean }) {
               Resume <span className={chip}><ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" /></span>
             </a>
           </div>
-          <div className="flex flex-wrap items-center gap-3 sm:gap-4">
-            {status}
-            <LikeButton tone="light" />
-          </div>
+          {status}
         </div>
       </div>
     </section>
@@ -4058,123 +4054,6 @@ function FooterLinks({ list }: { list: FooterLink[] }) {
         </a>
       ))}
     </div>
-  );
-}
-
-// Visitor "Like" — one like per browser, with a shared count kept by a free public counter.
-// Two counter services are tried in order, so one being down doesn't freeze the number; if both
-// are unreachable the button still works locally. The count refreshes every half minute and
-// whenever the tab comes back into view, so other visitors' likes show up.
-const LIKE_KEY = "portfolio-likes";
-const LIKE_PROVIDERS = [
-  {
-    get: `https://api.counterapi.dev/v1/uiuxpriti-com/${LIKE_KEY}/`,
-    hit: `https://api.counterapi.dev/v1/uiuxpriti-com/${LIKE_KEY}/up`,
-    read: (d: { count?: number }) => d.count,
-  },
-  {
-    get: `https://abacus.jasoncameron.dev/get/uiuxpriti.com/${LIKE_KEY}`,
-    hit: `https://abacus.jasoncameron.dev/hit/uiuxpriti.com/${LIKE_KEY}`,
-    read: (d: { value?: number }) => d.value,
-  },
-];
-// Optional email alert on each new like, via Web3Forms (https://web3forms.com — the access key is
-// meant to be public). Leave empty to turn alerts off.
-const LIKE_NOTIFY_KEY = "9db643af-7850-4c00-bc76-b26e0386f9db";
-// Starting number shown before the shared counter; real likes are added on top of it.
-const LIKE_BASE = 100;
-
-type LikeRead = (d: never) => number | undefined;
-async function likeFetch(kind: "get" | "hit", start = 0): Promise<{ n: number; at: number } | null> {
-  for (let p = start; p < LIKE_PROVIDERS.length; p++) {
-    const prov = LIKE_PROVIDERS[p];
-    try {
-      const r = await fetch(prov[kind], { cache: "no-store" });
-      // A missing counter (404 on the very first read) just means nobody has liked yet.
-      if (r.status === 404 && kind === "get") return { n: 0, at: p };
-      if (!r.ok) continue;
-      const v = (prov.read as LikeRead)((await r.json()) as never);
-      if (typeof v === "number") return { n: v, at: p };
-    } catch {
-      /* try the next provider */
-    }
-  }
-  return null;
-}
-
-function LikeButton({ tone = "dark" }: { tone?: "dark" | "light" }) {
-  const [count, setCount] = useState<number | null>(null);
-  const [liked, setLiked] = useState(() => {
-    try {
-      return localStorage.getItem("pj-liked") === "1";
-    } catch {
-      return false;
-    }
-  });
-  useEffect(() => {
-    let alive = true;
-    const refresh = () =>
-      likeFetch("get").then((r) => {
-        if (alive && r) setCount(r.n);
-      });
-    refresh();
-    const iv = window.setInterval(refresh, 30000);
-    const onVis = () => {
-      if (document.visibilityState === "visible") refresh();
-    };
-    document.addEventListener("visibilitychange", onVis);
-    return () => {
-      alive = false;
-      window.clearInterval(iv);
-      document.removeEventListener("visibilitychange", onVis);
-    };
-  }, []);
-  const like = () => {
-    if (liked) return;
-    setLiked(true);
-    setCount((c) => (c ?? 0) + 1);
-    try {
-      localStorage.setItem("pj-liked", "1");
-    } catch {
-      /* storage unavailable */
-    }
-    likeFetch("hit").then((r) => {
-      if (r) setCount(r.n);
-    });
-    if (LIKE_NOTIFY_KEY) {
-      fetch("https://api.web3forms.com/submit", {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify({
-          access_key: LIKE_NOTIFY_KEY,
-          subject: "Someone liked your portfolio",
-          from_name: "uiuxpriti.com",
-          message: `A visitor just liked your portfolio (${new Date().toUTCString()}).`,
-        }),
-      }).catch(() => {});
-    }
-  };
-  return (
-    <button
-      type="button"
-      onClick={like}
-      aria-pressed={liked}
-      aria-label={liked ? "Liked, thank you" : "Like this portfolio"}
-      className={`group inline-flex items-center gap-2.5 rounded-full px-4 py-2.5 outline-none transition-all duration-200 focus-visible:ring-2 active:scale-[0.96] ${
-        tone === "light" ? "text-base focus-visible:ring-foreground/25 md:text-[15px]" : "text-[14px] font-medium focus-visible:ring-white/40"
-      } ${
-        liked
-          ? "bg-gradient-to-b from-[#3b6cf6] to-[#2346c7] text-white shadow-[0_8px_20px_-8px_rgba(47,91,232,0.7)]"
-          : tone === "light"
-            ? "border border-[var(--hr-border)] bg-[var(--hr-bg)] text-[var(--hr-link)] hover:border-[#A3A3A3] hover:text-[var(--hr-strong)]"
-            : `text-white/90 hover:text-white ${GLASS}`
-      }`}
-    >
-      <ThumbsUp className={`h-4 w-4 transition-transform duration-200 group-hover:-rotate-12 ${liked ? "fill-current" : ""}`} aria-hidden="true" />
-      <span>{liked ? "Liked" : "Like"}</span>
-      <span className={`h-4 w-px ${liked || tone === "dark" ? "bg-white/25" : "bg-[var(--hr-border)]"}`} aria-hidden="true" />
-      <span className="tabular-nums">{(LIKE_BASE + (count ?? 0)).toLocaleString("en-US")}</span>
-    </button>
   );
 }
 
