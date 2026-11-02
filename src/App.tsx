@@ -1950,6 +1950,52 @@ function RingCard({ stat, run }: { stat: { value: string; label: string }; run: 
 
 // "What I achieved": big-number tiles (the middle one dark), an optional ring for a
 // percentage result, and the summary text beside it.
+// Bento layout for four headline numbers: one big tile with a progress ring, one wide dark tile,
+// and two small tiles. Numbers count up when the grid scrolls into view.
+function BentoStats({ stats, run }: { stats: { value: string; label: string }[]; run: boolean }) {
+  const [a, b, c, d] = stats;
+  const va = useCountUp(a.value, run);
+  const vb = useCountUp(b.value, run);
+  const vc = useCountUp(c.value, run);
+  const vd = useCountUp(d.value, run);
+  const pct = Math.min(100, parseFloat(a.value.replace(/[^\d.]/g, "")) || 0);
+  const SEG = 36;
+  const filled = Math.round((pct / 100) * SEG);
+  const tile = "relative flex flex-col justify-between overflow-hidden rounded-[26px] p-6 transition-transform duration-300 hover:-translate-y-1";
+  return (
+    <div className="mt-8 grid auto-rows-[10.5rem] grid-cols-2 gap-3 md:grid-cols-4">
+      <div className={`${tile} col-span-2 row-span-2 bg-[#eef3ff] dark:bg-[#1b2a5a]`}>
+        <svg viewBox="0 0 200 200" className="pointer-events-none absolute right-6 top-1/2 h-[13rem] w-[13rem] -translate-y-1/2 -rotate-90 sm:h-[15rem] sm:w-[15rem]" aria-hidden="true">
+          {Array.from({ length: SEG }).map((_, i) => (
+            <line
+              key={i}
+              x1="100" y1="10" x2="100" y2="30"
+              strokeWidth="7" strokeLinecap="round"
+              transform={`rotate(${(i * 360) / SEG} 100 100)`}
+              className={i < filled ? "stroke-[#3b6cf6]" : "stroke-foreground/10"}
+              style={{ opacity: i < filled ? (run ? 1 : 0.1) : 1, transition: `opacity .4s ${i * 40}ms` }}
+            />
+          ))}
+        </svg>
+        <p className="relative text-[clamp(52px,6.5vw,84px)] font-medium leading-none tracking-[-0.05em] tabular-nums text-[#1e3a8a] dark:text-blue-100">{va}</p>
+        <p className="relative max-w-[16ch] text-[16px] leading-snug text-[#2f4a8f] dark:text-blue-200/80">{a.label}</p>
+      </div>
+      <div className={`${tile} col-span-2 bg-[#0a0c14] text-white`}>
+        <p className="text-[clamp(40px,5vw,64px)] font-medium leading-none tracking-[-0.05em] tabular-nums">{vb}</p>
+        <p className="max-w-[24ch] text-[15px] leading-snug text-white/70">{b.label}</p>
+      </div>
+      <div className={`${tile} border border-border bg-white dark:bg-card`}>
+        <p className="text-[clamp(30px,3.4vw,44px)] font-medium leading-none tracking-[-0.04em] tabular-nums text-foreground">{vc}</p>
+        <p className="text-[14px] leading-snug text-muted-foreground">{c.label}</p>
+      </div>
+      <div className={`${tile} bg-gradient-to-b from-[#3b6cf6] to-[#2346c7] text-white`}>
+        <p className="text-[clamp(30px,3.4vw,44px)] font-medium leading-none tracking-[-0.04em] tabular-nums">{vd}</p>
+        <p className="text-[14px] leading-snug text-white/80">{d.label}</p>
+      </div>
+    </div>
+  );
+}
+
 function OutcomeShowcase({
   heading = "What I achieved",
   text,
@@ -1974,14 +2020,18 @@ function OutcomeShowcase({
         <h3 className="text-xl font-medium tracking-tight text-muted-foreground sm:text-2xl">{heading}</h3>
       </div>
       {text && <p className="mt-8 max-w-2xl text-[15px] leading-[1.7] text-foreground">{renderRich(text)}</p>}
-      {cards.length > 0 && (
-        <div className={`mt-10 grid gap-4 ${cards.length >= 4 ? "sm:grid-cols-2 lg:grid-cols-4" : "sm:grid-cols-3"}`}>
-          {cards.map((st, i) => (
-            <StatCard key={st.label} stat={st} tone={i === 1 ? "dark" : "light"} run={seen} />
-          ))}
-        </div>
+      {cards.length === 4 && !text ? (
+        <BentoStats stats={cards} run={seen} />
+      ) : (
+        cards.length > 0 && (
+          <div className={`mt-10 grid gap-4 ${cards.length >= 4 ? "sm:grid-cols-2 lg:grid-cols-4" : "sm:grid-cols-3"}`}>
+            {cards.map((st, i) => (
+              <StatCard key={st.label} stat={st} tone={i === 1 ? "dark" : "light"} run={seen} />
+            ))}
+          </div>
+        )
       )}
-      {ringStat && (
+      {ringStat && !(cards.length === 4 && !text) && (
         <div className="mt-4 grid gap-4 sm:grid-cols-3">
           <div className="sm:col-start-2">
             <RingCard stat={ringStat} run={seen} />
@@ -1989,7 +2039,7 @@ function OutcomeShowcase({
           {note && <p className="self-center text-[15px] leading-[1.7] text-foreground/70 sm:col-start-3">{renderRich(note)}</p>}
         </div>
       )}
-      {!ringStat && note && <p className="mt-6 max-w-xl text-[15px] leading-[1.7] text-foreground/70">{renderRich(note)}</p>}
+      {(!ringStat || (cards.length === 4 && !text)) && note && <p className="mt-6 max-w-xl text-[15px] leading-[1.7] text-foreground/70">{renderRich(note)}</p>}
     </div>
   );
 }
@@ -2379,13 +2429,21 @@ function NextRoadmap({ cards }: { cards: { heading: string; text: string }[]; le
 function ConclusionPanel() {
   const [ref, seen] = useInView<HTMLDivElement>(0.2);
   return (
-    <div ref={ref} style={{ opacity: seen ? 1 : 0, transform: seen ? undefined : "translateY(14px)", transition: "opacity .6s ease, transform .6s ease" }}>
-      <p className="max-w-3xl text-[clamp(24px,3.2vw,38px)] font-medium leading-[1.2] tracking-[-0.03em] text-foreground">
-        A complex, tech-heavy tool became a <span className="text-[#2563eb] dark:text-blue-300">guided, data-first</span> AI experience.
+    <div
+      ref={ref}
+      className="rounded-[24px] bg-gradient-to-br from-[#f1f5ff] to-white p-6 dark:from-white/[0.05] dark:to-transparent sm:p-8"
+      style={{ opacity: seen ? 1 : 0, transform: seen ? undefined : "translateY(14px)", transition: "opacity .6s ease, transform .6s ease" }}
+    >
+      <p className="max-w-2xl text-[clamp(22px,2.6vw,30px)] font-medium leading-[1.3] tracking-[-0.02em] text-foreground">
+        A hard-to-start, technical tool became a <span className="text-[#2563eb] dark:text-blue-300">simple, guided</span> experience.
       </p>
-      <p className="mt-6 text-[14px] text-muted-foreground">
-        Result: <span className="text-foreground">Usability</span> · <span className="text-foreground">Efficiency</span> · <span className="text-foreground">User confidence</span>
-      </p>
+      <div className="mt-5 flex flex-wrap gap-2 text-[13px]">
+        {["Easier to use", "Faster", "More trusted"].map((r) => (
+          <span key={r} className="rounded-full bg-white px-3.5 py-1.5 font-medium text-[#1e3a8a] ring-1 ring-[#2563eb]/15 dark:bg-white/10 dark:text-blue-100 dark:ring-white/10">
+            {r}
+          </span>
+        ))}
+      </div>
     </div>
   );
 }
@@ -2791,8 +2849,7 @@ function StudySectionBlock({
     return (
       <section id={`cs-${block.id}`} className="mt-16 scroll-mt-24 border-t border-border pt-10">
         {block.eyebrow && <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-blue-800 dark:text-blue-300">{block.eyebrow}</p>}
-        <h2 className="mt-2 text-2xl font-semibold tracking-tight sm:text-3xl">{block.title}</h2>
-        <div className="mt-8">
+        <div className="mt-4">
           <ConclusionPanel />
         </div>
       </section>
