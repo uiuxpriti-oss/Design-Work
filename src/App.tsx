@@ -2793,22 +2793,150 @@ function PersonaHead({ label }: { label: string }) {
 
 const JOURNEY_TINTS = ["#f8a8e0", "#ffc26b", "#7ee6a8", "#6fb8ff", "#d2b2ff"];
 
+const MOOD: Record<string, number> = { "😕": 3, "😰": 2, "😵": 1, "😩": 1, "😔": 2 };
+const MOOD_AXIS = ["😊", "🙂", "😐", "🙁", "😟"];
+
+function RibbonLabel({ children }: { children: ReactNode }) {
+  return (
+    <span
+      className="inline-flex h-9 items-center bg-[#2563eb] pl-3.5 pr-6 text-[13.5px] font-medium text-white"
+      style={{ clipPath: "polygon(0 0, 100% 0, calc(100% - 9px) 50%, 100% 100%, 0 100%)" }}
+    >
+      {children}
+    </span>
+  );
+}
+
+// Journey map in the "label ribbon + white cards + emotion curve" style: one row per question,
+// five stage columns, and a smooth curve that rises and falls with how the person feels.
+function JourneyMap({ persona, seen }: { persona: Persona; seen: boolean }) {
+  const j = persona.journey;
+  const [stage, setStage] = useState<number | null>(null);
+  const n = j.stages.length;
+  const levels = j.feelings.map((f) => MOOD[f.emoji] ?? 3);
+  const yOf = (lvl: number) => 10 + ((5 - lvl) / 4) * 80;
+  const pts = levels.map((l, i) => ({ x: ((i + 0.5) / n) * 100, y: yOf(l) }));
+  // smooth path through the points
+  let d = `M0,${pts[0].y}`;
+  d += ` L${pts[0].x},${pts[0].y}`;
+  for (let i = 0; i < pts.length - 1; i++) {
+    const m = (pts[i].x + pts[i + 1].x) / 2;
+    d += ` C${m},${pts[i].y} ${m},${pts[i + 1].y} ${pts[i + 1].x},${pts[i + 1].y}`;
+  }
+  d += ` L100,${pts[n - 1].y}`;
+  const rows: { label: string; key: "action" | "goals" | "feelings" | "pains" | "ideas" }[] = [
+    { label: "Actions", key: "action" },
+    { label: "Wants", key: "goals" },
+    { label: "Feelings", key: "feelings" },
+  ];
+  const after: { label: string; key: "pains" | "ideas" }[] = [
+    { label: "Blockers", key: "pains" },
+    { label: "How we can help", key: "ideas" },
+  ];
+  const card = (i: number, content: ReactNode, delay: number) => (
+    <div
+      key={i}
+      onMouseEnter={() => setStage(i)}
+      onMouseLeave={() => setStage(null)}
+      className="h-full rounded-2xl border bg-white p-5 transition-all duration-300 dark:bg-card"
+      style={{
+        borderColor: stage === i ? "#2563eb66" : "hsl(var(--border))",
+        opacity: seen ? (stage === null || stage === i ? 1 : 0.45) : 0,
+        transform: seen ? undefined : "translateY(12px)",
+        transition: `opacity .5s ${seen ? delay : 0}ms, transform .5s ${delay}ms, border-color .2s`,
+      }}
+    >
+      {content}
+    </div>
+  );
+  const list = (items: string[]) => (
+    <ul className="space-y-2">
+      {items.map((it) => (
+        <li key={it} className="text-[14.5px] leading-[1.55] text-foreground/80">{it}</li>
+      ))}
+    </ul>
+  );
+  const row = (label: string, key: "action" | "goals" | "feelings" | "pains" | "ideas", ri: number) => (
+    <div key={key} className="grid grid-cols-[9rem_repeat(5,minmax(0,1fr))] items-stretch">
+      <div className="flex items-center"><RibbonLabel>{label}</RibbonLabel></div>
+      {j.stages.map((_, i) => (
+        <div key={i} className="px-2.5">
+          {card(i, key === "feelings" ? list(j.feelings[i].lines) : list(j[key][i]), 200 + ri * 100 + i * 50)}
+        </div>
+      ))}
+    </div>
+  );
+  return (
+    <div className="-mx-6 mt-12 overflow-x-auto px-6 pb-4 [scrollbar-width:none] sm:mx-0 sm:px-0 [&::-webkit-scrollbar]:hidden">
+      <div className="min-w-[68rem] space-y-8">
+        <div className="grid grid-cols-[9rem_repeat(5,minmax(0,1fr))]">
+          <span />
+          {j.stages.map((st, i) => (
+            <button
+              key={st}
+              type="button"
+              onMouseEnter={() => setStage(i)}
+              onMouseLeave={() => setStage(null)}
+              className="px-2.5 text-left outline-none"
+              style={{ opacity: stage === null || stage === i ? 1 : 0.45, transition: "opacity .2s" }}
+            >
+              <span className="block text-[12px] font-medium tabular-nums text-muted-foreground">{String(i + 1).padStart(2, "0")}</span>
+              <span className="mt-1 block text-[15px] font-semibold tracking-tight text-foreground">{st}</span>
+              <span className="mt-2.5 block h-1 rounded-full transition-all duration-500" style={{ background: JOURNEY_TINTS[i], width: seen ? "100%" : "0%", transitionDelay: `${i * 120}ms` }} />
+            </button>
+          ))}
+        </div>
+
+        {rows.map((r, ri) => row(r.label, r.key, ri))}
+
+        <div className="relative h-[15rem]">
+          <div className="absolute inset-y-0 left-0 w-[9rem]">
+            <div className="absolute left-0 top-1/2 -translate-y-1/2"><RibbonLabel>Mood</RibbonLabel></div>
+            {[10, 30, 50, 70, 90].map((y, k) => (
+              <span key={y} className="absolute right-3 -translate-y-1/2 text-[20px] opacity-70" style={{ top: `${y}%` }}>{MOOD_AXIS[k]}</span>
+            ))}
+          </div>
+          <div className="absolute inset-y-0 left-[9rem] right-0">
+            {[10, 30, 50, 70, 90].map((y) => (
+              <span key={y} className="absolute inset-x-0 border-t border-dashed border-border" style={{ top: `${y}%` }} />
+            ))}
+            <div style={{ clipPath: seen ? "inset(-20% 0 -20% 0)" : "inset(-20% 100% -20% 0)", transition: "clip-path 2.4s cubic-bezier(.4,0,.2,1) .4s" }} className="absolute inset-0">
+              <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="absolute inset-0 h-full w-full overflow-visible" aria-hidden="true">
+                <path d={d} fill="none" stroke="#2563eb" strokeWidth="2.5" strokeLinecap="round" vectorEffect="non-scaling-stroke" opacity="0.85" />
+              </svg>
+            </div>
+            {pts.map((pt, i) => (
+              <span
+                key={i}
+                onMouseEnter={() => setStage(i)}
+                onMouseLeave={() => setStage(null)}
+                className="absolute grid h-11 w-11 place-items-center rounded-full bg-white text-[24px] shadow-[0_6px_16px_-8px_rgba(20,30,60,0.35)] ring-1 ring-black/5 dark:bg-card"
+                style={{
+                  left: `${pt.x}%`,
+                  top: `${pt.y}%`,
+                  transform: `translate(-50%, -50%) scale(${seen ? (stage === i ? 1.2 : 1) : 0})`,
+                  transition: `transform .5s cubic-bezier(.2,.8,.2,1) ${seen ? 700 + i * 420 : 0}ms`,
+                }}
+              >
+                {j.feelings[i].emoji}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {after.map((r, ri) => row(r.label, r.key, 4 + ri))}
+      </div>
+    </div>
+  );
+}
+
 // Persona + journey map, built in code. Switch between the two personas; the map below shows
 // five stages with what the person does, wants, feels, struggles with and what we could improve.
 // Hover a stage (or a column) to follow it down the rows.
 function PersonaExplorer({ personas }: { personas: Persona[] }) {
   const [ref, seen] = useInView<HTMLDivElement>(0.15);
   const [who, setWho] = useState(0);
-  const [stage, setStage] = useState<number | null>(null);
   const p = personas[who];
-  const j = p.journey;
-  const rows: { label: string; key: "action" | "goals" | "feelings" | "pains" | "ideas" }[] = [
-    { label: "What they do", key: "action" },
-    { label: "What they want", key: "goals" },
-    { label: "How they feel", key: "feelings" },
-    { label: "What blocks them", key: "pains" },
-    { label: "How we can help", key: "ideas" },
-  ];
   return (
     <div ref={ref} className="mt-10">
       <div className="inline-flex rounded-full bg-foreground/[0.05] p-1" role="tablist" aria-label="Persona">
@@ -2820,7 +2948,6 @@ function PersonaExplorer({ personas }: { personas: Persona[] }) {
             aria-selected={who === i}
             onClick={() => {
               setWho(i);
-              setStage(null);
             }}
             className={`flex items-center gap-2 rounded-full py-1.5 pl-1.5 pr-4 text-[14px] font-medium outline-none transition-all ${who === i ? "bg-white text-foreground shadow-sm dark:bg-white/15" : "text-muted-foreground hover:text-foreground"}`}
           >
@@ -2917,79 +3044,11 @@ function PersonaExplorer({ personas }: { personas: Persona[] }) {
           </div>
         </div>
 
-        <p className="mt-16 text-[18px] font-semibold tracking-tight text-foreground">{p.name.split(" ")[0]}&rsquo;s journey</p>
-        <div className="-mx-6 mt-6 overflow-x-auto px-6 pb-3 [scrollbar-width:none] sm:mx-0 sm:px-0 [&::-webkit-scrollbar]:hidden">
-          <div className="min-w-[64rem]">
-            <div className="grid grid-cols-[7rem_repeat(5,minmax(0,1fr))] gap-3">
-              <span />
-              {j.stages.map((st, i) => (
-                <button
-                  key={st}
-                  type="button"
-                  onMouseEnter={() => setStage(i)}
-                  onMouseLeave={() => setStage(null)}
-                  onClick={() => setStage(stage === i ? null : i)}
-                  className="relative h-12 text-[13.5px] font-semibold text-[#1f2a44] outline-none transition-transform duration-300 hover:-translate-y-0.5"
-                  style={{
-                    background: JOURNEY_TINTS[i],
-                    clipPath: "polygon(0 0, calc(100% - 16px) 0, 100% 50%, calc(100% - 16px) 100%, 0 100%, 16px 50%)",
-                    opacity: seen ? (stage === null || stage === i ? 1 : 0.45) : 0,
-                    transition: `opacity .5s ${i * 90}ms, transform .3s`,
-                  }}
-                >
-                  {st}
-                </button>
-              ))}
-            </div>
-            <div className="mt-5 space-y-3">
-              {rows.map((r, ri) => (
-                <div key={r.key} className="grid grid-cols-[7rem_repeat(5,minmax(0,1fr))] gap-3">
-                  <p className="flex items-center text-[12px] font-semibold uppercase leading-tight tracking-[0.1em] text-muted-foreground">{r.label}</p>
-                  {j.stages.map((_, i) => {
-                    const on = stage === null || stage === i;
-                    const delay = 250 + ri * 90 + i * 40;
-                    let body: React.ReactNode;
-                    if (r.key === "feelings") {
-                      const f = j.feelings[i];
-                      body = (
-                        <>
-                          <span className="text-[26px] leading-none">{f.emoji}</span>
-                          <p className="mt-3 space-y-1 text-[13px] leading-snug text-foreground/75">{f.lines.join(" · ")}</p>
-                        </>
-                      );
-                    } else {
-                      const items = j[r.key][i];
-                      body = (
-                        <ul className="space-y-2">
-                          {items.map((it) => (
-                            <li key={it} className="text-[13px] leading-snug text-foreground/75">{it}</li>
-                          ))}
-                        </ul>
-                      );
-                    }
-                    return (
-                      <div
-                        key={i}
-                        onMouseEnter={() => setStage(i)}
-                        onMouseLeave={() => setStage(null)}
-                        className="min-h-[6.5rem] rounded-2xl p-4"
-                        style={{
-                          background: r.key === "pains" ? "#fff5f4" : r.key === "ideas" ? "#f2fbf6" : "#f8f9fc",
-                          opacity: seen ? (on ? 1 : 0.4) : 0,
-                          transform: seen ? undefined : "translateY(10px)",
-                          boxShadow: stage === i ? `inset 0 0 0 1.5px ${JOURNEY_TINTS[i]}` : "none",
-                          transition: `opacity .4s ${seen ? delay : 0}ms, transform .5s ${delay}ms, box-shadow .2s`,
-                        }}
-                      >
-                        {body}
-                      </div>
-                    );
-                  })}
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
+        <p className="mt-20 text-center text-[clamp(26px,3vw,36px)] font-semibold tracking-[-0.03em] text-foreground">{p.name.split(" ")[0]}&rsquo;s journey map</p>
+        <p className="mx-auto mt-3 max-w-xl text-center text-[15px] leading-relaxed text-muted-foreground">
+          What {p.name.split(" ")[0]} does, feels and runs into at each step, and how we can help.
+        </p>
+        <JourneyMap persona={p} seen={seen} />
       </div>
     </div>
   );
