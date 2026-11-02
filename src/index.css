@@ -673,3 +673,13 @@ html.lenis body {
 @media (prefers-reduced-motion: reduce) {
   .sparkle-breathe { animation: none; }
 }
+
+@keyframes decisionBar {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+@keyframes decisionPulse {
+  from { transform: scaleY(0.45); }
+  to { transform: scaleY(1); }
+}

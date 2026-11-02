@@ -1905,7 +1905,7 @@ function StatCard({ stat, tone, run }: { stat: { value: string; label: string };
         tone === "dark" ? "bg-[#0a0c14] text-white" : "border border-border bg-[#f5f6f8] text-foreground dark:bg-white/[0.05]"
       }`}
     >
-      <p className="text-[clamp(44px,6vw,72px)] font-medium leading-none tracking-[-0.05em] tabular-nums">{shown}</p>
+      <p className={`font-medium leading-none tracking-[-0.05em] tabular-nums ${/\d/.test(stat.value) ? "text-[clamp(44px,6vw,72px)]" : "text-[clamp(30px,3.4vw,46px)]"}`}>{shown}</p>
       <p className={`max-w-[22ch] text-[16px] leading-snug ${tone === "dark" ? "text-white/75" : "text-foreground/70"}`}>{stat.label}</p>
     </div>
   );
@@ -1962,7 +1962,7 @@ function OutcomeShowcase({
   note?: string;
 }) {
   const [ref, seen] = useInView<HTMLDivElement>(0.25);
-  const cards = stats.slice(0, 3);
+  const cards = stats.slice(0, 4);
   const ringStat = stats.find((x) => /%/.test(x.value)) ?? null;
   return (
     <div ref={ref}>
@@ -1975,7 +1975,7 @@ function OutcomeShowcase({
       </div>
       {text && <p className="mt-8 max-w-2xl text-[15px] leading-[1.7] text-foreground">{renderRich(text)}</p>}
       {cards.length > 0 && (
-        <div className="mt-10 grid gap-4 sm:grid-cols-3">
+        <div className={`mt-10 grid gap-4 ${cards.length >= 4 ? "sm:grid-cols-2 lg:grid-cols-4" : "sm:grid-cols-3"}`}>
           {cards.map((st, i) => (
             <StatCard key={st.label} stat={st} tone={i === 1 ? "dark" : "light"} run={seen} />
           ))}
@@ -2287,6 +2287,169 @@ function StoryCards({ items }: { items: string[] }) {
   );
 }
 
+// Interactive list of design decisions: pick one on the left, read the one-liner on the right.
+// Cycles on its own while on screen until you touch it.
+function DecisionExplorer({ cards }: { cards: { heading: string; short?: string; tag?: string }[] }) {
+  const [ref, seen] = useInView<HTMLDivElement>(0.3);
+  const [active, setActive] = useState(0);
+  const [auto, setAuto] = useState(true);
+  useEffect(() => {
+    if (!seen || !auto || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const t = window.setInterval(() => setActive((a) => (a + 1) % cards.length), 4500);
+    return () => window.clearInterval(t);
+  }, [seen, auto, cards.length]);
+  const pick = (i: number) => {
+    setAuto(false);
+    setActive(i);
+  };
+  const cur = cards[active];
+  return (
+    <div ref={ref} className="mt-8 grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)]">
+      <div className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-2 [scrollbar-width:none] lg:mx-0 lg:flex-col lg:overflow-visible lg:px-0 lg:pb-0 [&::-webkit-scrollbar]:hidden" role="tablist" aria-label="Design decisions">
+        {cards.map((c, i) => {
+          const on = i === active;
+          return (
+            <button
+              key={c.heading}
+              type="button"
+              role="tab"
+              aria-selected={on}
+              onClick={() => pick(i)}
+              onMouseEnter={() => pick(i)}
+              className={`group relative flex shrink-0 items-center gap-3 overflow-hidden rounded-2xl px-4 py-3.5 text-left outline-none transition-all duration-300 focus-visible:ring-2 focus-visible:ring-foreground/25 lg:shrink ${
+                on ? "bg-[#0f1530] text-white shadow-[0_12px_30px_-16px_rgba(15,21,48,0.7)] lg:translate-x-1" : "bg-[#f4f6fb] text-foreground/80 hover:bg-[#e9eefc] dark:bg-white/[0.05] dark:hover:bg-white/[0.09]"
+              }`}
+            >
+              <span className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-[12px] font-semibold tabular-nums transition-colors ${on ? "bg-white text-[#0f1530]" : "bg-white text-[#1e3a8a] dark:bg-white/10 dark:text-blue-100"}`}>
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              <span className="whitespace-nowrap text-[15px] font-medium leading-snug lg:whitespace-normal">{c.heading}</span>
+              {on && auto && (
+                <span key={`${active}-bar`} className="absolute inset-x-0 bottom-0 h-0.5 origin-left bg-[#60a5fa]" style={{ animation: "decisionBar 4.5s linear" }} />
+              )}
+            </button>
+          );
+        })}
+      </div>
+      <div key={active} className="relative flex min-h-[18rem] flex-col justify-between overflow-hidden rounded-[28px] bg-gradient-to-b from-[#3b6cf6] to-[#2346c7] p-7 text-white sm:p-9" style={{ animation: "aboutRise .5s cubic-bezier(.2,.7,.2,1) both" }}>
+        <span aria-hidden="true" className="pointer-events-none absolute -right-4 -top-8 select-none text-[190px] font-bold leading-none tracking-[-0.06em] text-white/10">
+          {String(active + 1).padStart(2, "0")}
+        </span>
+        <span className="relative inline-flex w-fit items-center rounded-full bg-white/15 px-3.5 py-1.5 text-[12px] font-semibold uppercase tracking-[0.14em]">{cur.tag}</span>
+        <div className="relative">
+          <p className="text-[26px] font-semibold leading-tight tracking-tight sm:text-[30px]">{cur.heading}</p>
+          <p className="mt-4 max-w-md text-[16px] leading-[1.6] text-white/85">{cur.short}</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+const NEXT_TONES = [
+  { card: "bg-[#0f1530] text-white", num: "bg-white text-[#0f1530]", text: "text-[#c9d6ff]", tag: "bg-white/10 text-[#c9d6ff]" },
+  { card: "bg-[#dbe7ff] text-[#1e3a8a] dark:bg-[#1b2a5a] dark:text-blue-100", num: "bg-[#1e3a8a] text-white", text: "text-[#2f4a8f] dark:text-blue-200/80", tag: "bg-white/70 text-[#1e3a8a] dark:bg-white/10 dark:text-blue-100" },
+  { card: "border border-border bg-white text-[#2346c7] dark:bg-card dark:text-blue-300", num: "bg-gradient-to-b from-[#3b6cf6] to-[#2346c7] text-white", text: "text-foreground/70", tag: "bg-[#eef3ff] text-[#1e3a8a] dark:bg-white/10 dark:text-blue-100" },
+  { card: "bg-gradient-to-b from-[#3b6cf6] to-[#2346c7] text-white", num: "bg-white text-[#2346c7]", text: "text-white/80", tag: "bg-white/15 text-white" },
+] as const;
+
+// "What I'd do next": a roadmap of colourful cards joined by a line, and a closing banner that says
+// the work keeps listening to users.
+function NextRoadmap({ cards, lesson }: { cards: { heading: string; text: string }[]; lesson?: string }) {
+  const [ref, seen] = useInView<HTMLDivElement>(0.2);
+  return (
+    <div ref={ref} className="mt-8">
+      <div className="relative grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <span aria-hidden="true" className="pointer-events-none absolute left-6 right-6 top-[3.35rem] hidden h-px bg-gradient-to-r from-transparent via-[#3b6cf6]/40 to-transparent lg:block" />
+        {cards.map((c, i) => {
+          const t = NEXT_TONES[i % NEXT_TONES.length];
+          return (
+            <div
+              key={c.heading}
+              className={`group relative flex min-h-[17rem] flex-col rounded-[28px] p-6 transition-[transform,opacity] duration-500 ease-out hover:-translate-y-1.5 ${t.card}`}
+              style={{ opacity: seen ? 1 : 0, transform: seen ? undefined : "translateY(20px)", transitionDelay: seen ? `${i * 110}ms` : "0ms" }}
+            >
+              <div className="flex items-center justify-between">
+                <span className={`flex h-11 w-11 items-center justify-center rounded-full text-[14px] font-semibold tabular-nums ${t.num}`}>{String(i + 1).padStart(2, "0")}</span>
+                <span className={`rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] ${t.tag}`}>Next</span>
+              </div>
+              <p className="mt-8 text-[22px] font-semibold leading-tight tracking-tight">{c.heading}</p>
+              <p className={`mt-3 text-[14.5px] leading-[1.6] ${t.text}`}>{c.text}</p>
+              <span aria-hidden="true" className="mt-auto pt-5 text-[20px] opacity-60 transition-transform duration-300 group-hover:translate-x-1">→</span>
+            </div>
+          );
+        })}
+      </div>
+
+      <div className="relative mt-5 overflow-hidden rounded-[28px] bg-[#0a0c14] p-7 text-white sm:p-10">
+        <span aria-hidden="true" className="pointer-events-none absolute -right-16 -top-20 h-64 w-64 rounded-full bg-[radial-gradient(circle,#3b6cf6_0%,transparent_70%)] opacity-60" />
+        <div className="relative flex flex-col gap-6 sm:flex-row sm:items-center sm:gap-10">
+          <span className="relative flex h-16 w-16 shrink-0 items-center justify-center">
+            <span className="absolute inset-0 animate-ping rounded-full bg-[#3b6cf6]/40" />
+            <span className="relative flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-b from-[#3b6cf6] to-[#2346c7] shadow-[0_10px_30px_-8px_rgba(59,108,246,0.9)]">
+              <span className="flex items-end gap-[3px]" aria-hidden="true">
+                {[10, 18, 26, 14, 22].map((h, k) => (
+                  <span key={k} className="w-[3px] rounded-full bg-white" style={{ height: h, animation: `decisionPulse 1.2s ease-in-out ${k * 0.12}s infinite alternate` }} />
+                ))}
+              </span>
+            </span>
+          </span>
+          <div>
+            <p className="text-[12px] font-semibold uppercase tracking-[0.18em] text-[#9cc0ff]">Always listening</p>
+            <p className="mt-2 max-w-2xl text-[clamp(20px,2.4vw,28px)] font-medium leading-snug tracking-tight">
+              We keep listening to users, and every cycle makes the experience a little better.
+            </p>
+          </div>
+        </div>
+        {lesson && <p className="relative mt-7 max-w-3xl border-t border-white/10 pt-6 text-[15px] leading-[1.7] text-white/70">{lesson}</p>}
+      </div>
+    </div>
+  );
+}
+
+// Conclusion: one big statement, the three things that changed, and what users got.
+function ConclusionPanel({ block }: { block: StudyBlock }) {
+  const [ref, seen] = useInView<HTMLDivElement>(0.2);
+  const [first, second] = block.body ?? [];
+  return (
+    <div
+      ref={ref}
+      className="relative overflow-hidden rounded-[32px] bg-[#0a0c14] p-7 text-white sm:p-12"
+      style={{ opacity: seen ? 1 : 0, transform: seen ? undefined : "translateY(18px)", transition: "opacity .6s ease, transform .6s ease" }}
+    >
+      <span aria-hidden="true" className="pointer-events-none absolute -left-20 -top-24 h-80 w-80 rounded-full bg-[radial-gradient(circle,#3b6cf6_0%,transparent_70%)] opacity-50" />
+      <span aria-hidden="true" className="pointer-events-none absolute -bottom-28 -right-16 h-80 w-80 rounded-full bg-[radial-gradient(circle,#8b7bff_0%,transparent_70%)] opacity-35" />
+      <div className="relative">
+        <div className="flex flex-wrap items-center gap-3 text-[13px] font-medium">
+          <span className="rounded-full bg-white/10 px-4 py-2 text-white/70 line-through decoration-white/30">Complex &amp; tech-heavy</span>
+          <span aria-hidden="true" className="text-[#7da2ff]">→</span>
+          <span className="rounded-full bg-gradient-to-b from-[#3b6cf6] to-[#2346c7] px-4 py-2 text-white">Guided &amp; data-first</span>
+        </div>
+        {first && <p className="mt-8 max-w-3xl text-[clamp(24px,3.2vw,38px)] font-medium leading-[1.25] tracking-[-0.03em]">{first}</p>}
+        {second && <p className="mt-5 max-w-3xl text-[16px] leading-[1.7] text-white/65">{second}</p>}
+        {block.pillars && (
+          <div className="mt-10 grid gap-3 sm:grid-cols-3">
+            {block.pillars.map((p, i) => (
+              <div key={p.title} className="rounded-[22px] border border-white/10 bg-white/[0.06] p-5 backdrop-blur-sm transition-colors duration-300 hover:bg-white/[0.1]">
+                <span className="text-[12px] font-semibold tabular-nums text-[#7da2ff]">{String(i + 1).padStart(2, "0")}</span>
+                <p className="mt-3 text-[18px] font-semibold leading-snug tracking-tight">{p.title}</p>
+                <p className="mt-2 text-[14px] leading-[1.6] text-white/65">{p.text}</p>
+              </div>
+            ))}
+          </div>
+        )}
+        <div className="mt-8 flex flex-wrap items-center gap-2.5 text-[13px]">
+          <span className="text-white/50">The result</span>
+          {["Usability", "Efficiency", "User confidence"].map((r) => (
+            <span key={r} className="rounded-full bg-white px-3.5 py-1.5 font-semibold text-[#0a0c14]">
+              {r}
+            </span>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function StudySectionBlock({
   block,
   onZoom,
@@ -2296,6 +2459,41 @@ function StudySectionBlock({
   onZoom: (src: string) => void;
   fallbackStats?: { value: string; label: string }[];
 }) {
+  if (block.id === "future-scope" && block.cards) {
+    return (
+      <section id={`cs-${block.id}`} className="mt-16 scroll-mt-24 border-t border-border pt-10">
+        {block.eyebrow && <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-blue-800 dark:text-blue-300">{block.eyebrow}</p>}
+        <h2 className="mt-2 text-2xl font-semibold tracking-tight sm:text-3xl">{block.title}</h2>
+        {block.lead && <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-foreground/85">{block.lead}</p>}
+        <NextRoadmap cards={block.cards} lesson={block.body?.[0]} />
+      </section>
+    );
+  }
+  if (block.id === "conclusion" && block.pillars) {
+    return (
+      <section id={`cs-${block.id}`} className="mt-16 scroll-mt-24 border-t border-border pt-10">
+        {block.eyebrow && <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-blue-800 dark:text-blue-300">{block.eyebrow}</p>}
+        <h2 className="mt-2 text-2xl font-semibold tracking-tight sm:text-3xl">{block.title}</h2>
+        <div className="mt-8">
+          <ConclusionPanel block={block} />
+        </div>
+      </section>
+    );
+  }
+  // Short qualitative impact lists ("Faster onboarding", "Reduced drop-offs") use the same template:
+  // the first word is the big headline, the rest is the label.
+  if (block.id === "impact" && block.bullets && block.bullets.length > 0 && block.bullets.every((b) => b.split(" ").length <= 4)) {
+    const stats = block.bullets.map((b) => {
+      const [first, ...rest] = b.split(" ");
+      const label = rest.join(" ");
+      return { value: first, label: label ? label.charAt(0).toUpperCase() + label.slice(1) : first };
+    });
+    return (
+      <section id={`cs-${block.id}`} className="mt-16 scroll-mt-24 border-t border-border pt-10">
+        <OutcomeShowcase heading={block.title || "What changed"} stats={stats} />
+      </section>
+    );
+  }
   // Outcome sections share one "what I achieved" template.
   if (block.id === "outcome") {
     return (
@@ -2476,7 +2674,8 @@ function StudySectionBlock({
         </div>
       )}
       {block.notes && <StickyNotes notes={block.notes} tone={block.noteTone} />}
-      {block.cards && (
+      {block.cards && block.cards.every((c) => c.short) && <DecisionExplorer cards={block.cards} />}
+      {block.cards && !block.cards.every((c) => c.short) && (
         <div className="mt-6 grid gap-4 sm:grid-cols-2">
           {block.cards.map((c, i) => (
             <div key={i} className="rounded-2xl border border-border bg-card p-5">
