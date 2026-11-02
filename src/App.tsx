@@ -2427,133 +2427,85 @@ function ConclusionPanel({ block }: { block: StudyBlock }) {
 // A winding road down the page with one stop per phase. Cards alternate sides; the road draws
 // itself and the stops pop in one after another when scrolled into view. On phones it becomes a
 // simple vertical list.
-// Dark serpentine roadmap: a thin line leaves "Brief", arches over the first stack of phases,
-// dips and rises to the play marker, arches again over the second stack and ends on the finish
-// heart. Each pill opens to show its points. Phones get a plain vertical list.
-function RoadPill({ title, items, accent, open, onToggle, delay, seen }: { title: string; items: string[]; accent: boolean; open: boolean; onToggle: () => void; delay: number; seen: boolean }) {
-  return (
-    <button
-      type="button"
-      onClick={onToggle}
-      onMouseEnter={onToggle}
-      aria-expanded={open}
-      className={`block w-full rounded-xl border px-4 py-2.5 text-center outline-none transition-all duration-300 focus-visible:ring-2 focus-visible:ring-white/40 ${
-        accent ? "border-[#3b6cf6]/60" : "border-white/[0.06]"
-      } ${open ? "bg-[#26262c]" : "bg-[#1c1c20] hover:bg-[#232329]"}`}
-      style={{ opacity: seen ? 1 : 0, transform: seen ? undefined : "translateY(10px)", transition: `opacity .5s ${delay}ms, transform .5s ${delay}ms, background-color .3s` }}
-    >
-      <span className="text-[15px] text-white">
-        {title}
-        <span className="mx-2 text-[#60a5fa]">|</span>
-        <span className="text-[13px] text-white/55">{items.length} points</span>
-      </span>
-      <span className={`grid transition-all duration-300 ease-out ${open ? "mt-2.5 grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"}`}>
-        <span className="overflow-hidden">
-          <span className="flex flex-col gap-1 text-[13px] leading-snug text-white/65">
-            {items.map((it) => (
-              <span key={it}>{it}</span>
-            ))}
-          </span>
-        </span>
-      </span>
-    </button>
-  );
-}
-
+// Scroll-linked roadmap: a big sticky number and title on the left follow whichever phase is
+// in the middle of the screen on the right; the other phases fade back. Ticks jump to a phase.
 function RoadMap({ stops }: { stops: { title: string; color: string; items: string[] }[] }) {
-  const [ref, seen] = useInView<HTMLDivElement>(0.25);
-  const [open, setOpen] = useState(0);
-  const [playing, setPlaying] = useState(true);
+  const [active, setActive] = useState(0);
+  const rows = useRef<(HTMLLIElement | null)[]>([]);
   const n = stops.length;
-  const split = Math.min(4, n);
-  const first = stops.slice(0, split);
-  const second = stops.slice(split);
-  // Walks through the phases on its own; hovering or clicking a pill takes over, the round
-  // play/pause button hands control back.
   useEffect(() => {
-    if (!seen || !playing || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const t = window.setInterval(() => setOpen((o) => (o + 1) % n), 3200);
-    return () => window.clearInterval(t);
-  }, [seen, playing, n]);
-  const pick = (i: number) => {
-    setPlaying(false);
-    setOpen(i);
+    const els = rows.current.filter(Boolean) as HTMLLIElement[];
+    if (!("IntersectionObserver" in window)) return;
+    const io = new IntersectionObserver(
+      (es) => {
+        es.forEach((e) => {
+          if (e.isIntersecting) setActive(Number((e.target as HTMLElement).dataset.i));
+        });
+      },
+      { rootMargin: "-42% 0px -48% 0px" },
+    );
+    els.forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, [n]);
+  const jump = (i: number) => {
+    const el = rows.current[i];
+    if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - window.innerHeight * 0.38, behavior: "smooth" });
   };
+  const cur = stops[active];
   return (
-    <div ref={ref} className="mt-10 overflow-hidden rounded-[32px] bg-[#050507] p-6 sm:p-10">
-      <div className="flex items-end justify-between gap-4">
-        <p className="bg-gradient-to-r from-white via-[#bfdbfe] to-[#60a5fa] bg-clip-text text-[clamp(30px,4.4vw,52px)] font-medium leading-none tracking-[-0.03em] text-transparent">
-          Ask Me, start to finish
-        </p>
-        <span className="hidden text-[13px] tabular-nums text-white/45 sm:block">
-          {String(open + 1).padStart(2, "0")} / {String(n).padStart(2, "0")}
-        </span>
-      </div>
-
-      <div className="relative mt-6 hidden aspect-[1000/640] md:block">
-        <svg viewBox="0 0 1000 640" preserveAspectRatio="none" className="absolute inset-0 h-full w-full" aria-hidden="true">
-          <path
-            d="M72 470 L72 250 A113 113 0 0 1 298 250 L298 470 A108 108 0 0 0 515 470 L515 250 A112 112 0 0 1 739 250 L739 470 A109 109 0 0 0 957 470 L957 330"
-            fill="none"
-            stroke="rgba(255,255,255,0.22)"
-            strokeWidth="1.5"
-            vectorEffect="non-scaling-stroke"
-            pathLength={1}
-            style={{ strokeDasharray: 1, strokeDashoffset: seen ? 0 : 1, transition: "stroke-dashoffset 3.2s cubic-bezier(.4,0,.2,1)" }}
-          />
-        </svg>
-
-        <div className="absolute flex -translate-x-1/2 flex-col items-center gap-2 text-[13px] text-white/80" style={{ left: "7.2%", top: "76%" }}>
-          <span className="grid h-9 w-9 place-items-center rounded-lg bg-white/10">
-            <FileText className="h-[18px] w-[18px] text-white" aria-hidden="true" />
-          </span>
-          Brief
-        </div>
-
-        <div className="absolute flex w-[30%] flex-col gap-2.5" style={{ left: "14.7%", top: "37%" }}>
-          {first.map((s, i) => (
-            <RoadPill key={s.title} title={s.title} items={s.items} accent={false} open={open === i} onToggle={() => pick(i)} delay={300 + i * 160} seen={seen} />
-          ))}
-        </div>
-
-        <div className="absolute flex -translate-x-1/2 flex-col items-center text-center" style={{ left: "62.7%", top: "17%" }}>
-          <button
-            type="button"
-            onClick={() => setPlaying((p) => !p)}
-            aria-label={playing ? "Pause the walkthrough" : "Play the walkthrough"}
-            className="grid h-10 w-10 place-items-center rounded-full bg-gradient-to-b from-[#60a5fa] to-[#2563eb] shadow-[0_0_30px_-4px_rgba(59,130,246,0.8)] outline-none transition-transform hover:scale-110 focus-visible:ring-2 focus-visible:ring-white/50"
-          >
-            {playing ? (
-              <span className="flex gap-[3px]" aria-hidden="true">
-                <span className="h-3.5 w-[3px] rounded-full bg-white" />
-                <span className="h-3.5 w-[3px] rounded-full bg-white" />
-              </span>
-            ) : (
-              <Play className="h-4 w-4 translate-x-px fill-white text-white" aria-hidden="true" />
-            )}
-          </button>
-          <p className="mt-5 text-[14px] leading-snug text-white/85">Design begins</p>
-        </div>
-
-        <div className="absolute flex w-[33.5%] flex-col gap-2.5" style={{ left: "57.2%", top: "36%" }}>
-          {second.map((s, i) => (
-            <RoadPill key={s.title} title={s.title} items={s.items} accent open={open === split + i} onToggle={() => pick(split + i)} delay={300 + (split + i) * 160} seen={seen} />
-          ))}
-        </div>
-
-        <div className="absolute -translate-x-1/2 -translate-y-1/2" style={{ left: "95.7%", top: "43%" }}>
-          <span className={`grid h-10 w-10 place-items-center rounded-full transition-colors duration-500 ${open === n - 1 ? "bg-[#3b6cf6]/35" : "bg-[#3b6cf6]/15"}`}>
-            <svg viewBox="0 0 24 24" className={`h-6 w-6 fill-[#60a5fa] transition-transform duration-500 ${open === n - 1 ? "scale-125" : ""}`} aria-hidden="true">
-              <path d="M12 21s-7.5-4.6-9.6-9.3C.9 8 3 4.5 6.5 4.5c2 0 3.5 1 4.5 2.4 1-1.4 2.5-2.4 4.5-2.4 3.5 0 5.6 3.5 4.1 7.2C19.5 16.4 12 21 12 21z" />
-            </svg>
-          </span>
+    <div className="mt-10 grid gap-10 md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] md:gap-16">
+      <div className="hidden md:block">
+        <div className="sticky top-28">
+          <p key={active} className="text-[clamp(96px,12vw,168px)] font-medium leading-[0.85] tracking-[-0.06em] tabular-nums transition-colors duration-500" style={{ color: cur.color, animation: "aboutRise .45s cubic-bezier(.2,.7,.2,1) both" }}>
+            {String(active + 1).padStart(2, "0")}
+          </p>
+          <p key={`t${active}`} className="mt-6 max-w-xs text-[22px] font-medium leading-snug tracking-tight text-foreground" style={{ animation: "aboutRise .45s .05s cubic-bezier(.2,.7,.2,1) both" }}>
+            {cur.title}
+          </p>
+          <div className="mt-8 flex max-w-xs gap-1.5" role="tablist" aria-label="Phases">
+            {stops.map((s, i) => (
+              <button
+                key={s.title}
+                type="button"
+                role="tab"
+                aria-selected={i === active}
+                aria-label={s.title}
+                onClick={() => jump(i)}
+                className="group flex h-6 flex-1 items-center outline-none"
+              >
+                <span className="h-[3px] w-full rounded-full transition-all duration-300 group-hover:h-[5px]" style={{ background: i <= active ? stops[i].color : "hsl(var(--foreground) / 0.12)" }} />
+              </button>
+            ))}
+          </div>
+          <p className="mt-3 text-[12px] tabular-nums text-muted-foreground">
+            {active + 1} / {n}
+          </p>
         </div>
       </div>
 
-      <ol className="relative mt-6 space-y-3 md:hidden">
+      <ol>
         {stops.map((s, i) => (
-          <li key={s.title}>
-            <RoadPill title={s.title} items={s.items} accent={i >= split} open={open === i} onToggle={() => pick(i)} delay={i * 80} seen={seen} />
+          <li
+            key={s.title}
+            ref={(el) => {
+              rows.current[i] = el;
+            }}
+            data-i={i}
+            className="flex min-h-[15rem] flex-col justify-center border-t border-border py-8 transition-opacity duration-500 first:border-t-0 md:min-h-[17rem]"
+            style={{ opacity: i === active ? 1 : 0.32 }}
+          >
+            <p className="text-[13px] font-medium tabular-nums md:hidden" style={{ color: s.color }}>
+              {String(i + 1).padStart(2, "0")}
+            </p>
+            <p className="text-[24px] font-medium leading-tight tracking-tight text-foreground md:text-[28px]">{s.title}</p>
+            <ul className="mt-4 space-y-2">
+              {s.items.map((it) => (
+                <li key={it} className="flex gap-3 text-[15px] leading-snug text-foreground/70">
+                  <span className="mt-[9px] h-[2px] w-3 shrink-0 rounded-full" style={{ background: s.color }} />
+                  {it}
+                </li>
+              ))}
+            </ul>
           </li>
         ))}
       </ol>
