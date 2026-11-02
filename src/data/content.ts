@@ -366,9 +366,8 @@ export const caseStudies: Record<string, CaseStudy> = {
   },
   "project-ask-me": {
     intro: [
-      "**Ask Me** is Lumenore's AI-powered analytics tool: you talk to your business data in natural language and get answers back. Powerful, but the experience was complex, cluttered, and hard to start.",
-      "People opened it and didn't know where to begin: no clear entry point, no way to bring their own data, and chat answers that felt disconnected from the data behind them. **89% of users struggled to use the product.**",
-      "I rebuilt the experience around a **guided, AI-first, data-first flow**, one clear starting action, multiple ways to bring your own data, a transparent Data Pool, and structured insights you can act on.",
+      "**Ask Me** is Lumenore's AI analytics tool: talk to your data in plain language and get answers. Powerful, but complex and hard to start.",
+      "**89% of users struggled to use it.** I rebuilt it around a guided, data-first flow with one clear starting action.",
     ],
     inProgress: true,
     tags: {
@@ -379,7 +378,7 @@ export const caseStudies: Record<string, CaseStudy> = {
     },
     eyebrow: "Product Design · AI Analytics",
     summary:
-      "Rebuilding Ask Me, Lumenore's conversational BI tool, into a guided, data-first AI experience: one clear starting point, bring-your-own-data, a transparent Data Pool, and structured, actionable insights.",
+      "Rebuilding Lumenore's conversational BI tool into a guided, data-first AI experience.",
     meta: {
       role: "Product Designer (end to end)",
       timeline: "Ongoing · 2026",
@@ -434,14 +433,7 @@ export const caseStudies: Record<string, CaseStudy> = {
         id: "current-design",
         eyebrow: "Before",
         title: "Current Design",
-        lead: "The original Ask Me was powerful, but the experience was complex, confusing, and inaccessible for non-technical users.",
-        bullets: [
-          "Unclear starting point, no guidance on how to begin.",
-          "Visual clutter, too many options with no hierarchy.",
-          "Lack of guidance, users left to trial and error.",
-          "No data visibility, no preview of what data was in play.",
-          "Desktop-heavy, complex workflows.",
-        ],
+        lead: "Powerful, but complex and confusing for non-technical users.",
         image: "projects/askme-current.jpg",
         imageBleed: { left: -4.72, width: 108.86 },
       },
@@ -564,11 +556,11 @@ export const caseStudies: Record<string, CaseStudy> = {
       {
         id: "ab-testing",
         eyebrow: "Validation",
-        title: "🧪 A/B Testing",
-        lead: "Two designs, measured head to head on task completion, time to insight, and satisfaction. Design 2 (the guided, chat-first approach) won on every metric and was selected for implementation.",
+        title: "A/B Testing",
+        lead: "Two designs, tested head to head. Design 2, the guided, chat-first approach, won on every metric.",
         stats: [
-          { value: "90%", label: "Task completion (from 65%)" },
-          { value: "18s", label: "Time to insight (from 38s)" },
+          { value: "90%", label: "Task completion, up from 65%" },
+          { value: "18s", label: "Time to insight, down from 38s" },
           { value: "4.6/5", label: "User satisfaction" },
           { value: "+30%", label: "Feature adoption" },
         ],
@@ -623,7 +615,12 @@ export const caseStudies: Record<string, CaseStudy> = {
         id: "impact",
         eyebrow: "Impact",
         title: "What changed",
-        bullets: ["Faster onboarding", "Increased engagement", "Reduced drop-offs", "Improved usability"],
+        stats: [
+          { value: "90%", label: "Task completion, up from 65%" },
+          { value: "18s", label: "Time to insight, down from 38s" },
+          { value: "4.6/5", label: "User satisfaction" },
+          { value: "+30%", label: "Feature adoption" },
+        ],
       },
       {
         id: "future-scope",

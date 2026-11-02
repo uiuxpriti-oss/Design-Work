@@ -683,3 +683,36 @@ html.lenis body {
   from { transform: scaleY(0.45); }
   to { transform: scaleY(1); }
 }
+
+/* Sticky notes: a paper note that peels up at the folded corner, lifts and straightens on hover */
+.sticky-note {
+  --fold: 44px;
+  transform: rotate(var(--tilt, 0deg));
+  filter: drop-shadow(0 10px 14px rgba(20, 20, 40, 0.16)) drop-shadow(0 2px 3px rgba(20, 20, 40, 0.12));
+  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.35s ease;
+  will-change: transform;
+}
+.sticky-face {
+  clip-path: polygon(44px 0, 100% 0, 100% 100%, 0 100%, 0 44px);
+  transition: clip-path 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.sticky-fold {
+  width: 44px;
+  height: 44px;
+  transition: width 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), height 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.sticky-note:hover {
+  transform: translateY(-10px) rotate(calc(var(--tilt, 0deg) * -0.4)) scale(1.035);
+  filter: drop-shadow(0 26px 24px rgba(20, 20, 40, 0.22)) drop-shadow(0 4px 6px rgba(20, 20, 40, 0.14));
+  z-index: 5;
+}
+.sticky-note:hover .sticky-face {
+  clip-path: polygon(70px 0, 100% 0, 100% 100%, 0 100%, 0 70px);
+}
+.sticky-note:hover .sticky-fold {
+  width: 70px;
+  height: 70px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .sticky-note, .sticky-face, .sticky-fold { transition: none; }
+}

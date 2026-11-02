@@ -1853,10 +1853,10 @@ function HoverRevealMedia({
 // Count a stat up from zero once it scrolls into view ("-42%", "2.1×", "+38%", "24 hrs").
 // Values with a colon or slash (4:20, 4.6/5) are shown as written.
 function useCountUp(value: string, run: boolean) {
-  const m = /^([^\d]*?)(\d+(?:\.\d+)?)([^\d:/].*|)$/.exec(value);
+  const m = /^([^\d]*?)(\d+(?:\.\d+)?)([^\d:].*|)$/.exec(value);
   const [out, setOut] = useState(value);
   useEffect(() => {
-    if (!m || /[:/]/.test(value)) return setOut(value);
+    if (!m || value.includes(":")) return setOut(value);
     if (!run) return setOut(`${m[1]}0${m[3]}`);
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return setOut(value);
     const target = parseFloat(m[2]);
@@ -2078,7 +2078,18 @@ function DotStat({ value, label }: { value: string; label: string }) {
   );
 }
 
+function StatItem({ value, label, run, small }: { value: string; label: string; run: boolean; small: boolean }) {
+  const shown = useCountUp(value, run);
+  return (
+    <div>
+      <p className={`font-semibold tabular-nums tracking-tight text-foreground ${small ? "text-3xl sm:text-4xl" : "text-4xl sm:text-5xl"}`}>{shown}</p>
+      <p className={`mt-1.5 max-w-[18ch] leading-snug text-muted-foreground ${small ? "text-[13px]" : "text-[14px]"}`}>{label}</p>
+    </div>
+  );
+}
+
 function StudyStats({ stats, small = false }: { stats: { value: string; label: string }[]; small?: boolean }) {
+  const [ref, seen] = useInView<HTMLDivElement>(0.3);
   if (stats.length === 1 && /^\d{1,3}%$/.test(stats[0].value.trim())) {
     return (
       <div className="mt-10">
@@ -2087,16 +2098,14 @@ function StudyStats({ stats, small = false }: { stats: { value: string; label: s
     );
   }
   return (
-    <div className={small ? "mt-6 flex flex-wrap gap-x-10 gap-y-5" : "mt-8 flex flex-wrap gap-x-12 gap-y-6 border-t border-border pt-8"}>
+    <div ref={ref} className={small ? "mt-6 flex flex-wrap gap-x-10 gap-y-5" : "mt-8 flex flex-wrap gap-x-14 gap-y-6"}>
       {stats.map((st) => (
-        <div key={st.label}>
-          <p className={`font-semibold tracking-tight text-foreground ${small ? "text-3xl sm:text-4xl" : "text-4xl sm:text-5xl"}`}>{st.value}</p>
-          <p className={`mt-1.5 max-w-[18ch] leading-snug text-muted-foreground ${small ? "text-[13px]" : "text-[14px]"}`}>{st.label}</p>
-        </div>
+        <StatItem key={st.label} value={st.value} label={st.label} run={seen} small={small} />
       ))}
     </div>
   );
 }
+
 
 const INFO_TONES = [
   { card: "bg-[#eef3ff] dark:bg-[#1b2a5a]", head: "text-[#1e3a8a] dark:text-blue-100", badge: "bg-[#1e3a8a] text-white", chip: "bg-white text-[#1e3a8a] dark:bg-white/10 dark:text-blue-100", row: "border-[#1e3a8a]/10 text-[#2f4a8f] dark:text-blue-100/80", num: "text-[#2346c7] dark:text-blue-300" },
@@ -2158,23 +2167,19 @@ function StickyShell({
   children: ReactNode;
 }) {
   return (
-    <div
-      className="transition-transform duration-300 ease-out hover:-translate-y-1.5 hover:rotate-0"
-      style={{ transform: `rotate(${tilt}deg)`, filter: "drop-shadow(0 10px 14px rgba(20,20,40,0.16)) drop-shadow(0 2px 3px rgba(20,20,40,0.12))", ...style }}
-    >
+    <div className="sticky-note" style={{ ["--tilt" as string]: `${tilt}deg`, ...style }}>
       <div
-        className={`relative h-full ${className}`}
+        className={`sticky-face relative h-full ${className}`}
         style={{
           background: `linear-gradient(180deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0) 30%), ${bg}`,
-          clipPath: "polygon(44px 0, 100% 0, 100% 100%, 0 100%, 0 44px)",
           borderRadius: 20,
         }}
       >
         <span
           aria-hidden="true"
-          className="pointer-events-none absolute left-0 top-0 h-11 w-11"
+          className="sticky-fold pointer-events-none absolute left-0 top-0"
           style={{
-            background: `linear-gradient(225deg, ${fold} 0%, ${fold} 55%, rgba(0,0,0,0.18) 100%)`,
+            background: `linear-gradient(225deg, ${fold} 0%, ${fold} 55%, rgba(0,0,0,0.2) 100%)`,
             clipPath: "polygon(100% 0, 100% 100%, 0 100%)",
             borderBottomRightRadius: 14,
           }}
@@ -2333,7 +2338,7 @@ const NEXT_TONES = [
 
 // "What I'd do next": a roadmap of colourful cards joined by a line, and a closing banner that says
 // the work keeps listening to users.
-function NextRoadmap({ cards, lesson }: { cards: { heading: string; text: string }[]; lesson?: string }) {
+function NextRoadmap({ cards }: { cards: { heading: string; text: string }[]; lesson?: string }) {
   const [ref, seen] = useInView<HTMLDivElement>(0.2);
   return (
     <div ref={ref} className="mt-8">
@@ -2359,67 +2364,28 @@ function NextRoadmap({ cards, lesson }: { cards: { heading: string; text: string
         })}
       </div>
 
-      <div className="relative mt-5 overflow-hidden rounded-[28px] bg-[#0a0c14] p-7 text-white sm:p-10">
-        <span aria-hidden="true" className="pointer-events-none absolute -right-16 -top-20 h-64 w-64 rounded-full bg-[radial-gradient(circle,#3b6cf6_0%,transparent_70%)] opacity-60" />
-        <div className="relative flex flex-col gap-6 sm:flex-row sm:items-center sm:gap-10">
-          <span className="relative flex h-16 w-16 shrink-0 items-center justify-center">
-            <span className="absolute inset-0 animate-ping rounded-full bg-[#3b6cf6]/40" />
-            <span className="relative flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-b from-[#3b6cf6] to-[#2346c7] shadow-[0_10px_30px_-8px_rgba(59,108,246,0.9)]">
-              <span className="flex items-end gap-[3px]" aria-hidden="true">
-                {[10, 18, 26, 14, 22].map((h, k) => (
-                  <span key={k} className="w-[3px] rounded-full bg-white" style={{ height: h, animation: `decisionPulse 1.2s ease-in-out ${k * 0.12}s infinite alternate` }} />
-                ))}
-              </span>
-            </span>
-          </span>
-          <div>
-            <p className="text-[12px] font-semibold uppercase tracking-[0.18em] text-[#9cc0ff]">Always listening</p>
-            <p className="mt-2 max-w-2xl text-[clamp(20px,2.4vw,28px)] font-medium leading-snug tracking-tight">
-              We keep listening to users, and every cycle makes the experience a little better.
-            </p>
-          </div>
-        </div>
-        {lesson && <p className="relative mt-7 max-w-3xl border-t border-white/10 pt-6 text-[15px] leading-[1.7] text-white/70">{lesson}</p>}
+      <div className="mt-8 flex items-center gap-4 border-t border-border pt-6">
+        <span className="relative flex h-2.5 w-2.5 shrink-0">
+          <span className="absolute inset-0 animate-ping rounded-full bg-[#3b6cf6]/50" />
+          <span className="relative h-2.5 w-2.5 rounded-full bg-[#2563eb]" />
+        </span>
+        <p className="text-[clamp(18px,2vw,22px)] font-medium tracking-tight text-foreground">We keep listening to users, and every cycle makes the experience better.</p>
       </div>
     </div>
   );
 }
 
 // Conclusion: one big statement, the three things that changed, and what users got.
-function ConclusionPanel({ block }: { block: StudyBlock }) {
+function ConclusionPanel() {
   const [ref, seen] = useInView<HTMLDivElement>(0.2);
-  const [first] = block.body ?? [];
   return (
-    <div
-      ref={ref}
-      className="relative overflow-hidden rounded-[28px] bg-[#0a0c14] p-6 text-white sm:p-9"
-      style={{ opacity: seen ? 1 : 0, transform: seen ? undefined : "translateY(18px)", transition: "opacity .6s ease, transform .6s ease" }}
-    >
-      <span aria-hidden="true" className="pointer-events-none absolute -left-20 -top-24 h-72 w-72 rounded-full bg-[radial-gradient(circle,#3b6cf6_0%,transparent_70%)] opacity-50" />
-      <div className="relative">
-        <div className="flex flex-wrap items-center gap-3 text-[13px] font-medium">
-          <span className="rounded-full bg-white/10 px-4 py-2 text-white/70 line-through decoration-white/30">Complex &amp; tech-heavy</span>
-          <span aria-hidden="true" className="text-[#7da2ff]">→</span>
-          <span className="rounded-full bg-gradient-to-b from-[#3b6cf6] to-[#2346c7] px-4 py-2 text-white">Guided &amp; data-first</span>
-        </div>
-        {first && <p className="mt-6 max-w-3xl text-[clamp(22px,2.8vw,32px)] font-medium leading-[1.25] tracking-[-0.03em]">{first}</p>}
-        <div className="mt-7 flex flex-wrap items-center gap-2.5 text-[13px]">
-          {(block.pillars ?? []).map((p, i) => (
-            <span key={p.title} className="inline-flex items-center gap-2 rounded-full border border-white/12 bg-white/[0.06] px-3.5 py-2 text-white/85 transition-colors hover:bg-white/[0.12]">
-              <span className="text-[11px] font-semibold tabular-nums text-[#7da2ff]">{String(i + 1).padStart(2, "0")}</span>
-              {p.title}
-            </span>
-          ))}
-        </div>
-        <div className="mt-6 flex flex-wrap items-center gap-2.5 border-t border-white/10 pt-5 text-[13px]">
-          <span className="text-white/50">Result</span>
-          {["Usability", "Efficiency", "User confidence"].map((r) => (
-            <span key={r} className="rounded-full bg-white px-3.5 py-1.5 font-semibold text-[#0a0c14]">
-              {r}
-            </span>
-          ))}
-        </div>
-      </div>
+    <div ref={ref} style={{ opacity: seen ? 1 : 0, transform: seen ? undefined : "translateY(14px)", transition: "opacity .6s ease, transform .6s ease" }}>
+      <p className="max-w-3xl text-[clamp(24px,3.2vw,38px)] font-medium leading-[1.2] tracking-[-0.03em] text-foreground">
+        A complex, tech-heavy tool became a <span className="text-[#2563eb] dark:text-blue-300">guided, data-first</span> AI experience.
+      </p>
+      <p className="mt-6 text-[14px] text-muted-foreground">
+        Result: <span className="text-foreground">Usability</span> · <span className="text-foreground">Efficiency</span> · <span className="text-foreground">User confidence</span>
+      </p>
     </div>
   );
 }
@@ -2827,13 +2793,20 @@ function StudySectionBlock({
         {block.eyebrow && <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-blue-800 dark:text-blue-300">{block.eyebrow}</p>}
         <h2 className="mt-2 text-2xl font-semibold tracking-tight sm:text-3xl">{block.title}</h2>
         <div className="mt-8">
-          <ConclusionPanel block={block} />
+          <ConclusionPanel />
         </div>
       </section>
     );
   }
   // Short qualitative impact lists ("Faster onboarding", "Reduced drop-offs") use the same template:
   // the first word is the big headline, the rest is the label.
+  if (block.id === "impact" && block.stats && block.stats.length > 0) {
+    return (
+      <section id={`cs-${block.id}`} className="mt-16 scroll-mt-24 border-t border-border pt-10">
+        <OutcomeShowcase heading={block.title || "What changed"} stats={block.stats} />
+      </section>
+    );
+  }
   if (block.id === "impact" && block.bullets && block.bullets.length > 0 && block.bullets.every((b) => b.split(" ").length <= 4)) {
     const stats = block.bullets.map((b) => {
       const [first, ...rest] = b.split(" ");
