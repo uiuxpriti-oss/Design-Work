@@ -242,6 +242,8 @@ export interface StudyBlock {
   bullets?: string[];
   /** Two/three-column cards (e.g. personas, method vs. findings). */
   columns?: { heading: string; items: string[] }[];
+  /** Roadmap phases: a colour, title and short points each. */
+  road?: { title: string; color: string; items: string[] }[];
   /** Conclusion pillars: what was changed and what it gave users. */
   pillars?: { title: string; text: string }[];
   /** Sticky-note cards: a title and short bullet points each. */
@@ -447,6 +449,7 @@ export const caseStudies: Record<string, CaseStudy> = {
         title: "UX Roadmap",
         lead: "I mapped the redesign end to end around four goals: simplify complex data workflows, let people use their own data, provide a guided AI-first experience, and improve trust, usability, and decision-making.",
         image: "projects/askme-roadmap.jpg",
+        road: [{"title": "Introduction", "color": "#4fd1d1", "items": ["What is Ask Me (AI-powered BI tool)", "Who uses it: business users + data experts", "Goal: faster, smarter decision-making"]}, {"title": "Current Design (Before)", "color": "#3b82e0", "items": ["Old UI screens", "Cluttered interface", "No clear entry point", "Complex workflows", "Desktop-heavy experience"]}, {"title": "User Research", "color": "#b26ad6", "items": ["Methods: interviews, focus groups, usability testing, heuristic evaluation, think-aloud", "Journey mapping", "Opportunities", "Competitor analysis", "Problems"]}, {"title": "User Understanding", "color": "#ff2d92", "items": ["Personas", "User stories", "User flows"]}, {"title": "Design Process", "color": "#ff7a3d", "items": ["Wireframing", "Solution & visual design", "Prototyping"]}, {"title": "Solution (Final Screens)", "color": "#f5c400", "items": ["Homepage", "Data upload & processing", "Chat & insights", "Data Pool"]}, {"title": "A/B Testing", "color": "#f0413a", "items": ["Design 1 vs Design 2", "Metrics comparison", "Insights", "Final decision"]}, {"title": "Impact", "color": "#34bdf2", "items": ["Faster onboarding", "Increased engagement", "Reduced drop-offs", "Improved usability"]}, {"title": "Future Scope", "color": "#3b4fe0", "items": ["AI recommendations", "Personalisation", "Automation", "Advanced analytics"]}, {"title": "Conclusion", "color": "#8a6a14", "items": ["What was achieved", "Transformation summary", "Business + user impact"]}],
       },
       {
         id: "research",

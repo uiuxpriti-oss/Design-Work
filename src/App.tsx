@@ -2427,6 +2427,202 @@ function ConclusionPanel({ block }: { block: StudyBlock }) {
 // A winding road down the page with one stop per phase. Cards alternate sides; the road draws
 // itself and the stops pop in one after another when scrolled into view. On phones it becomes a
 // simple vertical list.
+type RoadStop = { title: string; color: string; items: string[] };
+const ROAD_GROUPS = [
+  { label: "Understand", from: 0, to: 3 },
+  { label: "Design", from: 4, to: 5 },
+  { label: "Prove", from: 6, to: 7 },
+  { label: "Next", from: 8, to: 9 },
+];
+
+// A. Gantt: a project-management style timeline. Task list on the left, staggered coloured bars
+// on a grid on the right, a dotted "now" line, and a floating detail card for the chosen task.
+function RoadGantt({ stops }: { stops: RoadStop[] }) {
+  const [ref, seen] = useInView<HTMLDivElement>(0.2);
+  const [sel, setSel] = useState(2);
+  const n = stops.length;
+  const cols = 14;
+  const cur = stops[sel];
+  const barStart = (i: number) => (i / (n - 1)) * (cols - 4.2);
+  return (
+    <div ref={ref} className="mt-8 overflow-hidden rounded-[28px] border border-border bg-white dark:bg-card">
+      <div className="flex items-center justify-between gap-4 border-b border-border px-5 py-4">
+        <p className="text-[16px] font-semibold tracking-tight text-foreground">Ask Me redesign</p>
+        <div className="flex items-center gap-2 text-[12px]">
+          <span className="rounded-md bg-[#fff4d6] px-2 py-1 font-medium text-[#b7791f]">{n} phases</span>
+          <span className="hidden rounded-md bg-foreground/[0.05] px-2 py-1 font-medium text-muted-foreground sm:inline">4 stages</span>
+        </div>
+      </div>
+      <div className="grid md:grid-cols-[15rem_1fr]">
+        <ul className="hidden border-r border-border md:block">
+          <li className="flex h-12 items-center px-5 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">Phases</li>
+          {stops.map((s, i) => (
+            <li key={s.title}>
+              <button type="button" onClick={() => setSel(i)} onMouseEnter={() => setSel(i)} className={`flex h-11 w-full items-center gap-3 px-5 text-left text-[13.5px] outline-none transition-colors ${sel === i ? "bg-foreground/[0.05] font-semibold text-foreground" : "text-foreground/70 hover:bg-foreground/[0.03]"}`}>
+                <span className="h-2 w-2 shrink-0 rounded-full" style={{ background: s.color }} />
+                <span className="truncate">{s.title}</span>
+              </button>
+            </li>
+          ))}
+        </ul>
+        <div className="relative overflow-x-auto">
+          <div className="relative min-w-[40rem]">
+            <div className="grid h-12 border-b border-border text-[11px] font-medium text-muted-foreground" style={{ gridTemplateColumns: `repeat(${n}, 1fr)` }}>
+              {ROAD_GROUPS.flatMap((g) => Array.from({ length: g.to - g.from + 1 }, (_, k) => (k === 0 ? g.label : ""))).map((label, i) => (
+                <span key={i} className="flex items-center border-l border-border/60 pl-2 first:border-l-0">{label}</span>
+              ))}
+            </div>
+            <div className="relative" style={{ height: n * 44 }}>
+              <div className="absolute inset-0 grid" style={{ gridTemplateColumns: `repeat(${cols}, 1fr)` }} aria-hidden="true">
+                {Array.from({ length: cols }).map((_, i) => (
+                  <span key={i} className={`border-l border-border/50 ${i % 7 === 5 || i % 7 === 6 ? "bg-foreground/[0.025]" : ""}`} />
+                ))}
+              </div>
+              <span aria-hidden="true" className="absolute top-0 h-full border-l-2 border-dotted border-[#2563eb]/70 transition-all duration-500" style={{ left: `${((barStart(sel) + 0.4) / cols) * 100}%` }} />
+              {stops.map((s, i) => (
+                <button
+                  key={s.title}
+                  type="button"
+                  onClick={() => setSel(i)}
+                  onMouseEnter={() => setSel(i)}
+                  className="absolute flex h-8 items-center rounded-full px-3 text-left text-[12.5px] font-medium outline-none transition-[width,opacity,box-shadow] duration-700 ease-out"
+                  style={{
+                    top: i * 44 + 6,
+                    left: `${(barStart(i) / cols) * 100}%`,
+                    width: seen ? `${(4.2 / cols) * 100}%` : "0%",
+                    transitionDelay: `${i * 90}ms`,
+                    background: `${s.color}${sel === i ? "" : "55"}`,
+                    color: sel === i ? "#fff" : "#1f2a44",
+                    boxShadow: sel === i ? `0 8px 18px -8px ${s.color}` : "none",
+                    overflow: "hidden",
+                  }}
+                >
+                  <span className="truncate">{s.title}</span>
+                </button>
+              ))}
+              <div
+                key={sel}
+                className="absolute right-3 z-10 hidden w-[17rem] rounded-xl bg-white p-4 shadow-[0_18px_40px_-14px_rgba(20,30,60,0.35)] ring-1 ring-black/5 md:block dark:bg-card"
+                style={{ top: Math.min(sel * 44 + 40, n * 44 - 190), animation: "aboutRise .35s ease both" }}
+              >
+                <div className="flex gap-2.5">
+                  <span className="mt-0.5 h-5 w-1 shrink-0 rounded-full" style={{ background: cur.color }} />
+                  <div>
+                    <p className="text-[15px] font-semibold leading-tight text-foreground">{cur.title}</p>
+                    <ul className="mt-2 space-y-1">
+                      {cur.items.map((it) => (
+                        <li key={it} className="text-[12.5px] leading-snug text-muted-foreground">{it}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <ul className="border-t border-border md:hidden">
+        {stops.map((s, i) => (
+          <li key={s.title} className="flex gap-3 border-b border-border/60 px-5 py-3 last:border-b-0">
+            <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full" style={{ background: s.color }} />
+            <div>
+              <p className="text-[14px] font-medium text-foreground">{i + 1}. {s.title}</p>
+              <p className="mt-0.5 text-[12.5px] text-muted-foreground">{s.items.join(" · ")}</p>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+// B. Stages: a dark roadmap with stage headings, one long track whose striped progress block
+// grows to the chosen phase, and the phase names listed under each stage.
+function RoadStages({ stops }: { stops: RoadStop[] }) {
+  const [ref, seen] = useInView<HTMLDivElement>(0.25);
+  const [active, setActive] = useState(0);
+  const [auto, setAuto] = useState(true);
+  const n = stops.length;
+  useEffect(() => {
+    if (!seen || !auto || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const t = window.setInterval(() => setActive((a) => (a + 1) % n), 2600);
+    return () => window.clearInterval(t);
+  }, [seen, auto, n]);
+  const pick = (i: number) => {
+    setAuto(false);
+    setActive(i);
+  };
+  const cur = stops[active];
+  return (
+    <div ref={ref} className="relative mt-8 overflow-hidden rounded-[32px] bg-[#0d0d1f] p-6 text-white sm:p-10">
+      <span aria-hidden="true" className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-[radial-gradient(circle,#3b6cf6_0%,transparent_70%)] opacity-30" />
+      <div className="relative text-center">
+        <p className="bg-gradient-to-b from-white to-[#9cc0ff] bg-clip-text text-[clamp(34px,5vw,56px)] font-bold leading-none tracking-[-0.03em] text-transparent">Roadmap</p>
+        <p className="mx-auto mt-3 max-w-md text-[14px] text-white/45">From first question to final outcome: how the redesign came together.</p>
+      </div>
+      <div className="-mx-6 mt-10 overflow-x-auto px-6 pb-2 [scrollbar-width:none] sm:mx-0 sm:px-0 [&::-webkit-scrollbar]:hidden">
+        <div className="min-w-[44rem]">
+          <div className="grid" style={{ gridTemplateColumns: ROAD_GROUPS.map((g) => `${g.to - g.from + 1}fr`).join(" ") }}>
+            {ROAD_GROUPS.map((g, gi) => {
+              const inGroup = active >= g.from && active <= g.to;
+              return (
+                <div key={g.label} className="border-l border-dotted border-white/15 pl-4 first:border-l-0 first:pl-0">
+                  <p className={`text-[20px] font-semibold tracking-tight transition-colors ${inGroup ? "text-[#60a5fa]" : "text-[#60a5fa]/55"}`}>Stage #{gi + 1}</p>
+                  <p className="mt-1 text-[13px] text-white/45">{g.label} · {g.to - g.from + 1} phases</p>
+                </div>
+              );
+            })}
+          </div>
+          <div className="relative mt-6 h-24 rounded-[22px] bg-white/[0.06] p-2.5">
+            <div
+              className="relative h-full overflow-hidden rounded-[16px] transition-[width] duration-700 ease-out"
+              style={{ width: `${((active + 1) / n) * 100}%`, minWidth: "4.5rem", background: "repeating-linear-gradient(115deg, #7ee8d2 0 34px, #3a355e 34px 64px)", boxShadow: "inset 0 -30px 40px -20px rgba(59,130,246,0.55)" }}
+            />
+            <span
+              className="absolute top-1/2 -translate-y-1/2 rounded-xl border border-white/10 bg-[#25254a] px-3.5 py-2 text-[14px] font-medium tabular-nums transition-[left] duration-700 ease-out"
+              style={{ left: `calc(${((active + 1) / n) * 100}% + 18px)` }}
+            >
+              {String(active + 1).padStart(2, "0")} / {n}
+            </span>
+          </div>
+          <div className="mt-6 grid" style={{ gridTemplateColumns: ROAD_GROUPS.map((g) => `${g.to - g.from + 1}fr`).join(" ") }}>
+            {ROAD_GROUPS.map((g) => (
+              <div key={g.label} className="border-l border-dotted border-white/15 pl-4 first:border-l-0 first:pl-0">
+                <ul className="space-y-2">
+                  {stops.slice(g.from, g.to + 1).map((s, k) => {
+                    const i = g.from + k;
+                    return (
+                      <li key={s.title}>
+                        <button type="button" onClick={() => pick(i)} onMouseEnter={() => pick(i)} className={`text-left text-[15px] leading-snug outline-none transition-colors ${i === active ? "font-semibold text-white" : i < active ? "text-white/75" : "text-white/30 hover:text-white/60"}`}>
+                          {s.title}
+                        </button>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+      <div key={active} className="relative mt-8 rounded-2xl border border-white/10 bg-white/[0.04] p-5" style={{ animation: "aboutRise .4s ease both" }}>
+        <p className="text-[12px] font-semibold uppercase tracking-[0.16em] text-[#60a5fa]">{String(active + 1).padStart(2, "0")} · {cur.title}</p>
+        <p className="mt-2 text-[14px] leading-relaxed text-white/65">{cur.items.join("  ·  ")}</p>
+      </div>
+    </div>
+  );
+}
+
+function RoadMap({ stops }: { stops: RoadStop[] }) {
+  let v = 1;
+  try {
+    v = Number(new URLSearchParams(window.location.search).get("road")) || 1;
+  } catch {
+    /* no query */
+  }
+  return v === 2 ? <RoadStages stops={stops} /> : <RoadGantt stops={stops} />;
+}
+
 function StudySectionBlock({
   block,
   onZoom,
@@ -2650,6 +2846,7 @@ function StudySectionBlock({
           ))}
         </div>
       )}
+      {block.road && <RoadMap stops={block.road} />}
       {block.notes && <StickyNotes notes={block.notes} tone={block.noteTone} />}
       {block.cards && block.cards.every((c) => c.short) && <DecisionExplorer cards={block.cards} />}
       {block.cards && !block.cards.every((c) => c.short) && (
@@ -2672,7 +2869,7 @@ function StudySectionBlock({
         ))}
       {block.stats && <StudyStats stats={block.stats} />}
       {block.note && <StudyNote text={block.note} />}
-      {block.image && (
+      {block.image && !block.road && (
         <div className="mt-6">
           <div style={block.imageBleed ? { width: `${block.imageBleed.width}%`, marginLeft: `${block.imageBleed.left}%` } : undefined}>
             <StudyMedia value={block.image} alt={block.title} onZoom={onZoom} />
