@@ -1148,7 +1148,7 @@ export const caseStudies: Record<string, CaseStudy> = {
         side: true,
         title: "",
         eyebrow: "The manifesto — attitude as the pitch",
-        lead: "**\"Hollywood no te va a llamar. Y qué.\"** — the section that does the real persuading. No waiting for a man in a suit to give permission; make the thing. Cut-out portraits on a lime field keep it human and a little irreverent.",
+        lead: "**\"Hollywood no te va a llamar. Y qué.\"** — the section that does the real persuading.",
         image: "projects/brevio-manifesto.jpg",
       },
       {
@@ -1156,7 +1156,7 @@ export const caseStudies: Record<string, CaseStudy> = {
         side: true,
         title: "",
         eyebrow: "What's coming — the plain-spoken feature set",
-        lead: "Four cards with no jargon: upload your work, get paid via Stripe (**you keep 80%**), track it all in a dashboard, and teach or learn from real creators. Then **Formatos para cada historia** — vertical for quick hooks, horizontal for real cinema.",
+        lead: "Four jargon-free cards — upload, get paid (**you keep 80%**), track, teach — then **Formatos para cada historia**.",
         image: "projects/brevio-features.jpg",
       },
       {
@@ -1164,7 +1164,7 @@ export const caseStudies: Record<string, CaseStudy> = {
         side: true,
         title: "",
         eyebrow: "The close — app download and one last push",
-        lead: "Store links so creators can start uploading before launch day, then a closing line that earns the signup: **\"Si esperas a tener el equipo perfecto, alguien más hará ruido por ti.\"**",
+        lead: "Store links so creators can start before launch day, then a line that earns the signup.",
         image: "projects/brevio-close.jpg",
         note: "Every section ends in the same place: the countdown, or the form. On a pre-launch page, momentum is the whole design.",
       },
@@ -1277,7 +1277,7 @@ export const caseStudies: Record<string, CaseStudy> = {
         side: true,
         title: "",
         eyebrow: "Transparency — proof before promises",
-        lead: "The page most sites bury is the second stop here: **how the gold is stored**, how it's audited, and how the chain and contracts work — each answered as its own card, in plain language.",
+        lead: "**How the gold is stored**, how it's audited, how the chain works — each its own plain-language card.",
         image: "projects/capitalfi-proof.jpg",
       },
       {
@@ -1285,7 +1285,7 @@ export const caseStudies: Record<string, CaseStudy> = {
         side: true,
         title: "",
         eyebrow: "About — the people behind the peg",
-        lead: "The mission stated plainly, up front — because for this audience, **who** holds the gold matters as much as the gold itself.",
+        lead: "The mission, stated plainly — **who** holds the gold matters as much as the gold.",
         image: "projects/capitalfi-about.jpg",
       },
       {
@@ -1293,7 +1293,7 @@ export const caseStudies: Record<string, CaseStudy> = {
         side: true,
         title: "",
         eyebrow: "Resources — the white paper, one click away",
-        lead: "The navigation opens into blogs, community, and the **white paper** — the document serious investors look for before anything else.",
+        lead: "Blogs, community and the **white paper** — what serious investors look for first.",
         image: "projects/capitalfi-resources.jpg",
       },
       {
@@ -1637,7 +1637,7 @@ export const caseStudies: Record<string, CaseStudy> = {
         side: true,
         title: "",
         eyebrow: "The builder — pages without code",
-        lead: "Templates for footer, news, predesigned and contact pages, each with preview and edit in reach. Building a demo site never asks the user to think about hosting or code.",
+        lead: "Templates for footer, news, predesigned and contact pages — no hosting or code to think about.",
         image: "projects/leads-builder.jpg",
       },
       {
@@ -1645,7 +1645,7 @@ export const caseStudies: Record<string, CaseStudy> = {
         side: true,
         title: "",
         eyebrow: "UI elements — the working parts",
-        lead: "Landing-page performance at a glance (impressions, leads, conversion rate), audience syncing to Mailchimp, Active Campaign or Constant Contact, plus payment summary and scheduling — the unglamorous screens that decide whether a tool gets used.",
+        lead: "Performance at a glance, audience sync to Mailchimp, Active Campaign or Constant Contact, plus payments and scheduling.",
         image: "projects/leads-components.jpg",
       },
       {
@@ -1664,7 +1664,7 @@ export const caseStudies: Record<string, CaseStudy> = {
         side: true,
         title: "",
         eyebrow: "Pricing — three plans, no fine print",
-        lead: "Try It Free, Basic and Pro laid out side by side with every benefit spelled out — commission rates, environment costs, admin seats — so the upgrade decision needs no sales call.",
+        lead: "Try It Free, Basic and Pro side by side — so the upgrade decision needs no sales call.",
         image: "projects/leads-pricing.jpg",
       },
       {
@@ -1672,7 +1672,7 @@ export const caseStudies: Record<string, CaseStudy> = {
         side: true,
         title: "",
         eyebrow: "The marketing site",
-        lead: "The public face: **\"Create SandboxDemos to Capture High-Quality Leads\"** — why it is unique, how sandbox demos qualify buyers, supported CMS platforms, and the pricing table, all in one scroll.",
+        lead: "**\"Create SandboxDemos to Capture High-Quality Leads\"** — why it's unique, how demos qualify buyers, and pricing in one scroll.",
         image: "projects/leads-website.jpg",
         scroller: { label: "leadswithdemos.com" },
       },

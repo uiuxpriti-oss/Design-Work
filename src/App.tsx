@@ -2017,16 +2017,22 @@ function StudySectionBlock({
         id={`cs-${block.id}`}
         className={`scroll-mt-24 ${block.title ? "mt-16 border-t border-border pt-10" : "mt-12"}`}
       >
-        <div className="grid gap-3 sm:grid-cols-[180px_1fr] sm:gap-12">
-          <p className="text-[14px] font-semibold text-foreground">{block.title}</p>
+        <div className={block.title ? "grid gap-3 sm:grid-cols-[180px_1fr] sm:gap-12" : ""}>
+          {block.title && <p className="text-[14px] font-semibold text-foreground">{block.title}</p>}
           <div>
             {block.eyebrow && (
-              <p className="mb-3 text-[15px] font-medium text-blue-900/50 dark:text-blue-300/70">
+              <p
+                className={
+                  block.title
+                    ? "mb-3 text-[15px] font-medium text-blue-900/50 dark:text-blue-300/70"
+                    : "mx-auto mb-3 max-w-2xl text-center text-[20px] font-semibold tracking-tight text-foreground sm:text-[22px]"
+                }
+              >
                 {block.eyebrow}
               </p>
             )}
             {block.lead && (
-              <p className="max-w-2xl text-[15px] leading-relaxed text-foreground/85">
+              <p className={`text-[15px] leading-relaxed text-foreground/85 ${block.title ? "max-w-2xl" : "mx-auto max-w-xl text-center"}`}>
                 {renderRich(block.lead)}
               </p>
             )}
@@ -2057,7 +2063,11 @@ function StudySectionBlock({
                 ))}
               </div>
             )}
-            {block.note && <StudyNote text={block.note} />}
+            {block.note && (
+              <div className={block.title ? "" : "mx-auto max-w-xl text-center"}>
+                <StudyNote text={block.note} />
+              </div>
+            )}
             {/* Narrow: the image stays inside the text column */}
             {block.narrow && block.image && (
               <div className="mt-5">
