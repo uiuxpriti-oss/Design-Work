@@ -2360,8 +2360,8 @@ function DecisionExplorer({ cards }: { cards: { heading: string; short?: string;
                 aria-selected={on}
                 onClick={() => setActive(i)}
                 onMouseEnter={() => setActive(i)}
-                className={`flex w-full items-center gap-4 border-l-2 py-3 pl-4 text-left text-[16px] outline-none transition-all duration-200 focus-visible:ring-2 focus-visible:ring-foreground/25 ${
-                  on ? "border-[#2346c7] font-semibold text-foreground" : "border-border text-muted-foreground hover:text-foreground"
+                className={`flex w-full items-center gap-4 py-3 text-left text-[16px] outline-none transition-all duration-200 focus-visible:ring-2 focus-visible:ring-foreground/25 ${
+                  on ? "font-semibold text-foreground" : "text-muted-foreground hover:text-foreground"
                 }`}
               >
                 {c.heading}
