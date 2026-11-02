@@ -2792,11 +2792,9 @@ function PersonaHead({ label }: { label: string }) {
 }
 
 
-const MOOD: Record<string, number> = { "😕": 3, "😰": 2, "😵": 1, "😩": 1, "😔": 2 };
 
 const STAGE_HEAD = ["#ffe29a", "#ffb9dc", "#d6c0fb", "#a9d7ff", "#b5efc5"];
 const STAGE_SOFT = ["#fff6dc", "#ffe8f3", "#f0e7fd", "#e4f2ff", "#e6f8ec"];
-const MOOD_AXIS = ["🙂", "🤔", "😐", "😕", "🙁"];
 
 // Journey map as one tidy table: grey row labels, a pastel colour per stage, and a mood curve
 // with an emoji scale where the "emotion" row would be.
@@ -2804,15 +2802,9 @@ function JourneyMap({ persona, seen }: { persona: Persona; seen: boolean }) {
   const j = persona.journey;
   const [stage, setStage] = useState<number | null>(null);
   const n = j.stages.length;
-  const levels = j.feelings.map((f) => MOOD[f.emoji] ?? 3);
-  const yOf = (lvl: number) => 12 + ((5 - lvl) / 4) * 68;
-  const pts = levels.map((l, i) => ({ x: ((i + 0.5) / n) * 100, y: yOf(l) }));
-  let d = `M0,${pts[0].y} L${pts[0].x},${pts[0].y}`;
-  for (let i = 0; i < pts.length - 1; i++) {
-    const m = (pts[i].x + pts[i + 1].x) / 2;
-    d += ` C${m},${pts[i].y} ${m},${pts[i + 1].y} ${pts[i + 1].x},${pts[i + 1].y}`;
-  }
-  d += ` L100,${pts[n - 1].y}`;
+  const yOf = () => 50;
+  const pts = j.feelings.map((_, i) => ({ x: ((i + 0.5) / n) * 100, y: yOf() }));
+  const d = `M0,50 L100,50`;
   const cols = "grid-cols-[9.5rem_repeat(5,minmax(0,1fr))]";
   const dim = (i: number) => (stage === null || stage === i ? 1 : 0.45);
   const label = (t: string) => (
@@ -2887,12 +2879,7 @@ function JourneyMap({ persona, seen }: { persona: Persona; seen: boolean }) {
           <div className={`grid ${cols}`}>
             <div className="p-1">
               <div className="relative h-full rounded-lg bg-[#f0f0f2] px-4 py-3 dark:bg-white/10">
-                <p className="absolute bottom-3 left-4 text-[14px] font-semibold text-foreground">Feelings</p>
-                <div className="absolute inset-x-0 top-0 h-[10.5rem]">
-                  {[12, 29, 46, 63, 80].map((y, k) => (
-                    <span key={y} className="absolute right-3 -translate-y-1/2 text-[20px]" style={{ top: `${y}%` }}>{MOOD_AXIS[k]}</span>
-                  ))}
-                </div>
+                <p className="text-[14px] font-semibold text-foreground">Feelings</p>
               </div>
             </div>
             <div className="relative col-span-5 p-1">
@@ -2902,10 +2889,7 @@ function JourneyMap({ persona, seen }: { persona: Persona; seen: boolean }) {
                 ))}
               </div>
               <div className="relative">
-                <div className="relative h-[10.5rem]">
-                  {[12, 29, 46, 63, 80].map((y) => (
-                    <span key={y} className="absolute inset-x-0 border-t border-dashed border-black/10" style={{ top: `${y}%` }} />
-                  ))}
+                <div className="relative h-[5.5rem]">
                   <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="absolute inset-0 h-full w-full overflow-visible" aria-hidden="true" style={{ clipPath: seen ? "inset(-20% 0 -20% 0)" : "inset(-20% 100% -20% 0)", transition: "clip-path 2.2s cubic-bezier(.4,0,.2,1) .4s" }}>
                     <path d={d} fill="none" stroke="#2563eb" strokeWidth="2.5" strokeLinecap="round" vectorEffect="non-scaling-stroke" opacity="0.9" />
                   </svg>
