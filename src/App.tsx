@@ -1,5 +1,6 @@
 import {
   useEffect,
+  useMemo,
   useRef,
   useState,
   type ReactNode,
@@ -1757,7 +1758,7 @@ function StudyMedia({
         type="button"
         onClick={() => onZoom(assetUrl(value))}
         aria-label={`View ${alt} full size`}
-        className={`group block w-full overflow-hidden rounded-2xl bg-card ring-1 ring-border outline-none transition-shadow hover:shadow-lg focus-visible:ring-2 focus-visible:ring-foreground/30 ${className}`}
+        className={`group block w-full cursor-zoom-in overflow-hidden rounded-2xl outline-none focus-visible:ring-2 focus-visible:ring-foreground/30 ${className}`}
       >
         <img src={assetUrl(value)} alt={alt} loading="lazy" className="w-full" />
       </button>
@@ -1814,7 +1815,7 @@ function HoverRevealMedia({
   return (
     <figure>
       <div
-        className="group relative overflow-hidden rounded-2xl bg-card ring-1 ring-border"
+        className="group relative overflow-hidden rounded-2xl"
         onMouseEnter={() => setShown(true)}
         onMouseLeave={() => setShown(false)}
       >
@@ -1993,6 +1994,111 @@ function OutcomeShowcase({
   );
 }
 
+// A single percentage finding drawn as 100 dots — one per user — that fill in when scrolled
+// into view. Hover a dot to see who it is; the legend filters between the two groups.
+function DotStat({ value, label }: { value: string; label: string }) {
+  const pct = Math.min(100, Math.max(0, parseInt(value, 10) || 0));
+  const [ref, seen] = useInView<HTMLDivElement>(0.3);
+  const [focus, setFocus] = useState<"all" | "yes" | "no">("all");
+  const [hover, setHover] = useState<number | null>(null);
+  const shown = useCountUp(value, seen);
+  // Fixed shuffle so the "got through" dots are scattered the same way on every visit.
+  const order = useMemo(() => {
+    const idx = Array.from({ length: 100 }, (_, i) => i);
+    let seed = 7;
+    for (let i = idx.length - 1; i > 0; i--) {
+      seed = (seed * 9301 + 49297) % 233280;
+      const j = Math.floor((seed / 233280) * (i + 1));
+      [idx[i], idx[j]] = [idx[j], idx[i]];
+    }
+    return idx; // idx[k] = grid position of the k-th user
+  }, []);
+  const struggledAt = useMemo(() => {
+    const set = new Set<number>();
+    order.slice(0, pct).forEach((pos) => set.add(pos));
+    return set;
+  }, [order, pct]);
+  const kOf = useMemo(() => {
+    const m = new Map<number, number>();
+    order.forEach((pos, k) => m.set(pos, k));
+    return m;
+  }, [order]);
+  return (
+    <div ref={ref} className="grid items-center gap-8 sm:grid-cols-[auto_1fr] sm:gap-14">
+      <div>
+        <p className="mb-4 text-[13px] text-muted-foreground">Key finding · every dot is one user</p>
+        <div className="grid grid-cols-10 gap-2" onMouseLeave={() => setHover(null)}>
+          {Array.from({ length: 100 }).map((_, pos) => {
+            const bad = struggledAt.has(pos);
+            const dim = focus !== "all" && (focus === "no") !== bad;
+            const delay = (kOf.get(pos) ?? pos) * 14;
+            return (
+              <span
+                key={pos}
+                onMouseEnter={() => setHover(pos)}
+                className="relative block h-[18px] w-[18px] cursor-default rounded-full transition-[transform,opacity,background-color] duration-500 hover:scale-150 sm:h-[22px] sm:w-[22px]"
+                style={{
+                  backgroundColor: seen ? (bad ? "#f4475a" : "#bfdbfe") : "hsl(var(--foreground) / 0.08)",
+                  opacity: dim ? 0.18 : 1,
+                  transitionDelay: seen ? `${delay}ms, 0ms, ${delay}ms` : "0ms",
+                }}
+              >
+                {hover === pos && (
+                  <span className="pointer-events-none absolute -top-9 left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded-md bg-foreground px-2 py-1 text-[11px] font-medium text-background">
+                    User {(kOf.get(pos) ?? 0) + 1} · {bad ? "Struggled" : "Got through"}
+                  </span>
+                )}
+              </span>
+            );
+          })}
+        </div>
+        <div className="mt-4 flex gap-5 text-[13px] text-foreground/80">
+          <button
+            type="button"
+            onClick={() => setFocus(focus === "no" ? "all" : "no")}
+            aria-pressed={focus === "no"}
+            className={`inline-flex items-center gap-2 outline-none transition-opacity ${focus === "yes" ? "opacity-40" : ""}`}
+          >
+            <span className="h-2.5 w-2.5 rounded-full bg-[#f4475a]" /> Struggled
+          </button>
+          <button
+            type="button"
+            onClick={() => setFocus(focus === "yes" ? "all" : "yes")}
+            aria-pressed={focus === "yes"}
+            className={`inline-flex items-center gap-2 outline-none transition-opacity ${focus === "no" ? "opacity-40" : ""}`}
+          >
+            <span className="h-2.5 w-2.5 rounded-full bg-[#bfdbfe]" /> Got through
+          </button>
+        </div>
+      </div>
+      <div>
+        <p className="text-[clamp(64px,10vw,120px)] font-bold leading-none tracking-[-0.05em] tabular-nums text-[#f4475a]">{shown}</p>
+        <p className="mt-4 max-w-md text-[clamp(20px,2.4vw,28px)] font-medium leading-snug tracking-tight text-foreground">{label}</p>
+      </div>
+    </div>
+  );
+}
+
+function StudyStats({ stats, small = false }: { stats: { value: string; label: string }[]; small?: boolean }) {
+  if (stats.length === 1 && /^\d{1,3}%$/.test(stats[0].value.trim())) {
+    return (
+      <div className="mt-8 border-t border-border pt-8">
+        <DotStat value={stats[0].value.trim()} label={stats[0].label} />
+      </div>
+    );
+  }
+  return (
+    <div className={small ? "mt-6 flex flex-wrap gap-x-10 gap-y-5" : "mt-8 flex flex-wrap gap-x-12 gap-y-6 border-t border-border pt-8"}>
+      {stats.map((st) => (
+        <div key={st.label}>
+          <p className={`font-semibold tracking-tight text-foreground ${small ? "text-3xl sm:text-4xl" : "text-4xl sm:text-5xl"}`}>{st.value}</p>
+          <p className={`mt-1.5 max-w-[18ch] leading-snug text-muted-foreground ${small ? "text-[13px]" : "text-[14px]"}`}>{st.label}</p>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 function StudySectionBlock({
   block,
   onZoom,
@@ -2049,20 +2155,7 @@ function StudySectionBlock({
                 <StudyBullets items={block.bullets} />
               </div>
             )}
-            {block.stats && (
-              <div className="mt-6 flex flex-wrap gap-x-10 gap-y-5">
-                {block.stats.map((st) => (
-                  <div key={st.label}>
-                    <p className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
-                      {st.value}
-                    </p>
-                    <p className="mt-1.5 max-w-[18ch] text-[13px] leading-snug text-muted-foreground">
-                      {st.label}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            )}
+            {block.stats && <StudyStats stats={block.stats} small />}
             {block.note && (
               <div className={block.title ? "" : "mx-auto max-w-xl text-center"}>
                 <StudyNote text={block.note} />
@@ -2163,7 +2256,7 @@ function StudySectionBlock({
         ))}
       {block.bullets && <div className="mt-5">{<StudyBullets items={block.bullets} />}</div>}
       {block.video && (
-        <div className="mt-6 overflow-hidden rounded-2xl bg-background/40 ring-1 ring-border">
+        <div className="mt-6 overflow-hidden rounded-2xl">
           <video
             src={assetUrl(block.video)}
             controls
@@ -2218,20 +2311,7 @@ function StudySectionBlock({
             {renderRich(p)}
           </p>
         ))}
-      {block.stats && (
-        <div className="mt-8 flex flex-wrap gap-x-12 gap-y-6 border-t border-border pt-8">
-          {block.stats.map((st) => (
-            <div key={st.label}>
-              <p className="text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">
-                {st.value}
-              </p>
-              <p className="mt-2 max-w-[18ch] text-[14px] leading-snug text-muted-foreground">
-                {st.label}
-              </p>
-            </div>
-          ))}
-        </div>
-      )}
+      {block.stats && <StudyStats stats={block.stats} />}
       {block.note && <StudyNote text={block.note} />}
       {block.image && (
         <div className="mt-6">
@@ -2705,7 +2785,7 @@ function CaseStudyPage({
         {cs.screens && cs.screens.length > 0 ? (
           <div className="mt-6 grid gap-4 sm:grid-cols-2">
             {cs.screens.map((s) => (
-              <figure key={s.src} className="overflow-hidden rounded-2xl ring-1 ring-border">
+              <figure key={s.src} className="overflow-hidden rounded-2xl">
                 <div className="aspect-[16/10] w-full overflow-hidden bg-background/40">
                   <img
                     src={assetUrl(s.src)}
@@ -2756,7 +2836,7 @@ function CaseStudyPage({
                   type="button"
                   onClick={() => setZoom(assetUrl(shot.src))}
                   aria-label={`View ${shot.caption} full size`}
-                  className="group block w-full overflow-hidden rounded-2xl bg-background/40 ring-1 ring-border outline-none transition-shadow hover:shadow-lg focus-visible:ring-2 focus-visible:ring-foreground/30"
+                  className="group block w-full cursor-zoom-in overflow-hidden rounded-2xl outline-none focus-visible:ring-2 focus-visible:ring-foreground/30"
                 >
                   <img
                     src={assetUrl(shot.src)}
@@ -2791,7 +2871,7 @@ function CaseStudyPage({
                 type="button"
                 onClick={() => setZoom(assetUrl(frame.src))}
                 aria-label={`View ${frame.label} full size`}
-                className="group block w-full overflow-hidden rounded-2xl bg-card ring-1 ring-border outline-none transition-shadow hover:shadow-lg focus-visible:ring-2 focus-visible:ring-foreground/30"
+                className="group block w-full cursor-zoom-in overflow-hidden rounded-2xl outline-none focus-visible:ring-2 focus-visible:ring-foreground/30"
               >
                 <img
                   src={assetUrl(frame.src)}
