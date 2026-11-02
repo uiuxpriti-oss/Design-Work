@@ -2424,6 +2424,120 @@ function ConclusionPanel({ block }: { block: StudyBlock }) {
   );
 }
 
+// A winding road down the page with one stop per phase. Cards alternate sides; the road draws
+// itself and the stops pop in one after another when scrolled into view. On phones it becomes a
+// simple vertical list.
+function RoadMap({ stops }: { stops: { title: string; color: string; items: string[] }[] }) {
+  const [ref, seen] = useInView<HTMLDivElement>(0.12);
+  const R = 190;
+  const n = stops.length;
+  const H = n * R;
+  const xAt = (y: number) => 50 + 7 * Math.sin((y / R) * 1.15 * Math.PI * 0.5 + 0.4) + 3 * Math.sin((y / R) * 2.1);
+  const pts = Array.from({ length: Math.ceil(H / 6) + 1 }, (_, k) => {
+    const y = Math.min(H, k * 6);
+    return `${k === 0 ? "M" : "L"}${xAt(y).toFixed(2)},${y}`;
+  }).join(" ");
+  return (
+    <div ref={ref} className="mt-8">
+      <div className="relative hidden md:block" style={{ height: H }}>
+        <svg viewBox={`0 0 100 ${H}`} preserveAspectRatio="none" className="absolute inset-0 h-full w-full" aria-hidden="true">
+          <path d={pts} fill="none" stroke="#2b2d36" strokeWidth="46" strokeLinecap="round" vectorEffect="non-scaling-stroke" />
+          <path
+            d={pts}
+            pathLength={1}
+            fill="none"
+            stroke="#ffffff"
+            strokeWidth="2.5"
+            strokeDasharray="0.006 0.009"
+            vectorEffect="non-scaling-stroke"
+            style={{ opacity: seen ? 0.9 : 0, transition: "opacity 1.2s ease .3s" }}
+          />
+          <path
+            d={pts}
+            pathLength={1}
+            fill="none"
+            stroke="#ffffff"
+            strokeWidth="50"
+            vectorEffect="non-scaling-stroke"
+            style={{ strokeDasharray: 1, strokeDashoffset: seen ? 1 : 0, transition: "stroke-dashoffset 2.6s ease-out", stroke: "#2b2d36", opacity: 0 }}
+          />
+        </svg>
+        {stops.map((s, i) => {
+          const y = (i + 0.5) * R;
+          const x = xAt(y);
+          const left = i % 2 === 0;
+          // Keep the card clear of the road along its whole height, not just at the stop.
+          const span = [-95, -48, 0, 48, 95].map((d) => xAt(y + d));
+          const edge = left ? Math.min(...span) : Math.max(...span);
+          const delay = 250 + i * 170;
+          return (
+            <div key={s.title} className="pointer-events-none absolute inset-0" style={{ opacity: seen ? 1 : 0, transform: seen ? undefined : "translateY(14px)", transition: `opacity .5s ${delay}ms, transform .5s ${delay}ms` }}>
+              <span
+                className="pointer-events-auto absolute flex h-12 w-12 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-4 border-white text-[15px] font-bold text-white shadow-[0_8px_20px_-6px_rgba(0,0,0,0.4)]"
+                style={{ left: `${x}%`, top: y, background: s.color }}
+              >
+                {i + 1}
+              </span>
+              <span
+                aria-hidden="true"
+                className="absolute h-0 -translate-y-1/2 border-t-2 border-dashed"
+                style={{
+                  top: y,
+                  borderColor: s.color,
+                  ...(left
+                    ? { left: `calc(${edge}% - 40px)`, width: `calc(${x - edge}% + 40px - 24px)` }
+                    : { left: `calc(${x}% + 24px)`, width: `calc(${edge - x}% + 40px - 24px)` }),
+                }}
+              />
+              <div
+                className="pointer-events-auto absolute -translate-y-1/2 rounded-[26px] border-2 bg-white p-5 transition-transform duration-300 hover:-translate-y-[52%] dark:bg-card"
+                style={{
+                  top: y,
+                  borderColor: s.color,
+                  width: `min(22rem, calc(${left ? edge : 100 - edge}% - 70px))`,
+                  ...(left ? { right: `calc(${100 - edge}% + 40px)` } : { left: `calc(${edge}% + 40px)` }),
+                }}
+              >
+                <p className="text-[17px] font-semibold leading-snug tracking-tight text-[#1f2a44] dark:text-foreground">{s.title}</p>
+                <ul className="mt-2.5 space-y-1.5">
+                  {s.items.map((it) => (
+                    <li key={it} className="flex gap-2 text-[13px] leading-snug text-[#3a4258] dark:text-foreground/75">
+                      <span className="mt-[6px] h-1 w-1 shrink-0 rounded-full" style={{ background: s.color }} />
+                      {it}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      <ol className="relative md:hidden">
+        <span aria-hidden="true" className="absolute bottom-2 left-[19px] top-2 w-1.5 rounded-full bg-[#2b2d36]" />
+        {stops.map((s, i) => (
+          <li key={s.title} className="relative flex gap-4 pb-6 last:pb-0" style={{ opacity: seen ? 1 : 0, transform: seen ? undefined : "translateY(14px)", transition: `opacity .5s ${i * 90}ms, transform .5s ${i * 90}ms` }}>
+            <span className="relative z-10 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-4 border-white text-[14px] font-bold text-white" style={{ background: s.color }}>
+              {i + 1}
+            </span>
+            <div className="min-w-0 flex-1 rounded-[22px] border-2 bg-white p-4 dark:bg-card" style={{ borderColor: s.color }}>
+              <p className="text-[16px] font-semibold text-[#1f2a44] dark:text-foreground">{s.title}</p>
+              <ul className="mt-2 space-y-1">
+                {s.items.map((it) => (
+                  <li key={it} className="flex gap-2 text-[13px] leading-snug text-[#3a4258] dark:text-foreground/75">
+                    <span className="mt-[6px] h-1 w-1 shrink-0 rounded-full" style={{ background: s.color }} />
+                    {it}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  );
+}
+
 function StudySectionBlock({
   block,
   onZoom,
@@ -2647,6 +2761,7 @@ function StudySectionBlock({
           ))}
         </div>
       )}
+      {block.road && <RoadMap stops={block.road} />}
       {block.notes && <StickyNotes notes={block.notes} tone={block.noteTone} />}
       {block.cards && block.cards.every((c) => c.short) && <DecisionExplorer cards={block.cards} />}
       {block.cards && !block.cards.every((c) => c.short) && (
