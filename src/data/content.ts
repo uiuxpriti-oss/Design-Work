@@ -254,6 +254,8 @@ export interface StudyBlock {
   stats?: { value: string; label: string }[];
   /** Highlighted takeaway callout (the deck's "👉 …" notes). */
   note?: string;
+  /** For images whose subject has margins/overhang in the file: stretch so the subject (not the file) spans the content width. Percentages of the content width. */
+  imageBleed?: { left: number; width: number };
   /** A single image (real path) or labelled placeholder for this section. */
   image?: string;
   /** A video under /public, shown full-width with controls. */
@@ -437,6 +439,7 @@ export const caseStudies: Record<string, CaseStudy> = {
           "Desktop-heavy, complex workflows.",
         ],
         image: "projects/askme-current.jpg",
+        imageBleed: { left: -4.72, width: 108.86 },
       },
       {
         id: "roadmap",

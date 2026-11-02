@@ -2671,7 +2671,9 @@ function StudySectionBlock({
       {block.note && <StudyNote text={block.note} />}
       {block.image && (
         <div className="mt-6">
-          <StudyMedia value={block.image} alt={block.title} onZoom={onZoom} />
+          <div style={block.imageBleed ? { width: `${block.imageBleed.width}%`, marginLeft: `${block.imageBleed.left}%` } : undefined}>
+            <StudyMedia value={block.image} alt={block.title} onZoom={onZoom} />
+          </div>
         </div>
       )}
       {block.images && (
