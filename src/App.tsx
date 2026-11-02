@@ -2026,7 +2026,6 @@ function DotStat({ value, label }: { value: string; label: string }) {
   return (
     <div ref={ref} className="grid items-center gap-8 sm:grid-cols-[auto_1fr] sm:gap-14">
       <div>
-        <p className="mb-4 text-[13px] text-muted-foreground">Key finding · every dot is one user</p>
         <div className="grid grid-cols-10 gap-2" onMouseLeave={() => setHover(null)}>
           {Array.from({ length: 100 }).map((_, pos) => {
             const bad = struggledAt.has(pos);
