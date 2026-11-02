@@ -4061,16 +4061,46 @@ function FooterLinks({ list }: { list: FooterLink[] }) {
   );
 }
 
-// Visitor "Like" — one like per browser, with a shared count from a free public counter.
-// If the counter can't be reached the button still works, it just hides the number.
-const LIKE_API = "https://abacus.jasoncameron.dev";
-const LIKE_NS = "uiuxpriti.com";
+// Visitor "Like" — one like per browser, with a shared count kept by a free public counter.
+// Two counter services are tried in order, so one being down doesn't freeze the number; if both
+// are unreachable the button still works locally. The count refreshes every half minute and
+// whenever the tab comes back into view, so other visitors' likes show up.
 const LIKE_KEY = "portfolio-likes";
+const LIKE_PROVIDERS = [
+  {
+    get: `https://api.counterapi.dev/v1/uiuxpriti-com/${LIKE_KEY}/`,
+    hit: `https://api.counterapi.dev/v1/uiuxpriti-com/${LIKE_KEY}/up`,
+    read: (d: { count?: number }) => d.count,
+  },
+  {
+    get: `https://abacus.jasoncameron.dev/get/uiuxpriti.com/${LIKE_KEY}`,
+    hit: `https://abacus.jasoncameron.dev/hit/uiuxpriti.com/${LIKE_KEY}`,
+    read: (d: { value?: number }) => d.value,
+  },
+];
 // Optional email alert on each new like, via Web3Forms (https://web3forms.com — the access key is
 // meant to be public). Leave empty to turn alerts off.
 const LIKE_NOTIFY_KEY = "9db643af-7850-4c00-bc76-b26e0386f9db";
 // Starting number shown before the shared counter; real likes are added on top of it.
 const LIKE_BASE = 100;
+
+type LikeRead = (d: never) => number | undefined;
+async function likeFetch(kind: "get" | "hit", start = 0): Promise<{ n: number; at: number } | null> {
+  for (let p = start; p < LIKE_PROVIDERS.length; p++) {
+    const prov = LIKE_PROVIDERS[p];
+    try {
+      const r = await fetch(prov[kind], { cache: "no-store" });
+      // A missing counter (404 on the very first read) just means nobody has liked yet.
+      if (r.status === 404 && kind === "get") return { n: 0, at: p };
+      if (!r.ok) continue;
+      const v = (prov.read as LikeRead)((await r.json()) as never);
+      if (typeof v === "number") return { n: v, at: p };
+    } catch {
+      /* try the next provider */
+    }
+  }
+  return null;
+}
 
 function LikeButton({ tone = "dark" }: { tone?: "dark" | "light" }) {
   const [count, setCount] = useState<number | null>(null);
@@ -4082,14 +4112,22 @@ function LikeButton({ tone = "dark" }: { tone?: "dark" | "light" }) {
     }
   });
   useEffect(() => {
-    const ctrl = new AbortController();
-    fetch(`${LIKE_API}/get/${LIKE_NS}/${LIKE_KEY}`, { signal: ctrl.signal })
-      .then((r) => (r.ok ? r.json() : null))
-      .then((d) => {
-        if (d && typeof d.value === "number") setCount(d.value);
-      })
-      .catch(() => {});
-    return () => ctrl.abort();
+    let alive = true;
+    const refresh = () =>
+      likeFetch("get").then((r) => {
+        if (alive && r) setCount(r.n);
+      });
+    refresh();
+    const iv = window.setInterval(refresh, 30000);
+    const onVis = () => {
+      if (document.visibilityState === "visible") refresh();
+    };
+    document.addEventListener("visibilitychange", onVis);
+    return () => {
+      alive = false;
+      window.clearInterval(iv);
+      document.removeEventListener("visibilitychange", onVis);
+    };
   }, []);
   const like = () => {
     if (liked) return;
@@ -4100,12 +4138,9 @@ function LikeButton({ tone = "dark" }: { tone?: "dark" | "light" }) {
     } catch {
       /* storage unavailable */
     }
-    fetch(`${LIKE_API}/hit/${LIKE_NS}/${LIKE_KEY}`)
-      .then((r) => (r.ok ? r.json() : null))
-      .then((d) => {
-        if (d && typeof d.value === "number") setCount(d.value);
-      })
-      .catch(() => {});
+    likeFetch("hit").then((r) => {
+      if (r) setCount(r.n);
+    });
     if (LIKE_NOTIFY_KEY) {
       fetch("https://api.web3forms.com/submit", {
         method: "POST",
