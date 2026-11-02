@@ -242,6 +242,8 @@ export interface StudyBlock {
   bullets?: string[];
   /** Two/three-column cards (e.g. personas, method vs. findings). */
   columns?: { heading: string; items: string[] }[];
+  /** Sticky-note cards: a title and short bullet points each. */
+  notes?: { title: string; items: string[] }[];
   /** Titled cards with a paragraph each, shown in a 2-column grid. */
   cards?: { heading: string; text: string }[];
   /** Big stat tiles. */
@@ -466,24 +468,6 @@ export const caseStudies: Record<string, CaseStudy> = {
         eyebrow: "Users",
         title: "Personas & Journey Mapping",
         lead: "Two users with opposite needs. I mapped each one's journey through the old experience to pinpoint where they hit friction.",
-        columns: [
-          {
-            heading: "Rohan Sharma — Business Analyst",
-            items: [
-              "32 · 7+ yrs · medium tech comfort",
-              "Wants quick insights without deep technical effort",
-              "Pain: scattered data, rigid workflows, slow turnaround",
-            ],
-          },
-          {
-            heading: "Priya Verma — Data Analyst / Scientist",
-            items: [
-              "29 · 5+ yrs · high tech comfort",
-              "Wants deep analysis with control and precision",
-              "Pain: limited control, low transparency, tool switching",
-            ],
-          },
-        ],
         images: ["projects/askme-persona1.jpg", "projects/askme-persona2.jpg"],
       },
       {
@@ -498,17 +482,8 @@ export const caseStudies: Record<string, CaseStudy> = {
         eyebrow: "Opportunities",
         title: "Opportunity Areas",
         lead: "Where the redesign could create the most value:",
-        bullets: [
-          "Multiple data entry points — upload files, connect sources, use a schema or sample data.",
-          "A central Data Pool as a single workspace.",
-          "Data consent & privacy controls before analysis.",
-          "Trust & transparency — step-by-step processing and explainable insights.",
-          "A minimal, modern UI with dark mode.",
-          "Actionable insights that flow into dashboards.",
-          "AI-powered summarisation and a responsive layout.",
-        ],
-        note: "👉 Users want a flexible, modern, and intelligent system that adapts to their data — not the other way around.",
-        image: "projects/askme-opportunities.jpg",
+        notes: [{"title": "Enable Multiple Data Entry Points", "items": ["Upload files (Excel, PDF, Images and many more)", "Connect external sources (Drive, DB, APIs & 50+ More)", "Use existing Schemas", "Use Sample File"]}, {"title": "Introduce Data Pool as Central Workspace", "items": ["Single place to manage: Files, Datasets, Schemas", "Enable easy switching and management"]}, {"title": "Data Consent & Privacy Control", "items": ["Allow users to control how their data is used", "Provide clear consent mechanism before analysis", "Build trust through transparent data usage policies"]}, {"title": "Improve Trust & Transparency", "items": ["Show step-by-step processing", "Add explainability to insights", "Provide next-step suggestions"]}, {"title": "Minimal & Modern UI Experience", "items": ["Simplify interface (reduce clutter)", "Improve visual hierarchy", "Introduce Dark Mode"]}, {"title": "Personalization & Data Consent", "items": ["User-level personalization", "Analysis-level controls", "Data + privacy settings", "Provide clear consent mechanism before analysis"]}, {"title": "Actionable Insights → Dashboard Integration", "items": ["Add charts to dashboard", "Save insights", "Build presentations"]}, {"title": "AI-Powered Summarization", "items": ["Generate summaries in presentation format and structured insights", "Enable quick understanding of results"]}, {"title": "Enhance AI Response Experience", "items": ["Improve conversational flow", "Support natural language queries"]}, {"title": "Upgrade Visual System (Iconography & UI)", "items": ["Replace outdated icons", "Modernize visual language", "Ensure consistency across UI"]}, {"title": "Responsive Layout", "items": ["Improve mobile usability with simplified layouts and better hierarchy"]}],
+        note: "Users want a flexible, modern, and intelligent system that adapts to their data — not the other way around.",
       },
       {
         id: "problem",

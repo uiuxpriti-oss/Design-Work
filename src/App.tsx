@@ -2099,6 +2099,98 @@ function StudyStats({ stats, small = false }: { stats: { value: string; label: s
   );
 }
 
+const INFO_TONES = [
+  { card: "bg-[#eef3ff] dark:bg-[#1b2a5a]", head: "text-[#1e3a8a] dark:text-blue-100", badge: "bg-[#1e3a8a] text-white", chip: "bg-white text-[#1e3a8a] dark:bg-white/10 dark:text-blue-100", row: "border-[#1e3a8a]/10 text-[#2f4a8f] dark:text-blue-100/80", num: "text-[#2346c7] dark:text-blue-300" },
+  { card: "bg-[#0f1530]", head: "text-white", badge: "bg-white text-[#0f1530]", chip: "bg-white/10 text-white", row: "border-white/10 text-[#c9d6ff]", num: "text-[#7da2ff]" },
+  { card: "border border-border bg-white dark:bg-card", head: "text-foreground", badge: "bg-gradient-to-b from-[#3b6cf6] to-[#2346c7] text-white", chip: "bg-[#eef3ff] text-[#1e3a8a] dark:bg-white/10 dark:text-blue-100", row: "border-border text-foreground/75", num: "text-[#2346c7] dark:text-blue-300" },
+  { card: "bg-gradient-to-b from-[#3b6cf6] to-[#2346c7]", head: "text-white", badge: "bg-white text-[#2346c7]", chip: "bg-white/15 text-white", row: "border-white/15 text-white/85", num: "text-white" },
+] as const;
+
+// Titled list card. Short items (e.g. research methods) become chips; longer ones
+// (e.g. key findings) become numbered rows.
+function InfoColumn({ heading, items, tone }: { heading: string; items: string[]; tone: number }) {
+  const t = INFO_TONES[tone % INFO_TONES.length];
+  const short = items.every((x) => x.length <= 34);
+  return (
+    <div className={`rounded-[28px] p-6 transition-transform duration-300 ease-out hover:-translate-y-0.5 sm:p-7 ${t.card}`}>
+      <div className="flex items-center justify-between gap-3">
+        <p className={`text-[18px] font-semibold tracking-tight ${t.head}`}>{heading}</p>
+        <span className={`flex h-7 min-w-7 items-center justify-center rounded-full px-2 text-[12px] font-semibold tabular-nums ${t.badge}`}>
+          {items.length}
+        </span>
+      </div>
+      {short ? (
+        <ul className="mt-5 flex flex-wrap gap-2">
+          {items.map((it) => (
+            <li key={it} className={`inline-flex items-center gap-2 rounded-full px-3.5 py-2 text-[14px] font-medium ${t.chip}`}>
+              <Check className="h-3.5 w-3.5 opacity-70" aria-hidden="true" />
+              {it}
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <ol className="mt-4">
+          {items.map((it, j) => (
+            <li key={it} className={`flex items-start gap-4 border-t py-3.5 text-[15px] leading-snug first:border-t-0 ${t.row}`}>
+              <span className={`pt-0.5 text-[13px] font-semibold tabular-nums ${t.num}`}>{String(j + 1).padStart(2, "0")}</span>
+              <span>{it}</span>
+            </li>
+          ))}
+        </ol>
+      )}
+    </div>
+  );
+}
+
+const NOTE_COLOURS = [
+  { bg: "#ff9f98", fold: "#d97a74" },
+  { bg: "#ffb868", fold: "#d99443" },
+  { bg: "#6ec1fb", fold: "#4a97d1" },
+  { bg: "#cfaaf8", fold: "#a883d4" },
+];
+
+// Sticky-note cards with a folded top-left corner. Colours cycle salmon, orange, blue, purple;
+// each note tilts slightly straight on hover, and they rise in one after another on scroll.
+function StickyNotes({ notes }: { notes: { title: string; items: string[] }[] }) {
+  const [ref, seen] = useInView<HTMLDivElement>(0.15);
+  return (
+    <div ref={ref} className="mt-8 flex flex-wrap justify-center gap-5">
+      {notes.map((n, i) => {
+        const col = NOTE_COLOURS[i % NOTE_COLOURS.length];
+        return (
+          <div
+            key={n.title}
+            className="group relative min-h-[15rem] w-full rounded-[22px] px-6 pb-7 pt-12 sm:w-[calc(50%-10px)] lg:w-[calc(25%-15px)] text-[#1f1d2b] transition-[transform,opacity] duration-500 ease-out hover:-translate-y-1 hover:rotate-[-0.6deg]"
+            style={{
+              background: col.bg,
+              opacity: seen ? 1 : 0,
+              transform: seen ? undefined : "translateY(18px)",
+              transitionDelay: seen ? `${(i % 4) * 70 + Math.floor(i / 4) * 120}ms` : "0ms",
+              clipPath: "polygon(34px 0, 100% 0, 100% 100%, 0 100%, 0 34px)",
+              borderRadius: 22,
+            }}
+          >
+            <span
+              aria-hidden="true"
+              className="absolute left-0 top-0 h-[34px] w-[34px] rounded-br-[14px]"
+              style={{ background: col.fold, clipPath: "polygon(100% 0, 100% 100%, 0 100%)", filter: "brightness(0.96)" }}
+            />
+            <p className="text-[16px] font-semibold leading-snug tracking-tight">{n.title}</p>
+            <ul className="mt-4 space-y-2">
+              {n.items.map((it) => (
+                <li key={it} className="flex gap-2.5 text-[13.5px] leading-snug text-[#2b2940]">
+                  <span className="mt-[7px] h-1 w-1 shrink-0 rounded-full bg-[#2b2940]/60" />
+                  {it}
+                </li>
+              ))}
+            </ul>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
 function StudySectionBlock({
   block,
   onZoom,
@@ -2276,23 +2368,11 @@ function StudySectionBlock({
           }`}
         >
           {block.columns.map((c, i) => (
-            <div key={i} className="rounded-2xl border border-border bg-card p-5">
-              <p className="text-[15px] font-semibold text-foreground">{c.heading}</p>
-              <ul className="mt-3 space-y-2">
-                {c.items.map((it, j) => (
-                  <li
-                    key={j}
-                    className="flex gap-2.5 text-[14px] leading-relaxed text-muted-foreground"
-                  >
-                    <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-foreground/40" />
-                    {it}
-                  </li>
-                ))}
-              </ul>
-            </div>
+            <InfoColumn key={i} heading={c.heading} items={c.items} tone={i % 4} />
           ))}
         </div>
       )}
+      {block.notes && <StickyNotes notes={block.notes} />}
       {block.cards && (
         <div className="mt-6 grid gap-4 sm:grid-cols-2">
           {block.cards.map((c, i) => (
