@@ -2889,7 +2889,7 @@ function JourneyMap({ persona, seen }: { persona: Persona; seen: boolean }) {
                 ))}
               </div>
               <div className="relative">
-                <div className="relative h-[5.5rem]">
+                <div className="relative h-[5rem]">
                   <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="absolute inset-0 h-full w-full overflow-visible" aria-hidden="true" style={{ clipPath: seen ? "inset(-20% 0 -20% 0)" : "inset(-20% 100% -20% 0)", transition: "clip-path 2.2s cubic-bezier(.4,0,.2,1) .4s" }}>
                     <path d={d} fill="none" stroke="#2563eb" strokeWidth="2.5" strokeLinecap="round" vectorEffect="non-scaling-stroke" opacity="0.9" />
                   </svg>
@@ -2903,15 +2903,6 @@ function JourneyMap({ persona, seen }: { persona: Persona; seen: boolean }) {
                     >
                       {j.feelings[i].emoji}
                     </span>
-                  ))}
-                </div>
-                <div className="grid grid-cols-5 pb-3">
-                  {j.feelings.map((f, i) => (
-                    <ul key={i} className="space-y-1.5 px-4" style={{ opacity: seen ? dim(i) : 0, transition: `opacity .5s ${seen ? 900 + i * 200 : 0}ms` }}>
-                      {f.lines.map((l) => (
-                        <li key={l} className="text-[13.5px] leading-snug text-[#2a2a33]">{l}</li>
-                      ))}
-                    </ul>
                   ))}
                 </div>
               </div>
