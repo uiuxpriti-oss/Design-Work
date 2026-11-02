@@ -2409,36 +2409,31 @@ function NextRoadmap({ cards, lesson }: { cards: { heading: string; text: string
 // Conclusion: one big statement, the three things that changed, and what users got.
 function ConclusionPanel({ block }: { block: StudyBlock }) {
   const [ref, seen] = useInView<HTMLDivElement>(0.2);
-  const [first, second] = block.body ?? [];
+  const [first] = block.body ?? [];
   return (
     <div
       ref={ref}
-      className="relative overflow-hidden rounded-[32px] bg-[#0a0c14] p-7 text-white sm:p-12"
+      className="relative overflow-hidden rounded-[28px] bg-[#0a0c14] p-6 text-white sm:p-9"
       style={{ opacity: seen ? 1 : 0, transform: seen ? undefined : "translateY(18px)", transition: "opacity .6s ease, transform .6s ease" }}
     >
-      <span aria-hidden="true" className="pointer-events-none absolute -left-20 -top-24 h-80 w-80 rounded-full bg-[radial-gradient(circle,#3b6cf6_0%,transparent_70%)] opacity-50" />
-      <span aria-hidden="true" className="pointer-events-none absolute -bottom-28 -right-16 h-80 w-80 rounded-full bg-[radial-gradient(circle,#8b7bff_0%,transparent_70%)] opacity-35" />
+      <span aria-hidden="true" className="pointer-events-none absolute -left-20 -top-24 h-72 w-72 rounded-full bg-[radial-gradient(circle,#3b6cf6_0%,transparent_70%)] opacity-50" />
       <div className="relative">
         <div className="flex flex-wrap items-center gap-3 text-[13px] font-medium">
           <span className="rounded-full bg-white/10 px-4 py-2 text-white/70 line-through decoration-white/30">Complex &amp; tech-heavy</span>
           <span aria-hidden="true" className="text-[#7da2ff]">→</span>
           <span className="rounded-full bg-gradient-to-b from-[#3b6cf6] to-[#2346c7] px-4 py-2 text-white">Guided &amp; data-first</span>
         </div>
-        {first && <p className="mt-8 max-w-3xl text-[clamp(24px,3.2vw,38px)] font-medium leading-[1.25] tracking-[-0.03em]">{first}</p>}
-        {second && <p className="mt-5 max-w-3xl text-[16px] leading-[1.7] text-white/65">{second}</p>}
-        {block.pillars && (
-          <div className="mt-10 grid gap-3 sm:grid-cols-3">
-            {block.pillars.map((p, i) => (
-              <div key={p.title} className="rounded-[22px] border border-white/10 bg-white/[0.06] p-5 backdrop-blur-sm transition-colors duration-300 hover:bg-white/[0.1]">
-                <span className="text-[12px] font-semibold tabular-nums text-[#7da2ff]">{String(i + 1).padStart(2, "0")}</span>
-                <p className="mt-3 text-[18px] font-semibold leading-snug tracking-tight">{p.title}</p>
-                <p className="mt-2 text-[14px] leading-[1.6] text-white/65">{p.text}</p>
-              </div>
-            ))}
-          </div>
-        )}
-        <div className="mt-8 flex flex-wrap items-center gap-2.5 text-[13px]">
-          <span className="text-white/50">The result</span>
+        {first && <p className="mt-6 max-w-3xl text-[clamp(22px,2.8vw,32px)] font-medium leading-[1.25] tracking-[-0.03em]">{first}</p>}
+        <div className="mt-7 flex flex-wrap items-center gap-2.5 text-[13px]">
+          {(block.pillars ?? []).map((p, i) => (
+            <span key={p.title} className="inline-flex items-center gap-2 rounded-full border border-white/12 bg-white/[0.06] px-3.5 py-2 text-white/85 transition-colors hover:bg-white/[0.12]">
+              <span className="text-[11px] font-semibold tabular-nums text-[#7da2ff]">{String(i + 1).padStart(2, "0")}</span>
+              {p.title}
+            </span>
+          ))}
+        </div>
+        <div className="mt-6 flex flex-wrap items-center gap-2.5 border-t border-white/10 pt-5 text-[13px]">
+          <span className="text-white/50">Result</span>
           {["Usability", "Efficiency", "User confidence"].map((r) => (
             <span key={r} className="rounded-full bg-white px-3.5 py-1.5 font-semibold text-[#0a0c14]">
               {r}
