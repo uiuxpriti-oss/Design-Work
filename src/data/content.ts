@@ -833,17 +833,6 @@ export const caseStudies: Record<string, CaseStudy> = {
         image: "projects/baladi-hero.jpg",
       },
       {
-        id: "process",
-        eyebrow: "Process",
-        title: "How the redesign ran",
-        cards: [
-          { heading: "1 · Understand & strategize", text: "Gather user insights and define clear goals for a successful redesign." },
-          { heading: "2 · Design & prototype", text: "Brainstorm solutions based on user needs and goals, then build low fi prototypes for feedback and refinement." },
-          { heading: "3 · Develop & deliver", text: "Translate the final design into a functional, high quality app through rigorous testing." },
-          { heading: "4 · Launch & optimize", text: "Launch, monitor performance, and gather feedback to continuously improve the experience." },
-        ],
-      },
-      {
         id: "challenges",
         eyebrow: "Challenges",
         title: "What made it hard",
@@ -865,6 +854,17 @@ export const caseStudies: Record<string, CaseStudy> = {
           "Weak visual hierarchy made browsing slow",
         ],
         image: "projects/baladi-old-ui.jpg",
+      },
+      {
+        id: "process",
+        eyebrow: "Process",
+        title: "How the redesign ran",
+        cards: [
+          { heading: "1 · Understand & strategize", text: "Gather user insights and define clear goals for a successful redesign." },
+          { heading: "2 · Design & prototype", text: "Brainstorm solutions based on user needs and goals, then build low fi prototypes for feedback and refinement." },
+          { heading: "3 · Develop & deliver", text: "Translate the final design into a functional, high quality app through rigorous testing." },
+          { heading: "4 · Launch & optimize", text: "Launch, monitor performance, and gather feedback to continuously improve the experience." },
+        ],
       },
       {
         id: "colors",
@@ -1463,15 +1463,6 @@ export const caseStudies: Record<string, CaseStudy> = {
         ],
       },
       {
-        id: "discover",
-        side: true,
-        title: "Discover",
-        lead: "I got to know the consumers and the market before touching a screen, how marketers actually generate leads, and where sandbox demos fit in that funnel.",
-        body: [
-          "The insight that reframed the product: a demo isn't a marketing asset, it's a **qualifying step**. Someone who spends ten minutes inside your sandbox is a far better lead than someone who downloaded a PDF, so the design had to treat lead capture and demo building as one flow, not two.",
-        ],
-      },
-      {
         id: "challenge",
         side: true,
         title: "Challenge",
@@ -1481,6 +1472,26 @@ export const caseStudies: Record<string, CaseStudy> = {
           "Keep one coherent system across marketing site, builder, and dashboard",
           "Design pricing and billing that explain themselves",
         ],
+      },
+      {
+        id: "discover",
+        side: true,
+        title: "Discover",
+        lead: "I got to know the consumers and the market before touching a screen, how marketers actually generate leads, and where sandbox demos fit in that funnel.",
+        body: [
+          "The insight that reframed the product: a demo isn't a marketing asset, it's a **qualifying step**. Someone who spends ten minutes inside your sandbox is a far better lead than someone who downloaded a PDF, so the design had to treat lead capture and demo building as one flow, not two.",
+        ],
+      },
+      {
+        id: "wireframes",
+        side: true,
+        title: "Wireframes → visual design",
+        lead: "Every screen was structured in **greyscale first**: hierarchy, density and flow settled before a single colour decision. Only once the layout held up did the palette, type and icons go on top.",
+        body: [
+          "Hover the screens below to fade the wireframes into the finished visual design: same layouts, same spacing, just the system applied.",
+        ],
+        image: "projects/leads-wireframe.jpg",
+        hoverImage: "projects/leads-wireframe-color.jpg",
       },
       {
         id: "colors",
@@ -1529,17 +1540,6 @@ export const caseStudies: Record<string, CaseStudy> = {
         eyebrow: "UI elements: the working parts",
         lead: "Performance at a glance, audience sync to Mailchimp, Active Campaign or Constant Contact, plus payments and scheduling.",
         image: "projects/leads-components.jpg",
-      },
-      {
-        id: "wireframes",
-        side: true,
-        title: "Wireframes → visual design",
-        lead: "Every screen was structured in **greyscale first**: hierarchy, density and flow settled before a single colour decision. Only once the layout held up did the palette, type and icons go on top.",
-        body: [
-          "Hover the screens below to fade the wireframes into the finished visual design: same layouts, same spacing, just the system applied.",
-        ],
-        image: "projects/leads-wireframe.jpg",
-        hoverImage: "projects/leads-wireframe-color.jpg",
       },
       {
         id: "solution-pricing",
