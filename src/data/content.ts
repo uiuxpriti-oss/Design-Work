@@ -210,6 +210,8 @@ export interface CaseStudy {
   screens?: { src: string; caption: string }[];
   /** Optional full-width, click-to-zoom screen flow shown as its own section. */
   gallery?: { title?: string; text?: string; shots: { src: string; caption: string }[] };
+  /** Laptop mockup whose screen scrolls through full page designs. */
+  scrollDemo?: { title?: string; text?: string; bg?: string; pages: { label: string; src: string }[] };
   /** Optional before → after comparison shown as its own section. */
   beforeAfter?: {
     text?: string;
@@ -1325,6 +1327,19 @@ export const caseStudies: Record<string, CaseStudy> = {
         { title: "Plain language first", text: "Headlines say what the system does before the specifications appear." },
         { title: "One page per audience", text: "Utility scale, energy management and projects each get their own story." },
         { title: "Service made simple", text: "A dedicated form with urgency and warranty options sends the right request to the right team." },
+      ],
+    },
+    scrollDemo: {
+      title: "Scroll the website",
+      text: "Scroll inside the laptop to read each page top to bottom, and switch pages with the tabs.",
+      bg: "projects/joulecube-sky.jpg",
+      pages: [
+        { label: "About", src: "projects/joulecube-about.jpg" },
+        { label: "EMS", src: "projects/joulecube-ems.jpg" },
+        { label: "Utility scale", src: "projects/joulecube-utility.jpg" },
+        { label: "Projects", src: "projects/joulecube-projects.jpg" },
+        { label: "Service", src: "projects/joulecube-service.jpg" },
+        { label: "Careers", src: "projects/joulecube-careers.jpg" },
       ],
     },
     gallery: {

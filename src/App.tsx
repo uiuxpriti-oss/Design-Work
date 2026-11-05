@@ -48,7 +48,7 @@ import {
   awards,
   links,
 } from "./data/content";
-import type { StudyBlock, Persona } from "./data/content";
+import type { StudyBlock, Persona, CaseStudy } from "./data/content";
 
 // Number of case studies shown on the home page; the rest live on /all-projects.
 const HOME_PROJECT_COUNT = 5;
@@ -2919,6 +2919,64 @@ function JourneyMap({ persona, seen }: { persona: Persona; seen: boolean }) {
 
 // Persona + journey map, built in code. Switch between the two personas; the map below shows
 // five stages with what the person does, wants, feels, struggles with and what we could improve.
+// MacBook style laptop whose screen scrolls through full page designs.
+function LaptopScroll({ demo }: { demo: NonNullable<CaseStudy["scrollDemo"]> }) {
+  const [i, setI] = useState(0);
+  const scr = useRef<HTMLDivElement>(null);
+  const raf = useRef(0);
+  const stop = () => cancelAnimationFrame(raf.current);
+  const play = () => {
+    const el = scr.current;
+    if (!el || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    stop();
+    let last = performance.now();
+    const step = (t: number) => {
+      const dt = (t - last) / 1000;
+      last = t;
+      el.scrollTop += 120 * dt;
+      if (el.scrollTop + el.clientHeight < el.scrollHeight - 2) raf.current = requestAnimationFrame(step);
+    };
+    raf.current = requestAnimationFrame(step);
+  };
+  useEffect(() => { scr.current?.scrollTo({ top: 0 }); return stop; }, [i]);
+  return (
+    <div
+      className="mt-6 overflow-hidden rounded-3xl bg-cover bg-center px-4 pb-10 pt-10 sm:px-10"
+      style={demo.bg ? { backgroundImage: `url(${assetUrl(demo.bg)})` } : undefined}
+    >
+      <div className="mx-auto max-w-[980px]" onMouseEnter={play} onMouseLeave={stop}>
+        <div className="rounded-[18px] bg-[#0e1014] p-[10px] shadow-[0_30px_60px_rgba(0,0,0,0.45)] ring-1 ring-white/10 sm:rounded-[22px] sm:p-[14px]">
+          <div
+            ref={scr}
+            data-lenis-prevent
+            onWheel={stop}
+            onTouchStart={stop}
+            onPointerDown={stop}
+            className="aspect-[16/10] w-full overflow-y-auto overscroll-contain rounded-[8px] bg-white [scrollbar-width:thin]"
+          >
+            <img src={assetUrl(demo.pages[i].src)} alt={`${demo.pages[i].label} page`} className="block w-full" draggable={false} />
+          </div>
+        </div>
+        <div className="relative mx-auto -mt-px h-3 w-[112%] -translate-x-[5.4%] rounded-b-[14px] bg-gradient-to-b from-[#e4e7ec] to-[#b9bec6] shadow-[0_18px_30px_rgba(0,0,0,0.35)]">
+          <span className="absolute left-1/2 top-0 h-1.5 w-24 -translate-x-1/2 rounded-b-md bg-[#a3a9b2]" />
+        </div>
+      </div>
+      <div className="mt-8 flex flex-wrap justify-center gap-2">
+        {demo.pages.map((p, k) => (
+          <button
+            key={p.label}
+            type="button"
+            onClick={() => setI(k)}
+            className={`rounded-full px-4 py-1.5 text-[13px] font-medium backdrop-blur transition ${k === i ? "bg-white text-[#0f1530]" : "bg-white/15 text-white hover:bg-white/25"}`}
+          >
+            {p.label}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 // Hover a stage (or a column) to follow it down the rows.
 function PersonaExplorer({ personas }: { personas: Persona[] }) {
   const [ref, seen] = useInView<HTMLDivElement>(0.15);
@@ -3805,6 +3863,15 @@ function CaseStudyPage({
         ) : null}
       </CaseSection>
       </>
+      )}
+
+      {cs.scrollDemo && !cs.sections && (
+        <CaseSection id="cs-site" eyebrow="Website" title={cs.scrollDemo.title ?? "The website"}>
+          {cs.scrollDemo.text && (
+            <p className="max-w-2xl text-[15px] leading-relaxed text-foreground/85">{cs.scrollDemo.text}</p>
+          )}
+          <LaptopScroll demo={cs.scrollDemo} />
+        </CaseSection>
       )}
 
       {cs.gallery && !cs.sections && (
