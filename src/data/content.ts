@@ -1245,6 +1245,16 @@ export const caseStudies: Record<string, CaseStudy> = {
         { title: "Built in gifting", text: "Add a message and deliver straight to a loved one." },
       ],
     },
+    gallery: {
+      title: "The screens",
+      text: "The website, the customer app and the delivery partner app. Tap any screen to view it full size.",
+      shots: [
+        { src: "projects/cakes-website.jpg", caption: "Website: design your own cake, see how it works, and send a gift to loved ones." },
+        { src: "projects/cakes-app-screens.jpg", caption: "Customer app: the cake list, product details with size options, delivery date and time, and the order confirmation with a gift message." },
+        { src: "projects/cakes-more-screens.jpg", caption: "More app screens: sign up, delivery mode with a buying for a loved one option, address on a map, payment, ratings and the cake blog." },
+        { src: "projects/cakes-delivery-app.jpg", caption: "Delivery partner app: orders ready to deliver, as a list and on a map." },
+      ],
+    },
     outcomes: {
       metrics: [
         { value: "+24%", label: "Add to cart" },
