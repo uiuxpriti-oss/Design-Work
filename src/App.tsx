@@ -1515,17 +1515,17 @@ function ProcessArt({ kind }: { kind: (typeof PROCESS_TONES)[number]["art"] }) {
     );
   if (kind === "face")
     return (
-      <svg viewBox="0 0 120 110" className={`${base} right-6 top-6 h-[6.4rem] w-[7rem] group-hover:-rotate-6`} aria-hidden="true">
-        <g fill="none" stroke="#0f1530" strokeWidth="5" strokeLinecap="round">
+      <svg viewBox="0 0 120 110" className={`${base} right-6 top-6 h-[6.4rem] w-[7rem] text-[#0f1530] dark:text-white group-hover:-rotate-6`} aria-hidden="true">
+        <g fill="none" stroke="currentColor" strokeWidth="5" strokeLinecap="round">
           <path d="M14 22 C24 8 40 8 48 16" />
           <path d="M78 16 C88 8 104 8 112 20" />
           <circle cx="32" cy="46" r="17" />
           <circle cx="86" cy="46" r="17" />
           <path d="M22 70 C34 62 50 62 60 70" />
         </g>
-        <circle cx="38" cy="42" r="7" fill="#0f1530" />
-        <circle cx="92" cy="42" r="7" fill="#0f1530" />
-        <circle cx="62" cy="96" r="8" fill="#0f1530" />
+        <circle cx="38" cy="42" r="7" fill="currentColor" />
+        <circle cx="92" cy="42" r="7" fill="currentColor" />
+        <circle cx="62" cy="96" r="8" fill="currentColor" />
       </svg>
     );
   if (kind === "legs")
