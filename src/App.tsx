@@ -1507,10 +1507,10 @@ function ProcessArt({ kind }: { kind: (typeof PROCESS_TONES)[number]["art"] }) {
   const base = "pointer-events-none absolute transition-transform duration-500 ease-out";
   if (kind === "hand")
     return (
-      <svg viewBox="0 0 150 90" className={`${base} -bottom-[4.2rem] right-10 h-[5.4rem] w-[9.4rem] origin-top group-hover:rotate-3`} aria-hidden="true">
-        <path d="M30 0 C30 42 46 66 92 66" fill="none" stroke="#0f1530" strokeWidth="14" strokeLinecap="round" />
-        <path d="M86 48 C100 40 116 44 128 40 L146 26 C150 24 154 28 150 32 L138 46 C142 60 128 78 108 78 C94 78 84 70 82 62 Z" fill="#fff" stroke="#0f1530" strokeWidth="4" strokeLinejoin="round" />
-        <path d="M104 60 C112 64 122 62 128 56" fill="none" stroke="#0f1530" strokeWidth="3" strokeLinecap="round" />
+      <svg viewBox="0 0 150 90" className={`${base} -bottom-[4.2rem] right-10 h-[5.4rem] w-[9.4rem] origin-top text-[#0f1530] dark:text-white group-hover:rotate-3`} aria-hidden="true">
+        <path d="M30 0 C30 42 46 66 92 66" fill="none" stroke="currentColor" strokeWidth="14" strokeLinecap="round" />
+        <path d="M86 48 C100 40 116 44 128 40 L146 26 C150 24 154 28 150 32 L138 46 C142 60 128 78 108 78 C94 78 84 70 82 62 Z" fill="#fff" stroke="currentColor" strokeWidth="4" strokeLinejoin="round" />
+        <path d="M104 60 C112 64 122 62 128 56" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
       </svg>
     );
   if (kind === "face")
@@ -3706,13 +3706,17 @@ function CaseStudyPage({
         <p className="max-w-2xl text-[15px] leading-relaxed text-foreground/85">
           {cs.research.text}
         </p>
-        <div className="mt-6 grid gap-3 sm:grid-cols-3">
+        <div className="mt-8 grid gap-4 sm:grid-cols-3">
           {cs.research.findings.map((f, i) => (
             <div
               key={i}
-              className="rounded-2xl border border-border bg-card p-4 text-[14px] leading-relaxed text-foreground/85"
+              className="group relative overflow-hidden rounded-2xl bg-[#f3f6fd] p-6 transition duration-300 hover:-translate-y-1 hover:shadow-[0_10px_30px_rgba(35,70,199,0.12)] dark:bg-white/[0.05]"
             >
-              {f}
+              <span className="absolute left-0 top-0 h-full w-[3px] origin-top scale-y-[0.28] bg-gradient-to-b from-[#3b6cf6] to-[#2346c7] transition-transform duration-500 group-hover:scale-y-100" />
+              <span className="text-[12px] font-semibold tabular-nums tracking-[0.12em] text-[#2346c7] dark:text-blue-300">
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              <p className="mt-3 text-[15px] font-medium leading-snug text-foreground">{f}</p>
             </div>
           ))}
         </div>
