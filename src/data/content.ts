@@ -21,6 +21,19 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    id: "project-joulecube",
+    title: "Joulecube",
+    description: "A clear website for a battery energy storage company.",
+    href: "https://uiuxpriti.com/projects/joulecube",
+    likes: 12,
+    image: "projects/joulecube.jpg",
+    gradient: "from-emerald-200 via-sky-100 to-slate-200",
+    measures: ["Clear product story", "Three buyer segments", "Easier service requests"],
+    headline:
+      "Making a complex battery storage business easy to understand, trust and contact.",
+    tag: "Website Design",
+  },
+  {
     id: "project-studycrux",
     title: "Admin Management",
     description:
@@ -1263,6 +1276,78 @@ export const caseStudies: Record<string, CaseStudy> = {
       ],
       text:
         "A guided, occasion led flow made customisation approachable and turned gifting into a first class path.",
+    },
+  },
+  "project-joulecube": {
+    intro: ["Joulecube builds battery energy storage systems for utilities, factories and businesses. It is **a serious, technical product** that most visitors don't have the vocabulary for.","I designed the website so that someone who knows nothing about BESS can still see what Joulecube does, who it is for, and how to get in touch.","The result is a calm, image led site across six pages: about, the energy management system, utility scale storage, projects, careers and service."],
+    tags: {"role":["Website Designer","Visual Design"],"status":["Hi Fi Design","2025"],"type":["Solar","Energy Storage","B2B","Web"],"tools":["Figma"]},
+    eyebrow: "Website Design · Energy",
+    summary:
+      "A website for Joulecube, a battery energy storage and solar company, that explains complex products in plain language and makes it easy to start a conversation.",
+    meta: {
+      role: "Website Designer",
+      timeline: "Final design",
+      team: "Client team",
+      tools: "Figma",
+    },
+    overview:
+      "Joulecube designs and delivers battery energy storage projects, from engineering and procurement to commissioning and long term service. The website had to make a technical business feel clear, credible and human.",
+    problem: {
+      stats: [{"value":"3","label":"buyer segments to speak to"},{"value":"6","label":"pages designed"},{"value":"1","label":"clear next step on every page"}],
+      text:
+        "Energy storage is full of jargon, product codes and specifications. Visitors from utilities, factories and homes all arrive with different questions, and most sites answer none of them quickly.",
+      goals: [
+        "Explain what Joulecube does in the first screen",
+        "Speak to utilities, businesses and homes without confusing any of them",
+        "Make contacting sales or service one obvious step",
+      ],
+    },
+    research: {
+      text:
+        "I studied how energy storage and solar companies present themselves, and mapped what each type of buyer needs to see before they trust a supplier enough to get in touch.",
+      findings: [
+        "Buyers want to see the real product and real sites, not stock graphics",
+        "Technical detail works best as short checklists, not paragraphs",
+        "Service and support needs its own clear path, separate from sales",
+      ],
+    },
+    process: [
+      { step: "Define", text: "Mapped the pages to the questions each buyer asks." },
+      { step: "Ideate", text: "Built a calm system: big photography, soft cards, one dark accent." },
+      { step: "Design", text: "Designed six pages with a shared hero, footer and call to action." },
+      { step: "Refine", text: "Tuned spacing, hierarchy and copy so each page reads in one scroll." },
+    ],
+    timeline: ["Page structure", "Visual system", "Hero and imagery", "Product pages", "Service form"],
+    solution: {
+      text:
+        "A confident, image led website. Each page opens with a full width hero, explains one idea at a time with checklists and photography, and always ends with a clear action.",
+      highlights: [
+        { title: "Plain language first", text: "Headlines say what the system does before the specifications appear." },
+        { title: "One page per audience", text: "Utility scale, energy management and projects each get their own story." },
+        { title: "Service made simple", text: "A dedicated form with urgency and warranty options sends the right request to the right team." },
+      ],
+    },
+    gallery: {
+      title: "The screens",
+      text: "The pages of the website, from the home page to service. Tap any screen to view it full size.",
+      shots: [
+        { src: "projects/joulecube-home.jpg", caption: "Home: a clear promise, what Joulecube offers, real sites, and an easy way to get started." },
+        { src: "projects/joulecube-about.jpg", caption: "About: who Joulecube is, what storage makes possible, and the three core offerings." },
+        { src: "projects/joulecube-ems.jpg", caption: "Energy management system: what it does, safety, benefits, and the battery ranges." },
+        { src: "projects/joulecube-utility.jpg", caption: "Utility scale storage: the case for grid scale systems and the value they bring." },
+        { src: "projects/joulecube-projects.jpg", caption: "Projects: a browsable grid of work with dates, summaries and detail links." },
+        { src: "projects/joulecube-service.jpg", caption: "Service and support: what is covered, and a detailed request form." },
+        { src: "projects/joulecube-careers.jpg", caption: "Careers: why work at Joulecube, the offices, life at the company and open roles." },
+      ],
+    },
+    outcomes: {
+      metrics: [
+        { value: "6", label: "Pages designed" },
+        { value: "3", label: "Buyer segments served" },
+        { value: "1", label: "Consistent design system" },
+      ],
+      text:
+        "A technical energy business now has a website that is easy to read, easy to trust and easy to contact, built on one system that can grow with new products and pages.",
     },
   },
   "project-tabnet-security": {
