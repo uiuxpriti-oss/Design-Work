@@ -1334,7 +1334,7 @@ export const caseStudies: Record<string, CaseStudy> = {
       text: "Scroll inside the laptop to read each page top to bottom, and switch pages with the tabs.",
       bg: "projects/joulecube-sky.jpg",
       pages: [
-        { label: "Home", src: "projects/joulecube-home-scroll.jpg" },
+        { label: "Home", src: "projects/joulecube-home.jpg" },
         { label: "About", src: "projects/joulecube-about.jpg" },
         { label: "EMS", src: "projects/joulecube-ems.jpg" },
         { label: "Utility scale", src: "projects/joulecube-utility.jpg" },
@@ -1345,7 +1345,7 @@ export const caseStudies: Record<string, CaseStudy> = {
     },
     gallery: {
       title: "The screens",
-      text: "The pages of the website, from the home page to service. Tap any screen to view it full size.",
+      text: "The pages of the website, from the home page to careers. Tap any screen to view it full size.",
       shots: [
         { src: "projects/joulecube-home.jpg", caption: "Home: a clear promise, what Joulecube offers, real sites, and an easy way to get started." },
         { src: "projects/joulecube-about.jpg", caption: "About: who Joulecube is, what storage makes possible, and the three core offerings." },
