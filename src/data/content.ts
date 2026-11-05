@@ -1334,6 +1334,7 @@ export const caseStudies: Record<string, CaseStudy> = {
       text: "Scroll inside the laptop to read each page top to bottom, and switch pages with the tabs.",
       bg: "projects/joulecube-sky.jpg",
       pages: [
+        { label: "Home", src: "projects/joulecube-home-scroll.jpg" },
         { label: "About", src: "projects/joulecube-about.jpg" },
         { label: "EMS", src: "projects/joulecube-ems.jpg" },
         { label: "Utility scale", src: "projects/joulecube-utility.jpg" },
