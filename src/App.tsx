@@ -2922,16 +2922,6 @@ function JourneyMap({ persona, seen }: { persona: Persona; seen: boolean }) {
 // MacBook style laptop whose screen scrolls through full page designs, with persona style tabs.
 function LaptopScroll({ demo }: { demo: NonNullable<CaseStudy["scrollDemo"]> }) {
   const [i, setI] = useState(0);
-  const root = useRef<HTMLDivElement>(null);
-  const [showTabs, setShowTabs] = useState(true);
-  // Tabs only appear while this section is on screen.
-  useEffect(() => {
-    const el = root.current;
-    if (!el) return;
-    const io = new IntersectionObserver(([en]) => setShowTabs(en.isIntersecting), { threshold: 0.35 });
-    io.observe(el);
-    return () => io.disconnect();
-  }, []);
   const scr = useRef<HTMLDivElement>(null);
   const raf = useRef(0);
   const stop = () => cancelAnimationFrame(raf.current);
@@ -2951,9 +2941,9 @@ function LaptopScroll({ demo }: { demo: NonNullable<CaseStudy["scrollDemo"]> }) 
   useEffect(() => { scr.current?.scrollTo({ top: 0 }); return stop; }, [i]);
   const page = demo.pages[i];
   return (
-    <div ref={root} className="mt-10">
-      <div className={`sticky top-3 z-40 flex justify-center transition-opacity duration-300 ${showTabs ? "opacity-100" : "pointer-events-none opacity-0"}`}>
-        <div className="inline-flex max-w-[94vw] overflow-x-auto rounded-full bg-white/90 p-1 ring-1 ring-black/[0.06] backdrop-blur-md dark:bg-[#15171c]/90 dark:ring-white/10" role="tablist" aria-label="Pages">
+    <div className="mt-10">
+      <div className="flex justify-center">
+        <div className="inline-flex max-w-[94vw] overflow-x-auto rounded-full bg-foreground/[0.05] p-1" role="tablist" aria-label="Pages">
           {demo.pages.map((p, k) => (
             <button
               key={p.label}
