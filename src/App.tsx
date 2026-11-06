@@ -457,7 +457,7 @@ function Header({
     else onAbout();
   };
   return (
-    <header className="sticky top-0 z-30">
+    <header data-site-nav className="sticky top-0 z-30">
       <nav className="mx-auto flex max-w-[72rem] items-center justify-between px-4 py-4 sm:px-6 sm:py-5">
         <div className="flex items-center gap-2 sm:gap-4">
           <button
@@ -2919,6 +2919,94 @@ function JourneyMap({ persona, seen }: { persona: Persona; seen: boolean }) {
 
 // Persona + journey map, built in code. Switch between the two personas; the map below shows
 // five stages with what the person does, wants, feels, struggles with and what we could improve.
+// Scroll driven laptop: the laptop grows (real size, no scaling, no crop) until its screen is exactly the
+// window, the website scrolls inside, then it settles back. Only the Back button stays on screen.
+function LaptopZoom({ demo }: { demo: NonNullable<CaseStudy["scrollDemo"]> }) {
+  const [i, setI] = useState(0);
+  const outer = useRef<HTMLDivElement>(null);
+  const wrap = useRef<HTMLDivElement>(null);
+  const bezel = useRef<HTMLDivElement>(null);
+  const scr = useRef<HTMLDivElement>(null);
+  const img = useRef<HTMLImageElement>(null);
+  const base = useRef<HTMLDivElement>(null);
+  const hint = useRef<HTMLDivElement>(null);
+  const bar = useRef<HTMLSpanElement>(null);
+  const update = () => {
+    const o = outer.current, w = wrap.current, bz = bezel.current, sc = scr.current, im = img.current, bs = base.current;
+    if (!o || !w || !bz || !sc || !im || !bs) return;
+    const clamp = (v: number) => Math.min(1, Math.max(0, v));
+    const ease = (v: number) => 1 - Math.pow(1 - v, 3);
+    const r = o.getBoundingClientRect();
+    const vh = window.innerHeight, vw = window.innerWidth;
+    const p = clamp(-r.top / Math.max(1, r.height - vh));
+    const e = ease(clamp(p / 0.25)) * (1 - ease(clamp((p - 0.95) / 0.05)));
+    const w0 = Math.min(980, vw * 0.9);
+    const bp = 14 * (1 - e);
+    const sW = w0 + (vw - w0) * e;
+    const sH = w0 / 1.6 + (vh - w0 / 1.6) * e;
+    w.style.width = `${sW + 2 * bp}px`;
+    w.style.top = `calc(50% - ${6 * (1 - e)}px)`;
+    bz.style.padding = `${bp}px`;
+    bz.style.borderRadius = `${22 * (1 - e)}px`;
+    sc.style.height = `${sH}px`;
+    sc.style.borderRadius = `${8 * (1 - e)}px`;
+    bs.style.opacity = String(1 - e);
+    const t = clamp((p - 0.25) / 0.7);
+    im.style.transform = `translate3d(0,${-Math.round(t * Math.max(0, im.offsetHeight - sH))}px,0)`;
+    document.body.classList.toggle("immersive", p > 0.01 && p < 0.995);
+    if (hint.current) hint.current.style.opacity = p < 0.02 ? "1" : "0";
+    if (bar.current) bar.current.style.transform = `scaleX(${p})`;
+  };
+  useEffect(() => {
+    let raf = 0;
+    const loop = () => { update(); raf = requestAnimationFrame(loop); };
+    let on = false;
+    const io = new IntersectionObserver(([en]) => {
+      if (en.isIntersecting && !on) { on = true; raf = requestAnimationFrame(loop); }
+      if (!en.isIntersecting && on) { on = false; cancelAnimationFrame(raf); document.body.classList.remove("immersive"); update(); }
+    }, { rootMargin: "200px 0px" });
+    if (outer.current) io.observe(outer.current);
+    return () => { io.disconnect(); cancelAnimationFrame(raf); document.body.classList.remove("immersive"); };
+  }, []);
+  const page = demo.pages[i];
+  return (
+    <div ref={outer} className="relative mt-8" style={{ height: "620vh" }}>
+      <div className="sticky top-0 h-screen overflow-hidden">
+        <div ref={wrap} className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2">
+          <div ref={bezel} className="bg-[#0e1014]" style={{ padding: 14, borderRadius: 22 }}>
+            <div ref={scr} className="relative w-full overflow-hidden bg-white" style={{ borderRadius: 8 }}>
+              <img ref={img} src={assetUrl(page.src)} alt={`${page.label} page`} onLoad={update} className="absolute left-0 top-0 block w-full" draggable={false} />
+            </div>
+          </div>
+          <div ref={base} className="relative mx-auto -mt-px h-3 w-[112%] -translate-x-[5.4%] rounded-b-[14px] bg-gradient-to-b from-[#e4e7ec] to-[#b9bec6]">
+            <span className="absolute left-1/2 top-0 h-1.5 w-24 -translate-x-1/2 rounded-b-md bg-[#a3a9b2]" />
+          </div>
+        </div>
+        <div ref={hint} className="pointer-events-none absolute bottom-24 left-1/2 -translate-x-1/2 text-[12px] font-medium uppercase tracking-[0.18em] text-muted-foreground transition-opacity duration-300">
+          Keep scrolling
+        </div>
+        <div className="absolute bottom-6 left-1/2 z-20 -translate-x-1/2">
+          <div className="inline-flex max-w-[92vw] overflow-x-auto rounded-full bg-white/85 p-1 ring-1 ring-black/10 backdrop-blur-md dark:bg-[#15171c]/85 dark:ring-white/10" role="tablist" aria-label="Pages">
+            {demo.pages.map((p, k) => (
+              <button
+                key={p.label}
+                type="button"
+                role="tab"
+                aria-selected={i === k}
+                onClick={() => setI(k)}
+                className={`shrink-0 rounded-full px-4 py-2 text-[14px] font-medium outline-none transition-all ${i === k ? "bg-foreground text-background" : "text-muted-foreground hover:text-foreground"}`}
+              >
+                {p.label}
+              </button>
+            ))}
+          </div>
+        </div>
+        <div className="absolute inset-x-0 top-0 h-[3px] bg-foreground/5"><span ref={bar} className="block h-full origin-left bg-[#2563eb]" style={{ transform: "scaleX(0)" }} /></div>
+      </div>
+    </div>
+  );
+}
+
 // MacBook style laptop whose screen scrolls through full page designs, with persona style tabs.
 function LaptopScroll({ demo }: { demo: NonNullable<CaseStudy["scrollDemo"]> }) {
   const [i, setI] = useState(0);
@@ -3860,7 +3948,7 @@ function CaseStudyPage({
           {cs.scrollDemo.text && (
             <p className="max-w-2xl text-[15px] leading-relaxed text-foreground/85">{cs.scrollDemo.text}</p>
           )}
-          <LaptopScroll demo={cs.scrollDemo} />
+          {cs.scrollDemo.zoom && !window.matchMedia("(prefers-reduced-motion: reduce)").matches ? <LaptopZoom demo={cs.scrollDemo} /> : <LaptopScroll demo={cs.scrollDemo} />}
         </CaseSection>
       )}
 
@@ -5086,6 +5174,7 @@ function FloatingAsk() {
   const visible = show;
   return (
     <div
+      data-site-nav
       className={`fixed inset-x-0 bottom-6 z-40 flex items-center justify-center gap-3 px-6 transition-all duration-300 ease-out ${
         visible
           ? "opacity-100 translate-y-0"

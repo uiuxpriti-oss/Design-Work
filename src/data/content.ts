@@ -213,7 +213,7 @@ export interface CaseStudy {
   /** Laptop mockup whose screen scrolls through full page designs. */
   /** Cropped UI pieces from the design, shown as a bento of components. */
   uiComponents?: { title?: string; text?: string; items: { src: string; label: string; cols?: number; rows?: number }[] };
-  scrollDemo?: { title?: string; text?: string; bg?: string; pages: { label: string; src: string; caption?: string }[] };
+  scrollDemo?: { zoom?: boolean; title?: string; text?: string; bg?: string; pages: { label: string; src: string; caption?: string }[] };
   /** Optional before → after comparison shown as its own section. */
   beforeAfter?: {
     text?: string;
@@ -1332,8 +1332,9 @@ export const caseStudies: Record<string, CaseStudy> = {
       ],
     },
     scrollDemo: {
+      zoom: true,
       title: "The website",
-      text: "Seven pages, one system. Pick a page, then scroll inside the laptop to read it top to bottom.",
+      text: "Seven pages, one system. Keep scrolling: the laptop fills your screen, then the website scrolls with you.",
       pages: [
         { label: "Home", src: "projects/joulecube-home.jpg", caption: "Home: a clear promise, what Joulecube offers, real sites, and an easy way to get started." },
         { label: "About", src: "projects/joulecube-about.jpg", caption: "About: who Joulecube is, what storage makes possible, and the three core offerings." },
@@ -1349,13 +1350,9 @@ export const caseStudies: Record<string, CaseStudy> = {
       text: "The building blocks behind every page: navigation, buttons, cards, stats, forms and footer. Tap any piece to view it full size.",
       items: [
         { src: "projects/ui-nav.jpg", label: "Navigation and buttons", cols: 12, rows: 2 },
-        { src: "projects/ui-feature-list.jpg", label: "Icon list with a call to action", cols: 6, rows: 4 },
-        { src: "projects/ui-checklist.jpg", label: "Checklist", cols: 6, rows: 4 },
         { src: "projects/ui-stat-dark.jpg", label: "Stat card, dark", cols: 4, rows: 3 },
         { src: "projects/ui-stat-light.jpg", label: "Stat card, light", cols: 4, rows: 3 },
         { src: "projects/ui-card-blue.jpg", label: "Image card", cols: 4, rows: 3 },
-        { src: "projects/ui-icons.jpg", label: "Icon highlights", cols: 12, rows: 2 },
-        { src: "projects/ui-card-hero.jpg", label: "Feature card with tags", cols: 12, rows: 3 },
       ],
     },
     outcomes: {
