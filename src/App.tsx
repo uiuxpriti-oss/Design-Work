@@ -3866,10 +3866,7 @@ function CaseStudyPage({
 
       {cs.uiComponents && !cs.sections && (
         <CaseSection id="cs-ui" eyebrow="UI" title={cs.uiComponents.title ?? "UI components"}>
-          {cs.uiComponents.text && (
-            <p className="max-w-2xl text-[15px] leading-relaxed text-foreground/85">{cs.uiComponents.text}</p>
-          )}
-          <div className="mt-8 grid grid-flow-dense gap-3 md:auto-rows-[88px] md:grid-cols-12">
+          <div className="mt-2 grid grid-flow-dense gap-4 md:auto-rows-[88px] md:grid-cols-12">
             {cs.uiComponents.items.map((it) => {
               const cols = ({ 3: "md:col-span-3", 4: "md:col-span-4", 5: "md:col-span-5", 6: "md:col-span-6", 7: "md:col-span-7", 8: "md:col-span-8", 12: "md:col-span-12" } as Record<number, string>)[it.cols ?? 12];
               const rows = ({ 1: "md:row-span-1", 2: "md:row-span-2", 3: "md:row-span-3", 4: "md:row-span-4", 5: "md:row-span-5", 6: "md:row-span-6", 7: "md:row-span-7" } as Record<number, string>)[it.rows ?? 3];
@@ -3879,12 +3876,9 @@ function CaseStudyPage({
                   type="button"
                   onClick={() => setZoom(assetUrl(it.src))}
                   aria-label={`View ${it.label} full size`}
-                  className={`group flex min-h-0 cursor-zoom-in flex-col rounded-[24px] border border-border p-2.5 text-left outline-none transition-colors hover:border-foreground/25 focus-visible:ring-2 focus-visible:ring-foreground/30 ${cols} ${rows}`}
+                  className={`group flex min-h-0 cursor-zoom-in items-center justify-center outline-none focus-visible:ring-2 focus-visible:ring-foreground/30 ${cols} ${rows}`}
                 >
-                  <div className="flex min-h-0 flex-1 items-center justify-center overflow-hidden rounded-[16px]">
-                    <img src={assetUrl(it.src)} alt={it.label} loading="lazy" className="max-h-full max-w-full rounded-[16px] object-contain transition-transform duration-500 group-hover:scale-[1.02]" />
-                  </div>
-                  <span className="mt-2 px-1 text-[12px] font-medium text-muted-foreground">{it.label}</span>
+                  <img src={assetUrl(it.src)} alt={it.label} loading="lazy" className="max-h-full max-w-full rounded-[16px] object-contain transition-transform duration-500 group-hover:scale-[1.015]" />
                 </button>
               );
             })}
