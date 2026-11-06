@@ -213,7 +213,7 @@ export interface CaseStudy {
   /** Laptop mockup whose screen scrolls through full page designs. */
   /** Cropped UI pieces from the design, shown as a bento of components. */
   uiComponents?: { title?: string; text?: string; items: { src: string; label: string; span?: 4 | 5 | 6 | 7 | 12 }[] };
-  scrollDemo?: { title?: string; text?: string; bg?: string; pages: { label: string; src: string; caption?: string }[] };
+  scrollDemo?: { zoom?: boolean; title?: string; text?: string; bg?: string; pages: { label: string; src: string; caption?: string }[] };
   /** Optional before → after comparison shown as its own section. */
   beforeAfter?: {
     text?: string;
@@ -1332,8 +1332,9 @@ export const caseStudies: Record<string, CaseStudy> = {
       ],
     },
     scrollDemo: {
+      zoom: true,
       title: "The website",
-      text: "Seven pages, one system. Pick a page, then scroll inside the laptop to read it top to bottom.",
+      text: "Seven pages, one system. Keep scrolling: the laptop grows to fill your screen, then the website scrolls with you.",
       pages: [
         { label: "Home", src: "projects/joulecube-home.jpg", caption: "Home: a clear promise, what Joulecube offers, real sites, and an easy way to get started." },
         { label: "About", src: "projects/joulecube-about.jpg", caption: "About: who Joulecube is, what storage makes possible, and the three core offerings." },

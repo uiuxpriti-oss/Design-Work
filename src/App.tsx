@@ -2919,6 +2919,83 @@ function JourneyMap({ persona, seen }: { persona: Persona; seen: boolean }) {
 
 // Persona + journey map, built in code. Switch between the two personas; the map below shows
 // five stages with what the person does, wants, feels, struggles with and what we could improve.
+// Scroll driven laptop: as you scroll in, the laptop grows until its screen fills the window,
+// then the page inside scrolls with you, and the laptop settles back at the end.
+function LaptopZoom({ demo }: { demo: NonNullable<CaseStudy["scrollDemo"]> }) {
+  const [i, setI] = useState(0);
+  const outer = useRef<HTMLDivElement>(null);
+  const stage = useRef<HTMLDivElement>(null);
+  const wrap = useRef<HTMLDivElement>(null);
+  const scr = useRef<HTMLDivElement>(null);
+  const img = useRef<HTMLImageElement>(null);
+  const hint = useRef<HTMLDivElement>(null);
+  const bar = useRef<HTMLSpanElement>(null);
+  const update = () => {
+    const o = outer.current, st = stage.current, w = wrap.current, sc = scr.current, im = img.current;
+    if (!o || !st || !w || !sc || !im) return;
+    const clamp = (v: number) => Math.min(1, Math.max(0, v));
+    const ease = (v: number) => 1 - Math.pow(1 - v, 3);
+    const r = o.getBoundingClientRect();
+    const vh = window.innerHeight, vw = window.innerWidth;
+    const p = clamp(-r.top / Math.max(1, r.height - vh));
+    const sw = sc.offsetWidth, sh = sc.offsetHeight;
+    const target = Math.max(vw / sw, vh / sh);
+    const e = ease(clamp(p / 0.26)) * (1 - ease(clamp((p - 0.95) / 0.05)));
+    const cy = sc.offsetTop + sh / 2;
+    const dy = st.clientHeight / 2 - (w.offsetTop + cy);
+    w.style.transformOrigin = `50% ${cy}px`;
+    w.style.transform = `translate3d(0,${dy * e}px,0) scale(${1 + (target - 1) * e})`;
+    sc.style.borderRadius = `${8 * (1 - e)}px`;
+    const t = clamp((p - 0.26) / 0.66);
+    im.style.transform = `translate3d(0,${-t * Math.max(0, im.offsetHeight - sh)}px,0)`;
+    if (hint.current) hint.current.style.opacity = p < 0.02 ? "1" : "0";
+    if (bar.current) bar.current.style.transform = `scaleX(${p})`;
+  };
+  useEffect(() => {
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    return () => { window.removeEventListener("scroll", update); window.removeEventListener("resize", update); };
+  });
+  const page = demo.pages[i];
+  return (
+    <div ref={outer} className="relative mt-8" style={{ height: "620vh" }}>
+      <div ref={stage} className="sticky top-0 flex h-screen items-center justify-center overflow-hidden">
+        <div ref={wrap} className="relative w-[min(980px,90vw)] will-change-transform">
+          <div className="rounded-[18px] bg-[#0e1014] p-[10px] shadow-[0_30px_60px_rgba(15,21,48,0.22)] ring-1 ring-black/10 dark:ring-white/10 sm:rounded-[22px] sm:p-[14px]">
+            <div ref={scr} className="relative aspect-[16/10] w-full overflow-hidden rounded-[8px] bg-white">
+              <img ref={img} src={assetUrl(page.src)} alt={`${page.label} page`} onLoad={update} className="absolute left-0 top-0 block w-full will-change-transform" draggable={false} />
+            </div>
+          </div>
+          <div className="relative mx-auto -mt-px h-3 w-[112%] -translate-x-[5.4%] rounded-b-[14px] bg-gradient-to-b from-[#e4e7ec] to-[#b9bec6] shadow-[0_18px_30px_rgba(15,21,48,0.2)]">
+            <span className="absolute left-1/2 top-0 h-1.5 w-24 -translate-x-1/2 rounded-b-md bg-[#a3a9b2]" />
+          </div>
+        </div>
+        <div ref={hint} className="pointer-events-none absolute bottom-24 left-1/2 -translate-x-1/2 text-[12px] font-medium uppercase tracking-[0.18em] text-muted-foreground transition-opacity duration-300">
+          Keep scrolling
+        </div>
+        <div className="absolute bottom-6 left-1/2 z-20 -translate-x-1/2">
+          <div className="inline-flex max-w-[92vw] overflow-x-auto rounded-full bg-white/80 p-1 shadow-[0_8px_30px_rgba(15,21,48,0.18)] ring-1 ring-black/5 backdrop-blur-md dark:bg-[#15171c]/80 dark:ring-white/10" role="tablist" aria-label="Pages">
+            {demo.pages.map((p, k) => (
+              <button
+                key={p.label}
+                type="button"
+                role="tab"
+                aria-selected={i === k}
+                onClick={() => setI(k)}
+                className={`shrink-0 rounded-full px-4 py-2 text-[14px] font-medium outline-none transition-all ${i === k ? "bg-foreground text-background" : "text-muted-foreground hover:text-foreground"}`}
+              >
+                {p.label}
+              </button>
+            ))}
+          </div>
+        </div>
+        <div className="absolute inset-x-0 top-0 h-[3px] bg-foreground/5"><span ref={bar} className="block h-full origin-left bg-[#2563eb]" style={{ transform: "scaleX(0)" }} /></div>
+      </div>
+    </div>
+  );
+}
+
 // MacBook style laptop whose screen scrolls through full page designs, with persona style tabs.
 function LaptopScroll({ demo }: { demo: NonNullable<CaseStudy["scrollDemo"]> }) {
   const [i, setI] = useState(0);
@@ -3860,7 +3937,7 @@ function CaseStudyPage({
           {cs.scrollDemo.text && (
             <p className="max-w-2xl text-[15px] leading-relaxed text-foreground/85">{cs.scrollDemo.text}</p>
           )}
-          <LaptopScroll demo={cs.scrollDemo} />
+          {cs.scrollDemo.zoom && !window.matchMedia("(prefers-reduced-motion: reduce)").matches ? <LaptopZoom demo={cs.scrollDemo} /> : <LaptopScroll demo={cs.scrollDemo} />}
         </CaseSection>
       )}
 
