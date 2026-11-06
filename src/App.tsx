@@ -457,7 +457,7 @@ function Header({
     else onAbout();
   };
   return (
-    <header className="sticky top-0 z-30">
+    <header data-site-nav className="sticky top-0 z-30">
       <nav className="mx-auto flex max-w-[72rem] items-center justify-between px-4 py-4 sm:px-6 sm:py-5">
         <div className="flex items-center gap-2 sm:gap-4">
           <button
@@ -2919,17 +2919,22 @@ function JourneyMap({ persona, seen }: { persona: Persona; seen: boolean }) {
 
 // Persona + journey map, built in code. Switch between the two personas; the map below shows
 // five stages with what the person does, wants, feels, struggles with and what we could improve.
-// Scroll driven laptop: as you scroll in, the laptop grows until its screen fills the window,
-// then the page inside scrolls with you, and the laptop settles back at the end.
+// Immersive scroll: you "enter" the laptop. The room darkens, the laptop flies toward you until its
+// screen fills the window, the website scrolls inside, and you can look around with the pointer.
 function LaptopZoom({ demo }: { demo: NonNullable<CaseStudy["scrollDemo"]> }) {
   const [i, setI] = useState(0);
   const outer = useRef<HTMLDivElement>(null);
   const stage = useRef<HTMLDivElement>(null);
+  const dark = useRef<HTMLDivElement>(null);
+  const stars = useRef<HTMLDivElement>(null);
+  const vig = useRef<HTMLDivElement>(null);
   const wrap = useRef<HTMLDivElement>(null);
   const scr = useRef<HTMLDivElement>(null);
   const img = useRef<HTMLImageElement>(null);
   const hint = useRef<HTMLDivElement>(null);
   const bar = useRef<HTMLSpanElement>(null);
+  const look = useRef({ x: 0, y: 0, cx: 0, cy: 0 });
+  const raf = useRef(0);
   const update = () => {
     const o = outer.current, st = stage.current, w = wrap.current, sc = scr.current, im = img.current;
     if (!o || !st || !w || !sc || !im) return;
@@ -2940,29 +2945,68 @@ function LaptopZoom({ demo }: { demo: NonNullable<CaseStudy["scrollDemo"]> }) {
     const p = clamp(-r.top / Math.max(1, r.height - vh));
     const sw = sc.offsetWidth, sh = sc.offsetHeight;
     const target = Math.max(vw / sw, vh / sh);
-    const e = ease(clamp(p / 0.26)) * (1 - ease(clamp((p - 0.95) / 0.05)));
+    const eIn = ease(clamp(p / 0.28));
+    const eOut = ease(clamp((p - 0.94) / 0.06));
+    const e = eIn * (1 - eOut);
+    // "Look around": the pointer gently tilts the world, less once the screen fills the view.
+    const L = look.current;
+    L.cx += (L.x - L.cx) * 0.08;
+    L.cy += (L.y - L.cy) * 0.08;
+    const amt = 1 - 0.75 * e;
+    const rx = (14 * (1 - e) - L.cy * 5) * amt + (e > 0.99 ? -L.cy * 1.2 : 0);
+    const ry = L.cx * 7 * amt;
     const cy = sc.offsetTop + sh / 2;
     const dy = st.clientHeight / 2 - (w.offsetTop + cy);
     w.style.transformOrigin = `50% ${cy}px`;
-    w.style.transform = `translate3d(0,${dy * e}px,0) scale(${1 + (target - 1) * e})`;
+    w.style.transform = `translate3d(0,${dy * e}px,0) scale(${1 + (target - 1) * e}) rotateX(${rx}deg) rotateY(${ry}deg)`;
     sc.style.borderRadius = `${8 * (1 - e)}px`;
-    const t = clamp((p - 0.26) / 0.66);
+    const t = clamp((p - 0.28) / 0.64);
     im.style.transform = `translate3d(0,${-t * Math.max(0, im.offsetHeight - sh)}px,0)`;
+    const inside = p > 0.01 && p < 0.995;
+    document.body.classList.toggle("immersive", inside);
+    // atmosphere: room goes dark as you fly in, stars drift toward you, vignette closes in
+    const night = Math.min(1, e * e * 1.8) * (1 - eOut);
+    if (dark.current) dark.current.style.opacity = String(night);
+    if (stars.current) {
+      stars.current.style.opacity = String(night * 0.9);
+      stars.current.style.transform = `translate3d(${-L.cx * 18}px,${-L.cy * 12}px,0) scale(${1 + p * 1.6})`;
+    }
+    if (vig.current) vig.current.style.opacity = String(Math.sin(Math.PI * Math.min(1, e * 1.15)) * 0.9);
     if (hint.current) hint.current.style.opacity = p < 0.02 ? "1" : "0";
     if (bar.current) bar.current.style.transform = `scaleX(${p})`;
   };
   useEffect(() => {
-    update();
-    window.addEventListener("scroll", update, { passive: true });
-    window.addEventListener("resize", update);
-    return () => { window.removeEventListener("scroll", update); window.removeEventListener("resize", update); };
-  });
+    const loop = () => { update(); raf.current = requestAnimationFrame(loop); };
+    const onMove = (ev: PointerEvent) => {
+      look.current.x = (ev.clientX / window.innerWidth - 0.5) * 2;
+      look.current.y = (ev.clientY / window.innerHeight - 0.5) * 2;
+    };
+    // only run the loop while the section is near the viewport
+    const o = outer.current;
+    let on = false;
+    const io = new IntersectionObserver(([en]) => {
+      if (en.isIntersecting && !on) { on = true; raf.current = requestAnimationFrame(loop); window.addEventListener("pointermove", onMove, { passive: true }); }
+      if (!en.isIntersecting && on) { on = false; cancelAnimationFrame(raf.current); window.removeEventListener("pointermove", onMove); document.body.classList.remove("immersive"); update(); }
+    }, { rootMargin: "200px 0px" });
+    if (o) io.observe(o);
+    return () => { io.disconnect(); cancelAnimationFrame(raf.current); window.removeEventListener("pointermove", onMove); document.body.classList.remove("immersive"); };
+  }, []);
   const page = demo.pages[i];
   return (
     <div ref={outer} className="relative mt-8" style={{ height: "620vh" }}>
-      <div ref={stage} className="sticky top-0 flex h-screen items-center justify-center overflow-hidden">
-        <div ref={wrap} className="relative w-[min(980px,90vw)] will-change-transform">
-          <div className="rounded-[18px] bg-[#0e1014] p-[10px] shadow-[0_30px_60px_rgba(15,21,48,0.22)] ring-1 ring-black/10 dark:ring-white/10 sm:rounded-[22px] sm:p-[14px]">
+      <div ref={stage} className="sticky top-0 flex h-screen items-center justify-center overflow-hidden [perspective:1100px]">
+        <div ref={dark} className="pointer-events-none absolute inset-0 opacity-0" style={{ background: "radial-gradient(120% 90% at 50% 40%, #0b1226 0%, #04060d 70%)" }} />
+        <div
+          ref={stars}
+          className="pointer-events-none absolute -inset-[20%] opacity-0"
+          style={{
+            backgroundImage:
+              "radial-gradient(1.4px 1.4px at 12% 18%, #fff 50%, transparent 52%), radial-gradient(1px 1px at 28% 72%, #cfe3ff 50%, transparent 52%), radial-gradient(1.6px 1.6px at 44% 34%, #fff 50%, transparent 52%), radial-gradient(1px 1px at 63% 12%, #cfe3ff 50%, transparent 52%), radial-gradient(1.4px 1.4px at 77% 58%, #fff 50%, transparent 52%), radial-gradient(1px 1px at 90% 82%, #cfe3ff 50%, transparent 52%), radial-gradient(1.2px 1.2px at 8% 88%, #fff 50%, transparent 52%), radial-gradient(1px 1px at 55% 90%, #fff 50%, transparent 52%)",
+            backgroundSize: "340px 340px",
+          }}
+        />
+        <div ref={wrap} className="relative w-[min(980px,90vw)] [transform-style:preserve-3d] will-change-transform">
+          <div className="rounded-[18px] bg-[#0e1014] p-[10px] shadow-[0_30px_80px_rgba(15,21,48,0.35)] ring-1 ring-black/10 dark:ring-white/10 sm:rounded-[22px] sm:p-[14px]">
             <div ref={scr} className="relative aspect-[16/10] w-full overflow-hidden rounded-[8px] bg-white">
               <img ref={img} src={assetUrl(page.src)} alt={`${page.label} page`} onLoad={update} className="absolute left-0 top-0 block w-full will-change-transform" draggable={false} />
             </div>
@@ -2971,8 +3015,9 @@ function LaptopZoom({ demo }: { demo: NonNullable<CaseStudy["scrollDemo"]> }) {
             <span className="absolute left-1/2 top-0 h-1.5 w-24 -translate-x-1/2 rounded-b-md bg-[#a3a9b2]" />
           </div>
         </div>
+        <div ref={vig} className="pointer-events-none absolute inset-0 opacity-0" style={{ background: "radial-gradient(ellipse at center, transparent 45%, rgba(2,4,10,0.75) 100%)" }} />
         <div ref={hint} className="pointer-events-none absolute bottom-24 left-1/2 -translate-x-1/2 text-[12px] font-medium uppercase tracking-[0.18em] text-muted-foreground transition-opacity duration-300">
-          Keep scrolling
+          Keep scrolling to step inside
         </div>
         <div className="absolute bottom-6 left-1/2 z-20 -translate-x-1/2">
           <div className="inline-flex max-w-[92vw] overflow-x-auto rounded-full bg-white/80 p-1 shadow-[0_8px_30px_rgba(15,21,48,0.18)] ring-1 ring-black/5 backdrop-blur-md dark:bg-[#15171c]/80 dark:ring-white/10" role="tablist" aria-label="Pages">
@@ -2990,7 +3035,7 @@ function LaptopZoom({ demo }: { demo: NonNullable<CaseStudy["scrollDemo"]> }) {
             ))}
           </div>
         </div>
-        <div className="absolute inset-x-0 top-0 h-[3px] bg-foreground/5"><span ref={bar} className="block h-full origin-left bg-[#2563eb]" style={{ transform: "scaleX(0)" }} /></div>
+        <div className="absolute inset-x-0 top-0 h-[3px] bg-white/10"><span ref={bar} className="block h-full origin-left bg-[#2563eb]" style={{ transform: "scaleX(0)" }} /></div>
       </div>
     </div>
   );
@@ -5168,6 +5213,7 @@ function FloatingAsk() {
   const visible = show;
   return (
     <div
+      data-site-nav
       className={`fixed inset-x-0 bottom-6 z-40 flex items-center justify-center gap-3 px-6 transition-all duration-300 ease-out ${
         visible
           ? "opacity-100 translate-y-0"

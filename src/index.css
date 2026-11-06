@@ -716,3 +716,11 @@ html.lenis body {
 @media (prefers-reduced-motion: reduce) {
   .sticky-note, .sticky-face, .sticky-fold { transition: none; }
 }
+
+/* Immersive laptop section: only the Back button stays; the rest of the chrome steps aside. */
+body.immersive [data-site-nav],
+body.immersive .cursor-dot {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transition: opacity 0.35s ease;
+}
