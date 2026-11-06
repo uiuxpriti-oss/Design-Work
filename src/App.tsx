@@ -2927,7 +2927,6 @@ function LaptopZoom({ demo }: { demo: NonNullable<CaseStudy["scrollDemo"]> }) {
   const stage = useRef<HTMLDivElement>(null);
   const dark = useRef<HTMLDivElement>(null);
   const stars = useRef<HTMLDivElement>(null);
-  const vig = useRef<HTMLDivElement>(null);
   const wrap = useRef<HTMLDivElement>(null);
   const scr = useRef<HTMLDivElement>(null);
   const img = useRef<HTMLImageElement>(null);
@@ -2952,26 +2951,27 @@ function LaptopZoom({ demo }: { demo: NonNullable<CaseStudy["scrollDemo"]> }) {
     const L = look.current;
     L.cx += (L.x - L.cx) * 0.08;
     L.cy += (L.y - L.cy) * 0.08;
-    const amt = 1 - 0.75 * e;
-    const rx = (14 * (1 - e) - L.cy * 5) * amt + (e > 0.99 ? -L.cy * 1.2 : 0);
-    const ry = L.cx * 7 * amt;
+    const amt = 1 - e;
+    // straight on: no side tilt. A gentle forward lean flattens as you fly in; the pointer only shifts the view.
+    const rx = 5 * (1 - e);
+    const px = L.cx * 14 * amt;
+    const py = L.cy * 8 * amt;
     const cy = sc.offsetTop + sh / 2;
     const dy = st.clientHeight / 2 - (w.offsetTop + cy);
     w.style.transformOrigin = `50% ${cy}px`;
-    w.style.transform = `translate3d(0,${dy * e}px,0) scale(${1 + (target - 1) * e}) rotateX(${rx}deg) rotateY(${ry}deg)`;
+    w.style.transform = `translate3d(${px}px,${dy * e + py}px,0) scale(${1 + (target - 1) * e}) rotateX(${rx}deg)`;
     sc.style.borderRadius = `${8 * (1 - e)}px`;
     const t = clamp((p - 0.28) / 0.64);
     im.style.transform = `translate3d(0,${-t * Math.max(0, im.offsetHeight - sh)}px,0)`;
     const inside = p > 0.01 && p < 0.995;
     document.body.classList.toggle("immersive", inside);
     // atmosphere: room goes dark as you fly in, stars drift toward you, vignette closes in
-    const night = Math.min(1, e * e * 1.8) * (1 - eOut);
+    const night = Math.min(1, e * e * e * 2.2) * (1 - eOut);
     if (dark.current) dark.current.style.opacity = String(night);
     if (stars.current) {
       stars.current.style.opacity = String(night * 0.9);
       stars.current.style.transform = `translate3d(${-L.cx * 18}px,${-L.cy * 12}px,0) scale(${1 + p * 1.6})`;
     }
-    if (vig.current) vig.current.style.opacity = String(Math.sin(Math.PI * Math.min(1, e * 1.15)) * 0.9);
     if (hint.current) hint.current.style.opacity = p < 0.02 ? "1" : "0";
     if (bar.current) bar.current.style.transform = `scaleX(${p})`;
   };
@@ -3006,16 +3006,15 @@ function LaptopZoom({ demo }: { demo: NonNullable<CaseStudy["scrollDemo"]> }) {
           }}
         />
         <div ref={wrap} className="relative w-[min(980px,90vw)] [transform-style:preserve-3d] will-change-transform">
-          <div className="rounded-[18px] bg-[#0e1014] p-[10px] shadow-[0_30px_80px_rgba(15,21,48,0.35)] ring-1 ring-black/10 dark:ring-white/10 sm:rounded-[22px] sm:p-[14px]">
+          <div className="rounded-[18px] bg-[#0e1014] p-[10px] sm:rounded-[22px] sm:p-[14px]">
             <div ref={scr} className="relative aspect-[16/10] w-full overflow-hidden rounded-[8px] bg-white">
               <img ref={img} src={assetUrl(page.src)} alt={`${page.label} page`} onLoad={update} className="absolute left-0 top-0 block w-full will-change-transform" draggable={false} />
             </div>
           </div>
-          <div className="relative mx-auto -mt-px h-3 w-[112%] -translate-x-[5.4%] rounded-b-[14px] bg-gradient-to-b from-[#e4e7ec] to-[#b9bec6] shadow-[0_18px_30px_rgba(15,21,48,0.2)]">
+          <div className="relative mx-auto -mt-px h-3 w-[112%] -translate-x-[5.4%] rounded-b-[14px] bg-gradient-to-b from-[#e4e7ec] to-[#b9bec6]">
             <span className="absolute left-1/2 top-0 h-1.5 w-24 -translate-x-1/2 rounded-b-md bg-[#a3a9b2]" />
           </div>
         </div>
-        <div ref={vig} className="pointer-events-none absolute inset-0 opacity-0" style={{ background: "radial-gradient(ellipse at center, transparent 45%, rgba(2,4,10,0.75) 100%)" }} />
         <div ref={hint} className="pointer-events-none absolute bottom-24 left-1/2 -translate-x-1/2 text-[12px] font-medium uppercase tracking-[0.18em] text-muted-foreground transition-opacity duration-300">
           Keep scrolling to step inside
         </div>
