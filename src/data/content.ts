@@ -212,8 +212,8 @@ export interface CaseStudy {
   gallery?: { title?: string; text?: string; shots: { src: string; caption: string }[] };
   /** Laptop mockup whose screen scrolls through full page designs. */
   /** Cropped UI pieces from the design, shown as a bento of components. */
-  uiComponents?: { title?: string; text?: string; items: { src: string; label: string; span?: 4 | 5 | 6 | 7 | 12 }[] };
-  scrollDemo?: { zoom?: boolean; title?: string; text?: string; bg?: string; pages: { label: string; src: string; caption?: string }[] };
+  uiComponents?: { title?: string; text?: string; items: { src: string; label: string; cols?: number; rows?: number }[] };
+  scrollDemo?: { title?: string; text?: string; bg?: string; pages: { label: string; src: string; caption?: string }[] };
   /** Optional before → after comparison shown as its own section. */
   beforeAfter?: {
     text?: string;
@@ -1332,9 +1332,8 @@ export const caseStudies: Record<string, CaseStudy> = {
       ],
     },
     scrollDemo: {
-      zoom: true,
       title: "The website",
-      text: "Seven pages, one system. Keep scrolling: the laptop grows to fill your screen, then the website scrolls with you.",
+      text: "Seven pages, one system. Pick a page, then scroll inside the laptop to read it top to bottom.",
       pages: [
         { label: "Home", src: "projects/joulecube-home.jpg", caption: "Home: a clear promise, what Joulecube offers, real sites, and an easy way to get started." },
         { label: "About", src: "projects/joulecube-about.jpg", caption: "About: who Joulecube is, what storage makes possible, and the three core offerings." },
@@ -1349,20 +1348,20 @@ export const caseStudies: Record<string, CaseStudy> = {
       title: "UI components",
       text: "The building blocks behind every page: navigation, buttons, cards, stats, forms and footer. Tap any piece to view it full size.",
       items: [
-        { src: "projects/ui-nav.jpg", label: "Navigation and buttons", span: 12 },
-        { src: "projects/ui-feature-list.jpg", label: "Icon list with a call to action", span: 7 },
-        { src: "projects/ui-service-cards.jpg", label: "Service cards", span: 5 },
-        { src: "projects/ui-stat-dark.jpg", label: "Stat card, dark", span: 4 },
-        { src: "projects/ui-stat-light.jpg", label: "Stat card, light", span: 4 },
-        { src: "projects/ui-card-blue.jpg", label: "Image card", span: 4 },
-        { src: "projects/ui-card-hero.jpg", label: "Feature card with tags", span: 7 },
-        { src: "projects/ui-checklist.jpg", label: "Checklist", span: 5 },
-        { src: "projects/ui-banner.jpg", label: "Banner with a big number", span: 12 },
-        { src: "projects/ui-photo-row.jpg", label: "Photo cards", span: 12 },
-        { src: "projects/ui-icons.jpg", label: "Icon highlights", span: 12 },
-        { src: "projects/ui-form.jpg", label: "Contact form", span: 12 },
-        { src: "projects/ui-cta-band.jpg", label: "Call to action band", span: 12 },
-        { src: "projects/ui-footer.jpg", label: "Footer", span: 12 },
+        { src: "projects/ui-nav.jpg", label: "Navigation and buttons", cols: 12, rows: 2 },
+        { src: "projects/ui-feature-list.jpg", label: "Icon list with a call to action", cols: 6, rows: 4 },
+        { src: "projects/ui-service-cards.jpg", label: "Service cards", cols: 6, rows: 7 },
+        { src: "projects/ui-card-hero.jpg", label: "Feature card with tags", cols: 6, rows: 3 },
+        { src: "projects/ui-stat-dark.jpg", label: "Stat card, dark", cols: 4, rows: 3 },
+        { src: "projects/ui-stat-light.jpg", label: "Stat card, light", cols: 4, rows: 3 },
+        { src: "projects/ui-card-blue.jpg", label: "Image card", cols: 4, rows: 3 },
+        { src: "projects/ui-banner.jpg", label: "Banner with a big number", cols: 12, rows: 4 },
+        { src: "projects/ui-photo-row.jpg", label: "Photo cards", cols: 12, rows: 4 },
+        { src: "projects/ui-icons.jpg", label: "Icon highlights", cols: 12, rows: 2 },
+        { src: "projects/ui-form.jpg", label: "Contact form", cols: 7, rows: 5 },
+        { src: "projects/ui-checklist.jpg", label: "Checklist", cols: 5, rows: 5 },
+        { src: "projects/ui-cta-band.jpg", label: "Call to action band", cols: 12, rows: 6 },
+        { src: "projects/ui-footer.jpg", label: "Footer", cols: 12, rows: 6 },
       ],
     },
     outcomes: {

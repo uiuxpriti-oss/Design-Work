@@ -457,7 +457,7 @@ function Header({
     else onAbout();
   };
   return (
-    <header data-site-nav className="sticky top-0 z-30">
+    <header className="sticky top-0 z-30">
       <nav className="mx-auto flex max-w-[72rem] items-center justify-between px-4 py-4 sm:px-6 sm:py-5">
         <div className="flex items-center gap-2 sm:gap-4">
           <button
@@ -2919,127 +2919,6 @@ function JourneyMap({ persona, seen }: { persona: Persona; seen: boolean }) {
 
 // Persona + journey map, built in code. Switch between the two personas; the map below shows
 // five stages with what the person does, wants, feels, struggles with and what we could improve.
-// Immersive scroll: you "enter" the laptop. The room darkens, the laptop flies toward you until its
-// screen fills the window, the website scrolls inside, and you can look around with the pointer.
-function LaptopZoom({ demo }: { demo: NonNullable<CaseStudy["scrollDemo"]> }) {
-  const [i, setI] = useState(0);
-  const outer = useRef<HTMLDivElement>(null);
-  const stage = useRef<HTMLDivElement>(null);
-  const dark = useRef<HTMLDivElement>(null);
-  const stars = useRef<HTMLDivElement>(null);
-  const wrap = useRef<HTMLDivElement>(null);
-  const scr = useRef<HTMLDivElement>(null);
-  const img = useRef<HTMLImageElement>(null);
-  const hint = useRef<HTMLDivElement>(null);
-  const bar = useRef<HTMLSpanElement>(null);
-  const look = useRef({ x: 0, y: 0, cx: 0, cy: 0 });
-  const raf = useRef(0);
-  const update = () => {
-    const o = outer.current, st = stage.current, w = wrap.current, sc = scr.current, im = img.current;
-    if (!o || !st || !w || !sc || !im) return;
-    const clamp = (v: number) => Math.min(1, Math.max(0, v));
-    const ease = (v: number) => 1 - Math.pow(1 - v, 3);
-    const r = o.getBoundingClientRect();
-    const vh = window.innerHeight, vw = window.innerWidth;
-    const p = clamp(-r.top / Math.max(1, r.height - vh));
-    const sw = sc.offsetWidth, sh = sc.offsetHeight;
-    const target = Math.max(vw / sw, vh / sh);
-    const eIn = ease(clamp(p / 0.28));
-    const eOut = ease(clamp((p - 0.94) / 0.06));
-    const e = eIn * (1 - eOut);
-    // "Look around": the pointer gently tilts the world, less once the screen fills the view.
-    const L = look.current;
-    L.cx += (L.x - L.cx) * 0.08;
-    L.cy += (L.y - L.cy) * 0.08;
-    const amt = 1 - e;
-    // straight on: no side tilt. A gentle forward lean flattens as you fly in; the pointer only shifts the view.
-    const rx = 5 * (1 - e);
-    const px = L.cx * 14 * amt;
-    const py = L.cy * 8 * amt;
-    const cy = sc.offsetTop + sh / 2;
-    const dy = st.clientHeight / 2 - (w.offsetTop + cy);
-    w.style.transformOrigin = `50% ${cy}px`;
-    w.style.transform = `translate3d(${px}px,${dy * e + py}px,0) scale(${1 + (target - 1) * e}) rotateX(${rx}deg)`;
-    sc.style.borderRadius = `${8 * (1 - e)}px`;
-    const t = clamp((p - 0.28) / 0.64);
-    im.style.transform = `translate3d(0,${-t * Math.max(0, im.offsetHeight - sh)}px,0)`;
-    const inside = p > 0.01 && p < 0.995;
-    document.body.classList.toggle("immersive", inside);
-    // atmosphere: room goes dark as you fly in, stars drift toward you, vignette closes in
-    const night = Math.min(1, e * e * e * 2.2) * (1 - eOut);
-    if (dark.current) dark.current.style.opacity = String(night);
-    if (stars.current) {
-      stars.current.style.opacity = String(night * 0.9);
-      stars.current.style.transform = `translate3d(${-L.cx * 18}px,${-L.cy * 12}px,0) scale(${1 + p * 1.6})`;
-    }
-    if (hint.current) hint.current.style.opacity = p < 0.02 ? "1" : "0";
-    if (bar.current) bar.current.style.transform = `scaleX(${p})`;
-  };
-  useEffect(() => {
-    const loop = () => { update(); raf.current = requestAnimationFrame(loop); };
-    const onMove = (ev: PointerEvent) => {
-      look.current.x = (ev.clientX / window.innerWidth - 0.5) * 2;
-      look.current.y = (ev.clientY / window.innerHeight - 0.5) * 2;
-    };
-    // only run the loop while the section is near the viewport
-    const o = outer.current;
-    let on = false;
-    const io = new IntersectionObserver(([en]) => {
-      if (en.isIntersecting && !on) { on = true; raf.current = requestAnimationFrame(loop); window.addEventListener("pointermove", onMove, { passive: true }); }
-      if (!en.isIntersecting && on) { on = false; cancelAnimationFrame(raf.current); window.removeEventListener("pointermove", onMove); document.body.classList.remove("immersive"); update(); }
-    }, { rootMargin: "200px 0px" });
-    if (o) io.observe(o);
-    return () => { io.disconnect(); cancelAnimationFrame(raf.current); window.removeEventListener("pointermove", onMove); document.body.classList.remove("immersive"); };
-  }, []);
-  const page = demo.pages[i];
-  return (
-    <div ref={outer} className="relative mt-8" style={{ height: "620vh" }}>
-      <div ref={stage} className="sticky top-0 flex h-screen items-center justify-center overflow-hidden [perspective:1100px]">
-        <div ref={dark} className="pointer-events-none absolute inset-0 opacity-0" style={{ background: "radial-gradient(120% 90% at 50% 40%, #0b1226 0%, #04060d 70%)" }} />
-        <div
-          ref={stars}
-          className="pointer-events-none absolute -inset-[20%] opacity-0"
-          style={{
-            backgroundImage:
-              "radial-gradient(1.4px 1.4px at 12% 18%, #fff 50%, transparent 52%), radial-gradient(1px 1px at 28% 72%, #cfe3ff 50%, transparent 52%), radial-gradient(1.6px 1.6px at 44% 34%, #fff 50%, transparent 52%), radial-gradient(1px 1px at 63% 12%, #cfe3ff 50%, transparent 52%), radial-gradient(1.4px 1.4px at 77% 58%, #fff 50%, transparent 52%), radial-gradient(1px 1px at 90% 82%, #cfe3ff 50%, transparent 52%), radial-gradient(1.2px 1.2px at 8% 88%, #fff 50%, transparent 52%), radial-gradient(1px 1px at 55% 90%, #fff 50%, transparent 52%)",
-            backgroundSize: "340px 340px",
-          }}
-        />
-        <div ref={wrap} className="relative w-[min(980px,90vw)] [transform-style:preserve-3d] will-change-transform">
-          <div className="rounded-[18px] bg-[#0e1014] p-[10px] sm:rounded-[22px] sm:p-[14px]">
-            <div ref={scr} className="relative aspect-[16/10] w-full overflow-hidden rounded-[8px] bg-white">
-              <img ref={img} src={assetUrl(page.src)} alt={`${page.label} page`} onLoad={update} className="absolute left-0 top-0 block w-full will-change-transform" draggable={false} />
-            </div>
-          </div>
-          <div className="relative mx-auto -mt-px h-3 w-[112%] -translate-x-[5.4%] rounded-b-[14px] bg-gradient-to-b from-[#e4e7ec] to-[#b9bec6]">
-            <span className="absolute left-1/2 top-0 h-1.5 w-24 -translate-x-1/2 rounded-b-md bg-[#a3a9b2]" />
-          </div>
-        </div>
-        <div ref={hint} className="pointer-events-none absolute bottom-24 left-1/2 -translate-x-1/2 text-[12px] font-medium uppercase tracking-[0.18em] text-muted-foreground transition-opacity duration-300">
-          Keep scrolling to step inside
-        </div>
-        <div className="absolute bottom-6 left-1/2 z-20 -translate-x-1/2">
-          <div className="inline-flex max-w-[92vw] overflow-x-auto rounded-full bg-white/80 p-1 shadow-[0_8px_30px_rgba(15,21,48,0.18)] ring-1 ring-black/5 backdrop-blur-md dark:bg-[#15171c]/80 dark:ring-white/10" role="tablist" aria-label="Pages">
-            {demo.pages.map((p, k) => (
-              <button
-                key={p.label}
-                type="button"
-                role="tab"
-                aria-selected={i === k}
-                onClick={() => setI(k)}
-                className={`shrink-0 rounded-full px-4 py-2 text-[14px] font-medium outline-none transition-all ${i === k ? "bg-foreground text-background" : "text-muted-foreground hover:text-foreground"}`}
-              >
-                {p.label}
-              </button>
-            ))}
-          </div>
-        </div>
-        <div className="absolute inset-x-0 top-0 h-[3px] bg-white/10"><span ref={bar} className="block h-full origin-left bg-[#2563eb]" style={{ transform: "scaleX(0)" }} /></div>
-      </div>
-    </div>
-  );
-}
-
 // MacBook style laptop whose screen scrolls through full page designs, with persona style tabs.
 function LaptopScroll({ demo }: { demo: NonNullable<CaseStudy["scrollDemo"]> }) {
   const [i, setI] = useState(0);
@@ -3981,7 +3860,7 @@ function CaseStudyPage({
           {cs.scrollDemo.text && (
             <p className="max-w-2xl text-[15px] leading-relaxed text-foreground/85">{cs.scrollDemo.text}</p>
           )}
-          {cs.scrollDemo.zoom && !window.matchMedia("(prefers-reduced-motion: reduce)").matches ? <LaptopZoom demo={cs.scrollDemo} /> : <LaptopScroll demo={cs.scrollDemo} />}
+          <LaptopScroll demo={cs.scrollDemo} />
         </CaseSection>
       )}
 
@@ -3990,21 +3869,22 @@ function CaseStudyPage({
           {cs.uiComponents.text && (
             <p className="max-w-2xl text-[15px] leading-relaxed text-foreground/85">{cs.uiComponents.text}</p>
           )}
-          <div className="mt-8 grid gap-3 md:grid-cols-12">
+          <div className="mt-8 grid grid-flow-dense gap-3 md:auto-rows-[88px] md:grid-cols-12">
             {cs.uiComponents.items.map((it) => {
-              const span = { 4: "md:col-span-4", 5: "md:col-span-5", 6: "md:col-span-6", 7: "md:col-span-7", 12: "md:col-span-12" }[it.span ?? 12];
+              const cols = ({ 3: "md:col-span-3", 4: "md:col-span-4", 5: "md:col-span-5", 6: "md:col-span-6", 7: "md:col-span-7", 8: "md:col-span-8", 12: "md:col-span-12" } as Record<number, string>)[it.cols ?? 12];
+              const rows = ({ 1: "md:row-span-1", 2: "md:row-span-2", 3: "md:row-span-3", 4: "md:row-span-4", 5: "md:row-span-5", 6: "md:row-span-6", 7: "md:row-span-7" } as Record<number, string>)[it.rows ?? 3];
               return (
                 <button
                   key={it.src}
                   type="button"
                   onClick={() => setZoom(assetUrl(it.src))}
                   aria-label={`View ${it.label} full size`}
-                  className={`group flex cursor-zoom-in flex-col rounded-[28px] bg-[#eef0f4] p-3 text-left outline-none transition-colors focus-visible:ring-2 focus-visible:ring-foreground/30 dark:bg-white/[0.05] sm:p-4 ${span}`}
+                  className={`group flex min-h-0 cursor-zoom-in flex-col rounded-[24px] border border-border p-2.5 text-left outline-none transition-colors hover:border-foreground/25 focus-visible:ring-2 focus-visible:ring-foreground/30 ${cols} ${rows}`}
                 >
-                  <div className="flex flex-1 items-center justify-center overflow-hidden rounded-[18px]">
-                    <img src={assetUrl(it.src)} alt={it.label} loading="lazy" className="max-h-[34rem] w-full rounded-[18px] object-contain transition-transform duration-500 group-hover:scale-[1.015]" />
+                  <div className="flex min-h-0 flex-1 items-center justify-center overflow-hidden rounded-[16px]">
+                    <img src={assetUrl(it.src)} alt={it.label} loading="lazy" className="max-h-full max-w-full rounded-[16px] object-contain transition-transform duration-500 group-hover:scale-[1.02]" />
                   </div>
-                  <span className="mt-3 px-1 text-[13px] font-medium text-muted-foreground">{it.label}</span>
+                  <span className="mt-2 px-1 text-[12px] font-medium text-muted-foreground">{it.label}</span>
                 </button>
               );
             })}
@@ -5212,7 +5092,6 @@ function FloatingAsk() {
   const visible = show;
   return (
     <div
-      data-site-nav
       className={`fixed inset-x-0 bottom-6 z-40 flex items-center justify-center gap-3 px-6 transition-all duration-300 ease-out ${
         visible
           ? "opacity-100 translate-y-0"
