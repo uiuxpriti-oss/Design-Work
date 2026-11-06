@@ -1332,7 +1332,6 @@ export const caseStudies: Record<string, CaseStudy> = {
     scrollDemo: {
       title: "The website",
       text: "Seven pages, one system. Pick a page, then scroll inside the laptop to read it top to bottom.",
-      bg: "projects/joulecube-sky.jpg",
       pages: [
         { label: "Home", src: "projects/joulecube-home.jpg", caption: "Home: a clear promise, what Joulecube offers, real sites, and an easy way to get started." },
         { label: "About", src: "projects/joulecube-about.jpg", caption: "About: who Joulecube is, what storage makes possible, and the three core offerings." },

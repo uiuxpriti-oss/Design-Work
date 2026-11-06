@@ -2956,12 +2956,9 @@ function LaptopScroll({ demo }: { demo: NonNullable<CaseStudy["scrollDemo"]> }) 
           </button>
         ))}
       </div>
-      <div
-        className="mt-8 overflow-hidden rounded-[32px] bg-cover bg-center px-4 pb-10 pt-10 sm:px-10"
-        style={demo.bg ? { backgroundImage: `url(${assetUrl(demo.bg)})` } : undefined}
-      >
+      <div className="mt-10 px-2 pb-6 sm:px-10">
         <div key={i} className="mx-auto max-w-[980px]" onMouseEnter={play} onMouseLeave={stop} style={{ animation: "aboutRise .45s cubic-bezier(.2,.7,.2,1) both" }}>
-          <div className="rounded-[18px] bg-[#0e1014] p-[10px] shadow-[0_30px_60px_rgba(0,0,0,0.45)] ring-1 ring-white/10 sm:rounded-[22px] sm:p-[14px]">
+          <div className="rounded-[18px] bg-[#0e1014] p-[10px] shadow-[0_30px_60px_rgba(15,21,48,0.22)] ring-1 ring-black/10 dark:ring-white/10 sm:rounded-[22px] sm:p-[14px]">
             <div
               ref={scr}
               data-lenis-prevent
@@ -2973,7 +2970,7 @@ function LaptopScroll({ demo }: { demo: NonNullable<CaseStudy["scrollDemo"]> }) 
               <img src={assetUrl(page.src)} alt={`${page.label} page`} className="block w-full" draggable={false} />
             </div>
           </div>
-          <div className="relative mx-auto -mt-px h-3 w-[112%] -translate-x-[5.4%] rounded-b-[14px] bg-gradient-to-b from-[#e4e7ec] to-[#b9bec6] shadow-[0_18px_30px_rgba(0,0,0,0.35)]">
+          <div className="relative mx-auto -mt-px h-3 w-[112%] -translate-x-[5.4%] rounded-b-[14px] bg-gradient-to-b from-[#e4e7ec] to-[#b9bec6] shadow-[0_18px_30px_rgba(15,21,48,0.2)]">
             <span className="absolute left-1/2 top-0 h-1.5 w-24 -translate-x-1/2 rounded-b-md bg-[#a3a9b2]" />
           </div>
         </div>
