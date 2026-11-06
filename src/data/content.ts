@@ -1350,15 +1350,12 @@ export const caseStudies: Record<string, CaseStudy> = {
       items: [
         { src: "projects/ui-nav.jpg", label: "Navigation and buttons", cols: 12, rows: 2 },
         { src: "projects/ui-feature-list.jpg", label: "Icon list with a call to action", cols: 6, rows: 4 },
-        { src: "projects/ui-form.jpg", label: "Contact form", cols: 6, rows: 4 },
+        { src: "projects/ui-checklist.jpg", label: "Checklist", cols: 6, rows: 4 },
         { src: "projects/ui-stat-dark.jpg", label: "Stat card, dark", cols: 4, rows: 3 },
         { src: "projects/ui-stat-light.jpg", label: "Stat card, light", cols: 4, rows: 3 },
         { src: "projects/ui-card-blue.jpg", label: "Image card", cols: 4, rows: 3 },
-        { src: "projects/ui-card-hero.jpg", label: "Feature card with tags", cols: 7, rows: 3 },
-        { src: "projects/ui-checklist.jpg", label: "Checklist", cols: 5, rows: 3 },
         { src: "projects/ui-icons.jpg", label: "Icon highlights", cols: 12, rows: 2 },
-        { src: "projects/ui-cta-band.jpg", label: "Call to action band", cols: 12, rows: 6 },
-        { src: "projects/ui-footer.jpg", label: "Footer", cols: 12, rows: 6 },
+        { src: "projects/ui-card-hero.jpg", label: "Feature card with tags", cols: 12, rows: 3 },
       ],
     },
     outcomes: {
