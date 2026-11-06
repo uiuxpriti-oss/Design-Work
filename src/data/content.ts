@@ -211,7 +211,7 @@ export interface CaseStudy {
   /** Optional full-width, click-to-zoom screen flow shown as its own section. */
   gallery?: { title?: string; text?: string; shots: { src: string; caption: string }[] };
   /** Laptop mockup whose screen scrolls through full page designs. */
-  scrollDemo?: { title?: string; text?: string; bg?: string; pages: { label: string; src: string }[] };
+  scrollDemo?: { title?: string; text?: string; bg?: string; pages: { label: string; src: string; caption?: string }[] };
   /** Optional before → after comparison shown as its own section. */
   beforeAfter?: {
     text?: string;
@@ -1330,30 +1330,17 @@ export const caseStudies: Record<string, CaseStudy> = {
       ],
     },
     scrollDemo: {
-      title: "Scroll the website",
-      text: "Scroll inside the laptop to read each page top to bottom, and switch pages with the tabs.",
+      title: "The website",
+      text: "Seven pages, one system. Pick a page, then scroll inside the laptop to read it top to bottom.",
       bg: "projects/joulecube-sky.jpg",
       pages: [
-        { label: "Home", src: "projects/joulecube-home.jpg" },
-        { label: "About", src: "projects/joulecube-about.jpg" },
-        { label: "EMS", src: "projects/joulecube-ems.jpg" },
-        { label: "Utility scale", src: "projects/joulecube-utility.jpg" },
-        { label: "Projects", src: "projects/joulecube-projects.jpg" },
-        { label: "Service", src: "projects/joulecube-service.jpg" },
-        { label: "Careers", src: "projects/joulecube-careers.jpg" },
-      ],
-    },
-    gallery: {
-      title: "The screens",
-      text: "The pages of the website, from the home page to careers. Tap any screen to view it full size.",
-      shots: [
-        { src: "projects/joulecube-home.jpg", caption: "Home: a clear promise, what Joulecube offers, real sites, and an easy way to get started." },
-        { src: "projects/joulecube-about.jpg", caption: "About: who Joulecube is, what storage makes possible, and the three core offerings." },
-        { src: "projects/joulecube-ems.jpg", caption: "Energy management system: what it does, safety, benefits, and the battery ranges." },
-        { src: "projects/joulecube-utility.jpg", caption: "Utility scale storage: the case for grid scale systems and the value they bring." },
-        { src: "projects/joulecube-projects.jpg", caption: "Projects: a browsable grid of work with dates, summaries and detail links." },
-        { src: "projects/joulecube-service.jpg", caption: "Service and support: what is covered, and a detailed request form." },
-        { src: "projects/joulecube-careers.jpg", caption: "Careers: why work at Joulecube, the offices, life at the company and open roles." },
+        { label: "Home", src: "projects/joulecube-home.jpg", caption: "Home: a clear promise, what Joulecube offers, real sites, and an easy way to get started." },
+        { label: "About", src: "projects/joulecube-about.jpg", caption: "About: who Joulecube is, what storage makes possible, and the three core offerings." },
+        { label: "EMS", src: "projects/joulecube-ems.jpg", caption: "Energy management system: what it does, safety, benefits, and the battery ranges." },
+        { label: "Utility scale", src: "projects/joulecube-utility.jpg", caption: "Utility scale storage: the case for grid scale systems and the value they bring." },
+        { label: "Projects", src: "projects/joulecube-projects.jpg", caption: "Projects: a browsable grid of work with dates, summaries and detail links." },
+        { label: "Contact", src: "projects/joulecube-service.jpg", caption: "Contact: an inviting hero and a short form to start a conversation." },
+        { label: "Careers", src: "projects/joulecube-careers.jpg", caption: "Careers: why work at Joulecube, the offices, life at the company and open roles." },
       ],
     },
     outcomes: {

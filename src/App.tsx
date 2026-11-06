@@ -2919,7 +2919,7 @@ function JourneyMap({ persona, seen }: { persona: Persona; seen: boolean }) {
 
 // Persona + journey map, built in code. Switch between the two personas; the map below shows
 // five stages with what the person does, wants, feels, struggles with and what we could improve.
-// MacBook style laptop whose screen scrolls through full page designs.
+// MacBook style laptop whose screen scrolls through full page designs, with persona style tabs.
 function LaptopScroll({ demo }: { demo: NonNullable<CaseStudy["scrollDemo"]> }) {
   const [i, setI] = useState(0);
   const scr = useRef<HTMLDivElement>(null);
@@ -2939,40 +2939,46 @@ function LaptopScroll({ demo }: { demo: NonNullable<CaseStudy["scrollDemo"]> }) 
     raf.current = requestAnimationFrame(step);
   };
   useEffect(() => { scr.current?.scrollTo({ top: 0 }); return stop; }, [i]);
+  const page = demo.pages[i];
   return (
-    <div
-      className="mt-6 overflow-hidden rounded-3xl bg-cover bg-center px-4 pb-10 pt-10 sm:px-10"
-      style={demo.bg ? { backgroundImage: `url(${assetUrl(demo.bg)})` } : undefined}
-    >
-      <div className="mx-auto max-w-[980px]" onMouseEnter={play} onMouseLeave={stop}>
-        <div className="rounded-[18px] bg-[#0e1014] p-[10px] shadow-[0_30px_60px_rgba(0,0,0,0.45)] ring-1 ring-white/10 sm:rounded-[22px] sm:p-[14px]">
-          <div
-            ref={scr}
-            data-lenis-prevent
-            onWheel={stop}
-            onTouchStart={stop}
-            onPointerDown={stop}
-            className="aspect-[16/10] w-full overflow-y-auto overscroll-contain rounded-[8px] bg-white [scrollbar-width:thin]"
-          >
-            <img src={assetUrl(demo.pages[i].src)} alt={`${demo.pages[i].label} page`} className="block w-full" draggable={false} />
-          </div>
-        </div>
-        <div className="relative mx-auto -mt-px h-3 w-[112%] -translate-x-[5.4%] rounded-b-[14px] bg-gradient-to-b from-[#e4e7ec] to-[#b9bec6] shadow-[0_18px_30px_rgba(0,0,0,0.35)]">
-          <span className="absolute left-1/2 top-0 h-1.5 w-24 -translate-x-1/2 rounded-b-md bg-[#a3a9b2]" />
-        </div>
-      </div>
-      <div className="mt-8 flex flex-wrap justify-center gap-2">
+    <div className="mt-10">
+      <div className="inline-flex max-w-full flex-wrap rounded-[24px] bg-foreground/[0.05] p-1 sm:flex-nowrap sm:rounded-full" role="tablist" aria-label="Pages">
         {demo.pages.map((p, k) => (
           <button
             key={p.label}
             type="button"
+            role="tab"
+            aria-selected={i === k}
             onClick={() => setI(k)}
-            className={`rounded-full px-4 py-1.5 text-[13px] font-medium backdrop-blur transition ${k === i ? "bg-white text-[#0f1530]" : "bg-white/15 text-white hover:bg-white/25"}`}
+            className={`rounded-full px-4 py-2 text-[14px] font-medium outline-none transition-all ${i === k ? "bg-white text-foreground shadow-sm dark:bg-white/15" : "text-muted-foreground hover:text-foreground"}`}
           >
             {p.label}
           </button>
         ))}
       </div>
+      <div
+        className="mt-8 overflow-hidden rounded-[32px] bg-cover bg-center px-4 pb-10 pt-10 sm:px-10"
+        style={demo.bg ? { backgroundImage: `url(${assetUrl(demo.bg)})` } : undefined}
+      >
+        <div key={i} className="mx-auto max-w-[980px]" onMouseEnter={play} onMouseLeave={stop} style={{ animation: "aboutRise .45s cubic-bezier(.2,.7,.2,1) both" }}>
+          <div className="rounded-[18px] bg-[#0e1014] p-[10px] shadow-[0_30px_60px_rgba(0,0,0,0.45)] ring-1 ring-white/10 sm:rounded-[22px] sm:p-[14px]">
+            <div
+              ref={scr}
+              data-lenis-prevent
+              onWheel={stop}
+              onTouchStart={stop}
+              onPointerDown={stop}
+              className="aspect-[16/10] w-full overflow-y-auto overscroll-contain rounded-[8px] bg-white [scrollbar-width:thin]"
+            >
+              <img src={assetUrl(page.src)} alt={`${page.label} page`} className="block w-full" draggable={false} />
+            </div>
+          </div>
+          <div className="relative mx-auto -mt-px h-3 w-[112%] -translate-x-[5.4%] rounded-b-[14px] bg-gradient-to-b from-[#e4e7ec] to-[#b9bec6] shadow-[0_18px_30px_rgba(0,0,0,0.35)]">
+            <span className="absolute left-1/2 top-0 h-1.5 w-24 -translate-x-1/2 rounded-b-md bg-[#a3a9b2]" />
+          </div>
+        </div>
+      </div>
+      {page.caption && <p key={`c${i}`} className="mt-4 max-w-2xl text-[14px] leading-relaxed text-muted-foreground">{page.caption}</p>}
     </div>
   );
 }
