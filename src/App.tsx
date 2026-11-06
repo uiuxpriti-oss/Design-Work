@@ -2942,19 +2942,21 @@ function LaptopScroll({ demo }: { demo: NonNullable<CaseStudy["scrollDemo"]> }) 
   const page = demo.pages[i];
   return (
     <div className="mt-10">
-      <div className="inline-flex max-w-full flex-wrap rounded-[24px] bg-foreground/[0.05] p-1 sm:flex-nowrap sm:rounded-full" role="tablist" aria-label="Pages">
-        {demo.pages.map((p, k) => (
-          <button
-            key={p.label}
-            type="button"
-            role="tab"
-            aria-selected={i === k}
-            onClick={() => setI(k)}
-            className={`rounded-full px-4 py-2 text-[14px] font-medium outline-none transition-all ${i === k ? "bg-white text-foreground shadow-sm dark:bg-white/15" : "text-muted-foreground hover:text-foreground"}`}
-          >
-            {p.label}
-          </button>
-        ))}
+      <div className="sticky top-3 z-40 flex justify-center">
+        <div className="inline-flex max-w-[94vw] overflow-x-auto rounded-full bg-white/90 p-1 ring-1 ring-black/[0.06] backdrop-blur-md dark:bg-[#15171c]/90 dark:ring-white/10" role="tablist" aria-label="Pages">
+          {demo.pages.map((p, k) => (
+            <button
+              key={p.label}
+              type="button"
+              role="tab"
+              aria-selected={i === k}
+              onClick={() => setI(k)}
+              className={`shrink-0 rounded-full px-3 py-1.5 text-[13px] font-medium outline-none transition-all ${i === k ? "bg-foreground text-background" : "text-muted-foreground hover:text-foreground"}`}
+            >
+              {p.label}
+            </button>
+          ))}
+        </div>
       </div>
       <div className="mt-10 px-2 pb-6 sm:px-10">
         <div key={i} className="mx-auto max-w-[980px]" onMouseEnter={play} onMouseLeave={stop} style={{ animation: "aboutRise .45s cubic-bezier(.2,.7,.2,1) both" }}>
