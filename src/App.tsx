@@ -3831,7 +3831,7 @@ function CaseStudyPage({
         <div className="mt-8">
           <ColourCards items={cs.solution.highlights.map((h) => ({ title: h.title, text: h.text }))} />
         </div>
-        {/* Screen slots — real mockups when provided, else gradient placeholders. */}
+        {/* Screen slots — real mockups only; no placeholders. */}
         {cs.screens && cs.screens.length > 0 ? (
           <div className="mt-6 grid gap-4 sm:grid-cols-2">
             {cs.screens.map((s) => (
@@ -3848,19 +3848,6 @@ function CaseStudyPage({
                   {s.caption}
                 </figcaption>
               </figure>
-            ))}
-          </div>
-        ) : !cs.gallery ? (
-          <div className="mt-4 grid gap-4 sm:grid-cols-2">
-            {[2, 3].map((n) => (
-              <div
-                key={n}
-                className={`flex aspect-[16/10] items-center justify-center rounded-2xl bg-gradient-to-br ${project.gradient} ring-1 ring-border`}
-              >
-                <span className="text-[12px] font-medium uppercase tracking-[0.14em] text-foreground/40">
-                  Screen {n}
-                </span>
-              </div>
             ))}
           </div>
         ) : null}
