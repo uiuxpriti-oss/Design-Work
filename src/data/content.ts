@@ -211,6 +211,8 @@ export interface CaseStudy {
   /** Optional full-width, click-to-zoom screen flow shown as its own section. */
   gallery?: { title?: string; text?: string; shots: { src: string; caption: string }[] };
   /** Laptop mockup whose screen scrolls through full page designs. */
+  /** Cropped UI pieces from the design, shown as a bento of components. */
+  uiComponents?: { title?: string; text?: string; items: { src: string; label: string; span?: 4 | 5 | 6 | 7 | 12 }[] };
   scrollDemo?: { title?: string; text?: string; bg?: string; pages: { label: string; src: string; caption?: string }[] };
   /** Optional before → after comparison shown as its own section. */
   beforeAfter?: {
@@ -1340,6 +1342,26 @@ export const caseStudies: Record<string, CaseStudy> = {
         { label: "Projects", src: "projects/joulecube-projects.jpg", caption: "Projects: a browsable grid of work with dates, summaries and detail links." },
         { label: "Contact", src: "projects/joulecube-service.jpg", caption: "Contact: an inviting hero and a short form to start a conversation." },
         { label: "Careers", src: "projects/joulecube-careers.jpg", caption: "Careers: why work at Joulecube, the offices, life at the company and open roles." },
+      ],
+    },
+    uiComponents: {
+      title: "UI components",
+      text: "The building blocks behind every page: navigation, buttons, cards, stats, forms and footer. Tap any piece to view it full size.",
+      items: [
+        { src: "projects/ui-nav.jpg", label: "Navigation and buttons", span: 12 },
+        { src: "projects/ui-feature-list.jpg", label: "Icon list with a call to action", span: 7 },
+        { src: "projects/ui-service-cards.jpg", label: "Service cards", span: 5 },
+        { src: "projects/ui-stat-dark.jpg", label: "Stat card, dark", span: 4 },
+        { src: "projects/ui-stat-light.jpg", label: "Stat card, light", span: 4 },
+        { src: "projects/ui-card-blue.jpg", label: "Image card", span: 4 },
+        { src: "projects/ui-card-hero.jpg", label: "Feature card with tags", span: 7 },
+        { src: "projects/ui-checklist.jpg", label: "Checklist", span: 5 },
+        { src: "projects/ui-banner.jpg", label: "Banner with a big number", span: 12 },
+        { src: "projects/ui-photo-row.jpg", label: "Photo cards", span: 12 },
+        { src: "projects/ui-icons.jpg", label: "Icon highlights", span: 12 },
+        { src: "projects/ui-form.jpg", label: "Contact form", span: 12 },
+        { src: "projects/ui-cta-band.jpg", label: "Call to action band", span: 12 },
+        { src: "projects/ui-footer.jpg", label: "Footer", span: 12 },
       ],
     },
     outcomes: {

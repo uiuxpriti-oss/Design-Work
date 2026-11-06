@@ -3877,6 +3877,33 @@ function CaseStudyPage({
         </CaseSection>
       )}
 
+      {cs.uiComponents && !cs.sections && (
+        <CaseSection id="cs-ui" eyebrow="UI" title={cs.uiComponents.title ?? "UI components"}>
+          {cs.uiComponents.text && (
+            <p className="max-w-2xl text-[15px] leading-relaxed text-foreground/85">{cs.uiComponents.text}</p>
+          )}
+          <div className="mt-8 grid gap-3 md:grid-cols-12">
+            {cs.uiComponents.items.map((it) => {
+              const span = { 4: "md:col-span-4", 5: "md:col-span-5", 6: "md:col-span-6", 7: "md:col-span-7", 12: "md:col-span-12" }[it.span ?? 12];
+              return (
+                <button
+                  key={it.src}
+                  type="button"
+                  onClick={() => setZoom(assetUrl(it.src))}
+                  aria-label={`View ${it.label} full size`}
+                  className={`group flex cursor-zoom-in flex-col rounded-[28px] bg-[#eef0f4] p-3 text-left outline-none transition-colors focus-visible:ring-2 focus-visible:ring-foreground/30 dark:bg-white/[0.05] sm:p-4 ${span}`}
+                >
+                  <div className="flex flex-1 items-center justify-center overflow-hidden rounded-[18px]">
+                    <img src={assetUrl(it.src)} alt={it.label} loading="lazy" className="max-h-[34rem] w-full rounded-[18px] object-contain transition-transform duration-500 group-hover:scale-[1.015]" />
+                  </div>
+                  <span className="mt-3 px-1 text-[13px] font-medium text-muted-foreground">{it.label}</span>
+                </button>
+              );
+            })}
+          </div>
+        </CaseSection>
+      )}
+
       {cs.gallery && !cs.sections && (
         <CaseSection
           id="cs-screens"
