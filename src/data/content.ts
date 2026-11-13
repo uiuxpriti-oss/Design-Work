@@ -1830,15 +1830,15 @@ export interface Experience {
 
 export const experience: Experience[] = [
   {
-    role: "Senior Product Designer",
+    role: "Product Designer",
     period: "Jul 2024 – Present",
     present: true,
     description:
-      "Promoted from Associate UI/UX Designer to Senior Product Designer in 2026. Designing Lumenore, a BI & AI platform spanning conversational analytics, data management, dashboards, and enterprise workflows.",
+      "Promoted from Associate UI/UX Designer to Product Designer in 2026. Designing Lumenore, a BI & AI platform spanning conversational analytics, data management, dashboards, and enterprise workflows.",
     company: "Netlink Software Group",
     location: "Bhopal, India",
     roles: [
-      { title: "Senior Product Designer", period: "2026 – Present" },
+      { title: "Product Designer", period: "2026 – Present" },
       { title: "Associate UI/UX Designer", period: "Jul 2024 – 2026" },
     ],
     highlight: {
@@ -2135,7 +2135,7 @@ export const creatives: Creative[] = [
 ];
 
 export const aboutIntro =
-  "Hi, I'm Priti, a Senior Product Designer at Lumenore, recovering chemical engineer, and lifelong tinkerer.";
+  "Hi, I'm Priti, a Product Designer at Lumenore, recovering chemical engineer, and lifelong tinkerer.";
 
 export const learning: string[] = [
   "Shipping AI products at Lumenore.",

@@ -4680,10 +4680,10 @@ type AboutJob = {
 
 const ABOUT_JOBS: AboutJob[] = [
   {
-    company: "Netlink Software Group", role: "Senior Product Designer", logo: "logos/netlink.png",
+    company: "Netlink Software Group", role: "Product Designer", logo: "logos/netlink.png",
     location: "Bhopal, India", dates: "Jul 2024 – Present", s: 42, e: 70,
-    desc: "Promoted from Associate UI/UX Designer to Senior Product Designer in 2026. Designing Lumenore, a BI & AI platform spanning conversational analytics, data management, dashboards, and enterprise workflows.",
-    roles: [{ title: "Senior Product Designer", period: "2026 – Present" }, { title: "Associate UI/UX Designer", period: "Jul 2024 – 2026" }],
+    desc: "Promoted from Associate UI/UX Designer to Product Designer in 2026. Designing Lumenore, a BI & AI platform spanning conversational analytics, data management, dashboards, and enterprise workflows.",
+    roles: [{ title: "Product Designer", period: "2026 – Present" }, { title: "Associate UI/UX Designer", period: "Jul 2024 – 2026" }],
     highlight: { label: "ASK ME", text: "Designed Lumenore Ask Me, a GenAI conversational analytics assistant (agentic RAG, MCP integrations): natural language querying, streaming answer states, uncertainty and error handling, and confirmation before users act on model output." },
     metrics: [{ v: "↓50%", l: "task completion time" }, { v: "↓32%", l: "onboarding drop-off" }, { v: "5,000+", l: "active users" }, { v: "120+", l: "design system components" }, { v: "+40%", l: "component reuse" }, { v: "80+", l: "screens audited, WCAG 2.1 AA" }],
     bullets: [
@@ -5260,7 +5260,7 @@ function SiteFooter() {
           <span className="footer-grad-text">&ldquo;oh, nice.&rdquo;</span>
         </h2>
         <p className="mt-5 max-w-2xl text-[15px] leading-[1.7] text-white/75">
-          I&rsquo;m open to Mid, Senior design roles, and selective consulting: BI, AI-assisted UX, complex
+          I&rsquo;m open to Product Designer roles, and selective consulting: BI, AI-assisted UX, complex
           enterprise tools, and teams that need more than screens.
         </p>
         <FooterLinks list={link} />
