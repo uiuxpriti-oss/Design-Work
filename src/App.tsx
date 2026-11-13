@@ -10,6 +10,7 @@ import Lenis from "lenis";
 import Matter from "matter-js";
 import {
   ArrowUpRight,
+  Wifi,
   ArrowRight,
   ArrowLeft,
   ArrowUp,
@@ -2924,6 +2925,16 @@ function JourneyMap({ persona, seen }: { persona: Persona; seen: boolean }) {
 // retry with a cache busting query, then offer a retry button instead of a broken image.
 function LaptopShot({ src, alt }: { src: string; alt: string }) {
   const [tries, setTries] = useState(0);
+  const [loaded, setLoaded] = useState(false);
+  // If the image has not arrived after 2.5 seconds, tell the site the connection is slow.
+  useEffect(() => {
+    if (loaded) return;
+    const t = window.setTimeout(() => {
+      (window as unknown as { __slowNet?: boolean }).__slowNet = true;
+      window.dispatchEvent(new Event(SLOW_EVENT));
+    }, 2500);
+    return () => window.clearTimeout(t);
+  }, [loaded, src]);
   const url = assetUrl(src) + (tries ? `?r=${tries}` : "");
   if (tries > 2)
     return (
@@ -2931,7 +2942,7 @@ function LaptopShot({ src, alt }: { src: string; alt: string }) {
         This page did not load. Tap to retry.
       </button>
     );
-  return <img src={url} alt={alt} decoding="async" onError={() => setTries((n) => n + 1)} className="block w-full" draggable={false} />;
+  return <img src={url} alt={alt} decoding="async" onLoad={() => setLoaded(true)} onError={() => setTries((n) => n + 1)} className="block w-full" draggable={false} />;
 }
 
 function LaptopScroll({ demo }: { demo: NonNullable<CaseStudy["scrollDemo"]> }) {
@@ -5276,6 +5287,62 @@ function SiteFooter() {
   );
 }
 
+// Slow connection notice: a glass pill at the top, shown once per visit. It appears when the browser
+// reports a slow network (Chrome and Android), or when a page image takes too long to arrive (any browser).
+const SLOW_EVENT = "site:slow-connection";
+function SlowNetBanner() {
+  const [show, setShow] = useState(false);
+  useEffect(() => {
+    let done = false;
+    const seen = () => { try { return sessionStorage.getItem("slowNoticeSeen") === "1"; } catch { return false; } };
+    const trigger = () => {
+      if (done || seen()) return;
+      done = true;
+      try { sessionStorage.setItem("slowNoticeSeen", "1"); } catch { /* ignore */ }
+      setShow(true);
+    };
+    const conn = (navigator as unknown as { connection?: { effectiveType?: string; downlink?: number; saveData?: boolean; addEventListener?: (t: string, f: () => void) => void } }).connection;
+    const check = () => {
+      if (!conn) return;
+      if (conn.saveData || ["slow-2g", "2g", "3g"].includes(conn.effectiveType ?? "") || (conn.downlink !== undefined && conn.downlink > 0 && conn.downlink < 1.5)) trigger();
+    };
+    check();
+    if ((window as unknown as { __slowNet?: boolean }).__slowNet) trigger();
+    conn?.addEventListener?.("change", check);
+    window.addEventListener(SLOW_EVENT, trigger);
+    return () => window.removeEventListener(SLOW_EVENT, trigger);
+  }, []);
+  useEffect(() => {
+    if (!show) return;
+    const t = window.setTimeout(() => setShow(false), 8000);
+    return () => window.clearTimeout(t);
+  }, [show]);
+  return (
+    <div
+      role="status"
+      aria-live="polite"
+      className={`pointer-events-none fixed inset-x-0 top-[4.9rem] z-[70] flex justify-center px-4 transition-all duration-500 ease-out ${show ? "translate-y-0 opacity-100" : "-translate-y-4 opacity-0"}`}
+    >
+      <div
+        className={`flex max-w-full items-center gap-3 rounded-full border border-white/60 bg-white/45 py-2 pl-3 pr-2 text-[13px] text-foreground shadow-[0_8px_32px_rgba(15,21,48,0.12)] backdrop-blur-xl backdrop-saturate-150 dark:border-white/15 dark:bg-white/10 dark:text-white ${show ? "pointer-events-auto" : ""}`}
+      >
+        <span className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-[#2563eb]/15 text-[#2563eb] dark:bg-white/15 dark:text-white">
+          <Wifi className="h-3.5 w-3.5" aria-hidden="true" />
+        </span>
+        <span className="leading-snug">You seem to be on a slow connection. Images may take a moment to load.</span>
+        <button
+          type="button"
+          onClick={() => setShow(false)}
+          aria-label="Dismiss"
+          className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-foreground/10 outline-none transition-colors hover:bg-foreground/20 focus-visible:ring-2 focus-visible:ring-foreground/30"
+        >
+          <X className="h-3.5 w-3.5" aria-hidden="true" />
+        </button>
+      </div>
+    </div>
+  );
+}
+
 function CursorDots() {
   const ref = useRef<HTMLDivElement>(null);
   const target = useRef({ x: -500, y: -500 });
@@ -5523,6 +5590,7 @@ export default function App() {
     <div className="isolate min-h-screen bg-background text-foreground antialiased">
       <StartupSplash phase={splash} onPhase={setSplash} />
       <CursorDots />
+      <SlowNetBanner />
       <div>
         <Header
           page={page}
