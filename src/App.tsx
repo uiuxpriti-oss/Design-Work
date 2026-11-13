@@ -2920,6 +2920,20 @@ function JourneyMap({ persona, seen }: { persona: Persona; seen: boolean }) {
 // Persona + journey map, built in code. Switch between the two personas; the map below shows
 // five stages with what the person does, wants, feels, struggles with and what we could improve.
 // MacBook style laptop whose screen scrolls through full page designs, with persona style tabs.
+// Page screenshot with a safety net: if the file fails to load (flaky network or a stale cache),
+// retry with a cache busting query, then offer a retry button instead of a broken image.
+function LaptopShot({ src, alt }: { src: string; alt: string }) {
+  const [tries, setTries] = useState(0);
+  const url = assetUrl(src) + (tries ? `?r=${tries}` : "");
+  if (tries > 2)
+    return (
+      <button type="button" onClick={() => setTries(1)} className="flex h-full min-h-[12rem] w-full items-center justify-center text-sm text-muted-foreground">
+        This page did not load. Tap to retry.
+      </button>
+    );
+  return <img src={url} alt={alt} decoding="async" onError={() => setTries((n) => n + 1)} className="block w-full" draggable={false} />;
+}
+
 function LaptopScroll({ demo }: { demo: NonNullable<CaseStudy["scrollDemo"]> }) {
   const [i, setI] = useState(0);
   const scr = useRef<HTMLDivElement>(null);
@@ -2969,7 +2983,7 @@ function LaptopScroll({ demo }: { demo: NonNullable<CaseStudy["scrollDemo"]> }) 
               onPointerDown={stop}
               className="aspect-[16/10] w-full overflow-y-auto overscroll-contain rounded-[8px] bg-white [scrollbar-width:thin]"
             >
-              <img src={assetUrl(page.src)} alt={`${page.label} page`} className="block w-full" draggable={false} />
+              <LaptopShot key={page.src} src={page.src} alt={`${page.label} page`} />
             </div>
           </div>
           <div className="relative mx-auto -mt-px h-3 w-[112%] -translate-x-[5.4%] rounded-b-[14px] bg-gradient-to-b from-[#e4e7ec] to-[#b9bec6] shadow-[0_18px_30px_rgba(15,21,48,0.2)]">
