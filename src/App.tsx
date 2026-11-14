@@ -1260,6 +1260,24 @@ function VideoLightbox({ item, onClose }: { item: (typeof motionWork)[number]; o
   );
 }
 
+// Plays a Lottie JSON in a square tile. The player is loaded on demand so it stays out of the main bundle.
+function LottieTile({ src, label }: { src: string; label: string }) {
+  const box = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const el = box.current;
+    if (!el) return;
+    let anim: { destroy: () => void } | null = null;
+    let cancelled = false;
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    import("lottie-web/build/player/lottie_light").then((m) => {
+      if (cancelled) return;
+      anim = m.default.loadAnimation({ container: el, renderer: "svg", loop: true, autoplay: !reduce, path: assetUrl(src) });
+    });
+    return () => { cancelled = true; anim?.destroy(); };
+  }, [src]);
+  return <div ref={box} role="img" aria-label={label} className="h-full w-full p-[22%]" />;
+}
+
 function MotionGrid() {
   const [open, setOpen] = useState<(typeof motionWork)[number] | null>(null);
   if (motionWork.length === 0) {
@@ -1275,7 +1293,7 @@ function MotionGrid() {
       </section>
     );
   }
-  const isMicro = (m: (typeof motionWork)[number]) => Boolean(m.image || m.loop);
+  const isMicro = (m: (typeof motionWork)[number]) => Boolean(m.image || m.loop || m.lottie);
   const videos = motionWork.filter((m) => !isMicro(m));
   const micro = motionWork.filter(isMicro);
   // One wide + one portrait video sit side by side with players of equal height;
@@ -1363,10 +1381,12 @@ function MotionGrid() {
         <section className="grid grid-cols-1 gap-6 sm:grid-cols-2">{extras.map(videoCard)}</section>
       )}
       {micro.length > 0 && (
-        <section className="grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-3">
+        <section className="grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-5 lg:grid-cols-5">
           {micro.map((m) => (
             <div key={m.title} className="aspect-square w-full overflow-hidden rounded-3xl border border-slate-100 bg-white">
-              {m.loop ? (
+              {m.lottie ? (
+                <LottieTile src={m.lottie} label={`${m.title}: ${m.category}`} />
+              ) : m.loop ? (
                 <video
                   src={assetUrl(m.loop)}
                   autoPlay

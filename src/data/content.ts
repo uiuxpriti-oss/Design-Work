@@ -2011,6 +2011,8 @@ export interface MotionItem {
   image?: string;
   /** Silent looping video under /public — a micro-interaction that autoplays in its tile. */
   loop?: string;
+  /** Lottie JSON under /public — a vector micro-interaction played inline, looping. */
+  lottie?: string;
   /** Square (1:1) video — shown in a square player. */
   square?: boolean;
 }
@@ -2044,6 +2046,9 @@ export const motionWork: MotionItem[] = [
     poster: "motion/data-connect-poster.webp",
     square: true,
   },
+  { title: "Loader: Bars", category: "Micro interaction", lottie: "motion/loader-bars.json" },
+  { title: "Loader: Dots", category: "Micro interaction", lottie: "motion/loader-dots.json" },
+  { title: "Loader: Lines", category: "Micro interaction", lottie: "motion/loader-lines.json" },
 ];
 
 export const creatives: Creative[] = [
