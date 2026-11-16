@@ -188,6 +188,8 @@ export const projects: Project[] = [
 export interface CaseStudy {
   eyebrow: string;
   summary: string;
+  /** Optional link to the live product, shown under the summary in the case study header. */
+  productLink?: { label: string; href: string };
   /** Shows an "In progress" badge in the case study header when true. */
   inProgress?: boolean;
   /** Narrative intro paragraphs; wrap phrases in **…** to bold them. */
@@ -422,6 +424,7 @@ export const caseStudies: Record<string, CaseStudy> = {
       tools: ["Figma"],
     },
     eyebrow: "Product Design · AI Analytics",
+    productLink: { label: "lumenore.ai", href: "https://lumenore.ai" },
     summary:
       "Making Lumenore's ask your data tool easy for anyone to start using.",
     meta: {

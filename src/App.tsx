@@ -3720,6 +3720,17 @@ function CaseStudyPage({
         <p className="mt-4 max-w-2xl text-[17px] leading-relaxed text-foreground/85">
           {cs.summary}
         </p>
+        {cs.productLink && (
+          <a
+            href={cs.productLink.href}
+            target="_blank"
+            rel="noreferrer"
+            className="group mt-5 inline-flex items-center gap-2 rounded-full border border-border px-4 py-2 text-[14px] font-medium text-foreground outline-none transition-colors hover:bg-foreground/[0.04] focus-visible:ring-2 focus-visible:ring-foreground/25"
+          >
+            Visit {cs.productLink.label}
+            <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" aria-hidden="true" />
+          </a>
+        )}
       </header>
 
       <div className="mt-8 aspect-[16/10] w-full overflow-hidden rounded-3xl bg-background/40 ring-1 ring-border">
