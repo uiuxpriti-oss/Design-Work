@@ -24,7 +24,6 @@ import {
   Send,
   Copy,
   Check,
-  ExternalLink,
   X,
   Route,
   FileText,
@@ -137,10 +136,9 @@ function useTapSound() {
   }, []);
 }
 
-const LINKEDIN_HANDLE = "@priti-jani14";
 
 /**
- * Contact trigger + "Get in touch" popover (email with copy, LinkedIn link).
+ * Contact trigger + "Get in touch" popover (email with copy, social icons).
  * `align` controls which edge the popover hangs from the button.
  */
 function ContactButton({
@@ -233,21 +231,6 @@ function ContactButton({
           </button>
         </div>
 
-        <div className="mt-5 flex items-center justify-between gap-3">
-          <div className="min-w-0">
-            <p className="text-[13px] text-white/45">LinkedIn</p>
-            <p className="truncate text-[15px] font-semibold">{LINKEDIN_HANDLE}</p>
-          </div>
-          <a
-            href={links.linkedin}
-            target="_blank"
-            rel="noreferrer"
-            aria-label="Open LinkedIn profile"
-            className="shrink-0 rounded-lg p-2 text-white/60 transition-colors hover:bg-white/10 hover:text-white"
-          >
-            <ExternalLink className="h-5 w-5" aria-hidden="true" />
-          </a>
-        </div>
         <ContactSocials />
       </div>
     </div>
@@ -345,21 +328,6 @@ function ContactSheet({ open, onClose }: { open: boolean; onClose: () => void })
               <Copy className="h-5 w-5" aria-hidden="true" />
             )}
           </button>
-        </div>
-        <div className="mt-5 flex items-center justify-between gap-3">
-          <div className="min-w-0">
-            <p className="text-[13px] text-white/45">LinkedIn</p>
-            <p className="truncate text-[15px] font-semibold">{LINKEDIN_HANDLE}</p>
-          </div>
-          <a
-            href={links.linkedin}
-            target="_blank"
-            rel="noreferrer"
-            aria-label="Open LinkedIn profile"
-            className="shrink-0 rounded-lg p-2 text-white/60 transition-colors hover:bg-white/10 hover:text-white"
-          >
-            <ExternalLink className="h-5 w-5" aria-hidden="true" />
-          </a>
         </div>
         <ContactSocials />
       </div>
