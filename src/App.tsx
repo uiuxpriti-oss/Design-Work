@@ -4827,7 +4827,7 @@ function AboutHero() {
   }, []);
   const n = ABOUT_SLIDES.length;
   const s = ABOUT_SLIDES[slide];
-  const words = ["I", "turn", "complex", "data", "into", "decisions", "people", "can", "trust."];
+  const words = ["I", "don't", "wait", "to", "be", "told", "a", "problem", "exists."];
   return (
     <section className="flex flex-col gap-12 pb-24 pt-14 sm:gap-16 sm:pb-32 sm:pt-20">
       <div className="flex flex-col gap-6">
@@ -4848,8 +4848,6 @@ function AboutHero() {
         </h1>
         <div className="about-rise flex max-w-[44rem] flex-col gap-5" style={{ animationDelay: "0.75s" }}>
           <p className="text-pretty text-[17px] leading-[1.65] text-[#404040] dark:text-[#c4c4c4] sm:text-[19px]">
-            <span className="font-medium text-[#262626] dark:text-[#e5e5e5]">I don&apos;t wait to be told a problem exists.</span>
-            <br />
             I tend to naturally notice things nobody&apos;s looking at, and then fix them, whether that&apos;s a
             broken flow, an untouched branding item, or a team drowning in spreadsheets.
           </p>
