@@ -4771,60 +4771,8 @@ const ABOUT_YEARS = ["2021", "2022", "2023", "2024", "2025", "2026"];
 const ABOUT_ARROW_BTN =
   "grid h-9 w-9 place-items-center rounded-full text-sm outline-none transition-colors focus-visible:ring-2 focus-visible:ring-foreground/25";
 
-function AboutStat({ pre, n, suf, label, run }: { pre: string; n: number; suf: string; label: string; run: boolean }) {
-  const [p, setP] = useState(0);
-  useEffect(() => {
-    if (!run) return;
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduce) {
-      setP(1);
-      return;
-    }
-    const t0 = performance.now();
-    let raf = 0;
-    const tick = (t: number) => {
-      const k = Math.min(1, (t - t0) / 1600);
-      setP(1 - Math.pow(1 - k, 3));
-      if (k < 1) raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, [run]);
-  return (
-    <div className="flex flex-col gap-1">
-      <span className="text-[34px] font-medium tabular-nums tracking-[-0.04em] sm:text-[40px]">
-        {pre}
-        {Math.round(n * p).toLocaleString("en-US")}
-        {suf}
-      </span>
-      <span className="text-[10px] font-medium uppercase tracking-[0.2em] text-muted-foreground">{label}</span>
-    </div>
-  );
-}
-
 function AboutHero() {
   const [slide, setSlide] = useState(0);
-  const [run, setRun] = useState(false);
-  const statsRef = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    const el = statsRef.current;
-    if (!el || !("IntersectionObserver" in window)) {
-      setRun(true);
-      return;
-    }
-    let t = 0;
-    const io = new IntersectionObserver((es) => {
-      if (es.some((e) => e.isIntersecting)) {
-        t = window.setTimeout(() => setRun(true), 700);
-        io.disconnect();
-      }
-    }, { threshold: 0.4 });
-    io.observe(el);
-    return () => {
-      io.disconnect();
-      clearTimeout(t);
-    };
-  }, []);
   const n = ABOUT_SLIDES.length;
   const s = ABOUT_SLIDES[slide];
   const words = ["I", "don't", "wait", "to", "be", "told", "a", "problem", "exists."];
@@ -4858,13 +4806,6 @@ function AboutHero() {
           >
             फर्क पड़ता है
           </p>
-        </div>
-      </div>
-      <div className="flex flex-wrap items-center justify-between gap-7">
-        <div ref={statsRef} className="about-rise flex flex-wrap gap-x-10 gap-y-5" style={{ animationDelay: "0.9s" }}>
-          <AboutStat pre="↓" n={50} suf="%" label="Task time" run={run} />
-          <AboutStat pre="↓" n={32} suf="%" label="Drop off" run={run} />
-          <AboutStat pre="" n={5000} suf="+" label="Users" run={run} />
         </div>
       </div>
       <div className={`about-rise relative flex min-h-[320px] flex-col justify-between gap-9 overflow-hidden rounded-[28px] p-6 sm:p-10 ${ABOUT_WASH}`} style={{ animationDelay: "1.15s" }}>
