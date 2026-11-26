@@ -248,7 +248,34 @@ function ContactButton({
             <ExternalLink className="h-5 w-5" aria-hidden="true" />
           </a>
         </div>
+        <ContactSocials />
       </div>
+    </div>
+  );
+}
+
+// Icon row for the "Get in touch" popover and sheet.
+function ContactSocials() {
+  const items = [
+    { href: links.linkedin, label: "LinkedIn", Icon: Linkedin },
+    { href: links.behance, label: "Behance", Icon: BehanceIcon },
+    { href: links.github, label: "GitHub", Icon: Github },
+  ];
+  return (
+    <div className="mt-5 flex items-center gap-2 border-t border-white/10 pt-4">
+      {items.map(({ href, label, Icon }) => (
+        <a
+          key={label}
+          href={href}
+          target="_blank"
+          rel="noreferrer"
+          aria-label={label}
+          title={label}
+          className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/[0.08] text-white/75 outline-none transition-colors hover:bg-gradient-to-br hover:from-[#2563eb] hover:to-[#60a5fa] hover:text-white focus-visible:ring-2 focus-visible:ring-[#60a5fa]"
+        >
+          <Icon className="h-[18px] w-[18px]" />
+        </a>
+      ))}
     </div>
   );
 }
@@ -334,6 +361,7 @@ function ContactSheet({ open, onClose }: { open: boolean; onClose: () => void })
             <ExternalLink className="h-5 w-5" aria-hidden="true" />
           </a>
         </div>
+        <ContactSocials />
       </div>
     </div>
   );
@@ -4663,10 +4691,9 @@ function Creatives({ onViewAll }: { onViewAll: () => void }) {
           Logos, posters, and explorations, work that lives outside the sprint.
         </p>
       </div>
-      {/* Full-bleed, two opposing rows of larger cards */}
+      {/* Full-bleed, a single row of larger cards */}
       <div className="mt-10 space-y-6">
         <CreativeMarqueeRow reverse={false} onOpen={setOpen} />
-        <CreativeMarqueeRow reverse={true} onOpen={setOpen} />
       </div>
       {open && <CreativeLightbox item={open} onClose={() => setOpen(null)} />}
     </section>

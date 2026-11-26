@@ -1,4 +1,5 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { THEMES, drawScene, makeSceneState, type ThemeId } from "./footerScenes";
 
 // "Design Run": a tiny endless runner for the footer. Jump over bugs, collect skills,
 // get a career title at the end. Drawn entirely in code on a canvas, in the portfolio's blues.
@@ -57,6 +58,25 @@ export default function FooterGame() {
   const wrapRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const jumpRef = useRef<() => void>(() => {});
+  const [themeId, setThemeId] = useState<ThemeId>(() => {
+    try {
+      const v = localStorage.getItem("designRunTheme") as ThemeId | null;
+      if (v && THEMES.some((t) => t.id === v)) return v;
+    } catch {
+      /* ignore */
+    }
+    return "india";
+  });
+  const themeRef = useRef<ThemeId>(themeId);
+  const pick = (id: ThemeId) => {
+    themeRef.current = id;
+    setThemeId(id);
+    try {
+      localStorage.setItem("designRunTheme", id);
+    } catch {
+      /* ignore */
+    }
+  };
 
   useEffect(() => {
     const wrap = wrapRef.current;
@@ -93,46 +113,8 @@ export default function FooterGame() {
     let overAt = 0;
     let clock = 0;
 
-    const stars = Array.from({ length: 70 }, () => ({ x: Math.random(), y: Math.random() * 0.6, r: Math.random() < 0.15 ? 1.6 : 1, p: Math.random() * 6 }));
-    // Far skyline: domes, minarets and a temple spire, repeated every 520px.
-    const far = (x: number) => {
-      ctx.beginPath();
-      const g = ground;
-      ctx.moveTo(x, g);
-      ctx.lineTo(x, g - 34);
-      ctx.lineTo(x + 40, g - 34);
-      ctx.lineTo(x + 40, g - 52);
-      ctx.arc(x + 62, g - 52, 22, Math.PI, 0);
-      ctx.lineTo(x + 84, g - 34);
-      ctx.lineTo(x + 112, g - 34);
-      ctx.lineTo(x + 112, g - 92);
-      ctx.lineTo(x + 116, g - 100);
-      ctx.lineTo(x + 120, g - 92);
-      ctx.lineTo(x + 120, g - 30);
-      ctx.lineTo(x + 170, g - 30);
-      ctx.lineTo(x + 182, g - 64);
-      ctx.lineTo(x + 194, g - 84);
-      ctx.lineTo(x + 206, g - 64);
-      ctx.lineTo(x + 218, g - 30);
-      ctx.lineTo(x + 280, g - 30);
-      ctx.lineTo(x + 280, g - 46);
-      ctx.arc(x + 300, g - 46, 20, Math.PI, 0);
-      ctx.lineTo(x + 320, g - 26);
-      ctx.lineTo(x + 380, g - 26);
-      ctx.lineTo(x + 380, g - 58);
-      ctx.lineTo(x + 420, g - 58);
-      ctx.lineTo(x + 420, g - 24);
-      ctx.lineTo(x + 470, g - 24);
-      ctx.lineTo(x + 470, g - 80);
-      ctx.lineTo(x + 474, g - 88);
-      ctx.lineTo(x + 478, g - 80);
-      ctx.lineTo(x + 478, g - 24);
-      ctx.lineTo(x + 520, g - 24);
-      ctx.lineTo(x + 520, g);
-      ctx.closePath();
-      ctx.fill();
-    };
-    const near = Array.from({ length: 12 }, (_, i) => ({ x: i * 90, w: rand(46, 74), h: rand(22, 54) }));
+    const scene = makeSceneState();
+    const theme = () => THEMES.find((t) => t.id === themeRef.current) ?? THEMES[0];
 
     const resize = () => {
       const r = wrap.getBoundingClientRect();
@@ -265,73 +247,18 @@ export default function FooterGame() {
     };
 
     const draw = () => {
-      // Sky
-      const sky = ctx.createLinearGradient(0, 0, 0, ground);
-      sky.addColorStop(0, "#070b22");
-      sky.addColorStop(0.55, "#16296b");
-      sky.addColorStop(1, "#3b6cf6");
-      ctx.fillStyle = sky;
-      ctx.fillRect(0, 0, W, H);
-
-      for (const s of stars) {
-        ctx.globalAlpha = 0.35 + 0.35 * Math.sin(clock * 1.6 + s.p);
-        ctx.fillStyle = "#dbeafe";
-        ctx.fillRect(Math.round(s.x * W), Math.round(s.y * ground), s.r, s.r);
-      }
-      ctx.globalAlpha = 1;
-
-      // Moon
-      const mx = W - 70;
-      const my = 46;
-      const glow = ctx.createRadialGradient(mx, my, 6, mx, my, 60);
-      glow.addColorStop(0, "rgba(191,219,254,0.45)");
-      glow.addColorStop(1, "rgba(191,219,254,0)");
-      ctx.fillStyle = glow;
-      ctx.fillRect(mx - 60, my - 60, 120, 120);
-      ctx.fillStyle = "#e0ecff";
-      ctx.beginPath();
-      ctx.arc(mx, my, 15, 0, Math.PI * 2);
-      ctx.fill();
-
-      // Far skyline
-      ctx.fillStyle = "#1b3384";
-      const fo = (dist * 0.15) % 520;
-      for (let x = -fo; x < W; x += 520) far(x);
-
-      // Near buildings with lit windows
-      const span = near.length * 90;
-      const no = (dist * 0.4) % span;
-      for (const b of near) {
-        let x = b.x - no;
-        if (x + b.w < 0) x += span;
-        if (x > W) continue;
-        ctx.fillStyle = "#0f1d4f";
-        ctx.fillRect(Math.round(x), ground - b.h, Math.round(b.w), b.h);
-        ctx.fillStyle = "rgba(147,197,253,0.55)";
-        for (let wy = ground - b.h + 7; wy < ground - 8; wy += 9)
-          for (let wx = x + 6; wx < x + b.w - 6; wx += 10)
-            if ((Math.floor(wx * 7 + wy * 3 + b.h) % 5) < 2) ctx.fillRect(Math.round(wx), wy, 3, 3);
-      }
-
-      // Ground
-      ctx.fillStyle = "#0a1233";
-      ctx.fillRect(0, ground, W, H - ground);
-      ctx.fillStyle = "#60a5fa";
-      ctx.fillRect(0, ground, W, 2);
-      ctx.fillStyle = "rgba(96,165,250,0.25)";
-      const go = dist % 24;
-      for (let x = -go; x < W; x += 24) ctx.fillRect(Math.round(x), ground + 10, 10, 2);
-      for (let x = -((dist * 1.0 + 12) % 36); x < W; x += 36) ctx.fillRect(Math.round(x), ground + 22, 4, 2);
+      const t = theme();
+      drawScene(ctx, t, scene, W, H, ground, dist, clock);
 
       // Gems (skills)
       for (const gm of gems) {
         const bob = Math.sin(clock * 4 + gm.x * 0.05) * 3;
         const y = gm.y + bob;
-        ctx.fillStyle = "rgba(147,197,253,0.25)";
+        ctx.fillStyle = t.gemGlow;
         ctx.beginPath();
         ctx.arc(gm.x, y, 12, 0, Math.PI * 2);
         ctx.fill();
-        ctx.fillStyle = "#93c5fd";
+        ctx.fillStyle = t.gem;
         ctx.beginPath();
         ctx.moveTo(gm.x, y - 8);
         ctx.lineTo(gm.x + 7, y);
@@ -346,7 +273,7 @@ export default function FooterGame() {
       // Obstacles
       for (const o of obstacles) {
         if (o.kind === "spikes") {
-          ctx.fillStyle = "#dbeafe";
+          ctx.fillStyle = t.spike;
           for (let x = o.x; x < o.x + o.w - 1; x += 12) {
             ctx.beginPath();
             ctx.moveTo(x, ground);
@@ -359,17 +286,17 @@ export default function FooterGame() {
           // A little pixel bug
           const x = Math.round(o.x);
           const y = ground - o.h;
-          ctx.fillStyle = "#0a0f24";
+          ctx.fillStyle = t.night || t.id === "paris" ? "#0a0f24" : "#5b6b8c";
           const leg = Math.floor(clock * 10) % 2;
           for (let i = 0; i < 3; i++) {
             ctx.fillRect(x + 3 + i * 8, ground - 4 + (i % 2 === leg ? 0 : 1), 3, 4);
           }
-          ctx.fillStyle = "#e0ecff";
+          ctx.fillStyle = t.bug;
           ctx.fillRect(x + 2, y + 6, o.w - 4, o.h - 9);
           ctx.fillRect(x + 4, y + 3, o.w - 8, 4);
           ctx.fillStyle = "#2563eb";
           ctx.fillRect(x + o.w / 2 - 1, y + 4, 2, o.h - 8);
-          ctx.fillStyle = "#0a0f24";
+          ctx.fillStyle = t.night || t.id === "paris" ? "#0a0f24" : "#5b6b8c";
           ctx.fillRect(x - 2, y + 7, 5, 5);
           ctx.fillRect(x + 2, y, 2, 4);
           ctx.fillRect(x + 6, y - 1, 2, 4);
@@ -384,7 +311,7 @@ export default function FooterGame() {
       ctx.textAlign = "center";
       for (const p of pops) {
         ctx.globalAlpha = 1 - p.t / 0.9;
-        ctx.fillStyle = "#ffffff";
+        ctx.fillStyle = t.hud;
         ctx.fillText(p.text, p.x, p.y - 14 - p.t * 30);
       }
       ctx.globalAlpha = 1;
@@ -392,10 +319,10 @@ export default function FooterGame() {
       // HUD
       ctx.font = `600 11px ${FONT}`;
       ctx.textAlign = "left";
-      ctx.fillStyle = "rgba(219,234,254,0.9)";
+      ctx.fillStyle = t.hud;
       ctx.fillText(`SKILLS ${score}`, 16, 24);
       ctx.textAlign = "right";
-      ctx.fillStyle = "rgba(219,234,254,0.6)";
+      ctx.fillStyle = t.hud;
       ctx.fillText(`BEST ${best}`, W - 16, 24);
 
       // Overlays
@@ -512,9 +439,25 @@ export default function FooterGame() {
 
   return (
     <div className="mt-20 sm:mt-28">
-      <div className="mb-3 flex flex-wrap items-baseline justify-between gap-2">
+      <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
         <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-white/70">Take a break</p>
-        <p className="text-[12px] text-white/55">Space or tap to jump · hold for higher</p>
+        <div role="group" aria-label="Game theme" className="flex flex-wrap gap-1.5">
+          {THEMES.map((t) => (
+            <button
+              key={t.id}
+              type="button"
+              onClick={() => pick(t.id)}
+              aria-pressed={t.id === themeId}
+              className={`h-8 rounded-full border px-3 font-mono text-[11px] uppercase tracking-[0.12em] outline-none transition-colors focus-visible:ring-2 focus-visible:ring-[#60a5fa] ${
+                t.id === themeId
+                  ? "border-white bg-white text-[#1e3a8a]"
+                  : "border-white/15 bg-white/[0.06] text-white/70 hover:bg-white/[0.12] hover:text-white"
+              }`}
+            >
+              {t.label}
+            </button>
+          ))}
+        </div>
       </div>
       <div ref={wrapRef} className="overflow-hidden rounded-[22px] border border-white/10 shadow-[0_30px_60px_-30px_rgba(37,99,235,0.6)]">
         <canvas
@@ -524,6 +467,7 @@ export default function FooterGame() {
           className="block w-full cursor-pointer touch-manipulation select-none outline-none focus-visible:ring-2 focus-visible:ring-[#60a5fa]"
         />
       </div>
+      <p className="mt-2.5 text-[12px] text-white/55">Space or tap to jump · hold for higher</p>
     </div>
   );
 }
