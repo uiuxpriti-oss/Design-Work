@@ -1,3 +1,4 @@
+import FooterGame from "./FooterGame";
 import {
   useEffect,
   useMemo,
@@ -5277,6 +5278,7 @@ function SiteFooter() {
           enterprise tools, and teams that need more than screens.
         </p>
         <FooterLinks list={link} />
+        <FooterGame />
         <div className="mt-24 flex flex-wrap items-end justify-between gap-4 sm:mt-32">
           <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-white/65">
             &copy;2026 / Priti Jani &middot; All rights reserved
