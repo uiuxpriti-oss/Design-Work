@@ -1,11 +1,9 @@
-import FooterGame from "./FooterGame";
 import {
   useEffect,
   useMemo,
   useRef,
   useState,
   type ReactNode,
-  type MouseEvent as ReactMouseEvent,
 } from "react";
 import Lenis from "lenis";
 import Matter from "matter-js";
@@ -34,8 +32,6 @@ import {
   Play,
   Lock,
   type LucideIcon,
-  Calendar,
-  Mail,
   Github,
   Linkedin,
 } from "lucide-react";
@@ -5161,130 +5157,15 @@ function BehanceIcon({ className }: { className?: string }) {
   );
 }
 
-type FooterLink = { href: string; label: string; hint: string; Icon: React.ComponentType<{ className?: string }>; mail?: boolean };
-
-function useCopyEmail() {
-  const [copied, setCopied] = useState(false);
-  const copy = async (e: ReactMouseEvent) => {
-    e.preventDefault();
-    try {
-      await navigator.clipboard.writeText(links.emailAddress);
-    } catch {
-      window.location.href = links.email;
-      return;
-    }
-    setCopied(true);
-    window.setTimeout(() => setCopied(false), 1800);
-  };
-  return { copied, copy };
-}
-
-const GLASS =
-  "border border-white/15 bg-white/[0.07] backdrop-blur-md transition-all duration-200 hover:border-white/30 hover:bg-white/[0.13]";
-const BLUE_PILL =
-  "bg-gradient-to-r from-[#1e3a8a] via-[#2563eb] to-[#60a5fa] text-white shadow-[0_8px_30px_rgba(37,99,235,0.35)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_12px_36px_rgba(59,130,246,0.5)]";
-
-// Variant H — a round "say hi" badge with rotating text, flanked by icon circles.
-// Round "Book a call" badge — sits on the footer's top edge, half outside it.
-function FooterCallBadge({ href }: { href: string }) {
-  return (
-    <div className="pointer-events-none sticky top-36 z-30 h-0">
-      <div className="mx-auto flex max-w-[72rem] justify-center px-4 sm:justify-end sm:px-6">
-        <a
-          href={href}
-          target="_blank"
-          rel="noreferrer"
-          aria-label="Book a call"
-          className="group pointer-events-auto relative -translate-y-1/2 flex h-28 w-28 shrink-0 items-center justify-center rounded-full bg-[#05060b] shadow-[0_20px_50px_-20px_rgba(37,99,235,0.6)] ring-1 ring-white/10 transition-transform duration-300 hover:scale-105 sm:h-32 sm:w-32"
-        >
-          <svg viewBox="0 0 200 200" className="footer-spin absolute inset-0 h-full w-full text-white" aria-hidden="true">
-            <defs>
-              <path id="ftr-circle" d="M100,100 m-82,0 a82,82 0 1,1 164,0 a82,82 0 1,1 -164,0" />
-            </defs>
-            <text fontSize="15" fontWeight="600" fill="currentColor" fontFamily="'JetBrains Mono', monospace">
-              <textPath href="#ftr-circle" textLength="506" lengthAdjust="spacing">BOOK A CALL • SAY HELLO • LET'S TALK • </textPath>
-            </text>
-          </svg>
-          <span className={`flex h-[72px] w-[72px] items-center justify-center rounded-full transition-transform duration-300 group-hover:scale-110 sm:h-20 sm:w-20 ${BLUE_PILL}`}>
-            <ArrowUpRight className="h-6 w-6" aria-hidden="true" />
-          </span>
-        </a>
-      </div>
-    </div>
-  );
-}
-
-function FooterLinks({ list }: { list: FooterLink[] }) {
-  const { copied, copy } = useCopyEmail();
-  const rest = list.filter((l) => l.label !== "Book a call");
-  return (
-    <div className="mt-12 grid gap-3 sm:mt-14 sm:grid-cols-2">
-      {rest.map(({ href, label, hint, Icon, mail }, i) => (
-        <a
-          key={label}
-          href={href}
-          onClick={mail ? copy : undefined}
-          {...(mail ? {} : { target: "_blank", rel: "noreferrer" })}
-          className={`group flex items-center justify-between gap-4 rounded-full py-2.5 pl-2.5 pr-6 text-white/90 hover:text-white ${GLASS} ${
-            i === rest.length - 1 && rest.length % 2 === 1 ? "sm:col-span-2" : ""
-          }`}
-        >
-          <span className="flex items-center gap-4">
-            <span className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 transition-colors group-hover:bg-gradient-to-br group-hover:from-[#2563eb] group-hover:to-[#60a5fa]">
-              <Icon className="h-[18px] w-[18px]" aria-hidden="true" />
-            </span>
-            <span className="text-[15px]">{label}</span>
-          </span>
-          <span className="text-[12px] text-white/65 group-hover:text-white/90">{mail && copied ? "Copied ✓" : hint}</span>
-        </a>
-      ))}
-    </div>
-  );
-}
-
 function SiteFooter() {
-  const link: FooterLink[] = [
-    { href: links.linkedin, label: "LinkedIn", hint: "Say hi, or follow my work", Icon: Linkedin },
-    { href: links.cv, label: "Resume", hint: "PDF, 2 pages", Icon: FileText },
-    { href: links.behance, label: "Behance", hint: "Case studies and creatives", Icon: BehanceIcon },
-    { href: links.github, label: "GitHub", hint: "Code and experiments", Icon: Github },
-    { href: links.email, label: "Email", hint: "Click to copy my address", Icon: Mail, mail: true },
-    { href: links.cal, label: "Book a call", hint: "30 minutes, free", Icon: Calendar },
-  ];
   return (
-    <div className="relative mt-24 sm:mt-32">
-    <FooterCallBadge href={links.cal} />
-    <footer id="contact" className="footer-dark relative scroll-mt-24 overflow-hidden bg-[#05060b] text-white">
-      {/* Moving blue gradient — slow, blurred blobs plus a fine grain */}
-      <div aria-hidden="true" className="pointer-events-none absolute inset-0">
-        <span className="footer-blob footer-blob-a" />
-        <span className="footer-blob footer-blob-b" />
-        <span className="footer-blob footer-blob-c" />
-        <span className="footer-grain absolute inset-0" />
-      </div>
-      <div className="relative mx-auto max-w-[72rem] px-4 pb-10 pt-24 sm:px-6 sm:pt-24">
-        <div className="flex flex-wrap items-baseline justify-between gap-x-8 gap-y-2">
-          <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-white/70">Let&apos;s connect</p>
-        </div>
-        <h2 className="mt-4 max-w-3xl text-3xl font-medium tracking-tight text-white/90 sm:text-5xl">
-          Let&rsquo;s turn <span className="italic text-white/70">&ldquo;huh?&rdquo;</span> into{" "}
-          <span className="footer-grad-text">&ldquo;oh, nice.&rdquo;</span>
-        </h2>
-        <p className="mt-5 max-w-2xl text-[15px] leading-[1.7] text-white/75">
-          I&rsquo;m open to Product Designer roles, and selective consulting: BI, AI-assisted UX, complex
-          enterprise tools, and teams that need more than screens.
+    <footer id="contact" className="footer-dark relative mt-24 scroll-mt-24 overflow-hidden bg-[#05060b] text-white sm:mt-32">
+      <div className="relative mx-auto max-w-[72rem] px-4 py-8 sm:px-6">
+        <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-white/65">
+          &copy;2026 / Priti Jani &middot; All rights reserved
         </p>
-        <FooterLinks list={link} />
-        <FooterGame />
-        <div className="mt-24 flex flex-wrap items-end justify-between gap-4 sm:mt-32">
-          <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-white/65">
-            &copy;2026 / Priti Jani &middot; All rights reserved
-          </p>
-          <p className="text-[12px] text-white/65">Designed, built &amp; deployed end to end, by me.</p>
-        </div>
       </div>
     </footer>
-    </div>
   );
 }
 
