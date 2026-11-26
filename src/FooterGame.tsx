@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { THEMES, drawScene, makeSceneState, type ThemeId } from "./footerScenes";
+import { THEME_ICONS } from "./themeIcons";
 
 // "Design Run": a tiny endless runner for the footer. Jump over bugs, collect skills,
 // get a career title at the end. Drawn entirely in code on a canvas, in the portfolio's blues.
@@ -438,28 +439,34 @@ export default function FooterGame() {
   }, []);
 
   return (
-    <div className="mt-20 sm:mt-28">
-      <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
+    <div className="relative left-1/2 mt-20 w-screen -translate-x-1/2 sm:mt-28">
+      <div className="mx-auto mb-4 flex max-w-[72rem] flex-wrap items-center justify-between gap-3 px-4 sm:px-6">
         <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-white/70">Take a break</p>
-        <div role="group" aria-label="Game theme" className="flex flex-wrap gap-1.5">
-          {THEMES.map((t) => (
-            <button
-              key={t.id}
-              type="button"
-              onClick={() => pick(t.id)}
-              aria-pressed={t.id === themeId}
-              className={`h-8 rounded-full border px-3 font-mono text-[11px] uppercase tracking-[0.12em] outline-none transition-colors focus-visible:ring-2 focus-visible:ring-[#60a5fa] ${
-                t.id === themeId
-                  ? "border-white bg-white text-[#1e3a8a]"
-                  : "border-white/15 bg-white/[0.06] text-white/70 hover:bg-white/[0.12] hover:text-white"
-              }`}
-            >
-              {t.label}
-            </button>
-          ))}
+        <div role="group" aria-label="Game theme" className="flex items-center gap-2.5">
+          {THEMES.map((t) => {
+            const Icon = THEME_ICONS[t.id];
+            const on = t.id === themeId;
+            return (
+              <button
+                key={t.id}
+                type="button"
+                onClick={() => pick(t.id)}
+                aria-pressed={on}
+                aria-label={t.label}
+                title={t.label}
+                className={`h-10 w-10 rounded-[13px] outline-none transition-all duration-200 focus-visible:ring-2 focus-visible:ring-[#60a5fa] sm:h-11 sm:w-11 ${
+                  on
+                    ? "-translate-y-0.5 scale-110 opacity-100 ring-2 ring-white shadow-[0_10px_22px_-6px_rgba(96,165,250,0.8)]"
+                    : "opacity-60 saturate-75 hover:-translate-y-0.5 hover:opacity-100"
+                }`}
+              >
+                <Icon />
+              </button>
+            );
+          })}
         </div>
       </div>
-      <div ref={wrapRef} className="overflow-hidden rounded-[22px] border border-white/10 shadow-[0_30px_60px_-30px_rgba(37,99,235,0.6)]">
+      <div ref={wrapRef} className="overflow-hidden border-y border-white/10 shadow-[0_30px_60px_-30px_rgba(37,99,235,0.6)]">
         <canvas
           ref={canvasRef}
           tabIndex={0}
@@ -467,7 +474,7 @@ export default function FooterGame() {
           className="block w-full cursor-pointer touch-manipulation select-none outline-none focus-visible:ring-2 focus-visible:ring-[#60a5fa]"
         />
       </div>
-      <p className="mt-2.5 text-[12px] text-white/55">Space or tap to jump · hold for higher</p>
+      <p className="mx-auto mt-2.5 max-w-[72rem] px-4 text-[12px] text-white/55 sm:px-6">Space or tap to jump · hold for higher</p>
     </div>
   );
 }

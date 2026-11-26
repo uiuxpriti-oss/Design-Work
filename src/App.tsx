@@ -4806,6 +4806,7 @@ function AboutHero() {
       </div>
       <div className={`about-rise relative flex min-h-[320px] flex-col justify-between gap-9 overflow-hidden rounded-[28px] p-6 sm:p-10 ${ABOUT_WASH}`} style={{ animationDelay: "1.15s" }}>
         <div className="relative flex items-center justify-between gap-4">
+          {n > 1 ? (
           <div className="flex flex-wrap gap-1.5">
             {ABOUT_SLIDES.map((x, i) => (
               <button
@@ -4821,6 +4822,7 @@ function AboutHero() {
               </button>
             ))}
           </div>
+          ) : <span />}
           {n > 1 && <div className="flex gap-1.5">
             <button type="button" aria-label="Previous" onClick={() => setSlide((slide + n - 1) % n)} className={`${ABOUT_ARROW_BTN} border border-white bg-white/85 text-foreground hover:bg-white dark:border-white/10 dark:bg-white/10 dark:hover:bg-white/15`}>←</button>
             <button type="button" aria-label="Next" onClick={() => setSlide((slide + 1) % n)} className={`${ABOUT_ARROW_BTN} ${ABOUT_BLUE_BTN}`}>→</button>
