@@ -4683,7 +4683,7 @@ const ABOUT_BLUE_BTN =
 const ABOUT_SLIDES = [
   {
     label: "Currently learning",
-    text: "Seven things on the bench right now.",
+    text: "Seven things I'm working on right now.",
     facts: [
       "Shipping AI products at Lumenore",
       "Prototyping with AI more than I expected",
@@ -4697,12 +4697,12 @@ const ABOUT_SLIDES = [
 ];
 
 const ABOUT_TRAITS = [
-  { title: "Problem Solver", img: "problem", bg: "#cfdcff", fg: "#1f3a9e", quip: "Solving problem. Oh solved it!", text: "Before I call something a 'problem,' I always ask myself, does this really need a solution? My curiosity helps me find a better one when it turns out to be a real issue." },
-  { title: "Calm & Compose", img: "calm", bg: "#dcd6ff", fg: "#3b2b9e", quip: "I bring peace", text: "Deadlines move, scope shifts, I stay steady and keep the team moving." },
-  { title: "Detail Oriented", img: "detail", bg: "#cbe4ff", fg: "#124e8a", quip: "After 52 attempts, now all details are covered.", text: "Because that one flow gap always gives a headache." },
-  { title: "UX Researcher", img: "research", bg: "#c4d0ff", fg: "#1f2f8f", quip: "I want to know everything.", text: "I always love to dig deep to truly understand the core of the requirement." },
-  { title: "Well Organized", img: "organized", bg: "#d3dbf5", fg: "#22306e", quip: "Not just perfect. Monica perfect!", text: "Actually a Designer OCD. Just to make everything in my way, perfect!! Like Monica (FRIENDS) hah! I knowwwww!" },
-  { title: "Empathetic Listener", img: "listener", bg: "#dcd9ff", fg: "#3a2a8c", quip: "Yeah, I'm listening", text: "Oh, I'm really great at this, clients just love how well I listen and this helps me to empathise with them to get what they want." },
+  { title: "Problem Solver", img: "problem", bg: "#cfdcff", fg: "#1f3a9e", quip: "Found it. Fixed it.", text: "Before I call something a problem, I check whether it really is one. When it is, I don't stop at the first fix that works." },
+  { title: "Calm & Composed", img: "calm", bg: "#dcd6ff", fg: "#3b2b9e", quip: "I bring peace.", text: "Deadlines move and scope shifts. I stay steady, so the team can keep moving." },
+  { title: "Detail Oriented", img: "detail", bg: "#cbe4ff", fg: "#124e8a", quip: "52 attempts later, every detail is covered.", text: "That one missing state in a flow always comes back later. So I go looking for it first." },
+  { title: "UX Researcher", img: "research", bg: "#c4d0ff", fg: "#1f2f8f", quip: "Tell me everything.", text: "I keep asking until I understand what people actually need, not just what the brief says." },
+  { title: "Well Organized", img: "organized", bg: "#d3dbf5", fg: "#22306e", quip: "Not just tidy. Monica tidy.", text: "Named layers, clean files, specs ready before anyone asks. Monica from FRIENDS would approve." },
+  { title: "Empathetic Listener", img: "listener", bg: "#dcd9ff", fg: "#3a2a8c", quip: "Yeah, I'm listening.", text: "I listen properly. People feel heard, and I find out what they really want, which is rarely the first thing they say." },
 ];
 
 type AboutJob = {
@@ -4846,10 +4846,21 @@ function AboutHero() {
             </span>
           ))}
         </h1>
-        <p className="about-rise max-w-[34rem] text-pretty text-base leading-[1.7] text-[#a3a3a3] md:text-[15px]" style={{ animationDelay: "0.75s" }}>
-          Four years across enterprise SaaS, AI and data. Today I shape Lumenore, from Ask Me, a
-          GenAI analytics assistant, to dashboards and data workflows.
-        </p>
+        <div className="about-rise flex max-w-[44rem] flex-col gap-5" style={{ animationDelay: "0.75s" }}>
+          <p className="text-pretty text-[17px] leading-[1.65] text-[#404040] dark:text-[#c4c4c4] sm:text-[19px]">
+            <span className="font-medium text-[#262626] dark:text-[#e5e5e5]">I don&apos;t wait to be told a problem exists.</span>
+            <br />
+            I tend to naturally notice things nobody&apos;s looking at, and then fix them, whether that&apos;s a
+            broken flow, an untouched branding item, or a team drowning in spreadsheets.
+          </p>
+          <p
+            lang="hi"
+            className="text-[26px] font-bold leading-none tracking-[-0.01em] text-[#262626] dark:text-[#e5e5e5] sm:text-[30px]"
+            style={{ fontFamily: "'Manrope', 'Noto Sans Devanagari', 'Mukta', 'Kohinoor Devanagari', system-ui, sans-serif" }}
+          >
+            फर्क पड़ता है
+          </p>
+        </div>
       </div>
       <div className="flex flex-wrap items-center justify-between gap-7">
         <div ref={statsRef} className="about-rise flex flex-wrap gap-x-10 gap-y-5" style={{ animationDelay: "0.9s" }}>
@@ -5101,6 +5112,27 @@ function AboutJourney() {
           </button>
         ))}
       </div>
+    </section>
+  );
+}
+
+// Home: the positioning line that follows the hero.
+function HomeManifesto() {
+  return (
+    <section aria-label="How I work" className="mx-auto max-w-[72rem] px-6 py-20 sm:py-28">
+      <p className="ml-auto max-w-[52rem] text-pretty text-left text-[clamp(30px,4.4vw,56px)] font-medium leading-[1.12] tracking-[-0.035em] sm:text-right">
+        <span className="text-[#262626] dark:text-[#e5e5e5]">
+          Not here to make it pretty.
+          <br />
+          Here to <span className={ABOUT_GRAD}>make it make sense</span>,
+          <br />
+          and then make it pretty.
+        </span>
+        <br />
+        <span className="text-[#a3a3a3] dark:text-[#6b6b6b]">
+          Open to any tool, method, or 3am thought that leads to a better solution.
+        </span>
+      </p>
     </section>
   );
 }
@@ -5634,6 +5666,7 @@ export default function App() {
             <SideNav />
             <main>
               <Hero ready={splash !== "show"} />
+              <HomeManifesto />
               <FocusAreas />
               <div className="mx-auto max-w-[72rem] px-6">
                 <Work onViewAll={() => openProjects("case")} onOpen={openCase} />
