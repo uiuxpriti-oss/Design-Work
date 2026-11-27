@@ -1,3 +1,4 @@
+import FooterGame from "./FooterGame";
 import {
   useEffect,
   useMemo,
@@ -5159,8 +5160,9 @@ function BehanceIcon({ className }: { className?: string }) {
 
 function SiteFooter() {
   return (
-    <footer id="contact" className="footer-dark relative mt-24 scroll-mt-24 overflow-hidden bg-[#05060b] text-white sm:mt-32">
-      <div className="relative mx-auto max-w-[72rem] px-4 py-8 sm:px-6">
+    <footer id="contact" className="footer-dark relative mt-24 scroll-mt-24 overflow-hidden bg-[#05060b] pt-12 text-white sm:mt-32 sm:pt-16">
+      <FooterGame />
+      <div className="relative mx-auto max-w-[72rem] px-4 pb-8 pt-10 sm:px-6">
         <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-white/65">
           &copy;2026 / Priti Jani &middot; All rights reserved
         </p>

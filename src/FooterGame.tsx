@@ -439,7 +439,7 @@ export default function FooterGame() {
   }, []);
 
   return (
-    <div className="relative left-1/2 mt-20 w-screen -translate-x-1/2 sm:mt-28">
+    <div className="relative w-full">
       <div className="mx-auto mb-4 flex max-w-[72rem] flex-wrap items-center justify-between gap-3 px-4 sm:px-6">
         <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-white/70">Take a break</p>
         <div role="group" aria-label="Game theme" className="flex items-center gap-2.5">
