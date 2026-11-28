@@ -54,27 +54,70 @@ interface Obj {
   c: string;
 }
 
+const shade = (hex: string, amt: number) => {
+  const n = parseInt(hex.slice(1), 16);
+  const f = (v: number) => Math.max(0, Math.min(255, Math.round(amt >= 0 ? v + (255 - v) * amt : v * (1 + amt))));
+  return `rgb(${f((n >> 16) & 255)},${f((n >> 8) & 255)},${f(n & 255)})`;
+};
+
+// A car seen from behind and slightly above, with lit top faces, shaded sides, glass and glowing tail lights.
 function drawCar(ctx: CanvasRenderingContext2D, cx: number, by: number, w: number, color: string, lean = 0, flash = false) {
-  const h = w * 0.64;
-  ctx.fillStyle = "rgba(0,0,0,0.28)";
+  const h = w * 0.7;
+  const tx = lean * w * 0.04;
+  const body = flash ? "#ffffff" : color;
+  const poly = (pts: number[][], fill: string | CanvasGradient) => {
+    ctx.fillStyle = fill;
+    ctx.beginPath();
+    ctx.moveTo(pts[0][0], pts[0][1]);
+    for (let i = 1; i < pts.length; i++) ctx.lineTo(pts[i][0], pts[i][1]);
+    ctx.closePath();
+    ctx.fill();
+  };
+  ctx.fillStyle = "rgba(0,0,0,0.3)";
   ctx.beginPath();
-  ctx.ellipse(cx, by, w * 0.55, h * 0.14, 0, 0, Math.PI * 2);
+  ctx.ellipse(cx, by + h * 0.02, w * 0.58, h * 0.16, 0, 0, Math.PI * 2);
   ctx.fill();
-  ctx.fillStyle = "#14161f";
-  ctx.fillRect(cx - w * 0.5, by - h * 0.46, w * 0.17, h * 0.46);
-  ctx.fillRect(cx + w * 0.33, by - h * 0.46, w * 0.17, h * 0.46);
-  ctx.fillStyle = flash ? "#ffffff" : color;
-  ctx.fillRect(cx - w * 0.44, by - h * 0.78, w * 0.88, h * 0.56);
-  ctx.fillStyle = "rgba(0,0,0,0.22)";
-  ctx.fillRect(cx - w * 0.44, by - h * 0.32, w * 0.88, h * 0.1);
-  const tx = lean * w * 0.05;
-  ctx.fillStyle = flash ? "#e5ecff" : color;
-  ctx.fillRect(cx - w * 0.3 + tx, by - h * 1.04, w * 0.6, h * 0.3);
-  ctx.fillStyle = "#cfe3ff";
-  ctx.fillRect(cx - w * 0.24 + tx, by - h * 0.98, w * 0.48, h * 0.18);
+  for (const s of [-1, 1]) {
+    const wx = cx + s * w * 0.5 - w * 0.09;
+    const wg = ctx.createLinearGradient(wx, 0, wx + w * 0.18, 0);
+    wg.addColorStop(0, "#0b0d14");
+    wg.addColorStop(0.5, "#2a2f3d");
+    wg.addColorStop(1, "#0b0d14");
+    ctx.fillStyle = wg;
+    ctx.fillRect(wx, by - h * 0.5, w * 0.18, h * 0.5);
+  }
+  const bg = ctx.createLinearGradient(0, by - h * 0.8, 0, by - h * 0.12);
+  bg.addColorStop(0, shade(body, 0.18));
+  bg.addColorStop(1, shade(body, -0.32));
+  poly([[cx - w * 0.5, by - h * 0.12], [cx - w * 0.46, by - h * 0.7], [cx + w * 0.46, by - h * 0.7], [cx + w * 0.5, by - h * 0.12]], bg);
+  poly([[cx - w * 0.46, by - h * 0.7], [cx - w * 0.37, by - h * 0.82], [cx + w * 0.37, by - h * 0.82], [cx + w * 0.46, by - h * 0.7]], shade(body, 0.4));
+  const cg = ctx.createLinearGradient(0, by - h * 1.1, 0, by - h * 0.8);
+  cg.addColorStop(0, shade(body, 0.32));
+  cg.addColorStop(1, shade(body, 0.05));
+  poly([[cx - w * 0.36 + tx, by - h * 0.82], [cx - w * 0.27 + tx, by - h * 1.08], [cx + w * 0.27 + tx, by - h * 1.08], [cx + w * 0.36 + tx, by - h * 0.82]], cg);
+  const gg = ctx.createLinearGradient(0, by - h * 1.04, 0, by - h * 0.84);
+  gg.addColorStop(0, "#dcecff");
+  gg.addColorStop(1, "#5d7fb8");
+  poly([[cx - w * 0.31 + tx, by - h * 0.85], [cx - w * 0.23 + tx, by - h * 1.03], [cx + w * 0.23 + tx, by - h * 1.03], [cx + w * 0.31 + tx, by - h * 0.85]], gg);
+  ctx.fillStyle = "rgba(255,255,255,0.35)";
+  ctx.fillRect(cx - w * 0.2 + tx, by - h * 0.99, w * 0.1, h * 0.04);
+  ctx.fillStyle = shade(body, -0.5);
+  ctx.fillRect(cx - w * 0.52, by - h * 0.16, w * 1.04, h * 0.1);
+  ctx.fillStyle = "#0e1018";
+  ctx.fillRect(cx - w * 0.34, by - h * 0.12, w * 0.68, h * 0.06);
+  ctx.fillStyle = "rgba(255,70,70,0.35)";
+  ctx.fillRect(cx - w * 0.47, by - h * 0.6, w * 0.26, h * 0.26);
+  ctx.fillRect(cx + w * 0.21, by - h * 0.6, w * 0.26, h * 0.26);
   ctx.fillStyle = "#ff3b3b";
-  ctx.fillRect(cx - w * 0.4, by - h * 0.7, w * 0.16, h * 0.1);
-  ctx.fillRect(cx + w * 0.24, by - h * 0.7, w * 0.16, h * 0.1);
+  ctx.fillRect(cx - w * 0.44, by - h * 0.55, w * 0.2, h * 0.14);
+  ctx.fillRect(cx + w * 0.24, by - h * 0.55, w * 0.2, h * 0.14);
+  ctx.fillStyle = "#ffb4b4";
+  ctx.fillRect(cx - w * 0.44, by - h * 0.55, w * 0.2, h * 0.04);
+  ctx.fillRect(cx + w * 0.24, by - h * 0.55, w * 0.2, h * 0.04);
+  ctx.fillStyle = "#f4f4f0";
+  ctx.fillRect(cx - w * 0.1, by - h * 0.36, w * 0.2, h * 0.1);
+  ctx.fillStyle = shade(body, -0.45);
+  ctx.fillRect(cx - w * 0.42, by - h * 0.73, w * 0.84, h * 0.04);
 }
 
 function drawProp(ctx: CanvasRenderingContext2D, kind: Prop, x: number, y: number, u: number, col: string) {
@@ -283,7 +326,7 @@ export default function RaceGame() {
     let last = 0;
 
     const pal = () => PALS[themeRef.current];
-    const curveAt = (p: number) => Math.sin(p * 0.0035) * 0.8 + Math.sin(p * 0.0091) * 0.35;
+    const curveAt = () => 0;
     const halfW = (t: number) => roadHalf * t;
     const centre = (t: number, curve: number) => W / 2 + curve * (1 - t) * (1 - t) * W * 0.45 - px * halfW(t);
 
@@ -344,7 +387,7 @@ export default function RaceGame() {
         return;
       }
       const dir = (keys.r ? 1 : 0) - (keys.l ? 1 : 0) + touchDir;
-      const curve = curveAt(pos);
+      const curve = curveAt();
       px += Math.max(-1, Math.min(1, dir)) * 2.3 * dt;
       px += curve * speed * 0.008 * dt;
       px = Math.max(-1.3, Math.min(1.3, px));
@@ -418,7 +461,7 @@ export default function RaceGame() {
       ctx.beginPath();
       ctx.arc(W * 0.8 - px * 10, hy * 0.45, Math.max(14, H * 0.05), 0, Math.PI * 2);
       ctx.fill();
-      const curve = curveAt(pos);
+      const curve = curveAt();
       const mx = W / 2 + curve * W * 0.2 - px * 24;
       drawMark(ctx, p.mark, p.markC, mx, hy + 2, H * 0.3, clock);
       for (let y = hy; y < H + 4; y += 2) {
