@@ -5054,7 +5054,7 @@ function AboutJourney() {
 function HomeManifesto() {
   return (
     <section aria-label="How I work" className="mx-auto max-w-[72rem] px-6 py-20 sm:py-28">
-      <p className="ml-auto max-w-[52rem] text-pretty text-left text-[clamp(30px,4.4vw,56px)] font-medium leading-[1.12] tracking-[-0.035em] sm:text-right">
+      <p className="ml-auto max-w-[52rem] text-pretty text-left text-[clamp(34px,3.2vw,40px)] font-medium leading-[1.3] tracking-[-0.025em] sm:text-right">
         <span className="text-[#262626] dark:text-[#e5e5e5]">
           Not here to make it pretty.
           <br />
